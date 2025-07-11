@@ -42,7 +42,8 @@ c_flags_output=${c_flags_common} -framework Metal -framework MetalKit
 
 metal=xcrun -sdk macosx metal
 metal_flags_common=-target ${target_platform_metal}
-metal_flags=${metal_flags_common} -I${directory_include} -isysroot ${directory_macos_sdk} -fmetal-math-mode\=fast -fmetal-math-fp32-functions\=fast
+metal_flags=${metal_flags_common} -I${directory_include} -isysroot ${directory_macos_sdk}
+# -fmetal-math-mode\=fast -fmetal-math-fp32-functions\=fast
 metal_flags_output=${metal_flags_common}
 
 all: ${name}
