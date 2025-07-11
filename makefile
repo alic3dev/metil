@@ -13,7 +13,7 @@ directory_app_contents=${directory_app}/Contents
 directory_app_contents_macos=${directory_app_contents}/MacOS
 directory_app_contents_resources=${directory_app_contents}/Resources
 
-directory_macos_sdk=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk
+directory_macos_sdk=${shell xcrun --show-sdk-path}
 
 file_info_plist=Info.plist
 file_output=${directory_app_contents_macos}/${name}
@@ -40,9 +40,10 @@ c_flags_common=-target ${target_platform} -isysroot ${directory_macos_sdk}
 c_flags=${c_flags_common} -x objective-c -fmodules -DTARGET_MACOS -I${directory_include}
 c_flags_output=${c_flags_common} -framework Metal -framework MetalKit
 
-metal=metal
+metal=xcrun -sdk macosx metal
 metal_flags_common=-target ${target_platform_metal}
-metal_flags=${metal_flags_common} -I${directory_include} -isysroot ${directory_macos_sdk} -fmetal-math-mode\=fast -fmetal-math-fp32-functions\=fast
+metal_flags=${metal_flags_common} -I${directory_include} -isysroot ${directory_macos_sdk}
+# -fmetal-math-mode\=fast -fmetal-math-fp32-functions\=fast
 metal_flags_output=${metal_flags_common}
 
 all: ${name}
