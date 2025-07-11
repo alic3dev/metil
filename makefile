@@ -13,7 +13,7 @@ directory_app_contents=${directory_app}/Contents
 directory_app_contents_macos=${directory_app_contents}/MacOS
 directory_app_contents_resources=${directory_app_contents}/Resources
 
-directory_macos_sdk=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk
+directory_macos_sdk=${shell xcrun --show-sdk-path}
 
 file_info_plist=Info.plist
 file_output=${directory_app_contents_macos}/${name}
