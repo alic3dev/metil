@@ -10,6 +10,7 @@ directory_objects=objects
 directory_sources=sources
 
 file_library=${directory_library}/${name}.o
+file_library_metal=${directory_library}/metil.metallib
 
 files_sources=${wildcard ${directory_sources}/*.m}
 files_objects=${patsubst ${directory_sources}/%.m,${directory_objects}/%.o,${files_sources}}
@@ -37,7 +38,7 @@ metal_flags_output=${metal_flags_common}
 strip=strip
 strip_flags=-x
 
-${name}: ${file_library}
+${name}: ${file_library} ${file_library_metal}
 
 all: ${name} examples
 
@@ -47,6 +48,12 @@ ${file_library}: ${files_objects} ${directory_library}
 
 ${directory_objects}/%.o: ${directory_sources}/%.m ${directory_objects}
 	${cc} ${c_flags} -c $< -o $@
+
+${file_library_metal}: ${files_air} ${directory_app_contents_resources}
+	${metal} ${metal_flags_output} ${files_air} -o ${file_library_metal}
+
+${directory_air}/%.air: ${directory_metal}/%.metal ${directory_air}
+	${metal} ${metal_flags} -c $< -o $@
 
 examples: .always
 	cd examples && make all
