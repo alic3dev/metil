@@ -37,9 +37,9 @@ metal_flags_output=${metal_flags_common}
 strip=strip
 strip_flags=-x
 
-all: ${name} examples
-
 ${name}: ${file_library}
+
+all: ${name} examples
 
 ${file_library}: ${files_objects} ${directory_library}
 	${ld} ${ld_flags} -r ${files_objects} -o ${file_library}

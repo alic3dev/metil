@@ -8,8 +8,7 @@ jobs:
   continuous_integration_build:
     runs-on: macos-latest
     steps:
-    - name: continuous_integration:repository->checkout
-      uses: actions/checkout@v4
-    - name: continuous_integration:make
-      run: make
-
+      - name: continuous_integration:repository->checkout
+        uses: actions/checkout@v4
+      - name: continuous_integration:make
+        run: make all
