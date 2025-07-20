@@ -10,7 +10,7 @@ directory_objects=objects
 directory_sources=sources
 
 file_library=${directory_library}/${name}.o
-file_library_metal=${directory_library}/metil.metallib
+file_library_metal=${directory_library}/${name}.metallib
 
 files_sources=${wildcard ${directory_sources}/*.m}
 files_objects=${patsubst ${directory_sources}/%.m,${directory_objects}/%.o,${files_sources}}
