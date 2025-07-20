@@ -1,8 +1,7 @@
-# metal_kit_minimalization
+# metil
 
-running apple metal: deconstructed
+rendering_framework.utilizing(`apple::metal`)
 
 ## copyright
 
 > ©️ [copyleft|copyright]->{alic3dev(2025)}:[all_rights_reserved|all_lefts_reserved]
-
