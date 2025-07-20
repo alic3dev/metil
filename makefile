@@ -30,7 +30,7 @@ files_storyboards=${wildcard ${directory_storyboards}/*.storyboard}
 files_storyboards_compiled=${patsubst ${directory_storyboards}/%.storyboard,${directory_app_contents_resources}/%.storyboardc,${files_storyboards}}
 
 target_device=mac
-target_macos_version=10.14
+target_macos_version=10.15
 target_macos_version_metal=${target_macos_version}
 target_platform=arm64-apple-macos${target_macos_version}
 target_platform_metal=air64-apple-macos${target_macos_version_metal}
