@@ -1,0 +1,107 @@
+name=2d_rendering
+
+directory_air=air
+directory_include=include
+directory_metal=metal
+directory_objects=objects
+directory_output=output
+directory_sources=sources
+directory_storyboards=storyboards
+
+directory_app=${directory_output}/${name}.app
+directory_app_contents=${directory_app}/Contents
+directory_app_contents_macos=${directory_app_contents}/MacOS
+directory_app_contents_resources=${directory_app_contents}/Resources
+
+directory_macos_sdk=${shell xcrun --show-sdk-path}
+
+file_info_plist=Info.plist
+file_output=${directory_app_contents_macos}/${name}
+file_output_info_plist=${directory_app_contents}/Info.plist
+file_output_metal=${directory_app_contents_resources}/default.metallib
+
+files_sources=${wildcard ${directory_sources}/*.m}
+files_objects=${patsubst ${directory_sources}/%.m,${directory_objects}/%.o,${files_sources}}
+
+files_metal=${wildcard ${directory_metal}/*.metal}
+files_air=${patsubst ${directory_metal}/%.metal,${directory_air}/%.air,${files_metal}}
+
+files_storyboards=${wildcard ${directory_storyboards}/*.storyboard}
+files_storyboards_compiled=${patsubst ${directory_storyboards}/%.storyboard,${directory_app_contents_resources}/%.storyboardc,${files_storyboards}}
+
+target_device=mac
+target_macos_version=10.14
+target_macos_version_metal=${target_macos_version}
+target_platform=arm64-apple-macos${target_macos_version}
+target_platform_metal=air64-apple-macos${target_macos_version_metal}
+
+cc=clang
+c_flags_common=-target ${target_platform} -isysroot ${directory_macos_sdk}
+c_flags=${c_flags_common} -x objective-c -fmodules -DTARGET_MACOS -I${directory_include}
+c_flags_output=${c_flags_common} -framework Metal -framework MetalKit
+
+metal=xcrun -sdk macosx metal
+metal_flags_common=-target ${target_platform_metal}
+metal_flags=${metal_flags_common} -I${directory_include} -isysroot ${directory_macos_sdk}
+# -fmetal-math-mode\=fast -fmetal-math-fp32-functions\=fast
+metal_flags_output=${metal_flags_common}
+
+all: ${name}
+
+run: .always
+	${file_output}
+
+${name}: ${file_output}
+
+${file_output}: ${files_objects} ${file_output_metal} ${files_storyboards_compiled} ${file_output_info_plist} ${directory_app_contents_macos}
+	${cc} ${c_flags_output} ${files_objects} -o ${file_output}
+
+${file_output_metal}: ${files_air} ${directory_app_contents_resources}
+	${metal} ${metal_flags_output} ${files_air} -o ${file_output_metal}
+
+${directory_air}/%.air: ${directory_metal}/%.metal ${directory_air}
+	${metal} ${metal_flags} -c $< -o $@
+
+${directory_objects}/%.o: ${directory_sources}/%.m ${directory_objects}
+	${cc} ${c_flags} -c $< -o $@
+
+${directory_app_contents_resources}/%.storyboardc: ${directory_storyboards}/%.storyboard ${directory_app_contents_resources}
+	ibtool --module ${name} --target-device ${target_device} --minimum-deployment-target ${target_macos_version} --output-format human-readable-text $< --compilation-directory ${directory_app_contents_resources}	
+
+${file_output_info_plist}: ${file_info_plist} ${directory_app_contents}
+	cp ${file_info_plist} ${file_output_info_plist}
+
+directories: ${directory_air} ${directory_app_contents} ${directory_app_contents_macos} ${directory_app_contents_resources} ${directory_objects} ${directory_output}
+
+${directory_air}:
+	mkdir -p ${directory_air}
+
+${directory_app_contents}:
+	mkdir -p ${directory_app_contents}
+
+${directory_app_contents_macos}:
+	mkdir -p ${directory_app_contents_macos}
+
+${directory_app_contents_resources}:
+	mkdir -p ${directory_app_contents_resources}
+
+${directory_objects}:
+	mkdir -p ${directory_objects}
+
+${directory_output}:
+	mkdir -p ${directory_output}
+
+clean_all: clean
+
+clean: clean_air clean_objects clean_output
+
+clean_air:
+	-rm -r ${directory_air}
+
+clean_objects:
+	-rm -r ${directory_objects}
+
+clean_output:
+	-rm -r ${directory_output}
+
+.always:

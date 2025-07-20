@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document
+  type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB"
+  version="3.0"
+  toolsVersion="14490.64"
+  targetRuntime="MacOSX.Cocoa"
+  propertyAccessControl="none"
+  initialViewController="windowcontroller-core"
+>
+  <scenes>
+    <scene
+      sceneID="scene-menu"
+    >
+      <objects>
+        <application
+          id="application-menu"
+          sceneMemberID="viewController"
+        >
+          <menu
+            id="menu-core"
+            key="mainMenu"
+            title="metal_kit_and_rendering_setup:core"
+            systemMenu="main"
+          >
+            <items>
+              <menuItem
+                id="menuitem-core"
+                title="metal_kit_and_rendering_setup"
+              >
+                <modifierMask
+                  key="keyEquivalentModifierMask"
+                />
+
+                <menu
+                  id="menu-core-metal-kit-and-rendering-setup"
+                  key="submenu"
+                  title="metal_kit_and_rendering_setup"
+                  systemMenu="apple"
+                >
+                  <items>
+                    <menuItem
+                      id="menuitem-core-metal-kit-and-rendering-setup-item-terminate"
+                      title="quit->{metal_kit_and_rendering_setup}"
+                      keyEquivalent="q"
+                    >
+                      <connections>
+                        <action
+                          id="action-core-metal-kit-and-rendering-setup-terminate-action"
+                          selector="terminate:"
+                          target="first-responder-menu-core-terminate"
+                        />
+                      </connections>
+                    </menuItem>
+                  </items>
+                </menu>
+              </menuItem>
+            </items>
+          </menu>
+        </application>
+
+        <customObject
+          id="first-responder-menu-core-terminate"
+          userLabel="First Responder"
+          customClass="NSResponder"
+          sceneMemberID="firstResponder"
+        />
+      </objects>
+
+      <point
+        key="canvasLocation"
+        x="75"
+        y="0.0"
+      />
+    </scene>
+
+    <scene sceneID="scene-window">
+      <objects>
+        <windowController
+          id="windowcontroller-core"
+          sceneMemberID="viewController"
+        >
+          <window
+            id="window-core"
+            key="window"
+            title="metal_kit_and_rendering_setup"
+            allowsToolTipsWhenApplicationIsInactive="0"
+            autorecalculatesKeyViewLoop="0"
+            releasedWhenClosed="0"
+            animationBehavior="none"
+            userLabel="metal_kit_and_renderer_setup"
+          >
+            <windowStyleMask
+              key="styleMask"
+              borderless="1"
+              titled="0"
+              resizable="1"
+            />
+
+            <rect
+              key="contentRect"
+              width="1"
+              height="1"
+            />
+            <rect
+              key="screenRect"
+              width="1"
+              height="1"
+            />
+
+            <connections>
+              <outlet
+                id="outlet-window-core"
+                property="delegate"
+                destination="windowcontroller-core"
+              />
+            </connections>
+          </window>
+
+          <connections>
+            <segue
+              id="segue-window-core"
+              kind="relationship"
+              relationship="window.shadowedContentViewController"
+              destination="viewcontroller-view-core"
+            />
+          </connections>
+        </windowController>
+      </objects>
+    </scene>
+
+    <scene
+      sceneID="scene-view"
+    >
+      <objects>
+        <viewController
+          id="viewcontroller-view-core"
+          customClass="metal_kit_view_controller"
+          sceneMemberID="viewController"
+        >
+          <view
+            id="view-view-core"
+            key="view"
+            customClass="MTKView"
+          >
+            <rect
+              key="frame"
+              width="800"
+              height="600"
+            />
+          </view>
+        </viewController>
+      </objects>
+    </scene>
+  </scenes>
+</document>
