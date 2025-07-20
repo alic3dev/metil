@@ -83,17 +83,17 @@
             id="window-core"
             key="window"
             title="metal_kit_and_rendering_setup"
-            allowsToolTipsWhenApplicationIsInactive="NO"
-            autorecalculatesKeyViewLoop="NO"
-            releasedWhenClosed="NO"
+            allowsToolTipsWhenApplicationIsInactive="0"
+            autorecalculatesKeyViewLoop="0"
+            releasedWhenClosed="0"
             animationBehavior="none"
             userLabel="metal_kit_and_renderer_setup"
           >
             <windowStyleMask
               key="styleMask"
-              borderless="YES"
-              titled="NO"
-              resizable="YES"
+              borderless="1"
+              titled="0"
+              resizable="1"
             />
 
             <rect
