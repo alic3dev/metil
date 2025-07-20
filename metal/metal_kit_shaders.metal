@@ -1,31 +1,29 @@
 #include <metal_kit_shader_types.h>
 
-struct metal_kit_rasterizer_data {
+struct data_rasterizer {
   float4 position [[position]];
-  float4 color;
+
+  float3 color;
 };
 
-vertex metal_kit_rasterizer_data metal_kit_vertex_shader(
-  uint id_vertex [[vertex_id]],
-  constant metal_kit_vertex* vertices [[buffer(metal_kit_vertex_input_index_vertices)]],
-  constant vector_uint2* pointer_size_viewport [[buffer(metal_kit_vertex_input_index_viewport_size)]]
+struct data_index_mesh {
+  uint id;
+};
+
+vertex data_rasterizer shader_vertex(
+  const device vector_float4* positions [[buffer(metal_kit_vertex_input_index_positions)]],
+  constant metal_kit_data_frame& data_frame [[buffer(metal_kit_vertex_input_index_frame_data)]],
+  constant data_index_mesh& index_mesh [[buffer(metal_kit_vertex_input_index_mesh_index)]],
+  uint id_vertex [[vertex_id]]
 ) {
-  metal_kit_rasterizer_data data_out;
+  data_rasterizer out;
 
-  float2 position_space_pixel = vertices[id_vertex].position.xy;
+  out.position = data_frame.objects[index_mesh.id].view_model_matrix_projection * positions[id_vertex];
+  out.color = data_frame.objects[index_mesh.id].color;
 
-  vector_float2 size_viewport = vector_float2(*pointer_size_viewport);
-
-  data_out.position = vector_float4(0.0, 0.0, 0.0, 1.0);
-  data_out.position.xy = position_space_pixel / (size_viewport / 2.0);
-
-  data_out.color = vertices[id_vertex].color;
-
-  return data_out;
+  return out;
 }
 
-fragment float4 metal_kit_fragment_shader(
-  metal_kit_rasterizer_data data_in [[stage_in]]
-) {
-  return data_in.color;
+fragment float4 shader_fragment(data_rasterizer in [[stage_in]]) {
+  return float4(in.color.rgb, 1.0f);
 }

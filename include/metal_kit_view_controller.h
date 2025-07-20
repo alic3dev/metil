@@ -1,9 +1,11 @@
 #ifndef __metal_kit_view_controller_h
 #define __metal_kit_view_controller_h
 
-#include <AppKit/AppKit.h>
+#import <metal_kit_renderer.h>
 
-@interface metal_kit_view_controller : NSViewController
+#include <MetalKit/MetalKit.h>
+
+@interface metal_kit_view_controller: NSViewController<MTKViewDelegate>
 
 @end
 
