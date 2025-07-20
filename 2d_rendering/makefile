@@ -1,4 +1,4 @@
-name=metal_kit_and_rendering_setup
+name=2d_rendering
 
 directory_air=air
 directory_include=include
