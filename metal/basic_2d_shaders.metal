@@ -1,4 +1,4 @@
-#include <metil_shader_types.h>
+#include <metil_example_shader_types.h>
 
 struct metal_kit_rasterizer_data {
   float4 position [[position]];

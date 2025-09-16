@@ -1,5 +1,5 @@
-#ifndef __metal_kit_shader_types_h
-#define __metal_kit_shader_types_h
+#ifndef __metil_example_shader_types_h
+#define __metil_example_shader_types_h
 
 #include <simd/simd.h>
 
