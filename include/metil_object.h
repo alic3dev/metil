@@ -1,0 +1,24 @@
+#ifndef __metil_object_h
+#define __metil_object_h
+
+#include <metil_mesh/mesh.h>
+
+#include <clic3_vector.h>
+
+#include <MetalKit/MetalKit.h>
+
+struct metil_object {
+  struct metil_mesh mesh;
+  _Nonnull id<MTLBuffer> data;
+  _Nonnull id<MTLBuffer> indices;
+  _Nonnull id<MTLBuffer> vertices;
+  _Nonnull id<MTLTexture> texture;
+  _Nullable id<MTLTexture> texture_secondary;
+  struct clic3_vector3_float position;
+};
+
+void metil_object_destroy(
+  struct metil_object* _Nonnull
+);
+
+#endif

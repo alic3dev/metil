@@ -1,0 +1,12 @@
+#ifndef __metil_configuration_rendering_properties_h
+#define __metil_configuration_rendering_properties_h
+
+extern const float metil_configuration_default_rendering_properties_brightness;
+extern const float metil_configuration_default_rendering_properties_brightness_text;
+
+struct metil_configuration_rendering_properties {
+  float brightness;
+  float brightness_text;
+};
+
+#endif
