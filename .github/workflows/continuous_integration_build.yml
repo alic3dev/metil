@@ -10,6 +10,9 @@ jobs:
     steps:
       - name: checkout_metil
         uses: actions/checkout@v4
+        with:
+          repository: alic3dev/metil
+          path: metil
       - name: checkout_cer0
         uses: actions/checkout@v4
         with:
@@ -32,4 +35,4 @@ jobs:
       - name: make_interrupt_handler
         run: cd interrupt_handler && make
       - name: make_metil
-        run: make all
+        run: cd metil && make all
