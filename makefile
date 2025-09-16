@@ -141,7 +141,12 @@ ${file_output_info_plist}: ${file_info_plist}
 	mkdir -p ${directory_library}
 	cp ${file_info_plist} ${file_output_info_plist}
 
+clean_all: clean clean_examples
+
 clean: clean_air clean_objects clean_library
+
+clean_examples:
+	cd examples && make clean
 
 clean_air:
 	-rm -r ${directory_air} 2> /dev/null
