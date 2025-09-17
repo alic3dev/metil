@@ -3,8 +3,8 @@
 #include <GameController/GameController.h>
 
 struct metil_controller_state metil_controller_state = {
-  .trigger_left = 0.0f,
-  .trigger_right = 0.0f,
+  .l2 = 0.0f,
+  .r2 = 0.0f,
 
   .thumbstick_axis_x_left = 0.0f,
   .thumbstick_axis_y_left = 0.0f,
@@ -39,8 +39,10 @@ void metil_controller_poll() {
   );
 
   if (profile_controller != (void*)0) {
-    GCControllerButtonInput* trigger_left = [profile_controller leftTrigger];
-    GCControllerButtonInput* trigger_right = [profile_controller rightTrigger];
+    GCControllerButtonInput* l1 = [profile_controller leftShoulder];
+    GCControllerButtonInput* l2 = [profile_controller leftTrigger];
+    GCControllerButtonInput* r1 = [profile_controller rightShoulder];
+    GCControllerButtonInput* r2 = [profile_controller rightTrigger];
     
     GCControllerDirectionPad* thumbstick_right = [profile_controller rightThumbstick];
     GCControllerAxisInput* thumbstick_axis_y_right = [thumbstick_right yAxis];
@@ -50,8 +52,10 @@ void metil_controller_poll() {
     GCControllerAxisInput* thumbstick_axis_y_left = [thumbstick_left yAxis];
     GCControllerAxisInput* thumbstick_axis_x_left = [thumbstick_left xAxis];
 
-    metil_controller_state.trigger_left = trigger_left.value;
-    metil_controller_state.trigger_right = trigger_right.value;
+    metil_controller_state.l1 = l1.value;
+    metil_controller_state.l2 = l2.value;
+    metil_controller_state.r1 = r1.value;
+    metil_controller_state.r2 = r2.value;
 
     metil_controller_state.thumbstick_axis_x_left = thumbstick_axis_x_left.value;
     metil_controller_state.thumbstick_axis_y_left = thumbstick_axis_y_left.value;
@@ -76,8 +80,8 @@ void metil_controller_poll() {
 
     metil_controller_state.available = 1;
   } else {
-    metil_controller_state.trigger_left = 0.0f;
-    metil_controller_state.trigger_right = 0.0f;
+    metil_controller_state.l2 = 0.0f;
+    metil_controller_state.r2 = 0.0f;
 
     metil_controller_state.thumbstick_axis_x_left = 0.0f;
     metil_controller_state.thumbstick_axis_y_left = 0.0f;
