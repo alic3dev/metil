@@ -16,6 +16,7 @@
 #include <metil_audio/audio.h>
 #include <metil_scenes/scene_controller.h>
 #include <metil_scenes/scene.h>
+#include <metil_library.h>
 #include <metil_menus/menu.h>
 #include <metil_menus/menu_item.h>
 #include <metil_input/input.h>
@@ -34,9 +35,9 @@
 #include <metil_application/metil_application_delegate.h>
 #include <metil_application/metil_nsresponder.h>
 #include <metil_application/metil_application.h>
-#include <metil_example_shader_types.h>
 #include <metil_initialize.h>
 #include <metil_object.h>
+#include <metil_shader_types.h>
 #include <metil_text/text.h>
 
 #endif

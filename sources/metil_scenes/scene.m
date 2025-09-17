@@ -23,7 +23,7 @@ void metil_scene_initialize(
   );
 
   scene->type = metil_scene_type_unknown;
-  scene->id = metil_scene_id_unknown;
+  scene->id = -1;
 
   scene->player.position.x = 0.0f;
   scene->player.position.y = 0.0f;

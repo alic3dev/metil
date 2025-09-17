@@ -5,7 +5,9 @@
 #include <metil_audio/audio.h>
 #include <metil_configuration/configuration.h>
 #include <metil_input/input.h>
+#include <metil_library.h>
 #include <metil_paths/paths.h>
+#include <metil_rendering/metil_renderer.h>
 #include <metil_scenes/scene_controller.h>
 #include <metil_termination.h>
 #include <metil_text/text.h>
@@ -24,9 +26,12 @@ void metil_terminate_on_signal(int _) {
 int metil_initialize(
   int length_parameters,
   const char** parameters,
-  char* name
+  char* name,
+  metil_renderer_on_initialize_function metil_renderer_on_initialize_function
 ) {
   srand(metil_time_milliseconds_get() % UINT_MAX);
+
+  metil_renderer_on_initialize = metil_renderer_on_initialize_function;
   
   metil_paths_initialize(
     (char*) parameters[0],

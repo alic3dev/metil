@@ -3,14 +3,15 @@
 
 #include <metil_object.h>
 #include <metil_rendering/rendering_properties.h>
-#include <metil_scenes/scene.h>
 
 #include <MetalKit/MetalKit.h>
 
+typedef void (*metil_renderer_on_initialize_function)(_Nonnull id<MTLDevice>);
+
+extern _Nullable metil_renderer_on_initialize_function metil_renderer_on_initialize;
+
 @interface metil_renderer : NSObject<MTKViewDelegate> {
   struct metil_rendering_properties rendering_properties;
-
-  struct metil_scene scene;
 
   id<MTLDevice> metal_kit_device;
   
@@ -32,8 +33,6 @@
 
 - (nonnull instancetype) initWithMetalKitView: (nonnull MTKView*) metal_kit_view;
 
-- (void) on_scene_change: (enum metil_scene_id) scene_id;
-
 - (void) drawInMTKView: (nonnull MTKView*) metal_kit_view;
 
 - (void) mtkView: (nonnull MTKView*) metal_kit_view drawableSizeWillChange: (CGSize) size;
@@ -49,10 +48,6 @@
 
 @end
 
-void metil_renderer_on_scene_change(
-  enum metil_scene_id,
-  void* _Nonnull
-);
 void metil_renderer_on_termination(void* _Nonnull);
 
 #endif
