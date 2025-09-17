@@ -97,15 +97,16 @@ void metil_scene_destroy(
 void metil_scene_poll_input_default(
   struct metil_scene* scene
 ) {
-  metil_player_poll_input(
-    &scene->player
+  scene->player.poll_input(
+    &scene->player,
+    scene->time
   );
 }
 
 void metil_scene_poll_default(
   struct metil_scene* scene
 ) {
-  metil_player_poll(
+  scene->player.poll(
     &scene->player
   );
 }
@@ -136,7 +137,7 @@ void metil_scene_destroy_default(
   }
   free(scene->textures);
 
-  metil_player_destroy(
+  scene->player.destroy(
     &scene->player
   );
 
