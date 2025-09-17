@@ -10,6 +10,8 @@ struct metil_player {
 
   float speed_movement;
   float speed_rotation;
+
+  void* data;
 };
 
 void metil_player_initialize(
