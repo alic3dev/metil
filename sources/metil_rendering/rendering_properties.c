@@ -28,6 +28,11 @@ void metil_rendering_properties_initialize(
   metil_rendering_properties->brightness_text = (
     metil_configuration_default_rendering_properties_brightness_text
   );
+
+  metil_rendering_properties->color_clear.x = 0.0f;
+  metil_rendering_properties->color_clear.y = 0.0f;
+  metil_rendering_properties->color_clear.z = 0.0f;
+  metil_rendering_properties->color_clear.w = 1.0f;
 }
 
 void metil_rendering_properties_destory(

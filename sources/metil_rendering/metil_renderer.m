@@ -56,7 +56,8 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
 
   if (metil_renderer_on_initialize != (void*)0) {
     metil_renderer_on_initialize(
-      metal_kit_device
+      metal_kit_device,
+      &self->rendering_properties
     );
   }
 
@@ -146,10 +147,10 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
 
   MTLRenderPassDescriptor* descriptor_render_pass = metal_kit_view.currentRenderPassDescriptor;
   descriptor_render_pass.colorAttachments[0].clearColor = MTLClearColorMake(
-    0.0f,
-    0.0f,
-    0.0f,
-    1.0f
+    self->rendering_properties.color_clear.x,
+    self->rendering_properties.color_clear.y,
+    self->rendering_properties.color_clear.z,
+    self->rendering_properties.color_clear.w
   );
 
   encoder_render = [command_buffer renderCommandEncoderWithDescriptor: descriptor_render_pass];

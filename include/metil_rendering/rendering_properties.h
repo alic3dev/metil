@@ -3,6 +3,8 @@
 
 #include <metil_rendering/camera/camera.h>
 
+#include <clic3_vector.h>
+
 #include <pthread.h>
 
 #define metil_count_max_frames 5
@@ -17,6 +19,8 @@ struct metil_rendering_properties {
 
   float brightness;
   float brightness_text;
+
+  struct clic3_vector4_float color_clear;
 };
 
 void metil_rendering_properties_initialize(
