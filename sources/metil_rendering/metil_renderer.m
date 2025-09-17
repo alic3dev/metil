@@ -56,7 +56,8 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
 
   if (metil_renderer_on_initialize != (void*)0) {
     metil_renderer_on_initialize(
-      metal_kit_device
+      metal_kit_device,
+      &self->rendering_properties
     );
   }
 

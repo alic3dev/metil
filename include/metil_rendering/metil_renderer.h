@@ -6,7 +6,10 @@
 
 #include <MetalKit/MetalKit.h>
 
-typedef void (*metil_renderer_on_initialize_function)(_Nonnull id<MTLDevice>);
+typedef void (*metil_renderer_on_initialize_function)(
+  _Nonnull id<MTLDevice>,
+  struct metil_rendering_properties* _Nonnull
+);
 
 extern _Nullable metil_renderer_on_initialize_function metil_renderer_on_initialize;
 
