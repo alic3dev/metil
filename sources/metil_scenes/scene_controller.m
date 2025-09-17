@@ -1,6 +1,10 @@
 #include <metil_scenes/scene_controller.h>
 
+#include <metil_scenes/scene.h>
+
 #include <stdlib.h>
+
+struct metil_scene metil_scene_empty;
 
 struct metil_scene_controller metil_scene_controller = {
   .length_on_scene_change = 0,
@@ -9,10 +13,16 @@ struct metil_scene_controller metil_scene_controller = {
 };
 
 void metil_scene_controller_initialize() {
+  metil_scene_initialize(
+    &metil_scene_controller.scene,
+    (void*)0
+  );
+
   metil_scene_controller.on_scene_change = malloc(
     sizeof(metil_scene_controller_on_scene_change) *
     metil_scene_controller.length_on_scene_change
   );
+
   metil_scene_controller.on_scene_change_data = malloc(
     sizeof(void*) *
     metil_scene_controller.length_on_scene_change
@@ -20,7 +30,7 @@ void metil_scene_controller_initialize() {
 }
 
 void metil_scene_controller_scene_change(
-  enum metil_scene_id scene_id
+  int scene_id
 ) {
   for (
     unsigned short int index_on_scene_change = 0;
@@ -68,6 +78,10 @@ void metil_scene_controller_on_scene_change_add(
 }
 
 void metil_scene_controller_destroy() {
+  metil_scene_destroy(
+    &metil_scene_controller.scene
+  );
+
   free(metil_scene_controller.on_scene_change);
   free(metil_scene_controller.on_scene_change_data);
 }

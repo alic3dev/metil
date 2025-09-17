@@ -1,31 +1,31 @@
-#include <metil_example_shader_types.h>
+#include <metil_shader_types.h>
 
-struct metal_kit_rasterizer_data {
+struct data_rasterizer {
   float4 position [[position]];
   float4 color;
 };
 
-vertex metal_kit_rasterizer_data metal_kit_vertex_shader(
-  uint id_vertex [[vertex_id]],
-  constant metal_kit_vertex_2d* vertices [[buffer(metal_kit_vertex_input_index_vertices)]],
-  constant vector_uint2* pointer_size_viewport [[buffer(metal_kit_vertex_input_index_viewport_size)]]
+vertex data_rasterizer metil_vertex_shader(
+  const device simd_float4* positions [[buffer(metil_kit_vertex_input_index_positions)]],
+  constant metil_kit_data_frame& data_frame [[buffer(metil_kit_vertex_input_index_frame_data)]],
+  constant metil_kit_data_frame_object& data [[buffer(metil_kit_vertex_input_index_data)]],
+  unsigned int id_vertex [[vertex_id]]
 ) {
-  metal_kit_rasterizer_data data_out;
+  data_rasterizer out;
 
-  float2 position_space_pixel = vertices[id_vertex].position.xy;
+  out.position = positions[id_vertex];
+  out.color = float4(
+    metal::fmod(out.position.x / 10.0f, 1.0f),
+    metal::fmod(out.position.y / 10.0f, 1.0f),
+    metal::fmod(out.position.z / 10.0f, 1.0f),
+    1
+  );
 
-  vector_float2 size_viewport = vector_float2(*pointer_size_viewport);
-
-  data_out.position = vector_float4(0.0, 0.0, 0.0, 1.0);
-  data_out.position.xy = position_space_pixel / (size_viewport / 2.0);
-
-  data_out.color = vertices[id_vertex].color;
-
-  return data_out;
+  return out;
 }
 
-fragment float4 metal_kit_fragment_shader(
-  metal_kit_rasterizer_data data_in [[stage_in]]
+fragment float4 metil_fragment_shader(
+  data_rasterizer in [[stage_in]]
 ) {
-  return data_in.color;
+  return in.color;
 }

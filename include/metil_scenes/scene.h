@@ -18,10 +18,6 @@ enum metil_scene_type {
   metil_scene_type_game
 };
 
-enum metil_scene_id {
-  metil_scene_id_unknown
-};
-
 struct metil_scene_rendering_properties {
   float brightness;
   float brightness_text;
@@ -32,7 +28,7 @@ struct metil_scene {
 
   struct metil_player player;
   enum metil_scene_type type;
-  enum metil_scene_id id;
+  int id;
 
   struct metil_object** objects;
   unsigned short int length_objects;

@@ -9,7 +9,7 @@ directory_objects=${directory_objects_base}/release
 ifeq (${debug}, 1)
 	name:=${name}_debug
 	directory_objects=${directory_objects_base}/debug
-	directory_library=${directory_library_debug}
+	directory_library:=${directory_library_debug}
 endif
 
 directory_include=include
