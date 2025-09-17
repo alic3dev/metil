@@ -2,8 +2,10 @@
 #define __metil_input_controller_h
 
 struct metil_controller_state {
-  float trigger_left;
-  float trigger_right;
+  float l1;
+  float l2;
+  float r1;
+  float r2;
 
   float thumbstick_axis_x_left;
   float thumbstick_axis_y_left;

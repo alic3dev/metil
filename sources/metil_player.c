@@ -41,17 +41,17 @@ void metil_player_poll_input(
 
   if (
     metil_controller_state.available == 1 &&
-    metil_controller_state.trigger_left >= 0.1f &&
+    metil_controller_state.l2 >= 0.1f &&
     metil_controller_state.thumbstick_button_left == 0.0f
   ) {
     player->speed_movement = (
       player->speed_movement *
-      metil_controller_state.trigger_left +
+      metil_controller_state.l2 +
       1.0f
     );
   } else if (
     metil_controller_state.available == 1 &&
-    metil_controller_state.trigger_left < 0.1f &&
+    metil_controller_state.l2 < 0.1f &&
     metil_controller_state.thumbstick_button_left >= 0.1f
   ) {
     player->speed_movement = (
