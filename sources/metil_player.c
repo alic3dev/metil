@@ -27,7 +27,8 @@ void metil_player_initialize(
 }
 
 void metil_player_poll_input(
-  struct metil_player* player
+  struct metil_player* player,
+  unsigned long int _
 ) {
   float speed_original = player->speed_movement;
 
