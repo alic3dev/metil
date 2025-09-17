@@ -7,6 +7,11 @@
 
 #include <math.h>
 
+const float metil_player_speed_movement_default = 0.8f;
+const float metil_player_speed_rotation_default = (
+  metil_player_speed_movement_default / 4.0f
+);
+
 void metil_player_initialize(
   struct metil_player* player
 ) {
@@ -14,10 +19,8 @@ void metil_player_initialize(
   player->position.y = 0.0f;
   player->position.z = 0.0f;
 
-  player->speed_movement = 0.8f;
-  player->speed_rotation = (
-    player->speed_movement / 4.0f
-  );
+  player->speed_movement = metil_player_speed_movement_default;
+  player->speed_rotation = metil_player_speed_rotation_default;
 
   player->velocity.x = 0.0f;
   player->velocity.y = 0.0f;
