@@ -192,7 +192,7 @@ struct metil_text_image* metil_text_render(
     8,
     4 * (text_image->size.x),
     metil_font_color_space,
-    kCGImageAlphaNoneSkipFirst
+    0x0 | kCGImageAlphaNoneSkipFirst
   );
 
   if (
