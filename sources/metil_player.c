@@ -23,6 +23,10 @@ void metil_player_initialize(
   player->velocity.y = 0.0f;
   player->velocity.z = 0.0f;
 
+  player->poll_input = metil_player_poll_input;
+  player->poll = metil_player_poll;
+  player->destroy = metil_player_destroy;
+
   player->data = (void*)0;
 }
 

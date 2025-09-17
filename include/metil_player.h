@@ -3,6 +3,15 @@
 
 #include <clic3_vector.h>
 
+struct metil_player;
+
+typedef void (*metil_player_poll_input_function)(
+  struct metil_player*,
+  unsigned long int
+);
+typedef void (*metil_player_poll_function)(struct metil_player*);
+typedef void (*metil_player_destroy_function)(struct metil_player*);
+
 struct metil_player {
   struct clic3_vector3_float position;
   struct clic3_vector3_float rotation;
@@ -10,6 +19,10 @@ struct metil_player {
 
   float speed_movement;
   float speed_rotation;
+
+  metil_player_poll_input_function poll_input;
+  metil_player_poll_function poll;
+  metil_player_destroy_function destroy;
 
   void* data;
 };
@@ -19,7 +32,8 @@ void metil_player_initialize(
 );
 
 void metil_player_poll_input(
-  struct metil_player*
+  struct metil_player*,
+  unsigned long int
 );
 
 void metil_player_poll(
