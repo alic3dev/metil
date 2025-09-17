@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-struct metil_scene_controller_structure metil_scene_controller = {
+struct metil_scene_controller metil_scene_controller = {
   .length_on_scene_change = 0,
   .on_scene_change = (void*)0,
   .on_scene_change_data = (void*)0

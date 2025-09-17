@@ -5,10 +5,8 @@
 
 #include <pthread.h>
 
-static const unsigned int metil_count_max_frames = 5;
-static const unsigned int metil_length_buffers_visibility = (
-  metil_count_max_frames + 1
-);
+#define metil_count_max_frames 5
+#define metil_length_buffers_visibility metil_count_max_frames + 1
 
 struct metil_rendering_properties {
   struct metil_camera camera;

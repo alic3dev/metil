@@ -1,5 +1,5 @@
-#ifndef __metal_kit_view_controller_h
-#define __metal_kit_view_controller_h
+#ifndef __metil_metal_kit_view_controller_h
+#define __metil_metal_kit_view_controller_h
 
 #include <AppKit/AppKit.h>
 

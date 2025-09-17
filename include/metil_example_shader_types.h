@@ -7,13 +7,11 @@
 #define constant
 #endif
 
-static constant const unsigned int length_objects_x = 7;
-static constant const unsigned int length_objects_y = 7;
-static constant const unsigned int length_objects_z = 7;
+#define metil_length_objects_x 7
+#define metil_length_objects_y 7
+#define metil_length_objects_z 7
 
-static constant const unsigned int length_objects_xyz = (
-  length_objects_x * length_objects_y * length_objects_z
-);
+#define metil_length_objects_xyz metil_length_objects_x * metil_length_objects_y * metil_length_objects_z
 
 typedef enum {
   metal_kit_vertex_input_index_positions = 0,
@@ -38,7 +36,7 @@ typedef struct {
 } metal_kit_data_frame_object;
 
 typedef struct {
-  metal_kit_data_frame_object objects[length_objects_xyz];
+  metal_kit_data_frame_object objects[metil_length_objects_xyz];
 } metal_kit_data_frame;
 
 #endif

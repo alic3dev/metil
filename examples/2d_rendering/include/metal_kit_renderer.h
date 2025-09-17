@@ -1,5 +1,5 @@
-#ifndef __metal_kit_renderer_h
-#define __metal_kit_renderer_h
+#ifndef __metil_metal_kit_renderer_h
+#define __metil_metal_kit_renderer_h
 
 #include <MetalKit/MetalKit.h>
 

@@ -1,5 +1,5 @@
-#ifndef __application_metil_application_delegate_h
-#define __application_metil_application_delegate_h
+#ifndef __metil_application_metil_application_delegate_h
+#define __metil_application_metil_application_delegate_h
 
 #include <AppKit/AppKit.h>
 
