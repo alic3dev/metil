@@ -9,7 +9,7 @@ struct metil_configuration {
   struct metil_configuration_rendering_properties rendering_properties;
 };
 
-extern struct metil_configuration configuration;
+extern struct metil_configuration metil_configuration;
 
 void metil_configuration_initialize();
 

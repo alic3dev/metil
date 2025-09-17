@@ -1,5 +1,5 @@
-#ifndef __metil_h
-#define __metil_h
+#ifndef __metil_initialize_h
+#define __metil_initialize_h
 
 void metil_terminate_on_signal(int);
 

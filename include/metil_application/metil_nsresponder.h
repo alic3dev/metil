@@ -1,5 +1,5 @@
-#ifndef __application_metil_nsresponder_h
-#define __application_metil_nsresponder_h
+#ifndef __metil_application_metil_nsresponder_h
+#define __metil_application_metil_nsresponder_h
 
 #include <AppKit/AppKit.h>
 

@@ -1,5 +1,5 @@
-#ifndef __metil_view_h
-#define __metil_view_h
+#ifndef __metil_application_view_h
+#define __metil_application_view_h
 
 #include <MetalKit/MetalKit.h>
 

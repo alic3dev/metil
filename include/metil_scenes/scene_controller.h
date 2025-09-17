@@ -5,13 +5,13 @@
 
 typedef void (*metil_scene_controller_on_scene_change)(enum metil_scene_id, void*);
 
-struct metil_scene_controller_structure {
+struct metil_scene_controller {
   unsigned char length_on_scene_change;
   metil_scene_controller_on_scene_change* on_scene_change;
   void** on_scene_change_data;
 };
 
-extern struct metil_scene_controller_structure scene_controller;
+extern struct metil_scene_controller metil_scene_controller;
 
 void metil_scene_controller_initialize();
 

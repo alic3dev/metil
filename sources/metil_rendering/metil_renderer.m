@@ -34,10 +34,10 @@
   );
 
   self->rendering_properties.brightness = (
-    configuration.rendering_properties.brightness
+    metil_configuration.rendering_properties.brightness
   );
   self->rendering_properties.brightness_text = (
-    configuration.rendering_properties.brightness_text
+    metil_configuration.rendering_properties.brightness_text
   );
 
   metal_kit_view.depthStencilPixelFormat = MTLPixelFormatDepth32Float_Stencil8;
