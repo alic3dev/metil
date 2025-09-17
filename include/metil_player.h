@@ -12,6 +12,9 @@ typedef void (*metil_player_poll_input_function)(
 typedef void (*metil_player_poll_function)(struct metil_player*);
 typedef void (*metil_player_destroy_function)(struct metil_player*);
 
+extern const float metil_player_speed_movement_default;
+extern const float metil_player_speed_rotation_default;
+
 struct metil_player {
   struct clic3_vector3_float position;
   struct clic3_vector3_float rotation;
