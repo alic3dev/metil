@@ -10,7 +10,7 @@ void metil_camera_initialize(
   camera->field_of_view.x = 0.0f;
   camera->field_of_view.y = 0.0f;
 
-  camera->distance_view.near = 0.001f;
+  camera->distance_view.near = 0.5f;
   camera->distance_view.far = 10000.0f;
 
   camera->lens.length_focal = 10.0f;
