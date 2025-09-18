@@ -1,6 +1,6 @@
 #include <metil_player.h>
 
-#include <metil_input/controller.h>
+#include <metil_input/controller_state.h>
 #include <metil_input/cursor.h>
 #include <metil_input/keycodes.h>
 #include <metil_input/map.h>
@@ -42,7 +42,7 @@ void metil_player_poll_input(
   if (
     metil_controller_state.available == 1 &&
     metil_controller_state.l2 >= 0.1f &&
-    metil_controller_state.thumbstick_button_left == 0.0f
+    metil_controller_state.l3 == 0.0f
   ) {
     player->speed_movement = (
       player->speed_movement *
@@ -52,7 +52,7 @@ void metil_player_poll_input(
   } else if (
     metil_controller_state.available == 1 &&
     metil_controller_state.l2 < 0.1f &&
-    metil_controller_state.thumbstick_button_left >= 0.1f
+    metil_controller_state.l3 >= 0.1f
   ) {
     player->speed_movement = (
       player->speed_movement / 2.0f
@@ -131,24 +131,24 @@ void metil_player_poll_input(
 
   if (metil_controller_state.available == 1) {
     if (
-      metil_controller_state.input_axis_x_right >= 0.1f || 
-      metil_controller_state.input_axis_x_right <= -0.1f
+      metil_controller_state.right_stick.x >= 0.1f || 
+      metil_controller_state.right_stick.x <= -0.1f
     ) {
       player->rotation.y = (
         player->rotation.y + (
-          metil_controller_state.input_axis_x_right *
+          metil_controller_state.right_stick.x *
           player->speed_rotation
         )
       );
     }
 
     if (
-      metil_controller_state.thumbstick_axis_y_right >= 0.1f || 
-      metil_controller_state.thumbstick_axis_y_right <= -0.1f
+      metil_controller_state.right_stick.y >= 0.1f || 
+      metil_controller_state.right_stick.y <= -0.1f
     ) {
       player->rotation.x = (
         player->rotation.x + (
-          -metil_controller_state.thumbstick_axis_y_right *
+          -metil_controller_state.right_stick.y *
           player->speed_rotation
         )
       );
@@ -296,13 +296,13 @@ void metil_player_poll_input(
 
   if (metil_controller_state.available == 1) {
     movement.x = (
-      (metil_controller_state.thumbstick_axis_y_left * ratio_movement.x) +
-      (metil_controller_state.thumbstick_axis_x_left * ratio_movement_strafe.x)
+      (metil_controller_state.left_stick.y * ratio_movement.x) +
+      (metil_controller_state.left_stick.x * ratio_movement_strafe.x)
     );
 
     movement.z = (
-      (metil_controller_state.thumbstick_axis_y_left * ratio_movement.y) +
-      (metil_controller_state.thumbstick_axis_x_left * ratio_movement_strafe.y)
+      (metil_controller_state.left_stick.y * ratio_movement.y) +
+      (metil_controller_state.left_stick.x * ratio_movement_strafe.y)
     );
   }
 
@@ -438,7 +438,7 @@ void metil_player_poll_input(
       metil_keycode_space
     ] == 1 ||(
       metil_controller_state.available == 1 &&
-      metil_controller_state.button_cross >= 0.1f
+      metil_controller_state.cross >= 0.1f
     )) &&
     player->velocity.y == 0.0f
   ) {
