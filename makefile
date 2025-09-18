@@ -1,5 +1,6 @@
 name=metil
 
+directory_examples=examples
 directory_objects_base=objects
 directory_library=library
 directory_library_debug=${directory_library}_debug
@@ -104,16 +105,19 @@ endif
 
 metal_flags_output=${metal_flags_common}
 
-all: ${name}
+${name}: ${file_library} ${file_output_metal} ${files_storyboards_compiled} ${file_output_info_plist}
+
+all: ${name} examples
+
+examples: .always
+	cd ${directory_examples} && make all
 
 run: .always
 	${file_library}
 
-${name}: ${file_library}  ${file_output_metal} ${files_storyboards_compiled} ${file_output_info_plist}
-
 ${file_library}: ${files_objects_c} ${files_objects_objc}
 	mkdir -p ${directory_library}
-	${ld} ${ld_flags} -r  ${files_objects_c} ${files_objects_objc} -o $@
+	${ld} ${ld_flags} -r ${files_objects_c} ${files_objects_objc} -o $@
 ifneq (${debug}, 1)
 	${strip} ${strip_flags} ${file_library}
 endif
@@ -146,7 +150,7 @@ clean_all: clean clean_examples
 clean: clean_air clean_objects clean_library
 
 clean_examples:
-	cd examples && make clean
+	cd ${directory_examples} && make clean
 
 clean_air:
 	-rm -r ${directory_air} 2> /dev/null
