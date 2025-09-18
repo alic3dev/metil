@@ -112,9 +112,6 @@ all: ${name} examples
 examples: .always
 	cd ${directory_examples} && make all
 
-run: .always
-	${file_library}
-
 ${file_library}: ${files_objects_c} ${files_objects_objc}
 	mkdir -p ${directory_library}
 	${ld} ${ld_flags} -r ${files_objects_c} ${files_objects_objc} -o $@
