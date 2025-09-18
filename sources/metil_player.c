@@ -1,6 +1,6 @@
 #include <metil_player.h>
 
-#include <metil_input/controller.h>
+#include <metil_input/controller_state.h>
 #include <metil_input/cursor.h>
 #include <metil_input/keycodes.h>
 #include <metil_input/map.h>
@@ -438,7 +438,7 @@ void metil_player_poll_input(
       metil_keycode_space
     ] == 1 ||(
       metil_controller_state.available == 1 &&
-      metil_controller_state.button_cross >= 0.1f
+      metil_controller_state.cross >= 0.1f
     )) &&
     player->velocity.y == 0.0f
   ) {

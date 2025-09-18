@@ -2,7 +2,7 @@
 
 #include <metil_audio/audio.h>
 #include <metil_configuration/configuration.h>
-#include <metil_input/controller.h>
+#include <metil_input/controller_state.h>
 #include <metil_input/map.h>
 #include <metil_input/keycodes.h>
 #include <metil_library.h>
@@ -269,7 +269,7 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
 }
 
 - (void) poll: (unsigned int) _frame {
-  metil_controller_poll();
+  metil_controller_state_poll();
 
   unsigned long int time = metil_time_milliseconds_get();
 
