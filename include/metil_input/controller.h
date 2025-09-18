@@ -1,25 +1,27 @@
 #ifndef __metil_input_controller_h
 #define __metil_input_controller_h
 
+#include <clic3_vector.h>
+
 struct metil_controller_state {
   float l1;
   float l2;
+  float l3;
+
   float r1;
   float r2;
+  float r3;
 
-  float thumbstick_axis_x_left;
-  float thumbstick_axis_y_left;
+  float create;
+  float options;
 
-  float input_axis_x_right;
-  float thumbstick_axis_y_right;
+  struct clic3_vector2_float left_stick;
+  struct clic3_vector2_float right_stick;
 
-  float thumbstick_button_left;
-  float thumbstick_button_right;
-
-  float button_directional_pad_down;
-  float button_directional_pad_right;
-  float button_directional_pad_left;
-  float button_directional_pad_up;
+  float button_directional_down;
+  float button_directional_right;
+  float button_directional_left;
+  float button_directional_up;
 
   float button_cross;
   float button_circle;

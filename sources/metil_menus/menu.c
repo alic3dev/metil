@@ -67,8 +67,8 @@ void metil_menu_poll_input(
     metil_input_map_keydown[
       metil_keycode_up_arrow
     ] == 1 || 
-    metil_controller_state.button_directional_pad_up > 0.0f ||
-    metil_controller_state.thumbstick_axis_y_left > 0.1f
+    metil_controller_state.button_directional_up > 0.0f ||
+    metil_controller_state.left_stick.y > 0.1f
   ) {
     had_input = 1;
 
@@ -79,8 +79,8 @@ void metil_menu_poll_input(
     metil_input_map_keydown[
       metil_keycode_down_arrow
     ] == 1 || 
-    metil_controller_state.button_directional_pad_down > 0.0f ||
-    metil_controller_state.thumbstick_axis_y_left < -0.1f
+    metil_controller_state.button_directional_down > 0.0f ||
+    metil_controller_state.left_stick.y < -0.1f
   ) {
     had_input = 1;
 

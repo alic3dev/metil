@@ -3,22 +3,28 @@
 #include <GameController/GameController.h>
 
 struct metil_controller_state metil_controller_state = {
+  .l1 = 0.0f,
   .l2 = 0.0f,
+  .l3 = 0.0f,
+
+  .r1 = 0.0f,
   .r2 = 0.0f,
+  .r3 = 0.0f,
 
-  .thumbstick_axis_x_left = 0.0f,
-  .thumbstick_axis_y_left = 0.0f,
+  .left_stick = {
+    .x = 0.0f,
+    .y = 0.0f
+  },
 
-  .input_axis_x_right = 0.0f,
-  .thumbstick_axis_y_right = 0.0f,
+  .right_stick = {
+    .x = 0.0f,
+    .y = 0.0f
+  },
 
-  .thumbstick_button_left = 0.0f,
-  .thumbstick_button_right = 0.0f,
-
-  .button_directional_pad_down = 0.0f,
-  .button_directional_pad_right = 0.0f,
-  .button_directional_pad_left = 0.0f,
-  .button_directional_pad_up = 0.0f,
+  .button_directional_down = 0.0f,
+  .button_directional_right = 0.0f,
+  .button_directional_left = 0.0f,
+  .button_directional_up = 0.0f,
 
   .button_cross = 0.0f,
   .button_circle = 0.0f,
@@ -30,7 +36,6 @@ struct metil_controller_state metil_controller_state = {
 
 void metil_controller_poll() {
   // TODO: GCDualSenseGamepad: Add DualSense specific functionality
-
   GCController* controller = [GCController current];
   GCExtendedGamepad* profile_controller = (
     controller != (void*)0
@@ -39,39 +44,30 @@ void metil_controller_poll() {
   );
 
   if (profile_controller != (void*)0) {
-    GCControllerButtonInput* l1 = [profile_controller leftShoulder];
-    GCControllerButtonInput* l2 = [profile_controller leftTrigger];
-    GCControllerButtonInput* r1 = [profile_controller rightShoulder];
-    GCControllerButtonInput* r2 = [profile_controller rightTrigger];
-    
-    GCControllerDirectionPad* thumbstick_right = [profile_controller rightThumbstick];
-    GCControllerAxisInput* thumbstick_axis_y_right = [thumbstick_right yAxis];
-    GCControllerAxisInput* input_axis_x_right = [thumbstick_right xAxis];
+    metil_controller_state.l1 = [profile_controller leftShoulder].value;
+    metil_controller_state.l2 = [profile_controller leftTrigger].value;
+    metil_controller_state.l3 = [profile_controller leftThumbstickButton].value;
 
-    GCControllerDirectionPad* thumbstick_left = [profile_controller leftThumbstick];
-    GCControllerAxisInput* thumbstick_axis_y_left = [thumbstick_left yAxis];
-    GCControllerAxisInput* thumbstick_axis_x_left = [thumbstick_left xAxis];
+    metil_controller_state.r1 = [profile_controller rightShoulder].value;
+    metil_controller_state.r2 = [profile_controller rightTrigger].value;
+    metil_controller_state.r3 = [profile_controller rightThumbstickButton].value;
 
-    metil_controller_state.l1 = l1.value;
-    metil_controller_state.l2 = l2.value;
-    metil_controller_state.r1 = r1.value;
-    metil_controller_state.r2 = r2.value;
+    GCControllerDirectionPad* stick_left = [profile_controller leftThumbstick];
 
-    metil_controller_state.thumbstick_axis_x_left = thumbstick_axis_x_left.value;
-    metil_controller_state.thumbstick_axis_y_left = thumbstick_axis_y_left.value;
+    metil_controller_state.left_stick.x = [stick_left xAxis].value;
+    metil_controller_state.left_stick.y = [stick_left yAxis].value;
 
-    metil_controller_state.input_axis_x_right = input_axis_x_right.value;
-    metil_controller_state.thumbstick_axis_y_right = thumbstick_axis_y_right.value;
+    GCControllerDirectionPad* stick_right = [profile_controller rightThumbstick];
 
-    metil_controller_state.thumbstick_button_left = [profile_controller leftThumbstickButton].value;
-    metil_controller_state.thumbstick_button_right = [profile_controller rightThumbstickButton].value;
+    metil_controller_state.right_stick.x = [stick_right xAxis].value;
+    metil_controller_state.right_stick.y = [stick_right yAxis].value;
 
     GCControllerDirectionPad* directional_pad = [profile_controller dpad];
 
-    metil_controller_state.button_directional_pad_down = directional_pad.down.value;
-    metil_controller_state.button_directional_pad_right = directional_pad.right.value;
-    metil_controller_state.button_directional_pad_left = directional_pad.left.value;
-    metil_controller_state.button_directional_pad_up = directional_pad.up.value;
+    metil_controller_state.button_directional_down = directional_pad.down.value;
+    metil_controller_state.button_directional_right = directional_pad.right.value;
+    metil_controller_state.button_directional_left = directional_pad.left.value;
+    metil_controller_state.button_directional_up = directional_pad.up.value;
 
     metil_controller_state.button_cross = [profile_controller buttonA].value;
     metil_controller_state.button_circle = [profile_controller buttonB].value;
@@ -83,14 +79,14 @@ void metil_controller_poll() {
     metil_controller_state.l2 = 0.0f;
     metil_controller_state.r2 = 0.0f;
 
-    metil_controller_state.thumbstick_axis_x_left = 0.0f;
-    metil_controller_state.thumbstick_axis_y_left = 0.0f;
+    metil_controller_state.left_stick.x = 0.0f;
+    metil_controller_state.left_stick.y = 0.0f;
 
-    metil_controller_state.input_axis_x_right = 0.0f;
-    metil_controller_state.thumbstick_axis_y_right = 0.0f;
+    metil_controller_state.right_stick.x = 0.0f;
+    metil_controller_state.right_stick.y = 0.0f;
 
-    metil_controller_state.thumbstick_button_left = 0.0f;
-    metil_controller_state.thumbstick_button_right = 0.0f;
+    metil_controller_state.l3 = 0.0f;
+    metil_controller_state.r3 = 0.0f;
 
     metil_controller_state.available = 0;
   }
