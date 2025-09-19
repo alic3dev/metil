@@ -63,6 +63,10 @@ otherwise individual header files can be included as such
 #include <metil_input/controller_state.h>
 ```
 
+## units
+
+`metil` presupposes that 10 units is equivalent to 1 metre
+
 ## development
 
 ### prerequisites

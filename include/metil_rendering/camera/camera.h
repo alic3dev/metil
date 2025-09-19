@@ -8,10 +8,16 @@
 
 #include <simd/simd.h>
 
+#define __metil_camera_height_default 16.0f
+
+extern float metil_camera_height_default;
+
 struct metil_camera {
   struct metil_lens lens;
 
   float ratio_aspect;
+
+  float height;
 
   struct clic3_vector2_float field_of_view;
 
