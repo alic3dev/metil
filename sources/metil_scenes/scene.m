@@ -99,7 +99,8 @@ void metil_scene_poll_input_default(
 ) {
   scene->player.poll_input(
     &scene->player,
-    scene->time
+    scene->time_input,
+    scene->time_input_delta
   );
 }
 

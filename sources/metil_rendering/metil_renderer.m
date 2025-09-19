@@ -195,7 +195,11 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
   ) {
     struct clic3_vector3_float position = {
       .x = object->position.x - metil_scene_controller.scene.player.position.x,
-      .y = object->position.y - metil_scene_controller.scene.player.position.y,
+      .y = (
+        object->position.y -
+        metil_scene_controller.scene.player.position.y -
+        self->rendering_properties.camera.height
+      ),
       .z = object->position.z - metil_scene_controller.scene.player.position.z
     };
 
@@ -370,6 +374,13 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
 - (void) mtkView: (nonnull MTKView*) metal_kit_view drawableSizeWillChange: (CGSize) size {}
 
 - (void) drawableSizeWillChange: (CGSize) size {
+  /*
+    Certain sizes cause rendering to stutter and slow down
+
+    1920x1204 is fine
+    1920x1203 is fine
+    1920x1202 causes slow down
+  */
   metil_camera_ratio_aspect_set(
     &self->rendering_properties.camera, (
       (float) size.width /

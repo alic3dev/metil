@@ -4,11 +4,15 @@
 
 #include <simd/simd.h>
 
+float metil_camera_height_default = __metil_camera_height_default;
+
 void metil_camera_initialize(
   struct metil_camera* camera
 ) {
   camera->field_of_view.x = 0.0f;
   camera->field_of_view.y = 0.0f;
+
+  camera->height = metil_camera_height_default;
 
   camera->distance_view.near = 0.5f;
   camera->distance_view.far = 10000.0f;
