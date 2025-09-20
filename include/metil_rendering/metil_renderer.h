@@ -42,7 +42,9 @@ extern _Nullable metil_renderer_on_initialize_function metil_renderer_on_initial
 - (void) drawableSizeWillChange: (CGSize) size;
 
 - (void) poll: (unsigned int) _frame;
-- (void) poll_object: (nonnull struct metil_object*) object;
+- (void) poll_object: (nonnull struct metil_object*) object
+  matrix_object_projection: (nonnull matrix_float4x4*) matrix_object_projection
+  matrix_player_projection: (nonnull matrix_float4x4*) matrix_player_projection;
 
 - (void) render;
 - (void) render_object: (nonnull struct metil_object*) object;
