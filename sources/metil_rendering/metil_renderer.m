@@ -211,9 +211,9 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
           { 0, cos(metil_scene_controller.scene.player.rotation.x), sin(metil_scene_controller.scene.player.rotation.x), 0 },
           { 0, -sin(metil_scene_controller.scene.player.rotation.x), cos(metil_scene_controller.scene.player.rotation.x), 0 },
           {
-            1,
-            1,
-            1,
+            0,
+            0,
+            0,
             1
           }
         }}
@@ -229,9 +229,9 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
             { 0, 1, 0, 0 },
             { sin(metil_scene_controller.scene.player.rotation.y), 0, cos(metil_scene_controller.scene.player.rotation.y), 0 },
             {
-              1,
-              1,
-              1,
+              0,
+              0,
+              0,
               1
             }
           }}
