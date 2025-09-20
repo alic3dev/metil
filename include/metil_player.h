@@ -53,6 +53,12 @@ void metil_player_poll_input(
   unsigned long int
 );
 
+void metil_player_poll_input_null(
+  struct metil_player*,
+  unsigned long int,
+  unsigned long int
+);
+
 void metil_player_poll(
   struct metil_player*
 );

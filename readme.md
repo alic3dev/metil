@@ -67,6 +67,173 @@ otherwise individual header files can be included as such
 
 `metil` presupposes that 10 units is equivalent to 1 metre
 
+## coordinates
+
+- `x` values go from left to right as -1 to 1
+- `y` values go from bottom to top as -1 to 1
+- `z` values go from front to back as -1 to 1
+
+```
+     y +1.0  ^
+             |   / z +1.0
+             |  /
+             | /
+x -1.0       |/
+     <-------*------->
+            /|       x +1.0
+           / |
+          /  |
+  z -1.0 /   |
+             v y -1.0
+```
+
+## rotations
+
+### viewport
+
+viewport rotations are set via `scene_controller.scene.player.rotation`
+
+- `x`:
+- - rotations in the positive rotate the viewport to look upwards
+- - rotations in the negative rotate the viewport to look downwards
+- `y`:
+- - rotations in the positive rotate the viewport to look towards the right
+- - rotations in the negative rotate the viewport to look towards the left
+
+```
+`struct metil_object X;`
+`X.position.x = 1.0f;`
+`X.position.y = 0.0f;`
+`X.position.z = 1.0f;`
+
+`scene.player.rotation.x = 0.0;`
+`scene.player.rotation.y = 0.45;`
+     ___________________
+    |                   |
+1.0 -                   |
+    |                   |
+0.75-                   |
+    |         X         |
+0.5 -                   |
+    |                   |
+0.25-                   |
+    |___|___|___|___|___|
+0.0   0.25 0.5 0.75 1.0
+
+`scene.player.rotation.x = 0.0;`
+`scene.player.rotation.y = 0.45;`
+     ___________________
+    |                   |
+1.0 -                   |
+    |                   |
+0.75-                   |
+    |   X               |
+0.5 -                   |
+    |                   |
+0.25-                   |
+    |___|___|___|___|___|
+0.0   0.25 0.5 0.75 1.0
+
+`scene.player.rotation.x = 0.0;`
+`scene.player.rotation.y = -0.45;`
+     ___________________
+    |                   |
+1.0 -                   |
+    |                   |
+0.75-                   |
+    |               X   |
+0.5 -                   |
+    |                   |
+0.25-                   |
+    |___|___|___|___|___|
+0.0   0.25 0.5 0.75 1.0
+
+`scene.player.rotation.x = 0.45;`
+`scene.player.rotation.y = 0.0;`
+     ___________________
+    |                   |
+1.0 -                   |
+    |                   |
+0.75-                   |
+    |                   |
+0.5 -                   |
+    |                   |
+0.25-         X         |
+    |___|___|___|___|___|
+0.0   0.25 0.5 0.75 1.0
+
+`scene.player.rotation.x = -0.45;`
+`scene.player.rotation.y = 0.0;`
+     ___________________
+    |                   |
+1.0 -         X         |
+    |                   |
+0.75-                   |
+    |                   |
+0.5 -                   |
+    |                   |
+0.25-                   |
+    |___|___|___|___|___|
+0.0   0.25 0.5 0.75 1.0
+
+
+`scene.player.rotation.x = 0.45;`
+`scene.player.rotation.y = 0.45;`
+     ___________________
+    |                   |
+1.0 -                   |
+    |                   |
+0.75-                   |
+    |                   |
+0.5 -                   |
+    |                   |
+0.25-   X               |
+    |___|___|___|___|___|
+0.0   0.25 0.5 0.75 1.0
+
+`scene.player.rotation.x = 0.45;`
+`scene.player.rotation.y = -0.45;`
+     ___________________
+    |                   |
+1.0 -                   |
+    |                   |
+0.75-                   |
+    |                   |
+0.5 -                   |
+    |                   |
+0.25-               X   |
+    |___|___|___|___|___|
+0.0   0.25 0.5 0.75 1.0
+
+`scene.player.rotation.x = -0.45;`
+`scene.player.rotation.y = 0.45;`
+     ___________________
+    |                   |
+1.0 -   X               |
+    |                   |
+0.75-                   |
+    |                   |
+0.5 -                   |
+    |                   |
+0.25-                   |
+    |___|___|___|___|___|
+0.0   0.25 0.5 0.75 1.0
+
+`scene.player.rotation.x = -0.45;`
+`scene.player.rotation.y = -0.45;`
+     ___________________
+    |                   |
+1.0 -               X   |
+    |                   |
+0.75-                   |
+    |                   |
+0.5 -                   |
+    |                   |
+0.25-                   |
+    |___|___|___|___|___|
+0.0   0.25 0.5 0.75 1.0
+```
+
 ## [data|control]->{flow}
 
 ```
