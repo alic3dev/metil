@@ -67,6 +67,64 @@ otherwise individual header files can be included as such
 
 `metil` presupposes that 10 units is equivalent to 1 metre
 
+## [data|control]->{flow}
+
+```
+# initialization
+
+0: `metil_initialize`
+1: `metil_renderer`->{`metil_renderer_on_initialize_function()`}
+
+# frame_draw (loop until termination)
+## [may_render_up_to->{`metil_count_max_frames`}.frames_at_a_time]
+
+0: `poll`
+0.0: `metil_controller_state_poll`
+0.1: `scene_poll_input`
+0.1.0: set->{`scene`.[`time_elapsed`|`time_input*`]}
+0.1.1: default[overrideable]:`scene->poll_input()`
+0.1.1.0: default[overrideable]:`scene->player.poll_input()`
+0.2: `scene_poll`
+0.2.0: set->{`scene`.[`time_[![input|elapsed]]*`]}
+0.2.1: default[overrideable]:`scene->poll()`
+0.2.1.0: default[overrideable]:`scene->player.poll()`
+0.3: for->{`scene`.`objects`.as(`object`)}
+0.3.0: `poll_object`(`object`)[[instantiate|update]:data_properties]
+1: `render`
+1.0: for->{`scene`.`objects`.as(`object`)}
+1.0.0: `render_object`(`object`)
+2: display->{commands_sent_to_gpu_for_output}
+3: wait_for.next_frame_call().then->{goto->{0}};
+
+# termination (process_initialized_from_signal_interrupts_or_application_termination)
+
+0. for->{`metil_termination_on_functions`.as(`termination_function`, `index_termination_function`)}
+0.0: `termination_function(metil_termination_on_functions_data[index_termination_function])`
+
+## termination_functions_default_ordering
+
+0. `metil_scene_controller_destroy`
+0.0: `metil_scene_destroy`
+0.0.1: default[overrideable]:`scene->destroy`
+0.0.1.0: for->{`scene`.`objects`.as(`object`)}
+0.0.1.0.0: `metil_object_destroy(object)`
+0.0.1.0.0.0: `metil_mesh_destroy(object.mesh)`
+0.0.1.1: for->{`scene`.`textures`.as(`texture`)}
+0.0.1.1.0: `release(texture)`
+0.0.1.2: `scene->player.destroy`
+1: `interrupt_handler_destroy`
+2: `metil_paths_destroy`
+3: `metil_audio_destroy`
+4: `metil_text_destroy`
+4.0: `release(color_space)`
+4.1: `release(font_reference)`
+5: `metil_configuration_destroy`
+6: `metil_renderer_on_termination`
+6.0: `metil_renderer->destroy()`
+6.0.0: `metil_rendering_properties_destory(metil_renderer->rendering_properties)`
+7: [...remaining_added_termination_functions]
+```
+
 ## development
 
 ### prerequisites
