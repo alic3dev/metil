@@ -145,7 +145,7 @@ void metil_player_poll_input(
   );
 
   player->rotation.x = (
-    player->rotation.x + (
+    player->rotation.x - (
       metil_input_delta_cursor.y / 50.0f *
       player->speed_rotation
     )
@@ -170,7 +170,7 @@ void metil_player_poll_input(
     ) {
       player->rotation.x = (
         player->rotation.x + (
-          -metil_controller_state.right_stick.y *
+          metil_controller_state.right_stick.y *
           player->speed_rotation
         )
       );
@@ -187,136 +187,102 @@ void metil_player_poll_input(
     player->rotation.x = -M_PI / 2.0f;
   }
 
+  player->rotation.y = fmod(
+    player->rotation.y,
+    (M_PI * 2.0f)
+  );
+
   metil_input_delta_cursor.x = 0;
   metil_input_delta_cursor.y = 0;
   
-  float ratio_axis = fmod(
-    player->rotation.y,
-    (M_PI * 2.0f)
-  ) / (M_PI * 2.0f);
+  float ratio_axis = player->rotation.y / (M_PI * 2.0f);
 
-  if (ratio_axis >= 0.0f) {
-    if (
-      ratio_axis <= 0.25f
-    ) {
-      ratio_movement.y = -(0.25f - ratio_axis) / 0.25f;
-      ratio_movement.x = (ratio_axis / 0.25f);
-    } else if (
-      ratio_axis >= 0.25f &&
-      ratio_axis <= 0.5f 
-    ) {
-      ratio_axis = ratio_axis - 0.25f;
+  if (
+    ratio_axis >= 0.0f &&
+    ratio_axis <= 0.25f
+  ) {
+    ratio_movement.y = (0.25f - ratio_axis) / 0.25f;
+    ratio_movement.x = (ratio_axis / 0.25f);
 
-      ratio_movement.y = (ratio_axis / 0.25f);
-      ratio_movement.x = (0.25f - ratio_axis) / 0.25f;
-    } else if (
-      ratio_axis >= 0.5f &&
-      ratio_axis <= 0.75f 
-    ) {
-      ratio_axis = ratio_axis - 0.5f;
+    ratio_movement_strafe.y = -(ratio_axis / 0.25f);
+    ratio_movement_strafe.x = (0.25f - ratio_axis) / 0.25f;
+  } else if (
+    ratio_axis >= 0.25f &&
+    ratio_axis <= 0.5f 
+  ) {
+    ratio_axis = ratio_axis - 0.25f;
 
-      ratio_movement.y = (0.25f - ratio_axis) / 0.25f;
-      ratio_movement.x = -(ratio_axis / 0.25f);
-    } else {
-      ratio_axis = ratio_axis - 0.75f;
+    ratio_movement.y = -(ratio_axis / 0.25f);
+    ratio_movement.x = (0.25f - ratio_axis) / 0.25f;
 
-      ratio_movement.y = -(ratio_axis / 0.25f);
-      ratio_movement.x = -(0.25f - ratio_axis) / 0.25f;
-    }
+    ratio_movement_strafe.y = -(0.25f - ratio_axis) / 0.25f;
+    ratio_movement_strafe.x = -(ratio_axis / 0.25f);
+  } else if (
+    ratio_axis >= 0.5f &&
+    ratio_axis <= 0.75f 
+  ) {
+    ratio_axis = ratio_axis - 0.5f;
+
+    ratio_movement.y = -(0.25f - ratio_axis) / 0.25f;
+    ratio_movement.x = -(ratio_axis / 0.25f);
+
+    ratio_movement_strafe.y = (ratio_axis / 0.25f);
+    ratio_movement_strafe.x = -(0.25f - ratio_axis) / 0.25f;
+  } else if (
+    ratio_axis > 0.75f
+  ) {
+    ratio_axis = ratio_axis - 0.75f;
+
+    ratio_movement.y = (ratio_axis / 0.25f);
+    ratio_movement.x = -(0.25f - ratio_axis) / 0.25f;
+
+    ratio_movement_strafe.y = (0.25f - ratio_axis) / 0.25f;
+    ratio_movement_strafe.x = (ratio_axis / 0.25f);
+  } else if (
+    ratio_axis >= -0.25f
+  ) {
+    ratio_movement.y = (-0.25f - ratio_axis) / -0.25f;
+    ratio_movement.x = (ratio_axis / 0.25f);
+
+    ratio_movement_strafe.y = -(ratio_axis / 0.25f);
+    ratio_movement_strafe.x = (-0.25f - ratio_axis) / -0.25f;
+  } else if (
+    ratio_axis <= -0.25f &&
+    ratio_axis >= -0.5f
+  ) {
+    ratio_axis = ratio_axis + 0.25f;
+
+    ratio_movement.y = -(ratio_axis / -0.25f);
+    ratio_movement.x = (-0.25f - ratio_axis) / 0.25f;
+
+    ratio_movement_strafe.y = -(-0.25f - ratio_axis) / 0.25f;
+    ratio_movement_strafe.x = -(ratio_axis / -0.25f);
+  } else if (
+    ratio_axis <= -0.5f &&
+    ratio_axis >= -0.75f 
+  ) {
+    ratio_axis = ratio_axis + 0.5f;
+
+    ratio_movement.y = -(-0.25f - ratio_axis) / -0.25f;
+    ratio_movement.x = -(ratio_axis / 0.25f);
+
+    ratio_movement_strafe.y = (ratio_axis / 0.25f);
+    ratio_movement_strafe.x = -(-0.25f - ratio_axis) / -0.25f;
   } else {
-    if (
-      ratio_axis >= -0.25f
-    ) {
-      ratio_movement.y = -(-0.25f - ratio_axis) / -0.25f;
-      ratio_movement.x = (ratio_axis / 0.25f);
-    } else if (
-      ratio_axis <= -0.25f &&
-      ratio_axis >= -0.5f
-    ) {
-      ratio_axis = ratio_axis + 0.25f;
+    ratio_axis = ratio_axis + 0.75f;
 
-      ratio_movement.y = (ratio_axis / -0.25f);
-      ratio_movement.x = (-0.25f - ratio_axis) / 0.25f;
-    } else if (
-      ratio_axis <= -0.5f &&
-      ratio_axis >= -0.75f 
-    ) {
-      ratio_axis = ratio_axis + 0.5f;
+    ratio_movement.y = (ratio_axis / -0.25f);
+    ratio_movement.x = -(-0.25f - ratio_axis) / 0.25f;
 
-      ratio_movement.y = (-0.25f - ratio_axis) / -0.25f;
-      ratio_movement.x = -(ratio_axis / 0.25f);
-    } else {
-      ratio_axis = ratio_axis + 0.75f;
-
-      ratio_movement.y = -(ratio_axis / -0.25f);
-      ratio_movement.x = -(-0.25f - ratio_axis) / 0.25f;
-    }
+    ratio_movement_strafe.y = (-0.25f - ratio_axis) / 0.25f;
+    ratio_movement_strafe.x = (ratio_axis / -0.25f);
   }
 
-  ratio_axis = fmod(
-    player->rotation.y,
-    (M_PI * 2.0f)
-  ) / (M_PI * 2.0f);
-
-  if (ratio_axis >= 0.0f) {
-    if (
-      ratio_axis <= 0.25f
-    ) {
-      ratio_movement_strafe.y = (ratio_axis / 0.25f);
-      ratio_movement_strafe.x = (0.25f - ratio_axis) / 0.25f;
-    } else if (
-      ratio_axis >= 0.25f &&
-      ratio_axis <= 0.5f
-    ) {
-      ratio_axis = ratio_axis - 0.25f;
-
-      ratio_movement_strafe.y = (0.25f - ratio_axis) / 0.25f;
-      ratio_movement_strafe.x = -(ratio_axis / 0.25f);
-    } else if (
-      ratio_axis >= 0.5f &&
-      ratio_axis <= 0.75f
-    ) {
-      ratio_axis = ratio_axis - 0.5f;
-
-      ratio_movement_strafe.y = -(ratio_axis / 0.25f);
-      ratio_movement_strafe.x = -(0.25f - ratio_axis) / 0.25f;
-    } else {
-      ratio_axis = ratio_axis - 0.75f;
-
-      ratio_movement_strafe.y = -(0.25f - ratio_axis) / 0.25f;
-      ratio_movement_strafe.x = (ratio_axis / 0.25f);
-    }
-  } else {
-    if (
-      ratio_axis >= -0.25f
-    ) {
-      ratio_movement_strafe.y = (ratio_axis / 0.25f);
-      ratio_movement_strafe.x = (-0.25f - ratio_axis) / -0.25f;
-    } else if (
-      ratio_axis <= -0.25f &&
-      ratio_axis >= -0.5f
-    ) {
-      ratio_axis = ratio_axis + 0.25f;
-
-      ratio_movement_strafe.y = (-0.25f - ratio_axis) / 0.25f;
-      ratio_movement_strafe.x = -(ratio_axis / -0.25f);
-    } else if (
-      ratio_axis <= -0.5f &&
-      ratio_axis >= -0.75f
-    ) {
-      ratio_axis = ratio_axis + 0.5f;
-
-      ratio_movement_strafe.y = -(ratio_axis / 0.25f);
-      ratio_movement_strafe.x = -(-0.25f - ratio_axis) / -0.25f;
-    } else {
-      ratio_axis = ratio_axis + 0.75f;
-
-      ratio_movement_strafe.y = -(-0.25f - ratio_axis) / 0.25f;
-      ratio_movement_strafe.x = (ratio_axis / -0.25f);
-    }
-  }
-
-  if (metil_controller_state.available == 1) {
+  if (
+    metil_controller_state.available == 1 &&
+    metil_controller_state.left_stick.x != 0.0f ||
+    metil_controller_state.left_stick.y != 0.0f
+  ) {
     movement.x = (
       (metil_controller_state.left_stick.y * ratio_movement.x) +
       (metil_controller_state.left_stick.x * ratio_movement_strafe.x)
@@ -325,6 +291,63 @@ void metil_player_poll_input(
     movement.z = (
       (metil_controller_state.left_stick.y * ratio_movement.y) +
       (metil_controller_state.left_stick.x * ratio_movement_strafe.y)
+    );
+  } else {
+    struct clic3_vector2_float direction_arrows = {
+      .x = (
+        (
+          metil_input_map_keydown[
+            metil_keycode_right_arrow
+          ] || metil_input_map_keydown[
+            metil_keycode_d
+          ]
+        ) - (
+          metil_input_map_keydown[
+            metil_keycode_left_arrow
+          ] || metil_input_map_keydown[
+            metil_keycode_a
+          ]
+        )
+      ),
+      .y = (
+        (
+          metil_input_map_keydown[
+            metil_keycode_up_arrow
+          ] || metil_input_map_keydown[
+            metil_keycode_w
+          ]
+        ) - (
+          metil_input_map_keydown[
+            metil_keycode_down_arrow
+          ] || 
+          metil_input_map_keydown[
+            metil_keycode_s
+          ]
+        )
+      )
+    };
+
+    if (
+      direction_arrows.x != 0.0f &&
+      direction_arrows.y != 0.0f
+    ) {
+      direction_arrows.x = (
+        direction_arrows.x * 0.82f
+      );
+
+      direction_arrows.y = (
+        direction_arrows.y * 0.82f
+      );
+    }
+
+    movement.x = (
+      direction_arrows.y * ratio_movement.x +
+      direction_arrows.x * ratio_movement_strafe.x
+    );
+
+    movement.z = (
+      direction_arrows.y * ratio_movement.y +
+      direction_arrows.x * ratio_movement_strafe.y
     );
   }
 
@@ -362,97 +385,6 @@ void metil_player_poll_input(
     } else if (movement.y < -1.0f) {
       movement.y = -1.0f;
     }
-  }
-
-  if (
-    metil_input_map_keydown[
-      metil_keycode_left_arrow
-    ] == 1 ||
-    metil_input_map_keydown[
-      metil_keycode_right_arrow
-    ] == 1 ||
-    metil_input_map_keydown[
-      metil_keycode_a
-    ] == 1 ||
-    metil_input_map_keydown[
-      metil_keycode_d
-    ] == 1  ||
-    metil_input_map_keydown[
-      metil_keycode_down_arrow
-    ] == 1 || 
-    metil_input_map_keydown[
-      metil_keycode_up_arrow
-    ] == 1 || 
-    metil_input_map_keydown[
-      metil_keycode_s
-    ] == 1 ||
-    metil_input_map_keydown[
-      metil_keycode_w
-    ] == 1
-  ) {
-    movement.x = (
-      (
-        metil_input_map_keydown[
-          metil_keycode_up_arrow
-        ] || metil_input_map_keydown[
-          metil_keycode_w
-        ]
-      ) * ratio_movement.x +
-      -(
-        metil_input_map_keydown[
-          metil_keycode_down_arrow
-        ] || 
-        metil_input_map_keydown[
-          metil_keycode_s
-        ]
-      ) * ratio_movement.x +
-      (
-        metil_input_map_keydown[
-          metil_keycode_right_arrow
-        ] || metil_input_map_keydown[
-          metil_keycode_d
-        ]
-      ) * ratio_movement_strafe.x +
-      -(
-        metil_input_map_keydown[
-          metil_keycode_left_arrow
-        ] || metil_input_map_keydown[
-          metil_keycode_a
-        ]
-      ) * ratio_movement_strafe.x
-    );
-
-    movement.z = (
-      (
-        metil_input_map_keydown[
-          metil_keycode_up_arrow
-        ] || metil_input_map_keydown[
-          metil_keycode_w
-        ]
-      ) * ratio_movement.y +
-      -(
-        metil_input_map_keydown[
-          metil_keycode_down_arrow
-        ] || metil_input_map_keydown[
-          metil_keycode_s
-        ]
-      ) * ratio_movement.y +
-      (
-        metil_input_map_keydown[
-          metil_keycode_right_arrow
-        ] || 
-        metil_input_map_keydown[
-          metil_keycode_d
-        ]
-      ) * ratio_movement_strafe.y + 
-      -(
-        metil_input_map_keydown[
-          metil_keycode_left_arrow
-        ] || metil_input_map_keydown[
-          metil_keycode_a
-        ]
-      ) * ratio_movement_strafe.y
-    );
   }
 
   if (
@@ -509,6 +441,12 @@ void metil_player_poll_input(
 
   player->speed_movement = speed_original;
 }
+
+void metil_player_poll_input_null(
+  struct metil_player* player,
+  unsigned long int time,
+  unsigned long int time_delta
+) {}
 
 void metil_player_poll(
   struct metil_player* player

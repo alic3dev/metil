@@ -195,9 +195,20 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
   data->position.z = object->position.z;
 
   if (
-    object->mesh.positioning == metil_mesh_positioning_normal ||
-    object->mesh.positioning == metil_mesh_positioning_player
+    object->mesh.positioning == metil_mesh_positioning_static
   ) {
+    data->view_model_matrix_projection = (matrix_float4x4) {{
+      { 1, 0, 0, 0 },
+      { 0, 1, 0, 0 },
+      { 0, 0, 1, 0 },
+      {
+        object->position.x,
+        object->position.y,
+        object->position.z,
+        1
+      }
+    }};
+  } else {
     struct clic3_vector3_float position = {
       .x = object->position.x - metil_scene_controller.scene.player.position.x,
       .y = (
@@ -225,23 +236,11 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
         {
           position.x,
           position.y,
-          position.z,
+          -position.z,
           1
         }
       }}
     );
-  } else {
-    data->view_model_matrix_projection = (matrix_float4x4) {{
-      { 1, 0, 0, 0 },
-      { 0, 1, 0, 0 },
-      { 0, 0, 1, 0 },
-      {
-        object->position.x,
-        object->position.y,
-        object->position.z,
-        1
-      }
-    }};
   }
 
   data->width = object->mesh.size.x;
@@ -292,8 +291,8 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
     (
       (matrix_float4x4) {{
         { 1, 0, 0, 0 },
-        { 0, cos(metil_scene_controller.scene.player.rotation.x), sin(metil_scene_controller.scene.player.rotation.x), 0 },
-        { 0, -sin(metil_scene_controller.scene.player.rotation.x), cos(metil_scene_controller.scene.player.rotation.x), 0 },
+        { 0, cos(metil_scene_controller.scene.player.rotation.x), -sin(metil_scene_controller.scene.player.rotation.x), 0 },
+        { 0, sin(metil_scene_controller.scene.player.rotation.x), cos(metil_scene_controller.scene.player.rotation.x), 0 },
         {
           0,
           0,
