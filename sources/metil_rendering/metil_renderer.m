@@ -18,6 +18,7 @@
 #include <clic3.h>
 
 #include <limits.h>
+#include <simd/simd.h>
 
 #include <MetalKit/MetalKit.h>
 
@@ -182,7 +183,11 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
   [command_buffer commit];
 }
 
-- (void) poll_object: (struct metil_object*) object {
+- (void) poll_object:
+  (struct metil_object*) object
+  matrix_object_projection: (matrix_float4x4*) matrix_object_projection 
+  matrix_player_projection: (matrix_float4x4*) matrix_player_projection
+{
   metil_kit_data_frame_object* data = object->data.contents;
 
   data->position.x = object->position.x;
@@ -203,44 +208,16 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
       .z = object->position.z - metil_scene_controller.scene.player.position.z
     };
 
-    data->view_model_matrix_projection = matrix_multiply(
-      self->rendering_properties.camera.matrix_viewport_projection,
-      (
-        (matrix_float4x4) {{
-          { 1, 0, 0, 0 },
-          { 0, cos(metil_scene_controller.scene.player.rotation.x), sin(metil_scene_controller.scene.player.rotation.x), 0 },
-          { 0, -sin(metil_scene_controller.scene.player.rotation.x), cos(metil_scene_controller.scene.player.rotation.x), 0 },
-          {
-            0,
-            0,
-            0,
-            1
-          }
-        }}
-      )
-    );
+    matrix_float4x4* matrix_projection = (void*)0;
 
-    if (object->mesh.positioning != metil_mesh_positioning_player) {
-      data->view_model_matrix_projection = matrix_multiply(
-        data->view_model_matrix_projection,
-        (
-          (matrix_float4x4) {{
-            { cos(metil_scene_controller.scene.player.rotation.y), 0, -sin(metil_scene_controller.scene.player.rotation.y), 0 },
-            { 0, 1, 0, 0 },
-            { sin(metil_scene_controller.scene.player.rotation.y), 0, cos(metil_scene_controller.scene.player.rotation.y), 0 },
-            {
-              0,
-              0,
-              0,
-              1
-            }
-          }}
-        )
-      );
+    if (object->mesh.positioning == metil_mesh_positioning_player) {
+      matrix_projection = matrix_player_projection;
+    } else {
+      matrix_projection = matrix_object_projection;
     }
 
     data->view_model_matrix_projection = matrix_multiply(
-      data->view_model_matrix_projection,
+      *matrix_projection,
       (matrix_float4x4) {{
         { 1, 0, 0, 0 },
         { 0, 1, 0, 0 },
@@ -310,12 +287,52 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
     self->rendering_properties.brightness_text
   );
 
+  matrix_float4x4 matrix_player_projection = matrix_multiply(
+    self->rendering_properties.camera.matrix_viewport_projection,
+    (
+      (matrix_float4x4) {{
+        { 1, 0, 0, 0 },
+        { 0, cos(metil_scene_controller.scene.player.rotation.x), sin(metil_scene_controller.scene.player.rotation.x), 0 },
+        { 0, -sin(metil_scene_controller.scene.player.rotation.x), cos(metil_scene_controller.scene.player.rotation.x), 0 },
+        {
+          0,
+          0,
+          0,
+          1
+        }
+      }}
+    )
+  );
+
+  matrix_float4x4 matrix_object_projection = matrix_multiply(
+    matrix_player_projection,
+    (
+      (matrix_float4x4) {{
+        { cos(metil_scene_controller.scene.player.rotation.y), 0, -sin(metil_scene_controller.scene.player.rotation.y), 0 },
+        { 0, 1, 0, 0 },
+        { sin(metil_scene_controller.scene.player.rotation.y), 0, cos(metil_scene_controller.scene.player.rotation.y), 0 },
+        {
+          0,
+          0,
+          0,
+          1
+        }
+      }}
+    )
+  );
+
   for (
     unsigned short int index_object = 0;
     index_object < metil_scene_controller.scene.length_objects;
     ++index_object
   ) {
-    [self poll_object: metil_scene_controller.scene.objects[index_object]];
+    [self
+      poll_object: metil_scene_controller.scene.objects[
+        index_object
+      ]
+      matrix_object_projection: &matrix_object_projection
+      matrix_player_projection: &matrix_player_projection
+    ];
   }
 }
 
