@@ -227,8 +227,7 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
       matrix_projection = matrix_object_projection;
     }
 
-    data->view_model_matrix_projection = matrix_multiply(
-      *matrix_projection,
+    matrix_float4x4 matrix_projection_object_with_rotation = matrix_multiply(
       (matrix_float4x4) {{
         { 1, 0, 0, 0 },
         { 0, 1, 0, 0 },
@@ -239,7 +238,53 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
           -position.z,
           1
         }
+      }},
+      (matrix_float4x4) {{
+        { 1, 0, 0, 0 },
+        { 0, cos(object->rotation.x), -sin(object->rotation.x), 0 },
+        { 0, sin(object->rotation.x), cos(object->rotation.x), 0 },
+        {
+          0,
+          0,
+          0,
+          1
+        }
       }}
+    );
+
+    matrix_projection_object_with_rotation = matrix_multiply(
+      matrix_projection_object_with_rotation,
+      (matrix_float4x4) {{
+        { cos(object->rotation.y), 0, -sin(object->rotation.y), 0 },
+        { 0, 1, 0, 0 },
+        { sin(object->rotation.y), 0, cos(object->rotation.y), 0 },
+        {
+          0,
+          0,
+          0,
+          1
+        }
+      }}
+    );
+
+    matrix_projection_object_with_rotation = matrix_multiply(
+      matrix_projection_object_with_rotation,
+      (matrix_float4x4) {{
+        { cos(object->rotation.z), -sin(object->rotation.z), 0, 0 },
+        { sin(object->rotation.z), cos(object->rotation.z), 0, 0 },
+        { 0, 0, 1, 0 },
+        {
+          0,
+          0,
+          0,
+          1
+        }
+      }}
+    );
+
+    data->view_model_matrix_projection = matrix_multiply(
+      *matrix_projection,
+      matrix_projection_object_with_rotation
     );
   }
 
