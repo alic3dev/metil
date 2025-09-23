@@ -15,7 +15,12 @@ struct metil_object {
   _Nonnull id<MTLTexture> texture;
   _Nullable id<MTLTexture> texture_secondary;
   struct clic3_vector3_float position;
+  struct clic3_vector3_float rotation;
 };
+
+void metil_object_initialize(
+  struct metil_object* _Nonnull
+);
 
 void metil_object_destroy(
   struct metil_object* _Nonnull
