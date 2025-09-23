@@ -5,10 +5,6 @@
 
 #include <simd/simd.h>
 
-#ifndef __METAL_VERSION__
-#define constant
-#endif
-
 typedef enum {
   metil_kit_vertex_input_index_positions = 2,
   metil_kit_vertex_input_index_frame_data = 1,
@@ -18,6 +14,7 @@ typedef enum {
 typedef struct {
   matrix_float4x4 view_model_matrix_projection;
   struct clic3_vector3_float position;
+  struct clic3_vector4_float color;
   float width;
   float height;
   float depth;
