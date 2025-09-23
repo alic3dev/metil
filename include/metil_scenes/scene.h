@@ -38,6 +38,9 @@ struct metil_scene {
 
   unsigned char loading;
 
+  unsigned long int time_initial;
+  unsigned long int time_elapsed;
+
   unsigned long int time;
   unsigned long int time_previous;
   unsigned long int time_delta;

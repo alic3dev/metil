@@ -3,6 +3,7 @@
 #include <metil_input/cursor.h>
 #include <metil_object.h>
 #include <metil_player.h>
+#include <metil_utilities/time.h>
 
 #include <stdlib.h>
 
@@ -40,10 +41,15 @@ void metil_scene_initialize(
   scene->poll_input = metil_scene_poll_input_default;
   scene->destroy = metil_scene_destroy_default;
 
+  scene->time_initial = metil_time_milliseconds_get();
+
   scene->time = 0;
   scene->time_previous = 0;
+  scene->time_delta = 0;
+  scene->time_elapsed = 0;
 
   scene->time_input = 0;
+  scene->time_input_delta = 0;
   scene->time_input_previous = 0;
 
   scene->loading = 0;
@@ -58,6 +64,8 @@ void metil_scene_poll_input(
   struct metil_scene* scene,
   unsigned long int time
 ) {
+  scene->time_elapsed = time - scene->time_initial;
+
   scene->time_input_previous = scene->time;
   scene->time_input = time;
   scene->time_input_delta = scene->time_input_previous == 0 ? 0 : (
