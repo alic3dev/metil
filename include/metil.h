@@ -3,6 +3,7 @@
 
 #include <metil_utilities/time.h>
 #include <metil_utilities/stopwatch.h>
+#include <metil_mesh/mesh_box.h>
 #include <metil_mesh/mesh_text.h>
 #include <metil_mesh/mesh.h>
 #include <metil_player.h>
