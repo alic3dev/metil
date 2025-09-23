@@ -5,7 +5,7 @@ struct data_rasterizer {
   float4 color;
 };
 
-vertex data_rasterizer metil_vertex_shader(
+vertex data_rasterizer shader_2d_vertex(
   const device simd_float4* positions [[buffer(metil_kit_vertex_input_index_positions)]],
   constant metil_kit_data_frame& data_frame [[buffer(metil_kit_vertex_input_index_frame_data)]],
   constant metil_kit_data_frame_object& data [[buffer(metil_kit_vertex_input_index_data)]],
@@ -15,16 +15,16 @@ vertex data_rasterizer metil_vertex_shader(
 
   out.position = positions[id_vertex];
   out.color = float4(
-    metal::fmod(out.position.x / 10.0f, 1.0f),
-    metal::fmod(out.position.y / 10.0f, 1.0f),
-    metal::fmod(out.position.z / 10.0f, 1.0f),
+    data.color.x,
+    data.color.y,
+    data.color.z,
     1
   );
 
   return out;
 }
 
-fragment float4 metil_fragment_shader(
+fragment float4 shader_2d_fragment(
   data_rasterizer in [[stage_in]]
 ) {
   return in.color;
