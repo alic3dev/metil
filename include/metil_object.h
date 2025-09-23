@@ -17,6 +17,10 @@ struct metil_object {
   struct clic3_vector3_float position;
 };
 
+void metil_object_initialize(
+  struct metil_object* _Nonnull
+);
+
 void metil_object_destroy(
   struct metil_object* _Nonnull
 );
