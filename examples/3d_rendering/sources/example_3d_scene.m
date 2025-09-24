@@ -104,9 +104,15 @@ void example_3d_scene_initialize(
     ]->data.contents;
 
     data_object->id = index_object;
-    data_object->color.x = (float) (index_object % 10) / 10.0f;
-    data_object->color.y = (float) ((index_object + 3) % 10) / 10.0f;
-    data_object->color.z = (float) ((index_object + 5) % 10) / 10.0f;
+    data_object->color.x = (
+      (float) (index_object % 10) / 10.0f
+    );
+    data_object->color.y = (
+      (float) ((index_object + 3) % 10) / 10.0f
+    );
+    data_object->color.z = (
+      (float) ((index_object + 5) % 10) / 10.0f
+    );
     data_object->color.w = 1.0f;
 
     scene->objects[
@@ -143,11 +149,19 @@ void example_3d_scene_poll(
 
     scene->objects[
       index_object
-    ]->position.x = (index_object % 2 == 0 ? -1 : 1) * cos(angle) * distance / 2.0f;
+    ]->position.x = (
+      (index_object % 2 == 0 ? -1 : 1) *
+      sin(angle) *
+      distance / 2.0f
+    );
 
     scene->objects[
       index_object
-    ]->position.y = (index_object % 2 == 0 ? -1 : 1) * sin(angle) * distance / 2.0f;
+    ]->position.y = (
+      (index_object % 2 == 0 ? -1 : 1) *
+      cos(angle) *
+      distance / 2.0f
+    );
 
     scene->objects[
       index_object
@@ -156,21 +170,30 @@ void example_3d_scene_poll(
     scene->objects[
       index_object
     ]->rotation.y = fmod(
-      scene->time_elapsed / (12321.0f * (float) (index_object % 10 + 1)),
+      scene->time_elapsed / (
+        10000.0f *
+        (float) ((index_object % 10) + 1)
+      ),
       (M_PI * 2.0f)
     );
 
     scene->objects[
       index_object
     ]->rotation.x = fmod(
-      scene->time_elapsed / (9876.5f * (float) ((index_object + 2) % 10 + 1)),
+      scene->time_elapsed / (
+        11000.0f *
+        (float) (((index_object + 2) % 10) + 1)
+      ),
       (M_PI * 2.0f)
     );
 
     scene->objects[
       index_object
     ]->rotation.z = fmod(
-      scene->time_elapsed / (10101.0f * (float) ((index_object + 5) % 10 + 1)),
+      scene->time_elapsed / (
+        12000.0f *
+        (float) (((index_object + 3) % 10) + 1)
+      ),
       (M_PI * 2.0f)
     );
   }
