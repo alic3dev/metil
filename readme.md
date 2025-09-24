@@ -345,13 +345,14 @@ make clean_all
 
 ## examples
 
-### 2d_rendering
+### [2d_rendering](examples/2d_rendering/)
 
-<img width="1692" height="1292" alt="metil_2d_rendering" src="https://github.com/user-attachments/assets/6dad5a45-1c4e-4777-a288-255750aa2ef1" />
+<img width="1966" height="1250" alt="metil_example_2d_rendering_2" src="https://github.com/user-attachments/assets/cd5c4b5e-f4ec-4bc1-a69e-f64b54d19c12" />
+<img width="1966" height="1250" alt="metil_example_2d_rendering" src="https://github.com/user-attachments/assets/eed4ec93-5284-43a3-a5f2-2c2abff9527a" />
 
-### 3d_rendering
+### [3d_rendering](examples/3d_rendering/)
 
-<img width="1692" height="1292" alt="metil_3d_rendering" src="https://github.com/user-attachments/assets/2ffd8a4f-154a-4ea7-af1f-430a82decaa5" />
+<img width="1966" height="1250" alt="metil_example_3d_rendering" src="https://github.com/user-attachments/assets/1a2fce70-1927-4ec6-ad25-e91e0df7aad5" />
 
 ## copyright
 
