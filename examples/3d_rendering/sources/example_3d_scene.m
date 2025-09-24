@@ -143,11 +143,11 @@ void example_3d_scene_poll(
 
     scene->objects[
       index_object
-    ]->position.x = (index_object % 2 == 0 ? -1 : 1) * cos(angle) * distance / 2.0f;
+    ]->position.x = (index_object % 2 == 0 ? -1 : 1) * sin(angle) * distance / 2.0f;
 
     scene->objects[
       index_object
-    ]->position.y = (index_object % 2 == 0 ? -1 : 1) * sin(angle) * distance / 2.0f;
+    ]->position.y = (index_object % 2 == 0 ? -1 : 1) * cos(angle) * distance / 2.0f;
 
     scene->objects[
       index_object
