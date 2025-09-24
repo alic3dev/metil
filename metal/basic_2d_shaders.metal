@@ -13,12 +13,12 @@ vertex data_rasterizer shader_2d_vertex(
 ) {
   data_rasterizer out;
 
-  out.position = positions[id_vertex];
+  out.position = data.view_model_matrix_projection * positions[id_vertex];
   out.color = float4(
     data.color.x,
     data.color.y,
     data.color.z,
-    1
+    data.color.w
   );
 
   return out;
