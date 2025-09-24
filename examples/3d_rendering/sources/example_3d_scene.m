@@ -156,21 +156,21 @@ void example_3d_scene_poll(
     scene->objects[
       index_object
     ]->rotation.y = fmod(
-      scene->time_elapsed / (12321.0f * (float) (index_object % 10 + 1)),
+      scene->time_elapsed / (10000.0f * (float) ((index_object % 10) + 1)),
       (M_PI * 2.0f)
     );
 
     scene->objects[
       index_object
     ]->rotation.x = fmod(
-      scene->time_elapsed / (9876.5f * (float) ((index_object + 2) % 10 + 1)),
+      scene->time_elapsed / (11000.0f * (float) (((index_object + 2) % 10) + 1)),
       (M_PI * 2.0f)
     );
 
     scene->objects[
       index_object
     ]->rotation.z = fmod(
-      scene->time_elapsed / (10101.0f * (float) ((index_object + 5) % 10 + 1)),
+      scene->time_elapsed / (12000.0f * (float) (((index_object + 3) % 10) + 1)),
       (M_PI * 2.0f)
     );
   }
