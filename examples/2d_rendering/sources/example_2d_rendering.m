@@ -38,14 +38,13 @@ void example_2d_rendering_renderer_on_initialize(
     newFunctionWithName: @"shader_2d_fragment"
   ];
 
-  metil_rendering_properties->camera.height = 0.0f;
-
+  metil_rendering_properties->color_clear.x = 0.0f;
+  metil_rendering_properties->color_clear.y = 0.0f;
+  metil_rendering_properties->color_clear.z = 0.0f;
   metil_rendering_properties->color_clear.w = 1.0f;
 
   example_2d_scene_initialize(
     &metil_scene_controller.scene,
     metil_metal_kit_device
   );
-
-  metil_scene_controller.scene.data = metil_rendering_properties;
 }

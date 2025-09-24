@@ -5,6 +5,9 @@
 
 #include <MetalKit/MetalKit.h>
 
+#define example_2d_scene_length_unbuffered_indices 6
+#define example_2d_scene_length_unbuffered_vertices 4
+
 void example_2d_scene_initialize(
   struct metil_scene*,
   id<MTLDevice>
