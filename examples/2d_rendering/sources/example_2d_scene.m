@@ -1,6 +1,6 @@
 #include <example_2d_scene.h>
 
-#include <metil_mesh/mesh_box.h>
+#include <metil_mesh/2d/mesh_square.h>
 #include <metil_object.h>
 #include <metil_player.h>
 #include <metil_rendering/rendering_properties.h>
@@ -13,39 +13,6 @@
 #include <stdlib.h>
 
 #include <stdio.h>
-
-const unsigned int unbuffered_indices[
-  example_2d_scene_length_unbuffered_indices
-] = {
-  0, 1, 2,
-  0, 3, 2
-};
-
-const struct clic3_vector4_float unbuffered_vertices[
-  example_2d_scene_length_unbuffered_vertices
-] = {
-  {
-    .x = 0.0f,
-    .y = 0.0f,
-    .z = 0.0f,
-    .w = 1.0f
-  }, {
-    .x = 0.2f,
-    .y = 0.0f,
-    .z = 0.0f,
-    .w = 1.0f
-  }, {
-    .x = 0.2f,
-    .y = 0.2f,
-    .z = 0.0f,
-    .w = 1.0f
-  }, {
-    .x = 0.0f,
-    .y = 0.2f,
-    .z = 0.0f,
-    .w = 1.0f
-  }
-};
 
 void example_2d_scene_initialize(
   struct metil_scene* scene,
@@ -71,22 +38,6 @@ void example_2d_scene_initialize(
     scene->length_objects
   );
 
-  id<MTLBuffer> vertices = [metal_kit_device
-    newBufferWithBytes: unbuffered_vertices
-    length: example_2d_scene_length_unbuffered_vertices * sizeof(
-      struct clic3_vector4_float
-    )
-    options: MTLResourceStorageModeShared
-  ];
-
-  id<MTLBuffer> indices = [metal_kit_device
-    newBufferWithBytes: unbuffered_indices
-    length: example_2d_scene_length_unbuffered_indices * sizeof(
-      unsigned int
-    )
-    options: MTLResourceStorageModeShared
-  ];
-
   for (
     unsigned char index_object = 0;
     index_object < scene->length_objects;
@@ -104,29 +55,42 @@ void example_2d_scene_initialize(
       ]
     );
 
-    metil_mesh_initialize(
+    metil_mesh_square_initialize(
       &scene->objects[
         index_object
-      ]->mesh
-    );
-
-    scene->objects[
-      index_object
-    ]->vertices = vertices;
-
-    scene->objects[
-      index_object
-    ]->indices = indices;
-
-    scene->objects[index_object]->mesh.length_indices = (
-      example_2d_scene_length_unbuffered_indices
-    );
-
-    scene->objects[index_object]->mesh.length_vertices = (
-      example_2d_scene_length_unbuffered_vertices
+      ]->mesh,
+      0.2
     );
 
     scene->objects[index_object]->mesh.positioning = metil_mesh_positioning_static;
+
+    scene->objects[
+      index_object
+    ]->vertices = [metal_kit_device
+      newBufferWithBytes: scene->objects[
+        index_object
+      ]->mesh.vertices
+      length: scene->objects[
+        index_object
+      ]->mesh.length_vertices * sizeof(
+        struct clic3_vector4_float
+      )
+      options: MTLResourceStorageModeShared
+    ];
+
+    scene->objects[
+      index_object
+    ]->indices = [metal_kit_device
+      newBufferWithBytes: scene->objects[
+        index_object
+      ]->mesh.indices
+      length: scene->objects[
+        index_object
+      ]->mesh.length_indices * sizeof(
+        unsigned int
+      )
+      options: MTLResourceStorageModeShared
+    ];
 
     scene->objects[
       index_object
@@ -149,13 +113,13 @@ void example_2d_scene_initialize(
       index_object
     ]->position.x = (
       (float) (index_object % 10)
-    ) * 0.2f - 1.0f;
+    ) * 0.2f - 0.9f;
 
     scene->objects[
       index_object
     ]->position.y = (
       (float) (index_object / 10)
-    ) * 0.2f - 1.0f;
+    ) * 0.2f - 0.9f;
 
     scene->objects[
       index_object
@@ -214,14 +178,13 @@ void example_2d_scene_poll(
 void example_2d_scene_destroy(
   struct metil_scene* scene
 ) {
-  [scene->objects[0]->vertices release];
-  [scene->objects[0]->indices release];
-
   for (
     unsigned char index_object = 0;
     index_object < scene->length_objects;
     ++index_object
   ) {
+    [scene->objects[index_object]->vertices release];
+    [scene->objects[index_object]->indices release];
     [scene->objects[index_object]->data release];
   }
 
