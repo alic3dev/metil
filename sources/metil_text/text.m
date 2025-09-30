@@ -73,13 +73,13 @@ CGGlyph* metil_text_glyphs_encode(
 
   if (!status_glyphs) {
     char* message_debug_log_error = clic3_char_arrays_concatenate(
-      "couldn't encode glyphs: ",
+      "failed:encode_glyphs->{",
       characters
     );
 
     char* message_debug_log_error_with_newline = clic3_char_arrays_concatenate(
       message_debug_log_error,
-      "\n"
+      "}\n"
     );
 
     metil_debug_log_error(
@@ -120,7 +120,7 @@ struct metil_text_image* metil_text_render(
   CGRect bounding_box_glyphs[length_characters];
 
   CTFontGetBoundingRectsForGlyphs(
-    metil_font_reference_monospace,
+    font,
     kCTFontOrientationDefault,
     glyphs,
     bounding_box_glyphs,
@@ -271,7 +271,8 @@ id<MTLTexture> metil_text_mesh_with_texture_initialize(
   id<MTLDevice> metal_kit_device,
   struct metil_mesh* mesh,
   char* characters,
-  CTFontRef font
+  CTFontRef font,
+  float scale
 ) {
   struct metil_text_image* text_image = metil_text_render(
     characters,
@@ -292,7 +293,7 @@ id<MTLTexture> metil_text_mesh_with_texture_initialize(
     mesh,
     text_image->size.x,
     text_image->size.y,
-    0.001f
+    scale
   );
 
   id<MTLTexture> texture = metil_text_texture_render(
