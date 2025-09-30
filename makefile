@@ -36,16 +36,10 @@ directory_air=air
 
 directory_macos_sdk=${shell xcrun --show-sdk-path}
 
-file_cer0_library=${directory_cer0_library}/cer0.o
-file_clic3_library=${directory_clic3_library}/clic3.o
-file_interrupt_handler_library=${directory_interrupt_handler_library}/interrupt_handler.o
-
 file_info_plist=Info.plist
 file_library=${directory_library}/${name}.o
 file_output_info_plist=${directory_library}/Info.plist
 file_output_metal=${directory_library}/metil.metallib
-
-files_libraries=${file_cer0_library} ${file_clic3_library} ${file_interrupt_handler_library}
 
 files_sources_c=${shell find ${directory_sources} -name "*.c"}
 files_sources_objc=${shell find ${directory_sources} -name "*.m"}
@@ -60,7 +54,9 @@ files_storyboards=${wildcard ${directory_storyboards}/*.storyboard}
 files_storyboards_compiled=${patsubst ${directory_storyboards}/%.storyboard,${directory_library}/%.storyboardc,${files_storyboards}}
 
 target_device=mac
-target_macos_version=15.0
+ifndef target_macos_version
+	target_macos_version=26.0
+endif
 target_macos_version_metal=${target_macos_version}
 target_platform=arm64-apple-macos${target_macos_version}
 target_platform_metal=air64-apple-macos${target_macos_version_metal}
