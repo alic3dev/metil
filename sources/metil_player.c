@@ -12,7 +12,7 @@
 float metil_player_speed_movement_default = __metil_player_speed_movement_default;
 float metil_player_speed_rotation_default = __metil_player_speed_rotation_default;
 
-float metil_player_deadzone_stick_default = __metil_player_deadzone_stick;
+float metil_player_deadzone_stick_default = __metil_player_deadzone_stick_default;
 
 struct clic3_vector3_float metil_player_size_default = {
   .x = __metil_player_size_default_x,
