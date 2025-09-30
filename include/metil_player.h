@@ -17,9 +17,11 @@ typedef void (*metil_player_destroy_function)(struct metil_player*);
 
 #define __metil_player_speed_movement_default 16.5f
 #define __metil_player_speed_rotation_default 0.2f
+#define __metil_player_deadzone_stick_default 0.01f
 
 extern float metil_player_speed_movement_default;
 extern float metil_player_speed_rotation_default;
+extern float metil_player_deadzone_stick_default;
 
 #define __metil_player_size_default_x 0.36f
 #define __metil_player_size_default_y __metil_camera_height_default
