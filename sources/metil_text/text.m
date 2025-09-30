@@ -120,7 +120,7 @@ struct metil_text_image* metil_text_render(
   CGRect bounding_box_glyphs[length_characters];
 
   CTFontGetBoundingRectsForGlyphs(
-    metil_font_reference_monospace,
+    font,
     kCTFontOrientationDefault,
     glyphs,
     bounding_box_glyphs,
