@@ -73,13 +73,13 @@ CGGlyph* metil_text_glyphs_encode(
 
   if (!status_glyphs) {
     char* message_debug_log_error = clic3_char_arrays_concatenate(
-      "couldn't encode glyphs: ",
+      "failed:encode_glyphs->{",
       characters
     );
 
     char* message_debug_log_error_with_newline = clic3_char_arrays_concatenate(
       message_debug_log_error,
-      "\n"
+      "}\n"
     );
 
     metil_debug_log_error(
