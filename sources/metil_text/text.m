@@ -271,7 +271,8 @@ id<MTLTexture> metil_text_mesh_with_texture_initialize(
   id<MTLDevice> metal_kit_device,
   struct metil_mesh* mesh,
   char* characters,
-  CTFontRef font
+  CTFontRef font,
+  float scale
 ) {
   struct metil_text_image* text_image = metil_text_render(
     characters,
@@ -292,7 +293,7 @@ id<MTLTexture> metil_text_mesh_with_texture_initialize(
     mesh,
     text_image->size.x,
     text_image->size.y,
-    0.001f
+    scale
   );
 
   id<MTLTexture> texture = metil_text_texture_render(

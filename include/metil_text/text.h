@@ -38,7 +38,8 @@ id<MTLTexture> metil_text_mesh_with_texture_initialize(
   id<MTLDevice>,
   struct metil_mesh*,
   char*,
-  CTFontRef
+  CTFontRef,
+  float
 );
 
 void metil_text_image_destroy(
