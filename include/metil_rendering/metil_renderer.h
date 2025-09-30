@@ -6,6 +6,8 @@
 
 #include <MetalKit/MetalKit.h>
 
+#define metil_renderer_length_objects_fps_display 5
+
 typedef void (*metil_renderer_on_initialize_function)(
   _Nonnull id<MTLDevice>,
   struct metil_rendering_properties* _Nonnull
@@ -26,12 +28,16 @@ extern _Nullable metil_renderer_on_initialize_function metil_renderer_on_initial
   id<MTLRenderCommandEncoder> encoder_render;
 
   id<MTLRenderPipelineState> state_pipeline;
-  id<MTLRenderPipelineState> state_pipeline_no_render;
+  id<MTLRenderPipelineState> state_pipeline_fps_display;
 
   id<MTLDepthStencilState> depth_state;
   id<MTLDepthStencilState> depth_state_writes_disable;
 
   unsigned char index_data_buffer_frame;
+
+  struct metil_object objects_fps_display[
+    metil_renderer_length_objects_fps_display
+  ];
 }
 
 - (nonnull instancetype) initWithMetalKitView: (nonnull MTKView*) metal_kit_view;
@@ -42,11 +48,14 @@ extern _Nullable metil_renderer_on_initialize_function metil_renderer_on_initial
 - (void) drawableSizeWillChange: (CGSize) size;
 
 - (void) poll: (unsigned int) _frame;
+- (void) poll_fps_display: (nonnull matrix_float4x4*) matrix_object_projection 
+  matrix_player_projection: (nonnull matrix_float4x4*) matrix_player_projection;
 - (void) poll_object: (nonnull struct metil_object*) object
   matrix_object_projection: (nonnull matrix_float4x4*) matrix_object_projection
   matrix_player_projection: (nonnull matrix_float4x4*) matrix_player_projection;
 
 - (void) render;
+- (void) render_fps_display;
 - (void) render_object: (nonnull struct metil_object*) object;
 
 - (void) destroy;
