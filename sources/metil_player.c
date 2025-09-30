@@ -12,6 +12,8 @@
 float metil_player_speed_movement_default = __metil_player_speed_movement_default;
 float metil_player_speed_rotation_default = __metil_player_speed_rotation_default;
 
+float metil_player_deadzone_stick_default = __metil_player_deadzone_stick_default;
+
 struct clic3_vector3_float metil_player_size_default = {
   .x = __metil_player_size_default_x,
   .y = __metil_player_size_default_y,
@@ -153,8 +155,8 @@ void metil_player_poll_input(
 
   if (metil_controller_state.available == 1) {
     if (
-      metil_controller_state.right_stick.x >= 0.1f || 
-      metil_controller_state.right_stick.x <= -0.1f
+      metil_controller_state.right_stick.x >= metil_player_deadzone_stick_default || 
+      metil_controller_state.right_stick.x <= -metil_player_deadzone_stick_default
     ) {
       player->rotation.y = (
         player->rotation.y + (
@@ -165,8 +167,8 @@ void metil_player_poll_input(
     }
 
     if (
-      metil_controller_state.right_stick.y >= 0.1f || 
-      metil_controller_state.right_stick.y <= -0.1f
+      metil_controller_state.right_stick.y >= metil_player_deadzone_stick_default || 
+      metil_controller_state.right_stick.y <= -metil_player_deadzone_stick_default
     ) {
       player->rotation.x = (
         player->rotation.x + (
