@@ -8,7 +8,8 @@
 #include <pthread.h>
 
 #define metil_count_max_frames 5
-#define metil_length_buffers_visibility metil_count_max_frames + 1
+
+#define metil_count_time_frames 60
 
 struct metil_rendering_properties {
   struct metil_camera camera;
@@ -21,6 +22,11 @@ struct metil_rendering_properties {
   float brightness_text;
 
   struct clic3_vector4_float color_clear;
+
+  unsigned char fps_display;
+  float fps;
+
+  unsigned long int time_frames[metil_count_time_frames];
 };
 
 void metil_rendering_properties_initialize(

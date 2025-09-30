@@ -33,6 +33,19 @@ void metil_rendering_properties_initialize(
   metil_rendering_properties->color_clear.y = 0.0f;
   metil_rendering_properties->color_clear.z = 0.0f;
   metil_rendering_properties->color_clear.w = 1.0f;
+
+  metil_rendering_properties->fps_display = 0;
+  metil_rendering_properties->fps = 0.0f;
+
+  for (
+    unsigned char index_time_frame = 0;
+    index_time_frame < metil_count_time_frames;
+    ++index_time_frame
+  ) {
+    metil_rendering_properties->time_frames[
+      index_time_frame
+    ] = 0;
+  }
 }
 
 void metil_rendering_properties_destory(
