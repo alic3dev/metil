@@ -36,16 +36,10 @@ directory_air=air
 
 directory_macos_sdk=${shell xcrun --show-sdk-path}
 
-file_cer0_library=${directory_cer0_library}/cer0.o
-file_clic3_library=${directory_clic3_library}/clic3.o
-file_interrupt_handler_library=${directory_interrupt_handler_library}/interrupt_handler.o
-
 file_info_plist=Info.plist
 file_library=${directory_library}/${name}.o
 file_output_info_plist=${directory_library}/Info.plist
 file_output_metal=${directory_library}/metil.metallib
-
-files_libraries=${file_cer0_library} ${file_clic3_library} ${file_interrupt_handler_library}
 
 files_sources_c=${shell find ${directory_sources} -name "*.c"}
 files_sources_objc=${shell find ${directory_sources} -name "*.m"}
