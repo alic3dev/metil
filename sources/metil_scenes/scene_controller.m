@@ -9,7 +9,11 @@ struct metil_scene metil_scene_empty;
 struct metil_scene_controller metil_scene_controller = {
   .length_on_scene_change = 0,
   .on_scene_change = (void*)0,
-  .on_scene_change_data = (void*)0
+  .on_scene_change_data = (void*)0,
+
+  .length_after_scene_change = 0,
+  .after_scene_change = (void*)0,
+  .after_scene_change_data = (void*)0
 };
 
 void metil_scene_controller_initialize() {
@@ -24,6 +28,16 @@ void metil_scene_controller_initialize() {
   );
 
   metil_scene_controller.on_scene_change_data = malloc(
+    sizeof(void*) *
+    metil_scene_controller.length_on_scene_change
+  );
+
+  metil_scene_controller.after_scene_change = malloc(
+    sizeof(metil_scene_controller_on_scene_change) *
+    metil_scene_controller.length_on_scene_change
+  );
+
+  metil_scene_controller.after_scene_change_data = malloc(
     sizeof(void*) *
     metil_scene_controller.length_on_scene_change
   );
@@ -43,6 +57,21 @@ void metil_scene_controller_scene_change(
       scene_id,
       metil_scene_controller.on_scene_change_data[
         index_on_scene_change
+      ]
+    );
+  }
+
+  for (
+    unsigned short int index_after_scene_change = 0;
+    index_after_scene_change < metil_scene_controller.length_after_scene_change;
+    ++index_after_scene_change
+  ) {
+    metil_scene_controller.after_scene_change[
+      index_after_scene_change
+    ](
+      scene_id,
+      metil_scene_controller.after_scene_change_data[
+        index_after_scene_change
       ]
     );
   }
@@ -77,10 +106,43 @@ void metil_scene_controller_on_scene_change_add(
   ] = on_scene_change_data;
 }
 
+
+void metil_scene_controller_after_scene_change_add(
+  metil_scene_controller_after_scene_change after_scene_change,
+  void* after_scene_change_data
+) {
+  metil_scene_controller.length_after_scene_change = (
+    metil_scene_controller.length_after_scene_change + 1
+  );
+
+  metil_scene_controller.after_scene_change = realloc(
+    metil_scene_controller.after_scene_change,
+    sizeof(metil_scene_controller_after_scene_change) *
+    metil_scene_controller.length_after_scene_change
+  );
+
+  metil_scene_controller.after_scene_change_data = realloc(
+    metil_scene_controller.after_scene_change_data,
+    sizeof(void*) *
+    metil_scene_controller.length_after_scene_change
+  );
+
+  metil_scene_controller.after_scene_change[
+    metil_scene_controller.length_after_scene_change - 1
+  ] = after_scene_change;
+
+  metil_scene_controller.after_scene_change_data[
+    metil_scene_controller.length_after_scene_change - 1
+  ] = after_scene_change_data;
+}
+
 void metil_scene_controller_destroy() {
   metil_scene_destroy(
     &metil_scene_controller.scene
   );
+
+  free(metil_scene_controller.after_scene_change);
+  free(metil_scene_controller.after_scene_change_data);
 
   free(metil_scene_controller.on_scene_change);
   free(metil_scene_controller.on_scene_change_data);
