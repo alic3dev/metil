@@ -9,6 +9,7 @@
 #include <metil_mesh/mesh.h>
 #include <metil_object.h>
 #include <metil_rendering/camera/camera.h>
+#include <metil_rendering/descriptors/pipeline_render.h>
 #include <metil_scenes/scene.h>
 #include <metil_scenes/scene_controller.h>
 #include <metil_shader_types.h>
@@ -43,13 +44,10 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
   self->rendering_properties.brightness = (
     metil_configuration.rendering_properties.brightness
   );
+
   self->rendering_properties.brightness_text = (
     metil_configuration.rendering_properties.brightness_text
   );
-
-  metal_kit_view.depthStencilPixelFormat = MTLPixelFormatDepth32Float_Stencil8;
-  metal_kit_view.colorPixelFormat = MTLPixelFormatBGRA8Unorm_sRGB;
-  metal_kit_view.sampleCount = 1;
 
   metil_termination_on_function_add(
     metil_renderer_on_termination,
@@ -72,24 +70,19 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
     );
   }
 
-  MTLRenderPipelineDescriptor* descriptor_state_pipeline = [[MTLRenderPipelineDescriptor alloc] init];
-  descriptor_state_pipeline.rasterSampleCount = metal_kit_view.sampleCount;
-  descriptor_state_pipeline.vertexFunction = metil_library.function_vertex;
-  descriptor_state_pipeline.fragmentFunction = metil_library.function_fragment;
-  descriptor_state_pipeline.colorAttachments[0].pixelFormat = metal_kit_view.colorPixelFormat;
-  descriptor_state_pipeline.colorAttachments[0].blendingEnabled = 1;
-  descriptor_state_pipeline.colorAttachments[0].rgbBlendOperation = MTLBlendOperationAdd;
-  descriptor_state_pipeline.colorAttachments[0].alphaBlendOperation = MTLBlendOperationAdd;
-  descriptor_state_pipeline.colorAttachments[0].sourceRGBBlendFactor = MTLBlendFactorSourceAlpha;
-  descriptor_state_pipeline.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactorSourceAlpha;
-  descriptor_state_pipeline.colorAttachments[0].destinationRGBBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
-  descriptor_state_pipeline.colorAttachments[0].destinationAlphaBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
+  MTLRenderPipelineDescriptor* descriptor_pipeline_render = [[MTLRenderPipelineDescriptor alloc] init];
+  metil_rendering_descriptors_pipeline_render_initialize(
+    descriptor_pipeline_render,
+    1,
+    metil_library.function_fragment,
+    metil_library.function_vertex,
+    MTLPixelFormatBGRA8Unorm_sRGB,
+    MTLPixelFormatDepth32Float_Stencil8,
+    MTLPixelFormatDepth32Float_Stencil8
+  );
 
-  descriptor_state_pipeline.depthAttachmentPixelFormat = metal_kit_view.depthStencilPixelFormat;
-  descriptor_state_pipeline.stencilAttachmentPixelFormat = metal_kit_view.depthStencilPixelFormat;
-
-  self->state_pipeline = [self->metal_kit_device
-    newRenderPipelineStateWithDescriptor: descriptor_state_pipeline
+  self->pipeline_render = [self->metal_kit_device
+    newRenderPipelineStateWithDescriptor: descriptor_pipeline_render
     error: (void*)0
   ];
 
@@ -97,27 +90,27 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
     metil_library.function_vertex_fps_display != (void*)0 &&
     metil_library.function_fragment_fps_display != (void*)0
   ) {
-    descriptor_state_pipeline.vertexFunction = metil_library.function_vertex_fps_display;
-    descriptor_state_pipeline.fragmentFunction = metil_library.function_fragment_fps_display;
+    descriptor_pipeline_render.vertexFunction = metil_library.function_vertex_fps_display;
+    descriptor_pipeline_render.fragmentFunction = metil_library.function_fragment_fps_display;
 
-    self->state_pipeline_fps_display = [self->metal_kit_device
-      newRenderPipelineStateWithDescriptor: descriptor_state_pipeline
+    self->pipeline_render_fps_display = [self->metal_kit_device
+      newRenderPipelineStateWithDescriptor: descriptor_pipeline_render
       error: (void*)0
     ];
   } else {
-    self->state_pipeline_fps_display = (void*)0;
+    self->pipeline_render_fps_display = (void*)0;
   }
 
-  MTLDepthStencilDescriptor* descriptor_state_depth = [[MTLDepthStencilDescriptor alloc] init];
-  descriptor_state_depth.depthCompareFunction = MTLCompareFunctionLessEqual;
-  descriptor_state_depth.depthWriteEnabled = 1;
+  MTLDepthStencilDescriptor* descriptor_stencil_depth = [[MTLDepthStencilDescriptor alloc] init];
+  descriptor_stencil_depth.depthCompareFunction = MTLCompareFunctionLessEqual;
+  descriptor_stencil_depth.depthWriteEnabled = 1;
   self->depth_state = [self->metal_kit_device
-    newDepthStencilStateWithDescriptor: descriptor_state_depth
+    newDepthStencilStateWithDescriptor: descriptor_stencil_depth
   ];
 
-  descriptor_state_depth.depthWriteEnabled = 0;
+  descriptor_stencil_depth.depthWriteEnabled = 0;
   self->depth_state_writes_disable = [self->metal_kit_device
-    newDepthStencilStateWithDescriptor: descriptor_state_depth
+    newDepthStencilStateWithDescriptor: descriptor_stencil_depth
   ];
 
   for (
@@ -214,7 +207,7 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
 
   encoder_render = [command_buffer renderCommandEncoderWithDescriptor: descriptor_render_pass];
 
-  [encoder_render setRenderPipelineState: self->state_pipeline];
+  [encoder_render setRenderPipelineState: self->pipeline_render];
   [encoder_render setDepthStencilState: self->depth_state];
 
   [self poll: _frame];
@@ -222,10 +215,10 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
 
   if (
     self->rendering_properties.fps_display == 1 &&
-    state_pipeline_fps_display != (void*)0 &&
+    pipeline_render_fps_display != (void*)0 &&
     self->rendering_properties.frame > 10
   ) {
-    [encoder_render setRenderPipelineState: state_pipeline_fps_display];
+    [encoder_render setRenderPipelineState: pipeline_render_fps_display];
     [encoder_render setDepthStencilState: self->depth_state_writes_disable];
 
     [self render_fps_display];
@@ -323,6 +316,7 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
     metil_scene_controller.scene.rendering_properties.brightness *
     self->rendering_properties.brightness
   );
+
   data_frame->brightness_text = (
     metil_scene_controller.scene.rendering_properties.brightness_text *
     self->rendering_properties.brightness_text
