@@ -27,8 +27,8 @@ extern _Nullable metil_renderer_on_initialize_function metil_renderer_on_initial
 
   id<MTLRenderCommandEncoder> encoder_render;
 
-  id<MTLRenderPipelineState> state_pipeline;
-  id<MTLRenderPipelineState> state_pipeline_fps_display;
+  id<MTLRenderPipelineState> pipeline_render;
+  id<MTLRenderPipelineState> pipeline_render_fps_display;
 
   id<MTLDepthStencilState> depth_state;
   id<MTLDepthStencilState> depth_state_writes_disable;
