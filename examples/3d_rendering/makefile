@@ -33,7 +33,6 @@ directory_interrupt_handler_include=${directory_interrupt_handler}/include
 directory_interrupt_handler_library=${directory_interrupt_handler}/library
 
 directory_math_c=../../../math_c
-directory_math_c_include=${directory_math_c}/include
 directory_math_c_library=${directory_math_c}/library
 
 directory_metil_include=${directory_metil}/include
