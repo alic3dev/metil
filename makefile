@@ -31,6 +31,10 @@ directory_interrupt_handler=../interrupt_handler
 directory_interrupt_handler_include=${directory_interrupt_handler}/include
 directory_interrupt_handler_library=${directory_interrupt_handler}/library
 
+directory_math_c=../math_c
+directory_math_c_include=${directory_math_c}/include
+directory_math_c_library=${directory_math_c}/library
+
 directory_metal=metal
 directory_air=air
 directory_metalar=metalar
@@ -72,7 +76,7 @@ target_platform_metal=air64-apple-macos${target_macos_version_metal}
 frameworks=Metal MetalKit GameController CoreAudio CoreGraphics CoreText
 
 cc=clang
-c_flags_includes=-I${directory_include} -I${directory_cer0_include} -I${directory_clic3_include} -I${directory_interrupt_handler_include}
+c_flags_includes=-I${directory_include} -I${directory_cer0_include} -I${directory_clic3_include} -I${directory_interrupt_handler_include} -I${directory_math_c_include}
 c_flags_platform=-target ${target_platform} -isysroot ${directory_macos_sdk}
 
 c_flags_objc_debug=-O0 -g -v

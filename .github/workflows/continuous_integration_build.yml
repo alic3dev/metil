@@ -28,11 +28,18 @@ jobs:
         with:
           repository: alic3dev/interrupt_handler
           path: interrupt_handler
+      - name: checkout_math_c
+        uses: actions/checkout@v4
+        with:
+          repository: alic3dev/math_c
+          path: math_c
       - name: make_cer0
         run: cd cer0 && make
       - name: make_clic3
         run: cd clic3 && make
       - name: make_interrupt_handler
         run: cd interrupt_handler && make
+      - name: make_math_c
+        run: cd math_c && make
       - name: make_metil
         run: cd metil && make all
