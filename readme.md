@@ -300,6 +300,7 @@ viewport rotations are set via `scene_controller.scene.player.rotation`
 - - [`cer0`](https://github.com/alic3dev/cer0)
 - - [`clic3`](https://github.com/alic3dev/clic3)
 - - [`interrupt_handler`](https://github.com/alic3dev/interrupt_handler)
+- - [`math_c`](https://github.com/alic3dev/math_c)
 
 ### build
 
