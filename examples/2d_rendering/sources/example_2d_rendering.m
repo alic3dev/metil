@@ -24,7 +24,8 @@ int main(
 
 void example_2d_rendering_renderer_on_initialize(
   id<MTLDevice> metil_metal_kit_device,
-  struct metil_rendering_properties* metil_rendering_properties
+  struct metil_rendering_properties* metil_rendering_properties,
+  void* data
 ) {
   metil_library.library = [metil_metal_kit_device newDefaultLibrary];
 
