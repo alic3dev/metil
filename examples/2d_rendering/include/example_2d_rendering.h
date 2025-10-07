@@ -12,7 +12,8 @@ int main(
 
 void example_2d_rendering_renderer_on_initialize(
   id<MTLDevice>,
-  struct metil_rendering_properties*
+  struct metil_rendering_properties*,
+  void*
 );
 
 #endif

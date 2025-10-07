@@ -25,6 +25,7 @@
 #include <MetalKit/MetalKit.h>
 
 metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
+void* metil_renderer_on_initialize_data = (void*)0;
 
 @implementation metil_renderer
 
@@ -66,7 +67,8 @@ metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
   if (metil_renderer_on_initialize != (void*)0) {
     metil_renderer_on_initialize(
       self->metal_kit_device,
-      &self->rendering_properties
+      &self->rendering_properties,
+      metil_renderer_on_initialize_data
     );
   }
 

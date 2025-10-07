@@ -29,9 +29,26 @@ int metil_initialize(
   char* name,
   metil_renderer_on_initialize_function metil_renderer_on_initialize_function
 ) {
+  return metil_initialize_with_data(
+    length_parameters,
+    parameters,
+    name,
+    metil_renderer_on_initialize_function,
+    (void*)0
+  );
+}
+
+int metil_initialize_with_data(
+  int length_parameters,
+  const char** parameters,
+  char* name,
+  metil_renderer_on_initialize_function metil_renderer_on_initialize_function,
+  void* metil_renderer_on_initialize_function_data
+) {
   srand(metil_time_milliseconds_get() % UINT_MAX);
 
   metil_renderer_on_initialize = metil_renderer_on_initialize_function;
+  metil_renderer_on_initialize_data = metil_renderer_on_initialize_function_data;
   
   metil_paths_initialize(
     (char*) parameters[0],

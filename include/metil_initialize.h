@@ -14,4 +14,12 @@ int metil_initialize(
   metil_renderer_on_initialize_function
 );
 
+int metil_initialize_with_data(
+  int,
+  const char**,
+  char*,
+  metil_renderer_on_initialize_function,
+  void*
+);
+
 #endif

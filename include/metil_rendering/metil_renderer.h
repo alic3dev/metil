@@ -10,10 +10,12 @@
 
 typedef void (*metil_renderer_on_initialize_function)(
   _Nonnull id<MTLDevice>,
-  struct metil_rendering_properties* _Nonnull
+  struct metil_rendering_properties* _Nonnull,
+  void* _Nullable
 );
 
 extern _Nullable metil_renderer_on_initialize_function metil_renderer_on_initialize;
+extern void* _Nullable metil_renderer_on_initialize_data;
 
 @interface metil_renderer : NSObject<MTKViewDelegate> {
   struct metil_rendering_properties rendering_properties;
