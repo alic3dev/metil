@@ -12,6 +12,7 @@ extern struct metil_audio_data metil_audio_data;
 
 struct metil_audio_data {
   cer0_audio_output_io_proc* io_procs;
+  void** data_io_procs;
   unsigned char length_io_procs;
 
   float volume;
@@ -23,6 +24,11 @@ void metil_audio_initialize();
 
 void metil_audio_io_proc_add(
   cer0_audio_output_io_proc
+);
+
+void metil_audio_io_proc_add_with_data(
+  cer0_audio_output_io_proc,
+  void*
 );
 
 unsigned char metil_audio_io_proc_remove(

@@ -16,6 +16,11 @@ void metil_audio_initialize() {
     metil_audio_data.length_io_procs
   );
 
+  metil_audio_data.data_io_procs = malloc(
+    sizeof(void*) *
+    metil_audio_data.length_io_procs
+  );
+
   metil_audio_data.muted = 1;
   metil_audio_data.volume = 0.2f;
 
@@ -42,6 +47,50 @@ void metil_audio_io_proc_add(
   metil_audio_data.io_procs[
     metil_audio_data.length_io_procs - 1
   ] = io_proc;
+
+  metil_audio_data.data_io_procs = realloc(
+    metil_audio_data.data_io_procs,
+    sizeof(void*) *
+    metil_audio_data.length_io_procs
+  );
+
+  metil_audio_data.data_io_procs[
+    metil_audio_data.length_io_procs - 1
+  ] = (void*)0;
+}
+
+void metil_audio_io_proc_add_with_data(
+  cer0_audio_output_io_proc io_proc,
+  void* data
+) {
+  metil_audio_data.length_io_procs = (
+    metil_audio_data.length_io_procs + 1
+  );
+
+  metil_audio_data.io_procs = realloc(
+    metil_audio_data.io_procs,
+    sizeof(cer0_audio_output_io_proc) *
+    metil_audio_data.length_io_procs
+  );
+
+  metil_audio_data.io_procs[
+    metil_audio_data.length_io_procs - 1
+  ] = io_proc;
+
+
+  metil_audio_data.io_procs[
+    metil_audio_data.length_io_procs - 1
+  ] = io_proc;
+
+  metil_audio_data.data_io_procs = realloc(
+    metil_audio_data.data_io_procs,
+    sizeof(void*) *
+    metil_audio_data.length_io_procs
+  );
+
+  metil_audio_data.data_io_procs[
+    metil_audio_data.length_io_procs - 1
+  ] = data;
 }
 
 unsigned char metil_audio_io_proc_remove(
@@ -80,6 +129,12 @@ unsigned char metil_audio_io_proc_remove(
     ] = metil_audio_data.io_procs[
       index_io_proc + 1
     ];
+
+    metil_audio_data.data_io_procs[
+      index_io_proc
+    ] = metil_audio_data.data_io_procs[
+      index_io_proc + 1
+    ];
   }
 
   metil_audio_data.length_io_procs = (
@@ -92,6 +147,12 @@ unsigned char metil_audio_io_proc_remove(
     metil_audio_data.length_io_procs
   );
 
+  metil_audio_data.data_io_procs = realloc(
+    metil_audio_data.data_io_procs,
+    sizeof(void*) *
+    metil_audio_data.length_io_procs
+  );
+
   return 0;
 }
 
@@ -101,6 +162,7 @@ void metil_audio_destroy() {
   );
 
   free(metil_audio_data.io_procs);
+  free(metil_audio_data.data_io_procs);
   metil_audio_data.length_io_procs = 0;
 
   if (status_audio_destory != 0) {
@@ -135,7 +197,9 @@ OSStatus metil_audio_output_io_proc(
       time_stamp_audio_in,
       list_buffer_audio_out,
       time_stamp_audio_out,
-      data
+      metil_audio_data.data_io_procs[
+        index_io_proc
+      ]
     );
 
     if (status_io_proc != 0) {
