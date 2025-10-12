@@ -34,8 +34,8 @@ void metil_scene_initialize(
   scene->player.rotation.y = 0.0f;
   scene->player.rotation.z = 0.0f;
 
-  metil_input_delta_cursor.x = 0.0f;
-  metil_input_delta_cursor.y = 0.0f;
+  metil_input_cursor.delta.x = 0.0f;
+  metil_input_cursor.delta.y = 0.0f;
 
   scene->poll = metil_scene_poll_default;
   scene->poll_input = metil_scene_poll_input_default;
