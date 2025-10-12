@@ -17,6 +17,7 @@
 - (void) mouseDragged: (NSEvent*) event;
 - (void) mouseMoved: (NSEvent*) event;
 - (void) mouseUp: (NSEvent*) event;
+- (void) process_mouse_movement_event: (NSEvent*) event;
 
 @end
 
