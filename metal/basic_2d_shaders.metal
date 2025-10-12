@@ -1,31 +1,51 @@
-#include <metil_shader_types.h>
+#include <metil_rendering/metil_renderer_data_frame.h>
+#include <metil_rendering/metil_renderer_data_object.h>
+#include <metil_rendering/metil_renderer_vertex_index_parameter.h>
 
-struct data_rasterizer {
+struct data_vertex {
   float4 position [[position]];
   float4 color;
 };
 
-vertex data_rasterizer shader_2d_vertex(
-  const device simd_float4* positions [[buffer(metil_kit_vertex_input_index_positions)]],
-  constant metil_kit_data_frame& data_frame [[buffer(metil_kit_vertex_input_index_frame_data)]],
-  constant metil_kit_data_frame_object& data [[buffer(metil_kit_vertex_input_index_data)]],
+[[vertex]] struct data_vertex shader_2d_vertex(
+  const device simd_float4* positions [[
+    buffer(
+      metil_renderer_vertex_index_parameter_positions
+    )
+  ]],
+  constant struct metil_renderer_data_frame* data_frame [[
+    buffer(
+      metil_renderer_vertex_index_parameter_frame_data
+    )
+  ]],
+  constant struct metil_renderer_data_object* data_object [[
+    buffer(
+      metil_renderer_vertex_index_parameter_data
+    )
+  ]],
   unsigned int id_vertex [[vertex_id]]
 ) {
-  data_rasterizer out;
+  struct data_vertex data_vertex;
 
-  out.position = data.view_model_matrix_projection * positions[id_vertex];
-  out.color = float4(
-    data.color.x,
-    data.color.y,
-    data.color.z,
-    data.color.w
+  data_vertex.position = (
+    data_object->view_model_matrix_projection *
+    positions[
+      id_vertex
+    ]
   );
 
-  return out;
+  data_vertex.color = float4(
+    data_object->color.x,
+    data_object->color.y,
+    data_object->color.z,
+    data_object->color.w
+  );
+
+  return data_vertex;
 }
 
-fragment float4 shader_2d_fragment(
-  data_rasterizer in [[stage_in]]
+[[fragment]] float4 shader_2d_fragment(
+  struct data_vertex data_vertex [[stage_in]]
 ) {
-  return in.color;
+  return data_vertex.color;
 }

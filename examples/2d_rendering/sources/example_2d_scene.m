@@ -3,16 +3,12 @@
 #include <metil_mesh/2d/mesh_square.h>
 #include <metil_object.h>
 #include <metil_player.h>
-#include <metil_rendering/rendering_properties.h>
+#include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_scenes/scene.h>
-#include <metil_shader_types.h>
 
 #include <clic3_vector.h>
 
-#include <math.h>
 #include <stdlib.h>
-
-#include <stdio.h>
 
 void example_2d_scene_initialize(
   struct metil_scene* scene,
@@ -95,11 +91,11 @@ void example_2d_scene_initialize(
     scene->objects[
       index_object
     ]->data = [metal_kit_device
-      newBufferWithLength: sizeof(metil_kit_data_frame_object)
+      newBufferWithLength: sizeof(struct metil_renderer_data_object)
       options: MTLResourceStorageModeShared
     ];
 
-    metil_kit_data_frame_object* data_object = scene->objects[
+    struct metil_renderer_data_object* data_object = scene->objects[
       index_object
     ]->data.contents;
 
@@ -141,7 +137,7 @@ void example_2d_scene_poll(
     index_object < scene->length_objects;
     ++index_object
   ) {
-    metil_kit_data_frame_object* data_object = scene->objects[
+    struct metil_renderer_data_object* data_object = scene->objects[
       index_object
     ]->data.contents;
 

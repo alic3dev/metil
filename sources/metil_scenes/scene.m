@@ -124,7 +124,7 @@ void metil_scene_destroy_default(
   struct metil_scene* scene
 ) {
   for (
-    unsigned short int index_object = 0;
+    unsigned int index_object = 0;
     index_object < scene->length_objects;
     ++index_object
   ) {
@@ -138,7 +138,7 @@ void metil_scene_destroy_default(
   free(scene->objects);
 
   for (
-    unsigned short int index_texture = 0;
+    unsigned int index_texture = 0;
     index_texture < scene->length_textures;
     ++index_texture
   ) {
