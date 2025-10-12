@@ -5,7 +5,7 @@
 
 @interface metil_application_delegate: NSObject<NSApplicationDelegate>
 
-- (void) applicationWillTerminate:(NSNotification*) notification;
+- (void) applicationWillTerminate: (NSNotification*) notification;
 
 @end
 

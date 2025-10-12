@@ -7,15 +7,16 @@
   unsigned char moved_after_lock;
 }
 
-- (void) keyDown:(NSEvent*) event;
-- (void) keyUp:(NSEvent*) event;
-- (void) mouseDown:(NSEvent *) event;
-- (void) mouseMoved: (NSEvent*) event;
-- (void) flagsChanged:(NSEvent*) event;
-
+- (char) acceptsMouseMovedEvents;
+- (char) canBecomeKeyWindow;
 - (void) center_mouse;
-
-- (BOOL) canBecomeKeyWindow;
+- (void) flagsChanged: (NSEvent*) event;
+- (void) keyDown: (NSEvent*) event;
+- (void) keyUp: (NSEvent*) event;
+- (void) mouseDown: (NSEvent*) event;
+- (void) mouseDragged: (NSEvent*) event;
+- (void) mouseMoved: (NSEvent*) event;
+- (void) mouseUp: (NSEvent*) event;
 
 @end
 

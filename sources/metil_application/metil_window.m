@@ -7,17 +7,73 @@
 
 @implementation metil_window {}
 
+- (char) acceptsMouseMovedEvents {
+  return 1;
+}
+
+- (char) canBecomeKeyWindow {
+  return 1;
+}
+
+- (void) center_mouse {
+  CGRect rect = [self contentLayoutRect];
+
+  CGPoint point_mouse = {
+    .x = rect.origin.x + (
+      rect.size.width / 2.0f
+    ),
+    .y = rect.origin.y + (
+      rect.size.height / 2.0f
+    )
+  };
+
+  CGWarpMouseCursorPosition(
+    point_mouse
+  );
+}
+
+- (void) flagsChanged: (NSEvent*) event {
+  // TODO: Find what determines if this is a keyup or keydown
+  if (event.keyCode < metil_input_map_keydown_length) {
+    metil_input_map_keydown[
+      event.keyCode
+    ] = metil_input_map_keydown[
+      event.keyCode
+    ] == 1 ? 0 : 1;
+  }
+}
+
 - (void) keyDown: (NSEvent*) event {
   unsigned short int code_key = event.keyCode;
 
-  if (event.keyCode < metil_input_map_keydown_length) {
+  if (
+    event.keyCode < metil_input_map_keydown_length
+  ) {
     metil_input_map_keydown[
       code_key
     ] = 1;
   }
 }
 
-- (void) mouseDown:(NSEvent *) event {
+- (void) keyUp: (NSEvent*) event {
+  if (
+    event.keyCode < metil_input_map_keydown_length
+  ) {
+    metil_input_map_keydown[
+      event.keyCode
+    ] = 0;
+  }
+
+  if (
+    event.keyCode == metil_keycode_esc
+  ) {
+    metil_input_locked_cursor = 0;
+
+    [NSCursor unhide];
+  }
+}
+
+- (void) mouseDown: (NSEvent*) event {
   if (
     metil_input_locked_cursor != 1
   ) {
@@ -28,6 +84,33 @@
     
     moved_after_lock = 0;
     [NSCursor hide];
+    [self center_mouse];
+  }
+}
+
+- (void) mouseDragged: (NSEvent*) event {
+  metil_input_dragging_cursor = 1;
+
+  if (
+    metil_input_locked_cursor == 1 &&
+    moved_after_lock == 0
+  ) {
+    moved_after_lock = 1;
+  } else {
+    metil_input_delta_cursor.x = (
+      metil_input_delta_cursor.x + 
+      event.deltaX
+    );
+
+    metil_input_delta_cursor.y = (
+      metil_input_delta_cursor.y + 
+      event.deltaY
+    );
+  }
+
+  if (
+    metil_input_locked_cursor == 1
+  ) {
     [self center_mouse];
   }
 }
@@ -63,52 +146,8 @@
   }
 }
 
-- (void) center_mouse {
-  CGRect rect = [self contentLayoutRect];
-  CGPoint point_mouse = {
-    .x = rect.origin.x + (rect.size.width / 2),
-    .y = rect.origin.y + (rect.size.height / 2)
-  };
-
-  CGWarpMouseCursorPosition(
-    point_mouse
-  );
-}
-
-- (void) keyUp: (NSEvent*) event {
-  if (
-    event.keyCode < metil_input_map_keydown_length
-  ) {
-    metil_input_map_keydown[
-      event.keyCode
-    ] = 0;
-  }
-
-  if (
-    event.keyCode == metil_keycode_esc
-  ) {
-    metil_input_locked_cursor = 0;
-    [NSCursor unhide];
-  }
-}
-
-- (void) flagsChanged:(NSEvent*) event {
-  // TODO: Find whatever flag determines if this is a keyup or keydown
-  if (event.keyCode < metil_input_map_keydown_length) {
-    metil_input_map_keydown[
-      event.keyCode
-    ] = metil_input_map_keydown[
-      event.keyCode
-    ] == 1 ? 0 : 1;
-  }
-}
-
-- (BOOL) acceptsMouseMovedEvents {
-  return 1;
-}
-
-- (BOOL) canBecomeKeyWindow {
-  return 1;
+- (void) mouseUp: (NSEvent*) event {
+  metil_input_dragging_cursor = 0;
 }
 
 @end
