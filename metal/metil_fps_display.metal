@@ -1,46 +1,64 @@
-#include <metil_shader_types.h>
+#include <metil_rendering/metil_renderer_data_frame.h>
+#include <metil_rendering/metil_renderer_data_object.h>
+#include <metil_rendering/metil_renderer_vertex_index_parameter.h>
 
 #include <metal_stdlib>
 
-struct output_vertex {
+struct data_vertex {
   float4 position [[position]];
   float2 position_texture;
   float3 color;
 };
 
-[[vertex]] struct output_vertex metil_fps_display_vertex(
-  const device simd_float4* positions [[buffer(metil_kit_vertex_input_index_positions)]],
-  constant metil_kit_data_frame& data_frame [[buffer(metil_kit_vertex_input_index_frame_data)]],
-  constant metil_kit_data_frame_object& data [[buffer(metil_kit_vertex_input_index_data)]],
+[[vertex]] struct data_vertex metil_fps_display_vertex(
+  const device simd_float4* positions [[
+    buffer(
+      metil_renderer_vertex_index_parameter_positions
+    )
+  ]],
+  constant struct metil_renderer_data_frame* data_frame [[
+    buffer(
+      metil_renderer_vertex_index_parameter_frame_data
+    )
+  ]],
+  constant struct metil_renderer_data_object* data_object [[
+    buffer(
+      metil_renderer_vertex_index_parameter_data
+    )
+  ]],
   unsigned int id_vertex [[vertex_id]]
 ) {
-  struct output_vertex output_vertex;
+  struct data_vertex data_vertex;
 
-  output_vertex.position_texture.x = (
+  data_vertex.position_texture.x = (
     id_vertex == 0 || id_vertex == 3
     ? 0
     : 1
   );
 
-  output_vertex.position_texture.y = (
+  data_vertex.position_texture.y = (
     id_vertex == 0 || id_vertex == 1
     ? 1
     : 0
   );
 
-  output_vertex.position = data.view_model_matrix_projection * positions[id_vertex];
-  output_vertex.color = float3(
+  data_vertex.position = (
+    data_object->view_model_matrix_projection *
+    positions[id_vertex]
+  );
+
+  data_vertex.color = float3(
     1.0f,
     1.0f,
     1.0f
   );
 
-  return output_vertex;
+  return data_vertex;
 }
 
 [[fragment]] float4 metil_fps_display_fragment(
-  output_vertex in [[stage_in]],
-  metal::texture2d<half> texture [[ texture(0) ]]
+  data_vertex data_vertex [[stage_in]],
+  metal::texture2d<half> texture [[texture(0)]]
 ) {
   constexpr metal::sampler sampler_texture(
     metal::filter::linear,
@@ -50,14 +68,14 @@ struct output_vertex {
   float4 color_texture = float4(
     texture.sample(
       sampler_texture,
-      in.position_texture
+      data_vertex.position_texture
     )
   );
   
   return float4(
-    color_texture[0] * in.color.r,
-    color_texture[1] * in.color.g,
-    color_texture[2] * in.color.b,
+    color_texture[0] * data_vertex.color.r,
+    color_texture[1] * data_vertex.color.g,
+    color_texture[2] * data_vertex.color.b,
     color_texture[3]
   );
 }

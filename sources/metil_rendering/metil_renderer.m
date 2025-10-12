@@ -10,9 +10,11 @@
 #include <metil_object.h>
 #include <metil_rendering/camera/camera.h>
 #include <metil_rendering/descriptors/pipeline_render.h>
+#include <metil_rendering/metil_renderer_data_frame.h>
+#include <metil_rendering/metil_renderer_data_object.h>
+#include <metil_rendering/metil_renderer_vertex_index_parameter.h>
 #include <metil_scenes/scene.h>
 #include <metil_scenes/scene_controller.h>
-#include <metil_shader_types.h>
 #include <metil_termination.h>
 #include <metil_text/text_characters.h>
 #include <metil_utilities/time.h>
@@ -123,7 +125,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
     data_buffer_frame[
       index_buffer
     ] = [self->metal_kit_device
-      newBufferWithLength: sizeof(metil_kit_data_frame)
+      newBufferWithLength: sizeof(struct metil_renderer_data_frame)
       options:MTLResourceStorageModeShared
     ];
   }
@@ -154,11 +156,11 @@ void* metil_renderer_on_initialize_data = (void*)0;
     self->objects_fps_display[
       index_object_fps_display
     ].data = [self->metal_kit_device
-      newBufferWithLength: sizeof(metil_kit_data_frame_object)
+      newBufferWithLength: sizeof(struct metil_renderer_data_object)
       options: MTLResourceStorageModeShared
     ];
 
-    metil_kit_data_frame_object* data_object = self->objects_fps_display[
+    struct metil_renderer_data_object* data_object = self->objects_fps_display[
       index_object_fps_display
     ].data.contents;
 
@@ -300,7 +302,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
     time
   );
 
-  metil_kit_data_frame* data_frame = (
+  struct metil_renderer_data_frame* data_frame = (
     data_buffer_frame[index_data_buffer_frame]
   ).contents;
 
@@ -359,7 +361,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
   );
 
   for (
-    unsigned short int index_object = 0;
+    unsigned int index_object = 0;
     index_object < metil_scene_controller.scene.length_objects;
     ++index_object
   ) {
@@ -463,7 +465,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
   matrix_object_projection: (matrix_float4x4*) matrix_object_projection 
   matrix_player_projection: (matrix_float4x4*) matrix_player_projection
 {
-  metil_kit_data_frame_object* data = object->data.contents;
+  struct metil_renderer_data_object* data = object->data.contents;
 
   data->position.x = object->position.x;
   data->position.y = object->position.y;
@@ -570,7 +572,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
 - (void) render {
   for (
-    unsigned short int index_object = 0;
+    unsigned int index_object = 0;
     index_object < metil_scene_controller.scene.length_objects;
     ++index_object
   ) {
@@ -596,7 +598,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
   [encoder_render
     setVertexBuffer: data_buffer_frame[index_data_buffer_frame]
     offset: 0
-    atIndex: metil_kit_vertex_input_index_frame_data
+    atIndex: metil_renderer_vertex_index_parameter_frame_data
   ];
 
   [encoder_render
@@ -616,13 +618,13 @@ void* metil_renderer_on_initialize_data = (void*)0;
   [encoder_render
     setVertexBuffer: object->vertices
     offset: 0
-    atIndex: metil_kit_vertex_input_index_positions
+    atIndex: metil_renderer_vertex_index_parameter_positions
   ];
   
   [encoder_render
     setVertexBuffer: object->data
     offset: 0
-    atIndex: metil_kit_vertex_input_index_data
+    atIndex: metil_renderer_vertex_index_parameter_data
   ];
   
   [encoder_render
