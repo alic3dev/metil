@@ -598,7 +598,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
   [encoder_render
     setVertexBuffer: data_buffer_frame[index_data_buffer_frame]
     offset: 0
-    atIndex: metil_renderer_vertex_index_parameter_frame_data
+    atIndex: metil_renderer_vertex_index_parameter_data_frame
   ];
 
   [encoder_render
@@ -624,7 +624,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
   [encoder_render
     setVertexBuffer: object->data
     offset: 0
-    atIndex: metil_renderer_vertex_index_parameter_data
+    atIndex: metil_renderer_vertex_index_parameter_data_object
   ];
   
   [encoder_render
