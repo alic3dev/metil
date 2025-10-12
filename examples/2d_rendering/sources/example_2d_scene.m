@@ -1,6 +1,6 @@
 #include <example_2d_scene.h>
 
-#include <metil_mesh/2d/mesh_triangle.h>
+#include <metil_mesh/2d/mesh_square.h>
 #include <metil_object.h>
 #include <metil_player.h>
 #include <metil_rendering/metil_renderer_data_object.h>
@@ -51,12 +51,11 @@ void example_2d_scene_initialize(
       ]
     );
 
-    metil_mesh_triangle_initialize(
+    metil_mesh_square_initialize(
       &scene->objects[
         index_object
       ]->mesh,
-      0.175,
-      (float) index_object / (float) (scene->length_objects - 1)
+      0.2
     );
 
     scene->objects[index_object]->mesh.positioning = metil_mesh_positioning_static;
