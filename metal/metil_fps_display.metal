@@ -5,7 +5,7 @@
 struct output_vertex {
   float4 position [[position]];
   float2 position_texture;
-  float4 color;
+  float3 color;
 };
 
 [[vertex]] struct output_vertex metil_fps_display_vertex(
@@ -29,8 +29,7 @@ struct output_vertex {
   );
 
   output_vertex.position = data.view_model_matrix_projection * positions[id_vertex];
-  output_vertex.color = float4(
-    1.0f,
+  output_vertex.color = float3(
     1.0f,
     1.0f,
     1.0f
