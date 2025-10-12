@@ -83,7 +83,9 @@
     metil_input_cursor.delta.y = 0;
     
     moved_after_lock = 0;
+
     [NSCursor hide];
+
     [self center_mouse];
   }
 }
@@ -91,31 +93,18 @@
 - (void) mouseDragged: (NSEvent*) event {
   metil_input_cursor.dragging = 1;
 
-  if (
-    metil_input_cursor.locked == 1 &&
-    moved_after_lock == 0
-  ) {
-    moved_after_lock = 1;
-  } else {
-    metil_input_cursor.delta.x = (
-      metil_input_cursor.delta.x + 
-      event.deltaX
-    );
-
-    metil_input_cursor.delta.y = (
-      metil_input_cursor.delta.y + 
-      event.deltaY
-    );
-  }
-
-  if (
-    metil_input_cursor.locked == 1
-  ) {
-    [self center_mouse];
-  }
+  [self process_mouse_movement_event: event];
 }
 
 - (void) mouseMoved: (NSEvent*) event {
+  [self process_mouse_movement_event: event];
+}
+
+- (void) mouseUp: (NSEvent*) event {
+  metil_input_cursor.dragging = 0;
+}
+
+- (void) process_mouse_movement_event: (NSEvent*) event {
   metil_input_cursor.position_screen.x = NSEvent.mouseLocation.x;
   metil_input_cursor.position_screen.y = NSEvent.mouseLocation.y;
 
@@ -144,10 +133,6 @@
   ) {
     [self center_mouse];
   }
-}
-
-- (void) mouseUp: (NSEvent*) event {
-  metil_input_cursor.dragging = 0;
 }
 
 @end
