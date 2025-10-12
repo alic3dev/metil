@@ -3,11 +3,15 @@
 
 #include <clic3_vector.h>
 
-extern unsigned char metil_input_locked_cursor;
-extern unsigned char metil_input_dragging_cursor;
+struct metil_input_cursor {
+  unsigned char locked;
+  unsigned char dragging;
 
-extern struct clic3_vector2_float metil_input_delta_cursor;
-extern struct clic3_vector2_float metil_input_position_cursor_screen;
-extern struct clic3_vector2_float metil_input_position_cursor_window;
+  struct clic3_vector2_float delta;
+  struct clic3_vector2_float position_screen;
+  struct clic3_vector2_float position_window;
+};
+
+extern struct metil_input_cursor metil_input_cursor;
 
 #endif

@@ -140,24 +140,24 @@ void metil_player_poll_input(
   };
 
   if (
-    metil_input_locked_cursor == 1
+    metil_input_cursor.locked == 1
   ) {
     player->rotation.y = (
       player->rotation.y + (
-        metil_input_delta_cursor.x / 50.0f *
+        metil_input_cursor.delta.x / 50.0f *
         player->speed_rotation
       )
     );
 
     player->rotation.x = (
       player->rotation.x - (
-        metil_input_delta_cursor.y / 50.0f *
+        metil_input_cursor.delta.y / 50.0f *
         player->speed_rotation
       )
     );
 
-    metil_input_delta_cursor.x = 0;
-    metil_input_delta_cursor.y = 0;
+    metil_input_cursor.delta.x = 0;
+    metil_input_cursor.delta.y = 0;
   }
 
   if (metil_controller_state.available == 1) {
