@@ -8,9 +8,9 @@
 
 struct metil_scene;
 
-typedef void (*metil_function_scene_poll)(struct metil_scene*);
-typedef void (*metil_function_scene_poll_input)(struct metil_scene*);
-typedef void (*metil_function_scene_destroy)(struct metil_scene*);
+typedef void (*metil_function_scene_poll)(struct metil_scene* _Nonnull);
+typedef void (*metil_function_scene_poll_input)(struct metil_scene* _Nonnull);
+typedef void (*metil_function_scene_destroy)(struct metil_scene* _Nonnull);
 
 enum metil_scene_type {
   metil_scene_type_unknown,
@@ -24,17 +24,17 @@ struct metil_scene_rendering_properties {
 };
 
 struct metil_scene {
-  id<MTLDevice> metal_kit_device;
+  _Nullable id<MTLDevice> metal_kit_device;
 
   struct metil_player player;
   enum metil_scene_type type;
   int id;
 
-  struct metil_object** objects;
-  unsigned short int length_objects;
+  struct metil_object* _Nonnull * _Nonnull objects;
+  unsigned int length_objects;
 
-  id<MTLTexture>* textures;
-  unsigned short int length_textures;
+  _Nonnull id<MTLTexture>* _Nonnull textures;
+  unsigned int length_textures;
 
   unsigned char loading;
 
@@ -49,44 +49,44 @@ struct metil_scene {
   unsigned long int time_input_previous;
   unsigned long int time_input_delta;
 
-  metil_function_scene_poll poll;
-  metil_function_scene_poll_input poll_input;
-  metil_function_scene_destroy destroy;
+  _Nonnull metil_function_scene_poll poll;
+  _Nonnull metil_function_scene_poll_input poll_input;
+  _Nonnull metil_function_scene_destroy destroy;
 
   struct metil_scene_rendering_properties rendering_properties;
 
-  void* data;
+  void* _Nullable data;
 };
 
 void metil_scene_initialize(
-  struct metil_scene*,
-  id<MTLDevice>
+  struct metil_scene* _Nonnull,
+  _Nullable id<MTLDevice>
 );
 
 void metil_scene_poll_input(
-  struct metil_scene*,
+  struct metil_scene* _Nonnull,
   unsigned long int
 );
 
 void metil_scene_poll(
-  struct metil_scene*,
+  struct metil_scene* _Nonnull,
   unsigned long int
 );
 
 void metil_scene_destroy(
-  struct metil_scene*
+  struct metil_scene* _Nonnull
 );
 
 void metil_scene_poll_input_default(
-  struct metil_scene*
+  struct metil_scene* _Nonnull
 );
 
 void metil_scene_poll_default(
-  struct metil_scene*
+  struct metil_scene* _Nonnull
 );
 
 void metil_scene_destroy_default(
-  struct metil_scene*
+  struct metil_scene* _Nonnull
 );
 
 #endif

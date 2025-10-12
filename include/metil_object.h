@@ -22,6 +22,11 @@ void metil_object_initialize(
   struct metil_object* _Nonnull
 );
 
+void metil_object_buffers_initialize(
+  struct metil_object* _Nonnull,
+  _Nonnull id<MTLDevice>
+);
+
 void metil_object_destroy(
   struct metil_object* _Nonnull
 );

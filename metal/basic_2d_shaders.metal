@@ -15,12 +15,12 @@ struct data_vertex {
   ]],
   constant struct metil_renderer_data_frame* data_frame [[
     buffer(
-      metil_renderer_vertex_index_parameter_frame_data
+      metil_renderer_vertex_index_parameter_data_frame
     )
   ]],
   constant struct metil_renderer_data_object* data_object [[
     buffer(
-      metil_renderer_vertex_index_parameter_data
+      metil_renderer_vertex_index_parameter_data_object
     )
   ]],
   unsigned int id_vertex [[vertex_id]]
