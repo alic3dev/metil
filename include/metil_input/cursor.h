@@ -3,8 +3,9 @@
 
 #include <clic3_vector.h>
 
-struct clic3_vector2_float metil_input_delta_cursor;
-
-void metil_input_cursor_initialize();
+extern unsigned char metil_input_locked_cursor;
+extern struct clic3_vector2_float metil_input_delta_cursor;
+extern struct clic3_vector2_float metil_input_position_cursor_screen;
+extern struct clic3_vector2_float metil_input_position_cursor_window;
 
 #endif

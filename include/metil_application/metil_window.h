@@ -4,7 +4,6 @@
 #include <AppKit/AppKit.h>
 
 @interface metil_window: NSWindow {
-  unsigned char locked_cursor;
   unsigned char moved_after_lock;
 }
 
