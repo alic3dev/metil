@@ -17,4 +17,9 @@ struct metil_library {
 
 extern struct metil_library metil_library;
 
+void metil_library_initialize_fps_display(
+  id<MTLDevice>,
+  id<MTLLibrary>
+);
+
 #endif

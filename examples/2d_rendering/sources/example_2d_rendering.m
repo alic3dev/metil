@@ -4,9 +4,7 @@
 
 #include <metil_initialize.h>
 #include <metil_library.h>
-#include <metil_player.h>
 #include <metil_rendering/rendering_properties.h>
-#include <metil_scenes/scene.h>
 #include <metil_scenes/scene_controller.h>
 
 int main(
@@ -23,11 +21,11 @@ int main(
 
 
 void example_2d_rendering_renderer_on_initialize(
-  id<MTLDevice> metil_metal_kit_device,
+  id<MTLDevice> metal_kit_device,
   struct metil_rendering_properties* metil_rendering_properties,
   void* data
 ) {
-  metil_library.library = [metil_metal_kit_device newDefaultLibrary];
+  metil_library.library = [metal_kit_device newDefaultLibrary];
 
   metil_library.function_vertex = [
     metil_library.library
@@ -39,17 +37,10 @@ void example_2d_rendering_renderer_on_initialize(
     newFunctionWithName: @"shader_2d_fragment"
   ];
 
-  metil_library.library_fps_display = metil_library.library;
-
-  metil_library.function_vertex_fps_display = [
-    metil_library.library
-    newFunctionWithName: @"metil_fps_display_vertex"
-  ];
-
-  metil_library.function_fragment_fps_display = [
-    metil_library.library
-    newFunctionWithName: @"metil_fps_display_fragment"
-  ];
+  metil_library_initialize_fps_display(
+    metal_kit_device,
+    (void*)0
+  );
 
   metil_rendering_properties->color_clear.x = 0.0f;
   metil_rendering_properties->color_clear.y = 0.0f;
@@ -58,6 +49,6 @@ void example_2d_rendering_renderer_on_initialize(
 
   example_2d_scene_initialize(
     &metil_scene_controller.scene,
-    metil_metal_kit_device
+    metal_kit_device
   );
 }
