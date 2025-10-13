@@ -846,6 +846,10 @@ void* metil_renderer_on_initialize_data = (void*)0;
   self->rendering_properties.brightness_text = (
     metil_configuration.rendering_properties.brightness_text
   );
+
+  self->rendering_properties.fps_display = (
+    metil_configuration.rendering_properties.fps_display
+  );
 }
 
 - (void) stencils_depth_initialize {

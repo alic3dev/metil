@@ -23,6 +23,8 @@ void metil_configuration_initialize() {
   metil_configuration.rendering_properties.brightness_text = (
     metil_configuration_default_rendering_properties_brightness_text
   );
+
+  metil_configuration.rendering_properties.fps_display = 0;
 }
 
 unsigned char metil_configuration_load() {
@@ -147,10 +149,11 @@ unsigned char metil_configuration_load() {
 
         int index_parameter = clic3_char_arrays_within(
           buffer_parameter,
-          3,
+          4,
           "audio:volume",
           "rendering_properties:brightness",
-          "rendering_properties:brightness_text"
+          "rendering_properties:brightness_text",
+          "rendering_properties:fps_display"
         );
 
         if (
@@ -182,8 +185,7 @@ unsigned char metil_configuration_load() {
           case 0: {
             float audio_volume = metil_configuration_value_float_parse(
               buffer_parameter,
-              buffer_value,
-              length_buffer_value
+              buffer_value
             );
 
             if (audio_volume >= 0.0f) {
@@ -197,8 +199,7 @@ unsigned char metil_configuration_load() {
           case 1: {
             float rendering_brightness = metil_configuration_value_float_parse(
               buffer_parameter,
-              buffer_value,
-              length_buffer_value
+              buffer_value
             );
 
             if (rendering_brightness >= 0.0f) {
@@ -212,8 +213,7 @@ unsigned char metil_configuration_load() {
           case 2: {
             float rendering_brightness_text = metil_configuration_value_float_parse(
               buffer_parameter,
-              buffer_value,
-              length_buffer_value
+              buffer_value
             );
 
             if (rendering_brightness_text >= 0.0f) {
@@ -222,6 +222,22 @@ unsigned char metil_configuration_load() {
               status_configuration_load = 1;
             }
             
+            break;
+          }
+          case 3: {
+            int fps_display = metil_configuration_value_int_parse(
+              buffer_parameter,
+              buffer_value
+            );
+
+            if (
+              fps_display != -1
+            ) {
+              metil_configuration.rendering_properties.fps_display = fps_display;
+            } else {
+              status_configuration_load = 1;
+            }
+
             break;
           }
         }
@@ -254,10 +270,36 @@ unsigned char metil_configuration_load() {
   return status_configuration_load;
 }
 
+int metil_configuration_value_int_parse(
+  char* parameter,
+  char* value
+) {
+  int value_int;
+
+  unsigned char valid_parameter = clic3_char_array_to_int(
+    value,
+    &value_int
+  );
+
+  if (
+    valid_parameter != 0 ||
+    value_int != 0 &&
+    value_int != 1
+  ) {
+    metil_configuration_debug_log_parameter_invalid(
+      parameter,
+      value
+    );
+
+    return -1;
+  }
+
+  return value_int;
+}
+
 float metil_configuration_value_float_parse(
   char* parameter,
-  char* value,
-  unsigned short int length_value
+  char* value
 ) {
   float value_float;
 
@@ -270,39 +312,49 @@ float metil_configuration_value_float_parse(
     valid_parameter != 0 ||
     value_float < 0.0f
   ) {
-    char* message_debug_log_error_prefix = clic3_char_arrays_concatenate(
-      "invalid_configuration_value->{",
-      parameter
-    );
-
-    char* message_debug_log_error_split = clic3_char_arrays_concatenate(
-      message_debug_log_error_prefix,
-      ":"
-    );
-
-    char* message_debug_log_error_value = clic3_char_arrays_concatenate(
-      message_debug_log_error_split,
+    metil_configuration_debug_log_parameter_invalid(
+      parameter,
       value
     );
-
-    char* message_debug_log_error = clic3_char_arrays_concatenate(
-      message_debug_log_error_value,
-      "};\n"
-    );
-
-    metil_debug_log_error(
-      message_debug_log_error
-    );
-
-    free(message_debug_log_error_prefix);
-    free(message_debug_log_error_split);
-    free(message_debug_log_error_value);
-    free(message_debug_log_error);
 
     return -1.0f;
   }
 
   return value_float;
+}
+
+void metil_configuration_debug_log_parameter_invalid(
+  char* parameter,
+  char* value
+) {
+  char* message_debug_log_error_prefix = clic3_char_arrays_concatenate(
+    "invalid_configuration_value->{",
+    parameter
+  );
+
+  char* message_debug_log_error_split = clic3_char_arrays_concatenate(
+    message_debug_log_error_prefix,
+    ":"
+  );
+
+  char* message_debug_log_error_value = clic3_char_arrays_concatenate(
+    message_debug_log_error_split,
+    value
+  );
+
+  char* message_debug_log_error = clic3_char_arrays_concatenate(
+    message_debug_log_error_value,
+    "};\n"
+  );
+
+  metil_debug_log_error(
+    message_debug_log_error
+  );
+
+  free(message_debug_log_error_prefix);
+  free(message_debug_log_error_split);
+  free(message_debug_log_error_value);
+  free(message_debug_log_error);
 }
 
 void metil_configuration_values_set() {

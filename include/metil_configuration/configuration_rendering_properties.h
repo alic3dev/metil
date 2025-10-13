@@ -7,6 +7,8 @@ extern const float metil_configuration_default_rendering_properties_brightness_t
 struct metil_configuration_rendering_properties {
   float brightness;
   float brightness_text;
+
+  unsigned char fps_display;
 };
 
 #endif
