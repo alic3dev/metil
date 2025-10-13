@@ -18,18 +18,25 @@ extern _Nullable metil_renderer_on_initialize_function metil_renderer_on_initial
 extern void* _Nullable metil_renderer_on_initialize_data;
 
 @interface metil_renderer : NSObject<MTKViewDelegate> {
-  struct metil_rendering_properties rendering_properties;
-
-  id<MTLDevice> metal_kit_device;
-  
-  id<MTLBuffer> data_buffer_frame[metil_count_max_frames];
-  id<MTLBuffer> index_buffer_mesh_current;
-
   id<MTLCommandQueue> command_queue;
 
+  id<MTLBuffer> data_buffer_frame[metil_count_max_frames];
+  unsigned char index_data_buffer_frame;
+
+  id<MTLDepthStencilState> depth_state;
+  id<MTLDepthStencilState> depth_state_writes_disable;
+  
   MTLRenderPipelineDescriptor* descriptor_pipeline_render;
 
   id<MTLRenderCommandEncoder> encoder_render;
+
+  id<MTLBuffer> index_buffer_mesh_current;
+
+  id<MTLDevice> metal_kit_device;
+
+  struct metil_object objects_fps_display[
+    metil_renderer_length_objects_fps_display
+  ];
 
   id<MTLRenderPipelineState> pipeline_render;
   id<MTLRenderPipelineState> pipeline_render_fps_display;
@@ -37,14 +44,7 @@ extern void* _Nullable metil_renderer_on_initialize_data;
   id<MTLRenderPipelineState>* pipelines_render;
   unsigned short int length_pipelines_render;
 
-  id<MTLDepthStencilState> depth_state;
-  id<MTLDepthStencilState> depth_state_writes_disable;
-
-  unsigned char index_data_buffer_frame;
-
-  struct metil_object objects_fps_display[
-    metil_renderer_length_objects_fps_display
-  ];
+  struct metil_rendering_properties rendering_properties;
 }
 
 - (nonnull instancetype) initWithMetalKitView: (nonnull MTKView*) metal_kit_view;
@@ -52,20 +52,22 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 - (void) after_scene_change;
 
 - (void) command_queue_initialize;
+
 - (void) data_buffer_frames_initialize;
+
+- (void) destroy;
+
+- (void) drawInMTKView: (nonnull MTKView*) metal_kit_view;
+- (void) drawableSizeWillChange: (CGSize) size;
+
 - (void) fps_display_objects_initialize;
+
 - (void) initialize_null;
-- (void) initialize_rendering_properties;
-- (void) initialize_termination_functions;
 
 - (void) pipeline_add;
 - (void) pipelines_clear;
 - (void) pipelines_initialize;
 - (void) pipeline_render_fps_display_initiliaze;
-- (void) stencils_depth_initialize;
-
-- (void) drawInMTKView: (nonnull MTKView*) metal_kit_view;
-- (void) drawableSizeWillChange: (CGSize) size;
 
 - (void) mtkView: (nonnull MTKView*) metal_kit_view drawableSizeWillChange: (CGSize) size;
 
@@ -80,7 +82,11 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 - (void) render_fps_display;
 - (void) render_object: (nonnull struct metil_object*) object;
 
-- (void) destroy;
+- (void) rendering_properties_initialize;
+
+- (void) stencils_depth_initialize;
+
+- (void) termination_functions_initialize;
 
 @end
 

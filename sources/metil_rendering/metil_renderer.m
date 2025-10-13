@@ -44,8 +44,8 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   self->metal_kit_device = metal_kit_view.device;
 
-  [self initialize_rendering_properties];
-  [self initialize_termination_functions];
+  [self rendering_properties_initialize];
+  [self termination_functions_initialize];
   
   metil_text_characters_initialize(
     self->metal_kit_device
@@ -98,193 +98,54 @@ void* metil_renderer_on_initialize_data = (void*)0;
   }
 }
 
-- (void) fps_display_objects_initialize {
-  for (
-    unsigned char index_object_fps_display = 0;
-    index_object_fps_display < metil_renderer_length_objects_fps_display;
-    ++index_object_fps_display
-  ) {
-    metil_object_initialize(
-      &self->objects_fps_display[
-        index_object_fps_display
-      ]
-    );
-
-    self->objects_fps_display[
-      index_object_fps_display
-    ].position.y = 0.0f;
-
-    self->objects_fps_display[
-      index_object_fps_display
-    ].position.z = 0.0f;
-
-    self->objects_fps_display[
-      index_object_fps_display
-    ].data = [self->metal_kit_device
-      newBufferWithLength: sizeof(struct metil_renderer_data_object)
-      options: MTLResourceStorageModeShared
-    ];
-
-    struct metil_renderer_data_object* data_object = self->objects_fps_display[
-      index_object_fps_display
-    ].data.contents;
-
-    data_object->id = index_object_fps_display;
-  }
-}
-
-- (void) initialize_null {
-  self->metal_kit_device = (void*)0;
-
-  self->command_queue = (void*)0;
-  self->depth_state = (void*)0;
-  self->depth_state_writes_disable = (void*)0;
-  self->descriptor_pipeline_render = (void*)0;
-  self->encoder_render = (void*)0;
-  self->index_buffer_mesh_current = (void*)0;
-  self->pipeline_render = (void*)0;
-  self->pipeline_render_fps_display = (void*)0;
+- (void) destroy {
+  [self->metal_kit_device release];
 
   for (
-    unsigned char index_data_buffer_frame_initializer = 0;
-    index_data_buffer_frame_initializer < metil_count_max_frames;
-    ++index_data_buffer_frame_initializer
+    unsigned char index_data_buffer_frame_release = 0;
+    index_data_buffer_frame_release < metil_count_max_frames;
+    ++index_data_buffer_frame_release
   ) {
-    self->data_buffer_frame[
-      index_data_buffer_frame_initializer
-    ] = (void*)0;
+    [self->data_buffer_frame[index_data_buffer_frame_release] release];
   }
 
-  self->length_pipelines_render = 0;
-  self->pipelines_render = malloc(
-    sizeof(id<MTLRenderPipelineState>) *
-    self->length_pipelines_render
-  );
-}
+  [self->index_buffer_mesh_current release];
+  [self->command_queue release];
+  [self->descriptor_pipeline_render release];
+  [self->encoder_render release];
+  [self->pipeline_render release];
 
-- (void) initialize_rendering_properties {
-  metil_rendering_properties_initialize(
-    &self->rendering_properties
-  );
-
-  self->rendering_properties.brightness = (
-    metil_configuration.rendering_properties.brightness
-  );
-
-  self->rendering_properties.brightness_text = (
-    metil_configuration.rendering_properties.brightness_text
-  );
-}
-
-- (void) initialize_termination_functions {
-  metil_termination_on_function_add(
-    metil_renderer_on_termination,
-    self
-  );
-
-  metil_termination_on_function_add(
-    metil_text_characters_destroy,
-    (void*)0
-  );
-}
-
-- (void) pipeline_add {
-
-}
-
-- (void) pipelines_clear {
+  if (
+    self->pipeline_render_fps_display != (void*)0
+  ) {
+    [self->pipeline_render_fps_display release];
+  }
+  
   for (
-    unsigned short int index_pipeline_render = 0;
+    unsigned char index_pipeline_render = 0;
     index_pipeline_render < self->length_pipelines_render;
     ++index_pipeline_render
   ) {
     [self->pipelines_render[index_pipeline_render] release];
   }
 
-  self->length_pipelines_render = 0;
-  self->pipelines_render = realloc(
-    self->pipelines_render,
-    sizeof(id<MTLRenderPipelineState>) *
-    self->length_pipelines_render
+  free(
+    self->pipelines_render
   );
-}
 
-- (void) pipelines_initialize {
-  if (
-    self->descriptor_pipeline_render == (void*)0
+  [self->depth_state release];
+  [self->depth_state_writes_disable release];
+
+  for (
+    unsigned char index_object_fps_display = 0;
+    index_object_fps_display < metil_renderer_length_objects_fps_display;
+    ++index_object_fps_display
   ) {
-    self->descriptor_pipeline_render = [[MTLRenderPipelineDescriptor alloc] init];
-    metil_rendering_descriptors_pipeline_render_initialize(
-      self->descriptor_pipeline_render,
-      1,
-      metil_library.function_fragment,
-      metil_library.function_vertex,
-      MTLPixelFormatBGRA8Unorm_sRGB,
-      MTLPixelFormatDepth32Float_Stencil8,
-      MTLPixelFormatDepth32Float_Stencil8
-    );
+    [self->objects_fps_display[index_object_fps_display].data release];
   }
 
-  if (
-    self->pipeline_render == (void*) 0
-  ) {
-    self->pipeline_render = [self->metal_kit_device
-      newRenderPipelineStateWithDescriptor: self->descriptor_pipeline_render
-      error: (void*)0
-    ];
-  }
-
-  [self pipeline_render_fps_display_initiliaze];
-}
-
-- (void) pipeline_render_fps_display_initiliaze {
-  if (
-    self->pipeline_render_fps_display == (void*)0 &&
-    metil_library.function_vertex_fps_display != (void*)0 &&
-    metil_library.function_fragment_fps_display != (void*)0
-  ) {
-    self->descriptor_pipeline_render.vertexFunction = (
-      metil_library.function_vertex_fps_display
-    );
-
-    self->descriptor_pipeline_render.fragmentFunction = (
-      metil_library.function_fragment_fps_display
-    );
-
-    self->pipeline_render_fps_display = [self->metal_kit_device
-      newRenderPipelineStateWithDescriptor: self->descriptor_pipeline_render
-      error: (void*)0
-    ];
-  }
-}
-
-- (void) stencils_depth_initialize {
-  MTLDepthStencilDescriptor* descriptor_stencil_depth = [[MTLDepthStencilDescriptor alloc] init];
-  descriptor_stencil_depth.depthCompareFunction = MTLCompareFunctionLessEqual;
-  descriptor_stencil_depth.depthWriteEnabled = 1;
-  self->depth_state = [self->metal_kit_device
-    newDepthStencilStateWithDescriptor: descriptor_stencil_depth
-  ];
-
-  descriptor_stencil_depth.depthWriteEnabled = 0;
-  self->depth_state_writes_disable = [self->metal_kit_device
-    newDepthStencilStateWithDescriptor: descriptor_stencil_depth
-  ];
-}
-
-- (void) drawableSizeWillChange: (CGSize) size {
-  /*
-    Certain sizes cause rendering to stutter and slow down
-
-    1920x1204 is fine
-    1920x1203 is fine
-    1920x1202 causes slow down
-  */
-  metil_camera_ratio_aspect_set(
-    &self->rendering_properties.camera, (
-      (float) size.width /
-      (float) size.height
-    )
+  metil_rendering_properties_destory(
+    &self->rendering_properties
   );
 }
 
@@ -407,7 +268,157 @@ void* metil_renderer_on_initialize_data = (void*)0;
   [command_buffer commit];
 }
 
+- (void) drawableSizeWillChange: (CGSize) size {
+  /*
+    Certain sizes cause rendering to stutter and slow down
+
+    1920x1204 is fine
+    1920x1203 is fine
+    1920x1202 causes slow down
+  */
+  metil_camera_ratio_aspect_set(
+    &self->rendering_properties.camera, (
+      (float) size.width /
+      (float) size.height
+    )
+  );
+}
+
+- (void) fps_display_objects_initialize {
+  for (
+    unsigned char index_object_fps_display = 0;
+    index_object_fps_display < metil_renderer_length_objects_fps_display;
+    ++index_object_fps_display
+  ) {
+    metil_object_initialize(
+      &self->objects_fps_display[
+        index_object_fps_display
+      ]
+    );
+
+    self->objects_fps_display[
+      index_object_fps_display
+    ].position.y = 0.0f;
+
+    self->objects_fps_display[
+      index_object_fps_display
+    ].position.z = 0.0f;
+
+    self->objects_fps_display[
+      index_object_fps_display
+    ].data = [self->metal_kit_device
+      newBufferWithLength: sizeof(struct metil_renderer_data_object)
+      options: MTLResourceStorageModeShared
+    ];
+
+    struct metil_renderer_data_object* data_object = self->objects_fps_display[
+      index_object_fps_display
+    ].data.contents;
+
+    data_object->id = index_object_fps_display;
+  }
+}
+
+- (void) initialize_null {
+  self->metal_kit_device = (void*)0;
+
+  self->command_queue = (void*)0;
+  self->depth_state = (void*)0;
+  self->depth_state_writes_disable = (void*)0;
+  self->descriptor_pipeline_render = (void*)0;
+  self->encoder_render = (void*)0;
+  self->index_buffer_mesh_current = (void*)0;
+  self->pipeline_render = (void*)0;
+  self->pipeline_render_fps_display = (void*)0;
+
+  for (
+    unsigned char index_data_buffer_frame_initializer = 0;
+    index_data_buffer_frame_initializer < metil_count_max_frames;
+    ++index_data_buffer_frame_initializer
+  ) {
+    self->data_buffer_frame[
+      index_data_buffer_frame_initializer
+    ] = (void*)0;
+  }
+
+  self->length_pipelines_render = 0;
+  self->pipelines_render = malloc(
+    sizeof(id<MTLRenderPipelineState>) *
+    self->length_pipelines_render
+  );
+}
+
 - (void) mtkView: (nonnull MTKView*) metal_kit_view drawableSizeWillChange: (CGSize) size {}
+
+- (void) pipeline_add {
+
+}
+
+- (void) pipelines_clear {
+  for (
+    unsigned short int index_pipeline_render = 0;
+    index_pipeline_render < self->length_pipelines_render;
+    ++index_pipeline_render
+  ) {
+    [self->pipelines_render[index_pipeline_render] release];
+  }
+
+  self->length_pipelines_render = 0;
+  self->pipelines_render = realloc(
+    self->pipelines_render,
+    sizeof(id<MTLRenderPipelineState>) *
+    self->length_pipelines_render
+  );
+}
+
+- (void) pipelines_initialize {
+  if (
+    self->descriptor_pipeline_render == (void*)0
+  ) {
+    self->descriptor_pipeline_render = [[MTLRenderPipelineDescriptor alloc] init];
+    metil_rendering_descriptors_pipeline_render_initialize(
+      self->descriptor_pipeline_render,
+      1,
+      metil_library.function_fragment,
+      metil_library.function_vertex,
+      MTLPixelFormatBGRA8Unorm_sRGB,
+      MTLPixelFormatDepth32Float_Stencil8,
+      MTLPixelFormatDepth32Float_Stencil8
+    );
+  }
+
+  if (
+    self->pipeline_render == (void*) 0
+  ) {
+    self->pipeline_render = [self->metal_kit_device
+      newRenderPipelineStateWithDescriptor: self->descriptor_pipeline_render
+      error: (void*)0
+    ];
+  }
+
+  [self pipeline_render_fps_display_initiliaze];
+}
+
+- (void) pipeline_render_fps_display_initiliaze {
+  if (
+    self->pipeline_render_fps_display == (void*)0 &&
+    metil_library.function_vertex_fps_display != (void*)0 &&
+    metil_library.function_fragment_fps_display != (void*)0
+  ) {
+    self->descriptor_pipeline_render.vertexFunction = (
+      metil_library.function_vertex_fps_display
+    );
+
+    self->descriptor_pipeline_render.fragmentFunction = (
+      metil_library.function_fragment_fps_display
+    );
+
+    self->pipeline_render_fps_display = [self->metal_kit_device
+      newRenderPipelineStateWithDescriptor: self->descriptor_pipeline_render
+      error: (void*)0
+    ];
+  }
+}
 
 - (void) poll: (unsigned int) _frame {
   metil_controller_state_poll();
@@ -760,54 +771,43 @@ void* metil_renderer_on_initialize_data = (void*)0;
   ];
 }
 
-- (void) destroy {
-  [self->metal_kit_device release];
-
-  for (
-    unsigned char index_data_buffer_frame_release = 0;
-    index_data_buffer_frame_release < metil_count_max_frames;
-    ++index_data_buffer_frame_release
-  ) {
-    [self->data_buffer_frame[index_data_buffer_frame_release] release];
-  }
-
-  [self->index_buffer_mesh_current release];
-  [self->command_queue release];
-  [self->descriptor_pipeline_render release];
-  [self->encoder_render release];
-  [self->pipeline_render release];
-
-  if (
-    self->pipeline_render_fps_display != (void*)0
-  ) {
-    [self->pipeline_render_fps_display release];
-  }
-  
-  for (
-    unsigned char index_pipeline_render = 0;
-    index_pipeline_render < self->length_pipelines_render;
-    ++index_pipeline_render
-  ) {
-    [self->pipelines_render[index_pipeline_render] release];
-  }
-
-  free(
-    self->pipelines_render
+- (void) rendering_properties_initialize {
+  metil_rendering_properties_initialize(
+    &self->rendering_properties
   );
 
-  [self->depth_state release];
-  [self->depth_state_writes_disable release];
+  self->rendering_properties.brightness = (
+    metil_configuration.rendering_properties.brightness
+  );
 
-  for (
-    unsigned char index_object_fps_display = 0;
-    index_object_fps_display < metil_renderer_length_objects_fps_display;
-    ++index_object_fps_display
-  ) {
-    [self->objects_fps_display[index_object_fps_display].data release];
-  }
+  self->rendering_properties.brightness_text = (
+    metil_configuration.rendering_properties.brightness_text
+  );
+}
 
-  metil_rendering_properties_destory(
-    &self->rendering_properties
+- (void) stencils_depth_initialize {
+  MTLDepthStencilDescriptor* descriptor_stencil_depth = [[MTLDepthStencilDescriptor alloc] init];
+  descriptor_stencil_depth.depthCompareFunction = MTLCompareFunctionLessEqual;
+  descriptor_stencil_depth.depthWriteEnabled = 1;
+  self->depth_state = [self->metal_kit_device
+    newDepthStencilStateWithDescriptor: descriptor_stencil_depth
+  ];
+
+  descriptor_stencil_depth.depthWriteEnabled = 0;
+  self->depth_state_writes_disable = [self->metal_kit_device
+    newDepthStencilStateWithDescriptor: descriptor_stencil_depth
+  ];
+}
+
+- (void) termination_functions_initialize {
+  metil_termination_on_function_add(
+    metil_renderer_on_termination,
+    self
+  );
+
+  metil_termination_on_function_add(
+    metil_text_characters_destroy,
+    (void*)0
   );
 }
 
