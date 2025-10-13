@@ -21,7 +21,7 @@ struct metil_text_characters {
 extern struct metil_text_characters metil_text_characters_default;
 
 void metil_text_characters_initialize(
-  _Nonnull id<MTLDevice> 
+  _Nonnull id<MTLDevice>
 );
 
 void metil_text_characters_destroy();

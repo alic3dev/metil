@@ -66,7 +66,7 @@ void metil_menu_poll_input(
   if (
     metil_input_map_keydown[
       metil_keycode_up_arrow
-    ] == 1 || 
+    ] == 1 ||
     metil_controller_state.directional_up > 0.0f ||
     metil_controller_state.left_stick.y > 0.1f
   ) {
@@ -78,7 +78,7 @@ void metil_menu_poll_input(
   } else if (
     metil_input_map_keydown[
       metil_keycode_down_arrow
-    ] == 1 || 
+    ] == 1 ||
     metil_controller_state.directional_down > 0.0f ||
     metil_controller_state.left_stick.y < -0.1f
   ) {

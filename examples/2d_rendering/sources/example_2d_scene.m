@@ -26,7 +26,7 @@ void example_2d_scene_initialize(
 
   scene->poll = example_2d_scene_poll;
 
-  scene->length_objects = 100; 
+  scene->length_objects = 100;
   scene->objects = realloc(
     scene->objects,
     sizeof(struct metil_object*) *

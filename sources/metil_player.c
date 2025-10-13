@@ -115,7 +115,7 @@ void metil_player_poll_input(
       ] == 1 ||
       metil_input_map_keydown[
         metil_keycode_shift_right
-      ] == 1 
+      ] == 1
     )
   ) {
     player->speed_movement = (
@@ -162,7 +162,7 @@ void metil_player_poll_input(
 
   if (metil_controller_state.available == 1) {
     if (
-      metil_controller_state.right_stick.x >= metil_player_deadzone_stick_default || 
+      metil_controller_state.right_stick.x >= metil_player_deadzone_stick_default ||
       metil_controller_state.right_stick.x <= -metil_player_deadzone_stick_default
     ) {
       player->rotation.y = (
@@ -174,7 +174,7 @@ void metil_player_poll_input(
     }
 
     if (
-      metil_controller_state.right_stick.y >= metil_player_deadzone_stick_default || 
+      metil_controller_state.right_stick.y >= metil_player_deadzone_stick_default ||
       metil_controller_state.right_stick.y <= -metil_player_deadzone_stick_default
     ) {
       player->rotation.x = (
@@ -200,7 +200,7 @@ void metil_player_poll_input(
     player->rotation.y,
     (M_PI * 2.0f)
   );
-  
+
   float ratio_axis = player->rotation.y / (M_PI * 2.0f);
 
   if (
@@ -214,7 +214,7 @@ void metil_player_poll_input(
     ratio_movement_strafe.x = (0.25f - ratio_axis) / 0.25f;
   } else if (
     ratio_axis >= 0.25f &&
-    ratio_axis <= 0.5f 
+    ratio_axis <= 0.5f
   ) {
     ratio_axis = ratio_axis - 0.25f;
 
@@ -225,7 +225,7 @@ void metil_player_poll_input(
     ratio_movement_strafe.x = -(ratio_axis / 0.25f);
   } else if (
     ratio_axis >= 0.5f &&
-    ratio_axis <= 0.75f 
+    ratio_axis <= 0.75f
   ) {
     ratio_axis = ratio_axis - 0.5f;
 
@@ -265,7 +265,7 @@ void metil_player_poll_input(
     ratio_movement_strafe.x = -(ratio_axis / -0.25f);
   } else if (
     ratio_axis <= -0.5f &&
-    ratio_axis >= -0.75f 
+    ratio_axis >= -0.75f
   ) {
     ratio_axis = ratio_axis + 0.5f;
 
@@ -325,7 +325,7 @@ void metil_player_poll_input(
         ) - (
           metil_input_map_keydown[
             metil_keycode_down_arrow
-          ] || 
+          ] ||
           metil_input_map_keydown[
             metil_keycode_s
           ]
@@ -377,7 +377,7 @@ void metil_player_poll_input(
       ] +
       metil_input_map_keydown[
         metil_keycode_e
-      ] + 
+      ] +
       -metil_input_map_keydown[
         metil_keycode_period
       ] +

@@ -71,7 +71,7 @@ struct data_vertex {
       data_vertex.position_texture
     )
   );
-  
+
   return float4(
     color_texture[0] * data_vertex.color.r,
     color_texture[1] * data_vertex.color.g,

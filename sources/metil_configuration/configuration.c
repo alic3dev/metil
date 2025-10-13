@@ -197,7 +197,7 @@ unsigned char metil_configuration_load() {
             } else {
               status_configuration_load = 1;
             }
-            
+
             break;
           }
           case 1: {
@@ -211,7 +211,7 @@ unsigned char metil_configuration_load() {
             } else {
               status_configuration_load = 1;
             }
-            
+
             break;
           }
           case 2: {
@@ -225,7 +225,7 @@ unsigned char metil_configuration_load() {
             } else {
               status_configuration_load = 1;
             }
-            
+
             break;
           }
           case 3: {

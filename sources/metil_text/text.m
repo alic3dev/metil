@@ -234,7 +234,6 @@ struct metil_text_image* metil_text_render(
   return text_image;
 }
 
-
 id<MTLTexture> metil_text_texture_render(
   id<MTLDevice> metal_kit_device,
   struct metil_text_image* text_image
@@ -278,7 +277,7 @@ id<MTLTexture> metil_text_mesh_with_texture_initialize(
     characters,
     font
   );
-  
+
   if (
     text_image == (void*)0
   ) {
