@@ -17,10 +17,19 @@ unsigned char metil_configuration_load();
 
 void metil_configuration_values_set();
 
+int metil_configuration_value_int_parse(
+  char*,
+  char*
+);
+
 float metil_configuration_value_float_parse(
   char*,
+  char*
+);
+
+void metil_configuration_debug_log_parameter_invalid(
   char*,
-  unsigned short int
+  char*
 );
 
 void metil_configuration_destroy();
