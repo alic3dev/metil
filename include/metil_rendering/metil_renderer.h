@@ -27,10 +27,15 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 
   id<MTLCommandQueue> command_queue;
 
+  MTLRenderPipelineDescriptor* descriptor_pipeline_render;
+
   id<MTLRenderCommandEncoder> encoder_render;
 
   id<MTLRenderPipelineState> pipeline_render;
   id<MTLRenderPipelineState> pipeline_render_fps_display;
+  
+  id<MTLRenderPipelineState>* pipelines_render;
+  unsigned short int length_pipelines_render;
 
   id<MTLDepthStencilState> depth_state;
   id<MTLDepthStencilState> depth_state_writes_disable;
@@ -44,10 +49,25 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 
 - (nonnull instancetype) initWithMetalKitView: (nonnull MTKView*) metal_kit_view;
 
+- (void) after_scene_change;
+
+- (void) command_queue_initialize;
+- (void) data_buffer_frames_initialize;
+- (void) fps_display_objects_initialize;
+- (void) initialize_null;
+- (void) initialize_rendering_properties;
+- (void) initialize_termination_functions;
+
+- (void) pipeline_add;
+- (void) pipelines_clear;
+- (void) pipelines_initialize;
+- (void) pipeline_render_fps_display_initiliaze;
+- (void) stencils_depth_initialize;
+
 - (void) drawInMTKView: (nonnull MTKView*) metal_kit_view;
+- (void) drawableSizeWillChange: (CGSize) size;
 
 - (void) mtkView: (nonnull MTKView*) metal_kit_view drawableSizeWillChange: (CGSize) size;
-- (void) drawableSizeWillChange: (CGSize) size;
 
 - (void) poll: (unsigned int) _frame;
 - (void) poll_fps_display: (nonnull matrix_float4x4*) matrix_object_projection 
@@ -64,6 +84,7 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 
 @end
 
+void metil_renderer_after_scene_change(int, void* _Nonnull);
 void metil_renderer_on_termination(void* _Nonnull);
 
 #endif

@@ -25,9 +25,8 @@ void metil_object_buffers_initialize(
   struct metil_object* metil_object,
   id<MTLDevice> metal_kit_device
 ) {
-  metil_object->vertices = [metal_kit_device
-    newBufferWithBytes: metil_object->mesh.vertices
-    length: metil_object->mesh.length_vertices * sizeof(struct clic3_vector4_float)
+  metil_object->data = [metal_kit_device
+    newBufferWithLength: sizeof(struct metil_renderer_data_object)
     options: MTLResourceStorageModeShared
   ];
 
@@ -37,8 +36,9 @@ void metil_object_buffers_initialize(
     options: MTLResourceStorageModeShared
   ];
 
-  metil_object->data = [metal_kit_device
-    newBufferWithLength: sizeof(struct metil_renderer_data_object)
+  metil_object->vertices = [metal_kit_device
+    newBufferWithBytes: metil_object->mesh.vertices
+    length: metil_object->mesh.length_vertices * sizeof(struct clic3_vector4_float)
     options: MTLResourceStorageModeShared
   ];
 }
@@ -46,5 +46,25 @@ void metil_object_buffers_initialize(
 void metil_object_destroy(
   struct metil_object* object
 ) {
-  metil_mesh_destroy(&object->mesh);
+  if (
+    object->data != (void*)0
+  ) {
+    [object->data release];
+  }
+
+  if (
+    object->indices != (void*)0
+  ) {
+    [object->indices release];
+  }
+
+  if (
+    object->vertices != (void*)0
+  ) {
+    [object->vertices release];
+  }
+
+  metil_mesh_destroy(
+    &object->mesh
+  );
 }
