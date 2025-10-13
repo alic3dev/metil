@@ -25,7 +25,6 @@ void example_2d_scene_initialize(
   scene->id = 0;
 
   scene->poll = example_2d_scene_poll;
-  scene->destroy = example_2d_scene_destroy;
 
   scene->length_objects = 100; 
   scene->objects = realloc(
@@ -60,40 +59,12 @@ void example_2d_scene_initialize(
 
     scene->objects[index_object]->mesh.positioning = metil_mesh_positioning_static;
 
-    scene->objects[
-      index_object
-    ]->vertices = [metal_kit_device
-      newBufferWithBytes: scene->objects[
+    metil_object_buffers_initialize(
+      scene->objects[
         index_object
-      ]->mesh.vertices
-      length: scene->objects[
-        index_object
-      ]->mesh.length_vertices * sizeof(
-        struct clic3_vector4_float
-      )
-      options: MTLResourceStorageModeShared
-    ];
-
-    scene->objects[
-      index_object
-    ]->indices = [metal_kit_device
-      newBufferWithBytes: scene->objects[
-        index_object
-      ]->mesh.indices
-      length: scene->objects[
-        index_object
-      ]->mesh.length_indices * sizeof(
-        unsigned int
-      )
-      options: MTLResourceStorageModeShared
-    ];
-
-    scene->objects[
-      index_object
-    ]->data = [metal_kit_device
-      newBufferWithLength: sizeof(struct metil_renderer_data_object)
-      options: MTLResourceStorageModeShared
-    ];
+      ],
+      metal_kit_device
+    );
 
     struct metil_renderer_data_object* data_object = scene->objects[
       index_object
@@ -169,20 +140,4 @@ void example_2d_scene_poll(
       brightness_minimum
     );
   }
-}
-
-void example_2d_scene_destroy(
-  struct metil_scene* scene
-) {
-  for (
-    unsigned char index_object = 0;
-    index_object < scene->length_objects;
-    ++index_object
-  ) {
-    [scene->objects[index_object]->vertices release];
-    [scene->objects[index_object]->indices release];
-    [scene->objects[index_object]->data release];
-  }
-
-  metil_scene_destroy_default(scene);
 }
