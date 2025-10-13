@@ -1,0 +1,31 @@
+#!/bin/zsh
+
+metil_header_includes_create() {
+  local path_metil_include=$(realpath "$(
+    dirname $(
+      realpath $1
+    )
+  )/../include")
+  local path_metil_header="${path_metil_include}/metil.h"
+
+  if [[ 
+    -f "${path_metil_header}"
+  ]] {
+    rm "${path_metil_header}"
+  }
+
+  printf "\
+#ifndef __metil_h\n\
+#define __metil_h\n\n\
+$(
+  find "${path_metil_include}" -name "*.h" |
+  sort |
+  sed "s/$(printf "${path_metil_include}/" |
+  sed "s/\//\\\\\//g")//g" |
+  sed "s/^/#include </g" |
+  sed "s/$/>/g"
+)\n\n\
+#endif\n" > ${path_metil_header}
+}
+
+metil_header_includes_create $0 $@
