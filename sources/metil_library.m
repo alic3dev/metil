@@ -30,13 +30,13 @@ void metil_library_initialize_fps_display(
     metil_library.library_fps_display = [metal_kit_device newDefaultLibrary];
   }
 
-  metil_library.function_vertex = [
-    metil_library.library_fps_display
-    newFunctionWithName: @"metil_fps_display_vertex"
-  ];
-
-  metil_library.function_fragment = [
+  metil_library.function_fragment_fps_display = [
     metil_library.library_fps_display
     newFunctionWithName: @"metil_fps_display_fragment"
+  ];
+
+  metil_library.function_vertex_fps_display = [
+    metil_library.library_fps_display
+    newFunctionWithName: @"metil_fps_display_vertex"
   ];
 }
