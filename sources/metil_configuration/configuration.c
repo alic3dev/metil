@@ -122,7 +122,7 @@ unsigned char metil_configuration_load() {
         );
 
         buffer_parameter = malloc(
-          sizeof(char) * length_buffer_parameter
+          sizeof(char) * length_buffer_parameter + 1
         );
 
         clic3_bytes_copy(
@@ -131,6 +131,8 @@ unsigned char metil_configuration_load() {
           length_buffer_parameter
         );
 
+        buffer_parameter[length_buffer_parameter] = '\0';
+
         char* buffer_value;
         unsigned int length_buffer_value = (
           (length_buffer - 2) -
@@ -138,14 +140,16 @@ unsigned char metil_configuration_load() {
         );
 
         buffer_value = malloc(
-          sizeof(char) * length_buffer_value
+          sizeof(char) * length_buffer_value + 1
         );
-
+        
         clic3_bytes_copy(
           buffer_value,
           buffer + index_pointer + 3,
           length_buffer_value
         );
+
+        buffer_value[length_buffer_value] = '\0';
 
         int index_parameter = clic3_char_arrays_within(
           buffer_parameter,
