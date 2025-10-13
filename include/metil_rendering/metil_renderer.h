@@ -29,6 +29,7 @@ extern void* _Nullable metil_renderer_on_initialize_data;
   MTLRenderPipelineDescriptor* descriptor_pipeline_render;
 
   id<MTLRenderCommandEncoder> encoder_render;
+  unsigned char encoder_render_encoding;
 
   id<MTLBuffer> index_buffer_mesh_current;
 
