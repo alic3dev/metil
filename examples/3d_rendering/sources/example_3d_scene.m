@@ -11,8 +11,6 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include <stdio.h>
-
 void example_3d_scene_initialize(
   struct metil_scene* scene,
   id<MTLDevice> metal_kit_device
@@ -28,7 +26,6 @@ void example_3d_scene_initialize(
   scene->id = 0;
 
   scene->poll = example_3d_scene_poll;
-  scene->destroy = example_3d_scene_destroy;
 
   scene->length_objects = 100;
   scene->objects = realloc(
@@ -197,20 +194,4 @@ void example_3d_scene_poll(
       (M_PI * 2.0f)
     );
   }
-}
-
-void example_3d_scene_destroy(
-  struct metil_scene* scene
-) {
-  for (
-    unsigned int index_object = 1;
-    index_object < scene->length_objects;
-    ++index_object
-  ) {
-    [scene->objects[index_object]->data release];
-    [scene->objects[index_object]->indices release];
-    [scene->objects[index_object]->vertices release];
-  }
-
-  metil_scene_destroy_default(scene);
 }
