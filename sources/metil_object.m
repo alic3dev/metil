@@ -19,6 +19,10 @@ void metil_object_initialize(
   metil_object->rotation.x = 0.0f;
   metil_object->rotation.y = 0.0f;
   metil_object->rotation.z = 0.0f;
+
+  metil_object->index_pipeline_render = 0;
+
+  metil_object->depth_disabled = 0;
 }
 
 void metil_object_buffers_initialize(
