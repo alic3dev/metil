@@ -17,6 +17,9 @@ typedef void (*metil_renderer_on_initialize_function)(
 extern _Nullable metil_renderer_on_initialize_function metil_renderer_on_initialize;
 extern void* _Nullable metil_renderer_on_initialize_data;
 
+#define metil_renderer_pipelines_render_index_library 0
+#define metil_renderer_pipelines_render_index_fps_display 1
+
 @interface metil_renderer : NSObject<MTKViewDelegate> {
   id<MTLCommandQueue> command_queue;
 
@@ -24,7 +27,8 @@ extern void* _Nullable metil_renderer_on_initialize_data;
   unsigned char index_data_buffer_frame;
 
   id<MTLDepthStencilState> depth_state;
-  id<MTLDepthStencilState> depth_state_writes_disable;
+  id<MTLDepthStencilState> depth_state_writes_disabled;
+  unsigned char depth_state_disabled;
   
   MTLRenderPipelineDescriptor* descriptor_pipeline_render;
 
@@ -38,12 +42,10 @@ extern void* _Nullable metil_renderer_on_initialize_data;
   struct metil_object objects_fps_display[
     metil_renderer_length_objects_fps_display
   ];
-
-  id<MTLRenderPipelineState> pipeline_render;
-  id<MTLRenderPipelineState> pipeline_render_fps_display;
   
   id<MTLRenderPipelineState>* pipelines_render;
   unsigned short int length_pipelines_render;
+  unsigned short int index_pipelines_render_current;
 
   struct metil_rendering_properties rendering_properties;
 }
@@ -65,7 +67,8 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 
 - (void) initialize_null;
 
-- (void) pipeline_add;
+- (unsigned short int) pipeline_add: (nonnull id<MTLFunction>) function_fragment
+  function_vertex: (nonnull id<MTLFunction>) function_vertex;
 - (void) pipelines_clear;
 - (void) pipelines_initialize;
 - (void) pipeline_render_fps_display_initiliaze;

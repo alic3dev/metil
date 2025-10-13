@@ -21,10 +21,10 @@ void metil_camera_initialize(
   camera->lens.size_sensor = 10.0f;
 
   camera->matrix_viewport_projection = (simd_float4x4) {{
-    { 0, 0, 0, 0 },
-    { 0, 0, 0, 0 },
-    { 0, 0, 0, -1 },
-    { 0, 0, 0, 0 }
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f, -1.0f },
+    { 0.0f, 0.0f, 0.0f, 0.0f }
   }};
 }
 
@@ -72,8 +72,8 @@ void metil_camera_field_of_view_set(
     camera
   );
 
-  camera->vector_normalization.x = 1 / camera->field_of_view.x;
-  camera->vector_normalization.y = 1 / camera->field_of_view.y;
+  camera->vector_normalization.x = 1.0f / camera->field_of_view.x;
+  camera->vector_normalization.y = 1.0f / camera->field_of_view.y;
   camera->vector_normalization.z = (
     camera->distance_view.far / (
       camera->distance_view.near - 
