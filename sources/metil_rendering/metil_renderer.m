@@ -112,7 +112,14 @@ void* metil_renderer_on_initialize_data = (void*)0;
   [self->index_buffer_mesh_current release];
   [self->command_queue release];
   [self->descriptor_pipeline_render release];
+
+  if (
+    self->encoder_render_encoding == 1
+  ) {
+    [self->encoder_render endEncoding];
+  }
   [self->encoder_render release];
+
   [self->pipeline_render release];
 
   if (
@@ -191,6 +198,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
   );
 
   encoder_render = [command_buffer renderCommandEncoderWithDescriptor: descriptor_render_pass];
+  self->encoder_render_encoding = 1;
 
   [encoder_render setRenderPipelineState: self->pipeline_render];
   [encoder_render setDepthStencilState: self->depth_state];
@@ -210,6 +218,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
   }
 
   [encoder_render endEncoding];
+  self->encoder_render_encoding = 0;
 
   [command_buffer addCompletedHandler:^(id<MTLCommandBuffer> buffer) {
     self->rendering_properties.count_completed_frames = (
@@ -327,6 +336,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
   self->depth_state_writes_disable = (void*)0;
   self->descriptor_pipeline_render = (void*)0;
   self->encoder_render = (void*)0;
+  self->encoder_render_encoding = 0;
   self->index_buffer_mesh_current = (void*)0;
   self->pipeline_render = (void*)0;
   self->pipeline_render_fps_display = (void*)0;
