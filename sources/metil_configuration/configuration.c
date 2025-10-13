@@ -142,7 +142,7 @@ unsigned char metil_configuration_load() {
         buffer_value = malloc(
           sizeof(char) * length_buffer_value + 1
         );
-        
+
         clic3_bytes_copy(
           buffer_value,
           buffer + index_pointer + 3,
