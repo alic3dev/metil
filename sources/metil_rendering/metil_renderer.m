@@ -46,7 +46,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   [self rendering_properties_initialize];
   [self termination_functions_initialize];
-  
+
   metil_text_characters_initialize(
     self->metal_kit_device
   );
@@ -119,7 +119,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
     [self->encoder_render endEncoding];
   }
   [self->encoder_render release];
-  
+
   for (
     unsigned char index_pipeline_render = 0;
     index_pipeline_render < self->length_pipelines_render;
@@ -500,7 +500,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
     &metil_scene_controller.scene,
     time
   );
-  
+
   metil_scene_poll(
     &metil_scene_controller.scene,
     time
@@ -642,7 +642,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
       char_array_fps[index_object_fps_display]
     ];
 
-    [self 
+    [self
       poll_object: &self->objects_fps_display[
         index_object_fps_display
       ]
@@ -656,7 +656,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
 - (void) poll_object:
   (struct metil_object*) object
-  matrix_object_projection: (matrix_float4x4*) matrix_object_projection 
+  matrix_object_projection: (matrix_float4x4*) matrix_object_projection
   matrix_player_projection: (matrix_float4x4*) matrix_player_projection
 {
   struct metil_renderer_data_object* data = object->data.contents;
@@ -818,13 +818,13 @@ void* metil_renderer_on_initialize_data = (void*)0;
     offset: 0
     atIndex: metil_renderer_vertex_index_parameter_positions
   ];
-  
+
   [encoder_render
     setVertexBuffer: object->data
     offset: 0
     atIndex: metil_renderer_vertex_index_parameter_data_object
   ];
-  
+
   [encoder_render
     drawIndexedPrimitives: MTLPrimitiveTypeTriangle
     indexCount: object->mesh.length_indices

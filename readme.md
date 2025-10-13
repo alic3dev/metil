@@ -176,7 +176,6 @@ viewport rotations are set via `scene_controller.scene.player.rotation`
     |___|___|___|___|___|
 0.0   0.25 0.5 0.75 1.0
 
-
 `scene.player.rotation.x = 0.45;`
 `scene.player.rotation.y = 0.45;`
      ___________________

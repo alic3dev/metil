@@ -76,7 +76,7 @@ void metil_camera_field_of_view_set(
   camera->vector_normalization.y = 1.0f / camera->field_of_view.y;
   camera->vector_normalization.z = (
     camera->distance_view.far / (
-      camera->distance_view.near - 
+      camera->distance_view.near -
       camera->distance_view.far
     )
   );

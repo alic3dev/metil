@@ -13,7 +13,7 @@ struct metil_menu {
   signed int index_selected;
 
   unsigned char handled;
-  
+
   unsigned char length_items;
   struct metil_menu_item* items;
 

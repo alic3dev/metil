@@ -77,7 +77,6 @@ void metil_audio_io_proc_add_with_data(
     metil_audio_data.length_io_procs - 1
   ] = io_proc;
 
-
   metil_audio_data.io_procs[
     metil_audio_data.length_io_procs - 1
   ] = io_proc;
@@ -182,7 +181,7 @@ OSStatus metil_audio_output_io_proc(
   if (metil_audio_data.muted == 1) {
     return 0;
   }
-  
+
   for (
     unsigned char index_io_proc = 0;
     index_io_proc < metil_audio_data.length_io_procs;
@@ -216,7 +215,7 @@ OSStatus metil_audio_output_io_proc(
 
     float* buffer_out = audio_buffer_current.mData;
     unsigned long int size_buffer_out = audio_buffer_current.mDataByteSize / sizeof(float);
-    
+
     for (
       unsigned long int index_buffer_out = 0;
       index_buffer_out < size_buffer_out;

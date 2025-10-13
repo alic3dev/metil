@@ -29,7 +29,7 @@ extern void* _Nullable metil_renderer_on_initialize_data;
   id<MTLDepthStencilState> depth_state;
   id<MTLDepthStencilState> depth_state_writes_disabled;
   unsigned char depth_state_disabled;
-  
+
   MTLRenderPipelineDescriptor* descriptor_pipeline_render;
 
   id<MTLRenderCommandEncoder> encoder_render;
@@ -42,7 +42,7 @@ extern void* _Nullable metil_renderer_on_initialize_data;
   struct metil_object objects_fps_display[
     metil_renderer_length_objects_fps_display
   ];
-  
+
   id<MTLRenderPipelineState>* pipelines_render;
   unsigned short int length_pipelines_render;
   unsigned short int index_pipelines_render_current;
@@ -76,7 +76,7 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 - (void) mtkView: (nonnull MTKView*) metal_kit_view drawableSizeWillChange: (CGSize) size;
 
 - (void) poll: (unsigned int) _frame;
-- (void) poll_fps_display: (nonnull matrix_float4x4*) matrix_object_projection 
+- (void) poll_fps_display: (nonnull matrix_float4x4*) matrix_object_projection
   matrix_player_projection: (nonnull matrix_float4x4*) matrix_player_projection;
 - (void) poll_object: (nonnull struct metil_object*) object
   matrix_object_projection: (nonnull matrix_float4x4*) matrix_object_projection

@@ -49,7 +49,7 @@ int metil_initialize_with_data(
 
   metil_renderer_on_initialize = metil_renderer_on_initialize_function;
   metil_renderer_on_initialize_data = metil_renderer_on_initialize_function_data;
-  
+
   metil_paths_initialize(
     (char*) parameters[0],
     name
@@ -80,7 +80,7 @@ int metil_initialize_with_data(
     metil_scene_controller_destroy,
     (void*)0
   );
-  
+
   metil_termination_on_function_add(
     interrupt_handler_destroy,
     (void*)0
@@ -112,7 +112,7 @@ int metil_initialize_with_data(
   interrupt_handler_interrupt_function_add(
     metil_terminate_on_signal
   );
-  
+
   return NSApplicationMain(
     length_parameters,
     parameters

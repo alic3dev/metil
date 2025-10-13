@@ -138,7 +138,7 @@ void metil_controller_state_poll() {
   metil_controller_state.directional_left = directional_pad.left.value;
   metil_controller_state.directional_up = directional_pad.up.value;
 
-  metil_controller_state.cross = (  
+  metil_controller_state.cross = (
       metil_controller.profile.buttonA.value
   );
 

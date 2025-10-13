@@ -12,7 +12,7 @@ void metil_rendering_descriptors_pipeline_render_initialize(
   MTLPixelFormat format_pixel_stencil
 ) {
   descriptor_pipeline_render.rasterSampleCount = count_samples;
-  
+
   descriptor_pipeline_render.fragmentFunction = function_fragment;
   descriptor_pipeline_render.vertexFunction = function_vertex;
 

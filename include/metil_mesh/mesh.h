@@ -12,7 +12,7 @@ enum metil_mesh_positioning {
 struct metil_mesh {
   unsigned int length_indices;
   unsigned int length_vertices;
-  
+
   unsigned int* indices;
   struct clic3_vector4_float* vertices;
 

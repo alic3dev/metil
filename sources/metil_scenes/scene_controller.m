@@ -106,7 +106,6 @@ void metil_scene_controller_on_scene_change_add(
   ] = on_scene_change_data;
 }
 
-
 void metil_scene_controller_after_scene_change_add(
   metil_scene_controller_after_scene_change after_scene_change,
   void* after_scene_change_data

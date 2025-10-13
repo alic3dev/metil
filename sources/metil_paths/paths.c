@@ -113,7 +113,7 @@ void metil_paths_configuration_set(
       file_configuration
     )
   );
-  
+
   metil_paths.directory_configuration = clic3_char_arrays_concatenate(
     metil_paths.directory_home,
     metil_paths_directory_configuration

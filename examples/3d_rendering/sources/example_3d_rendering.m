@@ -19,7 +19,6 @@ int main(
   );
 }
 
-
 void example_3d_rendering_renderer_on_initialize(
   id<MTLDevice> metal_kit_device,
   struct metil_rendering_properties* metil_rendering_properties,

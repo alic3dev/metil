@@ -10,7 +10,7 @@ struct metil_renderer_data_object {
 
   matrix_float4x4 view_model_matrix_projection;
   struct clic3_vector3_float position;
-  
+
   float width;
   float height;
   float depth;

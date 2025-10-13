@@ -36,7 +36,6 @@ void metil_termination_on_function_add(
     metil_termination_length_on_functions - 1
   ] = on;
 
-
   metil_termination_on_functions_data = realloc(
     metil_termination_on_functions_data,
     sizeof(void*) *

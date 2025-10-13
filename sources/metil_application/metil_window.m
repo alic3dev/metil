@@ -81,7 +81,7 @@
 
     metil_input_cursor.delta.x = 0;
     metil_input_cursor.delta.y = 0;
-    
+
     moved_after_lock = 0;
 
     [NSCursor hide];
@@ -118,12 +118,12 @@
     moved_after_lock = 1;
   } else {
     metil_input_cursor.delta.x = (
-      metil_input_cursor.delta.x + 
+      metil_input_cursor.delta.x +
       event.deltaX
     );
 
     metil_input_cursor.delta.y = (
-      metil_input_cursor.delta.y + 
+      metil_input_cursor.delta.y +
       event.deltaY
     );
   }
