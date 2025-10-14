@@ -7,7 +7,7 @@
 
 #include <CoreGraphics/CoreGraphics.h>
 #include <CoreText/CoreText.h>
-#include <MetalKit/MetalKit.h>
+#include <Metal/MTLDevice.h>
 
 extern CTFontRef metil_font_reference_monospace;
 

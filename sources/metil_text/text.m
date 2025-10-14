@@ -7,7 +7,9 @@
 
 #include <CoreGraphics/CoreGraphics.h>
 #include <CoreText/CoreText.h>
-#include <MetalKit/MetalKit.h>
+#include <Metal/MTLDevice.h>
+#include <Metal/MTLTexture.h>
+#include <Metal/MTLTypes.h>
 
 CTFontRef metil_font_reference_monospace = (void*)0;
 CGColorSpaceRef metil_font_color_space = (void*)0;
@@ -235,7 +237,7 @@ struct metil_text_image* metil_text_render(
 }
 
 id<MTLTexture> metil_text_texture_render(
-  id<MTLDevice> metal_kit_device,
+  id<MTLDevice> metal_device,
   struct metil_text_image* text_image
 ) {
   MTLTextureDescriptor* texture_descriptor = [[MTLTextureDescriptor alloc] init];
@@ -245,7 +247,7 @@ id<MTLTexture> metil_text_texture_render(
   texture_descriptor.width = text_image->size.x;
   texture_descriptor.height = text_image->size.y;
 
-  id<MTLTexture> texture = [metal_kit_device
+  id<MTLTexture> texture = [metal_device
     newTextureWithDescriptor: texture_descriptor
   ];
 
@@ -267,7 +269,7 @@ id<MTLTexture> metil_text_texture_render(
 }
 
 id<MTLTexture> metil_text_mesh_with_texture_initialize(
-  id<MTLDevice> metal_kit_device,
+  id<MTLDevice> metal_device,
   struct metil_mesh* mesh,
   char* characters,
   CTFontRef font,
@@ -296,7 +298,7 @@ id<MTLTexture> metil_text_mesh_with_texture_initialize(
   );
 
   id<MTLTexture> texture = metil_text_texture_render(
-    metal_kit_device,
+    metal_device,
     text_image
   );
 

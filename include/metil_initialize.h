@@ -3,8 +3,6 @@
 
 #include <metil_rendering/metil_renderer.h>
 
-#include <MetalKit/MetalKit.h>
-
 void metil_terminate_on_signal(int);
 
 int metil_initialize(

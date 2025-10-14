@@ -17,7 +17,7 @@ struct metil_text_characters metil_text_characters_default = {
 };
 
 void metil_text_characters_initialize(
-  id<MTLDevice> metal_kit_device
+  id<MTLDevice> metal_device
 ) {
   metil_text_characters_default.meshes = malloc(
     sizeof(struct metil_mesh) *
@@ -61,7 +61,7 @@ void metil_text_characters_initialize(
     metil_text_characters_default.textures[
       index_character
     ] = metil_text_mesh_with_texture_initialize(
-      metal_kit_device,
+      metal_device,
       &metil_text_characters_default.meshes[index_character],
       character_array,
       metil_font_reference_monospace,
@@ -70,7 +70,7 @@ void metil_text_characters_initialize(
 
     metil_text_characters_default.vertices[
       index_character
-    ] = [metal_kit_device
+    ] = [metal_device
       newBufferWithBytes: metil_text_characters_default.meshes[index_character].vertices
       length: (
         metil_text_characters_default.meshes[index_character].length_vertices *
@@ -80,7 +80,7 @@ void metil_text_characters_initialize(
     ];
   }
 
-  metil_text_characters_default.indices = [metal_kit_device
+  metil_text_characters_default.indices = [metal_device
     newBufferWithBytes: metil_text_characters_default.meshes[0].indices
     length: (
       sizeof(unsigned int) *

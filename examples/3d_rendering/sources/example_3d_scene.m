@@ -8,16 +8,18 @@
 
 #include <clic3_vector.h>
 
+#include <Metal/MTLDevice.h>
+
 #include <math.h>
 #include <stdlib.h>
 
 void example_3d_scene_initialize(
   struct metil_scene* scene,
-  id<MTLDevice> metal_kit_device
+  id<MTLDevice> metal_device
 ) {
   metil_scene_initialize(
     scene,
-    metal_kit_device
+    metal_device
   );
 
   scene->player.poll_input = metil_player_poll_input_null;
@@ -63,7 +65,7 @@ void example_3d_scene_initialize(
 
     scene->objects[
       index_object
-    ]->vertices = [metal_kit_device
+    ]->vertices = [metal_device
       newBufferWithBytes: scene->objects[
         index_object
       ]->mesh.vertices
@@ -77,7 +79,7 @@ void example_3d_scene_initialize(
 
     scene->objects[
       index_object
-    ]->indices = [metal_kit_device
+    ]->indices = [metal_device
       newBufferWithBytes: scene->objects[
         index_object
       ]->mesh.indices
@@ -91,7 +93,7 @@ void example_3d_scene_initialize(
 
     scene->objects[
       index_object
-    ]->data = [metal_kit_device
+    ]->data = [metal_device
       newBufferWithLength: sizeof(struct metil_renderer_data_object)
       options: MTLResourceStorageModeShared
     ];

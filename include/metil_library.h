@@ -1,7 +1,7 @@
 #ifndef __metil_library_h
 #define __metil_library_h
 
-#include <MetalKit/MetalKit.h>
+#include <Metal/MTLLibrary.h>
 
 struct metil_library {
   id<MTLLibrary> library;
@@ -17,7 +17,7 @@ struct metil_library {
 
 extern struct metil_library metil_library;
 
-void metil_library_initialize_fps_display(
+void metil_library_fps_display_initialize(
   id<MTLDevice>,
   id<MTLLibrary>
 );
