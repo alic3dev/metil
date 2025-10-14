@@ -9,9 +9,9 @@
 
 void metil_scene_initialize(
   struct metil_scene* scene,
-  id<MTLDevice> metal_kit_device
+  id<MTLDevice> metal_device
 ) {
-  scene->metal_kit_device = metal_kit_device;
+  scene->metal_device = metal_device;
 
   metil_player_initialize(
     &scene->player

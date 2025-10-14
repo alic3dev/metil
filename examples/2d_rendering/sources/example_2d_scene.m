@@ -8,15 +8,17 @@
 
 #include <clic3_vector.h>
 
+#include <Metal/MTLDevice.h>
+
 #include <stdlib.h>
 
 void example_2d_scene_initialize(
   struct metil_scene* scene,
-  id<MTLDevice> metal_kit_device
+  id<MTLDevice> metal_device
 ) {
   metil_scene_initialize(
     scene,
-    metal_kit_device
+    metal_device
   );
 
   scene->player.poll_input = metil_player_poll_input_null;
@@ -63,7 +65,7 @@ void example_2d_scene_initialize(
       scene->objects[
         index_object
       ],
-      metal_kit_device
+      metal_device
     );
 
     struct metil_renderer_data_object* data_object = scene->objects[

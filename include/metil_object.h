@@ -5,7 +5,7 @@
 
 #include <clic3_vector.h>
 
-#include <MetalKit/MetalKit.h>
+#include <Metal/MTLDevice.h>
 
 struct metil_object {
   struct metil_mesh mesh;

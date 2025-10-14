@@ -30,10 +30,13 @@ int main(
 }
 
 void example_initialization_renderer_on_initialize(
-  id<MTLDevice> metal_kit_device,
-  struct metil_rendering_properties* metil_rendering_properties
+  struct metil_renderer_interface* metil_renderer_interface,
+  void* data
 ) {
-  metil_library.library = [metal_kit_device newDefaultLibrary];
+  metil_library.library = [
+    metil_renderer_interface->metal_device
+    newDefaultLibrary
+  ];
 
   metil_library.function_vertex = [
     metil_library.library
@@ -44,6 +47,13 @@ void example_initialization_renderer_on_initialize(
     metil_library.library
     newFunctionWithName: @"example_initialization_fragment"
   ];
+
+  /*
+    - set: rendering_properties
+    - initialize: scene
+    - set: on scene change
+    - etc.
+  */
 }
 ```
 

@@ -3,7 +3,7 @@
 
 #include <metil_scenes/scene.h>
 
-#include <MetalKit/MetalKit.h>
+#include <Metal/MTLDevice.h>
 
 void example_3d_scene_initialize(
   struct metil_scene*,

@@ -4,7 +4,7 @@
 #include <metil_object.h>
 #include <metil_player.h>
 
-#include <MetalKit/MetalKit.h>
+#include <Metal/MTLDevice.h>
 
 struct metil_scene;
 
@@ -24,7 +24,7 @@ struct metil_scene_rendering_properties {
 };
 
 struct metil_scene {
-  _Nullable id<MTLDevice> metal_kit_device;
+  _Nullable id<MTLDevice> metal_device;
 
   struct metil_player player;
   enum metil_scene_type type;

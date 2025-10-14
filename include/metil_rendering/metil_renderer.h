@@ -2,15 +2,24 @@
 #define __metil_renderer_h
 
 #include <metil_object.h>
+#include <metil_rendering/metil_renderer_interface.h>
 #include <metil_rendering/rendering_properties.h>
 
-#include <MetalKit/MetalKit.h>
+#include <Metal/MTLBuffer.h>
+#include <Metal/MTLCommandQueue.h>
+#include <Metal/MTLDepthStencil.h>
+#include <Metal/MTLDevice.h>
+#include <Metal/MTLLibrary.h>
+#include <Metal/MTLRenderCommandEncoder.h>
+#include <Metal/MTLRenderPipeline.h>
+#include <MetalKit/MTKView.h>
+
+#include <simd/simd.h>
 
 #define metil_renderer_length_objects_fps_display 5
 
 typedef void (*metil_renderer_on_initialize_function)(
-  _Nonnull id<MTLDevice>,
-  struct metil_rendering_properties* _Nonnull,
+  struct metil_renderer_interface* _Nonnull,
   void* _Nullable
 );
 
@@ -37,7 +46,7 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 
   id<MTLBuffer> index_buffer_mesh_current;
 
-  id<MTLDevice> metal_kit_device;
+  id<MTLDevice> metal_device;
 
   struct metil_object objects_fps_display[
     metil_renderer_length_objects_fps_display
@@ -46,6 +55,8 @@ extern void* _Nullable metil_renderer_on_initialize_data;
   id<MTLRenderPipelineState>* pipelines_render;
   unsigned short int length_pipelines_render;
   unsigned short int index_pipelines_render_current;
+
+  struct metil_renderer_interface renderer_interface;
 
   struct metil_rendering_properties rendering_properties;
 }
@@ -57,6 +68,8 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 - (void) command_queue_initialize;
 
 - (void) data_buffer_frames_initialize;
+
+- (void) descriptor_pipeline_render_initialize;
 
 - (void) destroy;
 
