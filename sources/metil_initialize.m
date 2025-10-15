@@ -9,6 +9,7 @@
 #include <metil_paths/paths.h>
 #include <metil_rendering/metil_renderer.h>
 #include <metil_scenes/scene_controller.h>
+#include <metil_system_information.h>
 #include <metil_termination.h>
 #include <metil_text/text.h>
 #include <metil_utilities/time.h>
@@ -45,6 +46,8 @@ int metil_initialize_with_data(
   metil_renderer_on_initialize_function metil_renderer_on_initialize_function,
   void* metil_renderer_on_initialize_function_data
 ) {
+  metil_system_information_initialize();
+
   srand(metil_time_milliseconds_get() % UINT_MAX);
 
   metil_renderer_on_initialize = metil_renderer_on_initialize_function;
