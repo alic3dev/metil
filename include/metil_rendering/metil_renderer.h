@@ -15,6 +15,7 @@
 #include <MetalKit/MTKView.h>
 
 #include <simd/simd.h>
+#include <pthread.h>
 
 #define metil_renderer_length_objects_fps_display 5
 
@@ -22,6 +23,14 @@ typedef void (*metil_renderer_on_initialize_function)(
   struct metil_renderer_interface* _Nonnull,
   void* _Nullable
 );
+
+struct metil_renderer_thread_poll_object_data {
+  struct metil_object* _Nonnull * _Nonnull objects;
+  unsigned int length_objects;
+  matrix_float4x4* _Nonnull matrix_object_projection;
+  matrix_float4x4* _Nonnull matrix_player_projection;
+  float* _Nonnull height_camera;
+};
 
 extern _Nullable metil_renderer_on_initialize_function metil_renderer_on_initialize;
 extern void* _Nullable metil_renderer_on_initialize_data;
@@ -59,6 +68,10 @@ extern void* _Nullable metil_renderer_on_initialize_data;
   struct metil_renderer_interface renderer_interface;
 
   struct metil_rendering_properties rendering_properties;
+
+  pthread_t* threads;
+  struct metil_renderer_thread_poll_object_data* threads_data;
+  unsigned int length_threads;
 }
 
 - (nonnull instancetype) initWithMetalKitView: (nonnull MTKView*) metal_kit_view;
@@ -91,9 +104,6 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 - (void) poll: (unsigned int) _frame;
 - (void) poll_fps_display: (nonnull matrix_float4x4*) matrix_object_projection
   matrix_player_projection: (nonnull matrix_float4x4*) matrix_player_projection;
-- (void) poll_object: (nonnull struct metil_object*) object
-  matrix_object_projection: (nonnull matrix_float4x4*) matrix_object_projection
-  matrix_player_projection: (nonnull matrix_float4x4*) matrix_player_projection;
 
 - (void) render;
 - (void) render_fps_display;
@@ -106,6 +116,17 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 - (void) termination_functions_initialize;
 
 @end
+
+void* _Nullable metil_renderer_thread_poll_object(
+  void* _Nonnull
+);
+
+void metil_renderer_poll_object(
+  struct metil_object* _Nonnull,
+  matrix_float4x4* _Nonnull,
+  matrix_float4x4* _Nonnull,
+  float* _Nonnull
+);
 
 void metil_renderer_after_scene_change(int, void* _Nonnull);
 void metil_renderer_on_termination(void* _Nonnull);

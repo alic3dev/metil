@@ -15,6 +15,7 @@
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
 #include <metil_scenes/scene.h>
 #include <metil_scenes/scene_controller.h>
+#include <metil_system_information.h>
 #include <metil_termination.h>
 #include <metil_text/text_characters.h>
 #include <metil_utilities/time.h>
@@ -51,6 +52,37 @@ void* metil_renderer_on_initialize_data = (void*)0;
   }
 
   [self initialize_null];
+
+  self->length_threads = (
+    metil_system_information.cores_cpu *
+    metil_count_max_frames
+  );
+
+  self->threads = malloc(
+    sizeof(pthread_t*) *
+    self->length_threads
+  );
+
+  self->threads_data = malloc(
+    sizeof(struct metil_renderer_thread_poll_object_data) *
+    self->length_threads
+  );
+
+  for (
+    unsigned int index_thread = 0;
+    index_thread < self->length_threads;
+    ++index_thread
+  ) {
+    self->threads[
+      index_thread
+    ] = (void*)0;
+
+    self->threads_data[
+      index_thread
+    ].height_camera = (
+      &self->rendering_properties.camera.height
+    );
+  }
 
   self->metal_device = metal_kit_view.device;
 
@@ -130,6 +162,36 @@ void* metil_renderer_on_initialize_data = (void*)0;
 }
 
 - (void) destroy {
+  for (
+    unsigned int index_thread = 0;
+    index_thread < self->length_threads;
+    ++index_thread
+  ) {
+    if (
+      self->threads[
+        index_thread
+      ] == (void*)0
+    ) {
+      continue;
+    }
+
+    pthread_cancel(
+      self->threads[
+        index_thread
+      ]
+    );
+
+    pthread_join(
+      self->threads[
+        index_thread
+      ],
+      (void*)0
+    );
+  }
+
+  free(self->threads);
+  free(self->threads_data);
+
   [self->metal_device release];
 
   for (
@@ -573,24 +635,108 @@ void* metil_renderer_on_initialize_data = (void*)0;
     )
   );
 
+  unsigned char _index_data_buffer_frame = self->index_data_buffer_frame;
+  unsigned int length_segment_objects = (
+    metil_scene_controller.scene.length_objects /
+    metil_system_information.cores_cpu
+  );
+
   for (
-    unsigned int index_object = 0;
-    index_object < metil_scene_controller.scene.length_objects;
-    ++index_object
+    unsigned int index_core_cpu = 0;
+    index_core_cpu < metil_system_information.cores_cpu;
+    ++index_core_cpu
   ) {
-    [self
-      poll_object: metil_scene_controller.scene.objects[
-        index_object
+    unsigned int index_thread = (
+      metil_system_information.cores_cpu *
+      _index_data_buffer_frame +
+      index_core_cpu 
+    );
+
+    if (
+      self->threads[
+        index_thread
+      ] != (void*)0
+    ) {
+      pthread_join(
+        self->threads[
+          index_thread
+        ],
+        (void*)0
+      );
+    }
+
+    unsigned int offset_index_object = (
+      length_segment_objects * index_core_cpu
+    );
+
+    self->threads_data[
+      index_thread
+    ].objects = (
+      metil_scene_controller.scene.objects +
+      offset_index_object
+    );
+
+    self->threads_data[
+      index_thread
+    ].length_objects = (
+      index_core_cpu < metil_system_information.cores_cpu - 1
+      ? length_segment_objects
+      : (metil_scene_controller.scene.length_objects) - (
+        length_segment_objects * index_core_cpu
+      )
+    );
+
+    self->threads_data[
+      index_thread
+    ].matrix_object_projection = (
+      &matrix_object_projection
+    );
+    
+    self->threads_data[
+      index_thread
+    ].matrix_player_projection = (
+      &matrix_player_projection
+    );
+    
+    pthread_create(
+      &self->threads[
+        index_thread
+      ],
+      (void*)0,
+      metil_renderer_thread_poll_object,
+      &self->threads_data[
+        index_thread
       ]
-      matrix_object_projection: &matrix_object_projection
-      matrix_player_projection: &matrix_player_projection
-    ];
+    );
   }
 
   [self
     poll_fps_display: &matrix_object_projection
     matrix_player_projection: &matrix_player_projection
   ];
+  
+  for (
+    unsigned int index_core_cpu = 0;
+    index_core_cpu < metil_system_information.cores_cpu;
+    ++index_core_cpu
+  ) {
+    unsigned int index_thread = (
+      metil_system_information.cores_cpu *
+      _index_data_buffer_frame +
+      index_core_cpu 
+    );
+
+    pthread_join(
+      self->threads[
+        index_thread
+      ],
+      (void*)0
+    );
+
+    self->threads[
+      index_thread
+    ] = (void*)0;
+  }
 }
 
 - (void) poll_fps_display:
@@ -661,108 +807,17 @@ void* metil_renderer_on_initialize_data = (void*)0;
       char_array_fps[index_object_fps_display]
     ];
 
-    [self
-      poll_object: &self->objects_fps_display[
+    metil_renderer_poll_object(
+      &self->objects_fps_display[
         index_object_fps_display
-      ]
-      matrix_object_projection: matrix_object_projection
-      matrix_player_projection: matrix_player_projection
-    ];
+      ],
+      matrix_object_projection,
+      matrix_player_projection,
+      &self->rendering_properties.camera.height
+    );
   }
 
   free(char_array_fps);
-}
-
-- (void) poll_object:
-  (struct metil_object*) object
-  matrix_object_projection: (matrix_float4x4*) matrix_object_projection
-  matrix_player_projection: (matrix_float4x4*) matrix_player_projection
-{
-  struct metil_renderer_data_object* data = object->data.contents;
-
-  data->position.x = object->position.x;
-  data->position.y = object->position.y;
-  data->position.z = object->position.z;
-
-  if (
-    object->mesh.positioning == metil_mesh_positioning_static
-  ) {
-    data->view_model_matrix_projection = (matrix_float4x4) {{
-      { 1.0f, 0.0f, 0.0f, 0.0f },
-      { 0.0f, 1.0f, 0.0f, 0.0f },
-      { 0.0f, 0.0f, 1.0f, 0.0f },
-      { object->position.x, object->position.y, object->position.z, 1.0f }
-    }};
-  } else {
-    struct clic3_vector3_float position = {
-      .x = object->position.x - metil_scene_controller.scene.player.position.x,
-      .y = (
-        object->position.y -
-        metil_scene_controller.scene.player.position.y -
-        self->rendering_properties.camera.height
-      ),
-      .z = object->position.z - metil_scene_controller.scene.player.position.z
-    };
-
-    matrix_float4x4* matrix_projection = (void*)0;
-
-    if (
-      object->mesh.positioning == metil_mesh_positioning_player
-    ) {
-      matrix_projection = matrix_player_projection;
-    } else {
-      matrix_projection = matrix_object_projection;
-    }
-
-    matrix_float4x4 matrix_projection_object_with_rotation = matrix_multiply(
-      (matrix_float4x4) {{
-        { 1.0f, 0.0f, 0.0f, 0.0f },
-        { 0.0f, 1.0f, 0.0f, 0.0f },
-        { 0.0f, 0.0f, 1.0f, 0.0f },
-        {
-          position.x,
-          position.y,
-          -position.z,
-          1
-        }
-      }},
-      (matrix_float4x4) {{
-        { 1.0f, 0.0f, 0.0f, 0.0f },
-        { 0.0f, cos(object->rotation.x), -sin(object->rotation.x), 0.0f },
-        { 0.0f, sin(object->rotation.x), cos(object->rotation.x), 0.0f },
-        { 0.0f, 0.0f, 0.0f, 1.0f }
-      }}
-    );
-
-    matrix_projection_object_with_rotation = matrix_multiply(
-      matrix_projection_object_with_rotation,
-      (matrix_float4x4) {{
-        { cos(object->rotation.y), 0.0f, -sin(object->rotation.y), 0.0f },
-        { 0.0f, 1.0f, 0.0f, 0.0f },
-        { sin(object->rotation.y), 0.0f, cos(object->rotation.y), 0.0f },
-        { 0.0f, 0.0f, 0.0f, 1.0f }
-      }}
-    );
-
-    matrix_projection_object_with_rotation = matrix_multiply(
-      matrix_projection_object_with_rotation,
-      (matrix_float4x4) {{
-        { cos(object->rotation.z), -sin(object->rotation.z), 0.0f, 0.0f },
-        { sin(object->rotation.z), cos(object->rotation.z), 0.0f, 0.0f },
-        { 0.0f, 0.0f, 1.0f, 0.0f },
-        { 0.0f, 0.0f, 0.0f, 1.0f }
-      }}
-    );
-
-    data->view_model_matrix_projection = matrix_multiply(
-      *matrix_projection,
-      matrix_projection_object_with_rotation
-    );
-  }
-
-  data->width = object->mesh.size.x;
-  data->height = object->mesh.size.y;
-  data->depth = object->mesh.size.z;
 }
 
 - (void) render {
@@ -898,6 +953,124 @@ void* metil_renderer_on_initialize_data = (void*)0;
 }
 
 @end
+
+void* metil_renderer_thread_poll_object(
+  void* data
+) {
+  struct metil_renderer_thread_poll_object_data* metil_renderer_thread_poll_object_data = (
+    (struct metil_renderer_thread_poll_object_data*) data
+  );
+
+  for (
+    unsigned int index_object = 0;
+    index_object < metil_renderer_thread_poll_object_data->length_objects;
+    ++index_object
+  ) {
+    metil_renderer_poll_object(
+      metil_renderer_thread_poll_object_data->objects[
+        index_object
+      ],
+      metil_renderer_thread_poll_object_data->matrix_object_projection,
+      metil_renderer_thread_poll_object_data->matrix_player_projection,
+      metil_renderer_thread_poll_object_data->height_camera
+    );
+  }
+
+  return (void*)0;
+}
+
+void metil_renderer_poll_object(
+  struct metil_object* object,
+  matrix_float4x4* matrix_object_projection,
+  matrix_float4x4* matrix_player_projection,
+  float* height_camera
+) {
+  struct metil_renderer_data_object* data = object->data.contents;
+
+  data->position.x = object->position.x;
+  data->position.y = object->position.y;
+  data->position.z = object->position.z;
+
+  if (
+    object->mesh.positioning == metil_mesh_positioning_static
+  ) {
+    data->view_model_matrix_projection = (matrix_float4x4) {{
+      { 1.0f, 0.0f, 0.0f, 0.0f },
+      { 0.0f, 1.0f, 0.0f, 0.0f },
+      { 0.0f, 0.0f, 1.0f, 0.0f },
+      { object->position.x, object->position.y, object->position.z, 1.0f }
+    }};
+  } else {
+    struct clic3_vector3_float position = {
+      .x = object->position.x - metil_scene_controller.scene.player.position.x,
+      .y = (
+        object->position.y -
+        metil_scene_controller.scene.player.position.y -
+        *height_camera
+      ),
+      .z = object->position.z - metil_scene_controller.scene.player.position.z
+    };
+
+    matrix_float4x4* matrix_projection = (void*)0;
+
+    if (
+      object->mesh.positioning == metil_mesh_positioning_player
+    ) {
+      matrix_projection = matrix_player_projection;
+    } else {
+      matrix_projection = matrix_object_projection;
+    }
+
+    matrix_float4x4 matrix_projection_object_with_rotation = matrix_multiply(
+      (matrix_float4x4) {{
+        { 1.0f, 0.0f, 0.0f, 0.0f },
+        { 0.0f, 1.0f, 0.0f, 0.0f },
+        { 0.0f, 0.0f, 1.0f, 0.0f },
+        {
+          position.x,
+          position.y,
+          -position.z,
+          1
+        }
+      }},
+      (matrix_float4x4) {{
+        { 1.0f, 0.0f, 0.0f, 0.0f },
+        { 0.0f, cos(object->rotation.x), -sin(object->rotation.x), 0.0f },
+        { 0.0f, sin(object->rotation.x), cos(object->rotation.x), 0.0f },
+        { 0.0f, 0.0f, 0.0f, 1.0f }
+      }}
+    );
+
+    matrix_projection_object_with_rotation = matrix_multiply(
+      matrix_projection_object_with_rotation,
+      (matrix_float4x4) {{
+        { cos(object->rotation.y), 0.0f, -sin(object->rotation.y), 0.0f },
+        { 0.0f, 1.0f, 0.0f, 0.0f },
+        { sin(object->rotation.y), 0.0f, cos(object->rotation.y), 0.0f },
+        { 0.0f, 0.0f, 0.0f, 1.0f }
+      }}
+    );
+
+    matrix_projection_object_with_rotation = matrix_multiply(
+      matrix_projection_object_with_rotation,
+      (matrix_float4x4) {{
+        { cos(object->rotation.z), -sin(object->rotation.z), 0.0f, 0.0f },
+        { sin(object->rotation.z), cos(object->rotation.z), 0.0f, 0.0f },
+        { 0.0f, 0.0f, 1.0f, 0.0f },
+        { 0.0f, 0.0f, 0.0f, 1.0f }
+      }}
+    );
+
+    data->view_model_matrix_projection = matrix_multiply(
+      *matrix_projection,
+      matrix_projection_object_with_rotation
+    );
+  }
+
+  data->width = object->mesh.size.x;
+  data->height = object->mesh.size.y;
+  data->depth = object->mesh.size.z;
+}
 
 void metil_renderer_after_scene_change(
   int _,
