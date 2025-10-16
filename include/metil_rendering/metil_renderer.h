@@ -27,6 +27,7 @@ typedef void (*metil_renderer_on_initialize_function)(
 struct metil_renderer_thread_poll_object_data {
   struct metil_object* _Nonnull * _Nonnull objects;
   unsigned int length_objects;
+  matrix_float3x4* _Nonnull matrix_static_projection;
   matrix_float4x4* _Nonnull matrix_object_projection;
   matrix_float4x4* _Nonnull matrix_player_projection;
   float* _Nonnull height_camera;
@@ -40,6 +41,8 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 
 @interface metil_renderer : NSObject<MTKViewDelegate> {
   id<MTLCommandQueue> command_queue;
+
+  CGSize size_view;
 
   id<MTLBuffer> data_buffer_frame[metil_count_max_frames];
   unsigned char index_data_buffer_frame;
@@ -66,12 +69,13 @@ extern void* _Nullable metil_renderer_on_initialize_data;
   unsigned short int index_pipelines_render_current;
 
   struct metil_renderer_interface renderer_interface;
-
   struct metil_rendering_properties rendering_properties;
 
   pthread_t* threads;
   struct metil_renderer_thread_poll_object_data* threads_data;
   unsigned int length_threads;
+
+  matrix_float3x4 matrix_projection_static;
 }
 
 - (nonnull instancetype) initWithMetalKitView: (nonnull MTKView*) metal_kit_view;
@@ -123,6 +127,7 @@ void* _Nullable metil_renderer_thread_poll_object(
 
 void metil_renderer_poll_object(
   struct metil_object* _Nonnull,
+  matrix_float3x4* _Nonnull,
   matrix_float4x4* _Nonnull,
   matrix_float4x4* _Nonnull,
   float* _Nonnull

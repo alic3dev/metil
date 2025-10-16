@@ -16,6 +16,7 @@ struct metil_camera {
   struct metil_lens lens;
 
   float ratio_aspect;
+  float ratio_aspect_view;
 
   float height;
 
@@ -33,6 +34,8 @@ void metil_camera_initialize(
 
 void metil_camera_ratio_aspect_set(
   struct metil_camera*,
+  float,
+  float,
   float
 );
 
