@@ -923,9 +923,9 @@ void* metil_renderer_on_initialize_data = (void*)0;
   ];
 
   [encoder_render
-    drawIndexedPrimitives: MTLPrimitiveTypeTriangle
+    drawIndexedPrimitives: object->type_primitive
     indexCount: object->mesh.length_indices
-    indexType: MTLIndexTypeUInt32
+    indexType: object->type_index
     indexBuffer: object->indices
     indexBufferOffset: 0
   ];

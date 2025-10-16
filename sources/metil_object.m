@@ -5,7 +5,9 @@
 
 #include <clic3_vector.h>
 
+#include <Metal/MTLArgument.h>
 #include <Metal/MTLDevice.h>
+#include <Metal/MTLRenderCommandEncoder.h>
 #include <Metal/MTLResource.h>
 
 void metil_object_initialize(
@@ -28,6 +30,9 @@ void metil_object_initialize(
   metil_object->index_pipeline_render = 0;
 
   metil_object->depth_disabled = 0;
+
+  metil_object->type_primitive = MTLPrimitiveTypeTriangle;
+  metil_object->type_index = MTLIndexTypeUInt32;
 }
 
 void metil_object_buffers_initialize(
