@@ -5,7 +5,9 @@
 
 #include <clic3_vector.h>
 
+#include <Metal/MTLArgument.h>
 #include <Metal/MTLDevice.h>
+#include <Metal/MTLRenderCommandEncoder.h>
 
 struct metil_object {
   struct metil_mesh mesh;
@@ -23,6 +25,9 @@ struct metil_object {
   unsigned char index_pipeline_render;
 
   unsigned char depth_disabled;
+
+  MTLPrimitiveType type_primitive;
+  MTLIndexType type_index;
 };
 
 void metil_object_initialize(
