@@ -79,6 +79,12 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
     self->threads_data[
       index_thread
+    ].matrix_static_projection = (
+      &self->matrix_projection_static
+    );
+
+    self->threads_data[
+      index_thread
     ].height_camera = (
       &self->rendering_properties.camera.height
     );
@@ -394,9 +400,19 @@ void* metil_renderer_on_initialize_data = (void*)0;
     1920x1203 is fine
     1920x1202 causes slow down
   */
+
+  self->size_view = size;
+
   metil_camera_ratio_aspect_set(
     &self->rendering_properties.camera,
-    (float) size.width / (float) size.height
+    16 / 9,
+    (float) self->size_view.width,
+    (float) self->size_view.height
+  );
+
+  self->matrix_projection_static.columns[0][0] = (
+    self->rendering_properties.camera.ratio_aspect /
+    self->rendering_properties.camera.ratio_aspect_view
   );
 }
 
@@ -451,6 +467,12 @@ void* metil_renderer_on_initialize_data = (void*)0;
   self->encoder_render = (void*)0;
   self->encoder_render_encoding = 0;
   self->index_buffer_mesh_current = (void*)0;
+
+  self->matrix_projection_static = (matrix_float3x4) {{
+    { 1.0f, 0.0f, 0.0f, 0.0f },
+    { 0.0f, 1.0f, 0.0f, 0.0f },
+    { 0.0f, 0.0f, 1.0f, 0.0f },
+  }};
 
   for (
     unsigned char index_data_buffer_frame_initializer = 0;
@@ -811,6 +833,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
       &self->objects_fps_display[
         index_object_fps_display
       ],
+      &self->matrix_projection_static,
       matrix_object_projection,
       matrix_player_projection,
       &self->rendering_properties.camera.height
@@ -970,6 +993,7 @@ void* metil_renderer_thread_poll_object(
       metil_renderer_thread_poll_object_data->objects[
         index_object
       ],
+      metil_renderer_thread_poll_object_data->matrix_static_projection,
       metil_renderer_thread_poll_object_data->matrix_object_projection,
       metil_renderer_thread_poll_object_data->matrix_player_projection,
       metil_renderer_thread_poll_object_data->height_camera
@@ -981,6 +1005,7 @@ void* metil_renderer_thread_poll_object(
 
 void metil_renderer_poll_object(
   struct metil_object* object,
+  matrix_float3x4* matrix_projection_static,
   matrix_float4x4* matrix_object_projection,
   matrix_float4x4* matrix_player_projection,
   float* height_camera
@@ -995,9 +1020,9 @@ void metil_renderer_poll_object(
     object->mesh.positioning == metil_mesh_positioning_static
   ) {
     data->view_model_matrix_projection = (matrix_float4x4) {{
-      { 1.0f, 0.0f, 0.0f, 0.0f },
-      { 0.0f, 1.0f, 0.0f, 0.0f },
-      { 0.0f, 0.0f, 1.0f, 0.0f },
+      matrix_projection_static->columns[0],
+      matrix_projection_static->columns[1],
+      matrix_projection_static->columns[2],
       { object->position.x, object->position.y, object->position.z, 1.0f }
     }};
   } else {

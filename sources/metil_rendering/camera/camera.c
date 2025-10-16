@@ -30,9 +30,14 @@ void metil_camera_initialize(
 
 void metil_camera_ratio_aspect_set(
   struct metil_camera* camera,
-  float ratio_aspect
+  float ratio_aspect,
+  float width,
+  float height
 ) {
   camera->ratio_aspect = ratio_aspect;
+  camera->ratio_aspect_view = (
+    width / height
+  );
 
   metil_camera_field_of_view_set(
     camera
@@ -81,7 +86,12 @@ void metil_camera_field_of_view_set(
     )
   );
 
-  camera->matrix_viewport_projection.columns[0].x = camera->vector_normalization.x;
+  // TODO: This keeps objects sized properly, however, it also increases the FOV when Y shrinks. Will fix this later.
+  camera->matrix_viewport_projection.columns[0].x = (
+    camera->vector_normalization.x * (
+      camera->ratio_aspect / camera->ratio_aspect_view
+    )
+  );
   camera->matrix_viewport_projection.columns[1].y = camera->vector_normalization.y;
   camera->matrix_viewport_projection.columns[2].z = camera->vector_normalization.z;
   camera->matrix_viewport_projection.columns[3].z = camera->distance_view.near * camera->vector_normalization.z;
