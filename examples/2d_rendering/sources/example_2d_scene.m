@@ -56,10 +56,10 @@ void example_2d_scene_initialize(
       &scene->objects[
         index_object
       ]->mesh,
-      0.2
+      0.2f
     );
 
-    scene->objects[index_object]->mesh.positioning = metil_mesh_positioning_static;
+    scene->objects[index_object]->mesh.positioning = metil_mesh_positioning_absolute;
 
     metil_object_buffers_initialize(
       scene->objects[
