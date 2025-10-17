@@ -70,17 +70,6 @@ directory_app_contents_resources=${directory_app_contents}/Resources
 
 directory_macos_sdk=${shell xcrun --show-sdk-path}
 
-file_cer0_library=${directory_cer0_library}/cer0.o
-file_clic3_library=${directory_clic3_library}/clic3.o
-file_interrupt_handler_library=${directory_interrupt_handler_library}/interrupt_handler.o
-file_math_c_library=${directory_math_c_library}/math_c.o
-
-ifeq (${debug}, 1)
-	file_metil_library=${directory_metil_library}/metil_debug.o
-else
-	file_metil_library=${directory_metil_library}/metil.o
-endif
-
 file_metil_metallib=${directory_metil_library}/metil.metallib
 file_metil_storyboard=${directory_metil_library}/metil.storyboardc
 
