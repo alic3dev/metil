@@ -25,25 +25,43 @@ directory_objects_objc=${directory_objects}/objc
 directory_sources=sources
 directory_storyboards=storyboards
 
+version_target_cer0=0
+version_target_clic3=0
+version_target_interrupt_handler=0
+version_target_math_c=0
+
 directory_cer0=../cer0
 directory_cer0_include=${directory_cer0}/include
-directory_cer0_library=${directory_cer0}/library
-file_cer0_library=${directory_cer0_library}/cer0.o
 
 directory_clic3=../clic3
 directory_clic3_include=${directory_clic3}/include
-directory_clic3_library=${directory_clic3}/library
-file_clic3_library=${directory_clic3_library}/clic3.dylib
 
 directory_interrupt_handler=../interrupt_handler
 directory_interrupt_handler_include=${directory_interrupt_handler}/include
-directory_interrupt_handler_library=${directory_interrupt_handler}/library
-file_interrupt_handler_library=${directory_interrupt_handler_library}/interrupt_handler.o
 
 directory_math_c=../math_c
 directory_math_c_include=${directory_math_c}/include
+
+ifeq (${debug}, 1)
+directory_cer0_library=${directory_cer0}/library_debug
+file_cer0_library=${directory_cer0_library}/cer0_debug.${version_target_cer0}.dylib
+directory_clic3_library=${directory_clic3}/library_debug
+file_clic3_library=${directory_clic3_library}/clic3_debug.${version_target_clic3}.dylib
+directory_interrupt_handler_library=${directory_interrupt_handler}/library_debug
+file_interrupt_handler_library=${directory_interrupt_handler_library}/interrupt_handler_debug.${version_target_interrupt_handler}.dylib
+directory_math_c_library=${directory_math_c}/library_debug
+file_math_c_library=${directory_math_c_library}/math_c_debug.${version_target_math_c}.dylib
+else
+directory_cer0_library=${directory_cer0}/library
+file_cer0_library=${directory_cer0_library}/cer0.${version_target_cer0}.dylib
+directory_clic3_library=${directory_clic3}/library
+file_clic3_library=${directory_clic3_library}/clic3.${version_target_clic3}.dylib
+directory_interrupt_handler_library=${directory_interrupt_handler}/library
+file_interrupt_handler_library=${directory_interrupt_handler_library}/interrupt_handler.${version_target_interrupt_handler}.dylib
 directory_math_c_library=${directory_math_c}/library
-file_math_c_library=${directory_math_c_library}/math_c.o
+file_math_c_library=${directory_math_c_library}/math_c.${version_target_math_c}.dylib
+file_math_c_library_object=${directory_math_c_library}/math_c.${version_target_math_c}.dylib
+endif
 
 directory_metal=metal
 directory_air=air
@@ -111,16 +129,13 @@ c_flags_debug=${c_flags_objc_debug} -da -Q
 c_flags_c=${c_flags_platform} ${c_flags_includes}
 c_flags_objc=${c_flags_platform} ${c_flags_includes} -x objective-c -fmodules -fconstant-cfstrings -DTARGET_MACOS
 c_flags_frameworks=${addprefix -framework ,${frameworks}}
-c_flags_output=${c_flags_platform} ${c_flags_frameworks}
 
 ifeq (${debug}, 1)
 	c_flags_c:=${c_flags_c} ${c_flags_debug}
 	c_flags_objc:=${c_flags_objc} ${c_flags_objc_debug}
-	c_flags_output:=${c_flags_output} ${c_flags_objc_debug}
 else
 	c_flags_c:=${c_flags_c} -O3
 	c_flags_objc:=${c_flags_objc} -O3
-	c_flags_output:=${c_flags_output} -O3
 endif
 
 ar=ar
@@ -157,13 +172,6 @@ ${name}_static: ${file_library_static}
 
 examples: .always
 	cd ${directory_examples} && make all
-
-${file_library}: ${files_objects_c} ${files_objects_objc}
-	mkdir -p ${directory_library}
-	${ld} ${ld_flags} -r ${files_objects_c} ${files_objects_objc} -o $@
-ifneq (${debug}, 1)
-	${strip} ${strip_flags} ${file_library}
-endif
 
 ${file_library_dylib}: ${files_objects_c} ${files_objects_objc}
 	mkdir -p ${directory_library}
