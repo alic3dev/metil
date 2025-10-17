@@ -11,6 +11,9 @@
 
 #define metil_count_time_frames 60
 
+#define metil_rendering_properties_mode_default 0b1
+#define metil_rendering_properties_mode_wireframe 0b10
+
 struct metil_rendering_properties {
   struct metil_camera camera;
 
@@ -25,6 +28,8 @@ struct metil_rendering_properties {
 
   unsigned char fps_display;
   float fps;
+
+  unsigned char mode;
 
   unsigned long int time_frames[metil_count_time_frames];
 };

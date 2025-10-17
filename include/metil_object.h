@@ -16,8 +16,8 @@ struct metil_object {
   _Nonnull id<MTLBuffer> indices;
   _Nonnull id<MTLBuffer> vertices;
 
-  _Nonnull id<MTLTexture> texture;
-  _Nullable id<MTLTexture> texture_secondary;
+  _Nonnull id<MTLTexture>* _Nonnull textures;
+  unsigned char length_textures;
 
   struct clic3_vector3_float position;
   struct clic3_vector3_float rotation;
@@ -37,6 +37,11 @@ void metil_object_initialize(
 void metil_object_buffers_initialize(
   struct metil_object* _Nonnull,
   _Nonnull id<MTLDevice>
+);
+
+void metil_object_texture_add(
+  struct metil_object* _Nonnull,
+  _Nullable id<MTLTexture>
 );
 
 void metil_object_destroy(

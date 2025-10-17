@@ -38,6 +38,7 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 
 #define metil_renderer_pipelines_render_index_library 0
 #define metil_renderer_pipelines_render_index_fps_display 1
+#define metil_renderer_pipelines_render_index_wireframe 2
 
 @interface metil_renderer : NSObject<MTKViewDelegate> {
   id<MTLCommandQueue> command_queue;
@@ -101,7 +102,13 @@ extern void* _Nullable metil_renderer_on_initialize_data;
   function_vertex: (nonnull id<MTLFunction>) function_vertex;
 - (void) pipelines_clear;
 - (void) pipelines_initialize;
+- (void) pipeline_render_initialize:
+  (unsigned short int) index_pipeline_render
+  function_fragment: (nonnull id<MTLFunction>) function_fragment
+  function_vertex: (nonnull id<MTLFunction>) function_vertex;
 - (void) pipeline_render_fps_display_initiliaze;
+- (void) pipeline_render_library_initiliaze;
+- (void) pipeline_render_wireframe_initialize;
 
 - (void) mtkView: (nonnull MTKView*) metal_kit_view drawableSizeWillChange: (CGSize) size;
 
@@ -112,6 +119,18 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 - (void) render;
 - (void) render_fps_display;
 - (void) render_object: (nonnull struct metil_object*) object;
+- (void) render_object_wireframe: (nonnull struct metil_object*) object;
+- (void) render_encode_draw:
+  (nonnull id<MTLBuffer>) vertices
+  indices: (nonnull id<MTLBuffer>) indices
+  length_indices: (unsigned int) length_indices
+  textures: (_Nonnull id<MTLTexture>* _Nullable) textures
+  length_textures: (unsigned char) length_textures
+  data: (nonnull id<MTLBuffer>) data
+  index_pipeline_render: (unsigned short int) index_pipeline_render
+  depth_disabled: (unsigned char) depth_disabled
+  type_primitive: (MTLPrimitiveType) type_primitive
+  type_index: (MTLIndexType) type_index;
 
 - (void) rendering_properties_initialize;
 

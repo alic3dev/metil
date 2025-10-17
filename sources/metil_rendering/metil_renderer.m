@@ -428,6 +428,13 @@ void* metil_renderer_on_initialize_data = (void*)0;
       ]
     );
 
+    metil_object_texture_add(
+      &self->objects_fps_display[
+        index_object_fps_display
+      ],
+      (void*)0
+    );
+
     self->objects_fps_display[
       index_object_fps_display
     ].position.y = 0.0f;
@@ -484,7 +491,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
     ] = (void*)0;
   }
 
-  self->length_pipelines_render = 2;
+  self->length_pipelines_render = 3;
   self->pipelines_render = malloc(
     sizeof(id<MTLRenderPipelineState>) *
     self->length_pipelines_render
@@ -532,14 +539,14 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
 - (void) pipelines_clear {
   for (
-    unsigned short int index_pipeline_render = 2;
+    unsigned short int index_pipeline_render = 3;
     index_pipeline_render < self->length_pipelines_render;
     ++index_pipeline_render
   ) {
     [self->pipelines_render[index_pipeline_render] release];
   }
 
-  self->length_pipelines_render = 2;
+  self->length_pipelines_render = 3;
   self->pipelines_render = realloc(
     self->pipelines_render,
     sizeof(id<MTLRenderPipelineState>) *
@@ -548,50 +555,57 @@ void* metil_renderer_on_initialize_data = (void*)0;
 }
 
 - (void) pipelines_initialize {
+  [self pipeline_render_fps_display_initiliaze];
+  [self pipeline_render_library_initiliaze];
+  [self pipeline_render_wireframe_initialize];
+}
+
+- (void) pipeline_render_initialize:
+  (unsigned short int) index_pipeline_render
+  function_fragment: (id<MTLFunction>) function_fragment
+  function_vertex: (id<MTLFunction>) function_vertex {
   if (
     self->pipelines_render[
-      metil_renderer_pipelines_render_index_library
+      index_pipeline_render
     ] == (void*) 0 &&
-    metil_library.function_fragment != (void*)0 &&
-    metil_library.function_vertex != (void*)0
+    function_fragment != (void*)0 &&
+    function_vertex != (void*)0
   ) {
-    self->descriptor_pipeline_render.fragmentFunction = metil_library.function_fragment;
-    self->descriptor_pipeline_render.vertexFunction = metil_library.function_vertex;
+    self->descriptor_pipeline_render.fragmentFunction = function_fragment;
+    self->descriptor_pipeline_render.vertexFunction = function_vertex;
 
     self->pipelines_render[
-      metil_renderer_pipelines_render_index_library
+      index_pipeline_render
     ] = [self->metal_device
       newRenderPipelineStateWithDescriptor: self->descriptor_pipeline_render
       error: (void*)0
     ];
   }
+}
 
-  [self pipeline_render_fps_display_initiliaze];
+
+- (void) pipeline_render_library_initiliaze {
+  [self
+    pipeline_render_initialize: metil_renderer_pipelines_render_index_library
+    function_fragment: metil_library.function_fragment
+    function_vertex: metil_library.function_vertex
+  ];
+}
+
+- (void) pipeline_render_wireframe_initialize {
+  [self
+    pipeline_render_initialize: metil_renderer_pipelines_render_index_wireframe
+    function_fragment: metil_library.function_fragment_wireframe
+    function_vertex: metil_library.function_vertex_wireframe
+  ];
 }
 
 - (void) pipeline_render_fps_display_initiliaze {
-  if (
-    self->pipelines_render[
-      metil_renderer_pipelines_render_index_fps_display
-    ] == (void*)0 &&
-    metil_library.function_vertex_fps_display != (void*)0 &&
-    metil_library.function_fragment_fps_display != (void*)0
-  ) {
-    self->descriptor_pipeline_render.vertexFunction = (
-      metil_library.function_vertex_fps_display
-    );
-
-    self->descriptor_pipeline_render.fragmentFunction = (
-      metil_library.function_fragment_fps_display
-    );
-
-    self->pipelines_render[
-      metil_renderer_pipelines_render_index_fps_display
-    ] = [self->metal_device
-      newRenderPipelineStateWithDescriptor: self->descriptor_pipeline_render
-      error: (void*)0
-    ];
-  }
+  [self
+    pipeline_render_initialize: metil_renderer_pipelines_render_index_fps_display
+    function_fragment: metil_library.function_fragment_fps_display
+    function_vertex: metil_library.function_vertex_fps_display
+  ];
 }
 
 - (void) poll: (unsigned int) _frame {
@@ -830,7 +844,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
     self->objects_fps_display[
       index_object_fps_display
-    ].texture = metil_text_characters_default.textures[
+    ].textures[0] = metil_text_characters_default.textures[
       char_array_fps[index_object_fps_display]
     ];
 
@@ -854,7 +868,25 @@ void* metil_renderer_on_initialize_data = (void*)0;
     index_object < metil_scene_controller.scene.length_objects;
     ++index_object
   ) {
-    [self render_object: metil_scene_controller.scene.objects[index_object]];
+    if (
+      self->rendering_properties.mode & metil_rendering_properties_mode_default
+    ) {
+      [self
+        render_object: metil_scene_controller.scene.objects[
+          index_object
+        ]
+      ];
+    }
+
+    if (
+      self->rendering_properties.mode & metil_rendering_properties_mode_wireframe
+    ) {
+      [self
+        render_object_wireframe: metil_scene_controller.scene.objects[
+          index_object
+        ]
+      ];
+    }
   }
 }
 
@@ -872,67 +904,113 @@ void* metil_renderer_on_initialize_data = (void*)0;
   }
 }
 
-- (void) render_object: (struct metil_object*) object {
+- (void) render_encode_draw:
+  (id<MTLBuffer>) vertices
+  indices: (id<MTLBuffer>) indices
+  length_indices: (unsigned int) length_indices
+  textures: (id<MTLTexture>*) textures
+  length_textures: (unsigned char) length_textures
+  data: (id<MTLBuffer>) data
+  index_pipeline_render: (unsigned short int) index_pipeline_render
+  depth_disabled: (unsigned char) depth_disabled
+  type_primitive: (MTLPrimitiveType) type_primitive
+  type_index: (MTLIndexType) type_index
+{
   if (
-    index_pipelines_render_current != object->index_pipeline_render
+    self->index_pipelines_render_current != index_pipeline_render
   ) {
-    [encoder_render setRenderPipelineState: self->pipelines_render[
-      object->index_pipeline_render
-    ]];
+    [encoder_render
+      setRenderPipelineState: self->pipelines_render[
+        index_pipeline_render
+      ]
+    ];
   }
 
   if (
-    self->depth_state_disabled != object->depth_disabled
+    self->depth_state_disabled != depth_disabled
   ) {
     if (
-      object->depth_disabled == 0
+      depth_disabled == 0
     ) {
-      [encoder_render setDepthStencilState: self->depth_state];
+      [encoder_render
+        setDepthStencilState: self->depth_state
+      ];
     } else {
-      [encoder_render setDepthStencilState: self->depth_state_writes_disabled];
+      [encoder_render
+        setDepthStencilState: self->depth_state_writes_disabled
+      ];
     }
   }
 
   [encoder_render
-    setVertexBuffer: data_buffer_frame[
+    setVertexBuffer: self->data_buffer_frame[
       self->index_data_buffer_frame
     ]
     offset: 0
     atIndex: metil_renderer_vertex_index_parameter_data_frame
   ];
 
-  [encoder_render
-    setFragmentTexture: object->texture
-    atIndex: 0
-  ];
-
-  if (
-    object->texture_secondary != (void*)0
+  for (
+    unsigned char index_texture = 0;
+    index_texture < length_textures;
+    ++index_texture
   ) {
     [encoder_render
-      setFragmentTexture: object->texture_secondary
-      atIndex: 1
+      setFragmentTexture: textures[
+        index_texture
+      ]
+      atIndex: index_texture
     ];
   }
 
   [encoder_render
-    setVertexBuffer: object->vertices
+    setVertexBuffer: vertices
     offset: 0
     atIndex: metil_renderer_vertex_index_parameter_positions
   ];
 
   [encoder_render
-    setVertexBuffer: object->data
+    setVertexBuffer: data
     offset: 0
     atIndex: metil_renderer_vertex_index_parameter_data_object
   ];
 
   [encoder_render
-    drawIndexedPrimitives: object->type_primitive
-    indexCount: object->mesh.length_indices
-    indexType: object->type_index
-    indexBuffer: object->indices
+    drawIndexedPrimitives: type_primitive
+    indexCount: length_indices
+    indexType: type_index
+    indexBuffer: indices
     indexBufferOffset: 0
+  ];
+}
+
+- (void) render_object: (struct metil_object*) object {
+  [self
+    render_encode_draw: object->vertices
+    indices: object->indices
+    length_indices: object->mesh.length_indices
+    textures: object->textures
+    length_textures: object->length_textures
+    data: object->data
+    index_pipeline_render: object->index_pipeline_render
+    depth_disabled: object->depth_disabled
+    type_primitive: object->type_primitive
+    type_index: object->type_index
+  ];
+}
+
+- (void) render_object_wireframe: (struct metil_object*) object {
+  [self
+    render_encode_draw: object->vertices
+    indices: object->indices
+    length_indices: object->mesh.length_indices
+    textures: (void*)0
+    length_textures: 0
+    data: object->data
+    index_pipeline_render: metil_renderer_pipelines_render_index_wireframe
+    depth_disabled: object->depth_disabled
+    type_primitive: MTLPrimitiveTypeLineStrip
+    type_index: object->type_index
   ];
 }
 
