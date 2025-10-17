@@ -8,6 +8,10 @@
 void metil_rendering_properties_initialize(
   struct metil_rendering_properties* metil_rendering_properties
 ) {
+  metil_rendering_properties->mode = (
+    metil_rendering_properties_mode_default
+  );
+
   pthread_mutex_init(
     &metil_rendering_properties->mutex_frame,
     (void*)0

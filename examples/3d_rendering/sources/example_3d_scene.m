@@ -164,7 +164,7 @@ void example_3d_scene_poll(
 
     scene->objects[
       index_object
-    ]->position.z = 2;
+    ]->position.z = 2.0f;
 
     scene->objects[
       index_object

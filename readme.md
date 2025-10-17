@@ -256,6 +256,26 @@ viewport rotations are set via `scene_controller.scene.player.rotation`
 - - positions and sizes the mesh in aboslute viewport units regardless of aspect ratio
 - - ex: `x: -1.0f, y: 1.0f` is top left, `x: 0.0f, y: 0.0f` is center, `x: 0.0f, y: -1.0f` is bottom center
 
+## `metil_rendering_properties->mode`
+
+- `metil_rendering_properties_mode_default`: normal rendering
+- `metil_rendering_properties_mode_wireframe`: renders wireframes (requires `metil_library.function_[fragment|vertex]_wireframe` to be set)
+
+Any combination of rendering mode flags may be set using `|` operators
+
+```c
+// Enable wireframe rendering overtop of default rendering
+metil_rendering_properties->mode = (
+  metil_rendering_properties_mode_default |
+  metil_rendering_properties_mode_wireframe
+);
+
+// Only render wireframes
+metil_rendering_properties->mode = (
+  metil_rendering_properties_mode_wireframe
+);
+```
+
 ## [data|control]->{flow}
 
 ```

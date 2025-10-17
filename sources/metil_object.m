@@ -16,8 +16,12 @@ void metil_object_initialize(
   metil_object->data = (void*)0;
   metil_object->indices = (void*)0;
   metil_object->vertices = (void*)0;
-  metil_object->texture = (void*)0;
-  metil_object->texture_secondary = (void*)0;
+
+  metil_object->length_textures = 0;
+  metil_object->textures = malloc(
+    sizeof(id<MTLTexture>) *
+    metil_object->length_textures
+  );
 
   metil_object->position.x = 0.0f;
   metil_object->position.y = 0.0f;
@@ -57,6 +61,25 @@ void metil_object_buffers_initialize(
   ];
 }
 
+void metil_object_texture_add(
+  struct metil_object* metil_object,
+  id<MTLTexture> texture
+) {
+  metil_object->length_textures = (
+    metil_object->length_textures + 1
+  );
+
+  metil_object->textures = realloc(
+    metil_object->textures,
+    sizeof(id<MTLTexture>) *
+    metil_object->length_textures
+  );
+
+  metil_object->textures[
+    metil_object->length_textures - 1
+  ] = texture;
+}
+
 void metil_object_destroy(
   struct metil_object* object
 ) {
@@ -77,6 +100,8 @@ void metil_object_destroy(
   ) {
     [object->vertices release];
   }
+
+  free(object->textures);
 
   metil_mesh_destroy(
     &object->mesh
