@@ -36,6 +36,16 @@ void metil_text_characters_initialize(
 
   char character_array[2] = { 0, '\0' };
 
+  struct metil_text_render_parameters metil_text_render_parameters = {
+    .font = metil_text_render_parameters_default.font,
+    .letter_spacing = 0,
+    .padding = {
+      .x = 5,
+      .y = 15
+    },
+    .scale = 0.0005f
+  };
+
   for (
     unsigned char index_character = 0;
     index_character < metil_text_characters_default.length_characters;
@@ -64,8 +74,7 @@ void metil_text_characters_initialize(
       metal_device,
       &metil_text_characters_default.meshes[index_character],
       character_array,
-      metil_font_reference_monospace,
-      0.0005f
+      &metil_text_render_parameters
     );
 
     metil_text_characters_default.vertices[
