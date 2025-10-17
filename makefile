@@ -1,5 +1,11 @@
 name=metil
 
+version_major=0
+version_minor=0
+version_patch=0
+version_major_minor=${version_major}.${version_minor}
+version=${version_major}.${version_minor}.${version_patch}
+
 directory_examples=examples
 directory_objects_base=objects
 directory_library=library
@@ -22,18 +28,22 @@ directory_storyboards=storyboards
 directory_cer0=../cer0
 directory_cer0_include=${directory_cer0}/include
 directory_cer0_library=${directory_cer0}/library
+file_cer0_library=${directory_cer0_library}/cer0.o
 
 directory_clic3=../clic3
 directory_clic3_include=${directory_clic3}/include
 directory_clic3_library=${directory_clic3}/library
+file_clic3_library=${directory_clic3_library}/clic3.dylib
 
 directory_interrupt_handler=../interrupt_handler
 directory_interrupt_handler_include=${directory_interrupt_handler}/include
 directory_interrupt_handler_library=${directory_interrupt_handler}/library
+file_interrupt_handler_library=${directory_interrupt_handler_library}/interrupt_handler.o
 
 directory_math_c=../math_c
 directory_math_c_include=${directory_math_c}/include
 directory_math_c_library=${directory_math_c}/library
+file_math_c_library=${directory_math_c_library}/math_c.o
 
 directory_metal=metal
 directory_air=air
@@ -44,7 +54,18 @@ directory_macos_sdk=${shell xcrun --show-sdk-path}
 file_air_fps_display=${directory_air}/metil_fps_display.air
 file_air_wireframe=${directory_air}/metil_wireframe.air
 file_info_plist=Info.plist
-file_library=${directory_library}/${name}.o
+
+file_library_object=${directory_library}/${name}.o
+
+name_library_dylib_major=${name}.${version_major}.dylib
+file_library_dylib=${directory_library}/${name}.dylib
+file_library_dylib_major=${directory_library}/${name_library_dylib_major}
+
+name_library_dynamic_major=${name}.${version_major}.so
+file_library_dynamic=${directory_library}/${name}.so
+file_library_dynamic_major=${directory_library}/${name_library_dynamic_major}
+
+file_library_static=${directory_library}/${name}.a
 
 file_metalar_metil_all=${directory_metalar}/metil_all.metalar
 file_metalar_metil_fps_display=${directory_metalar}/metil_fps_display.metalar
@@ -67,6 +88,8 @@ files_air=${patsubst ${directory_metal}/%.metal,${directory_air}/%.air,${files_m
 
 files_storyboards=${wildcard ${directory_storyboards}/*.storyboard}
 files_storyboards_compiled=${patsubst ${directory_storyboards}/%.storyboard,${directory_library}/%.storyboardc,${files_storyboards}}
+
+files_libraries=${file_cer0_library} ${file_clic3_library} ${file_interrupt_handler_library} ${file_math_c_library}
 
 target_device=mac
 ifndef target_macos_version
@@ -100,6 +123,9 @@ else
 	c_flags_output:=${c_flags_output} -O3
 endif
 
+ar=ar
+ar_flags=cqS
+
 ld=ld
 ld_flags=
 
@@ -118,9 +144,16 @@ endif
 
 metal_flags_output=
 
-${name}: ${file_library} ${file_output_metal} ${file_output_metalar_metil_all} ${file_output_metalar_metil_fps_display} ${file_output_metalar_metil_wireframe} ${files_storyboards_compiled} ${file_output_info_plist}
+${name}: ${file_library_dylib} ${file_library_dynamic} ${file_library_object} ${file_library_static} ${file_output_metal} ${file_output_metalar_metil_all} ${file_output_metalar_metil_fps_display} ${file_output_metalar_metil_wireframe} ${files_storyboards_compiled} ${file_output_info_plist}
 
 all: ${name} examples
+
+${name}_objects: ${files_objects}
+
+${name}_dylib: ${file_library_dylib}
+${name}_dynamic: ${file_library_dynamic}
+${name}_object: ${file_library_object}
+${name}_static: ${file_library_static}
 
 examples: .always
 	cd ${directory_examples} && make all
@@ -131,6 +164,35 @@ ${file_library}: ${files_objects_c} ${files_objects_objc}
 ifneq (${debug}, 1)
 	${strip} ${strip_flags} ${file_library}
 endif
+
+${file_library_dylib}: ${files_objects_c} ${files_objects_objc}
+	mkdir -p ${directory_library}
+	${cc} -dynamiclib -install_name ${name_library_dylib_major} -current_version ${version} -compatibility_version ${version_major_minor} ${files_libraries} ${files_objects_c} ${files_objects_objc} -o ${file_library_dylib_major}
+ifneq (${debug}, 1)
+	${strip} ${strip_flags} ${file_library_dylib_major}
+endif
+	-rm ${file_library_dylib}
+	ln -s ${name_library_dylib_major} ${file_library_dylib}
+
+${file_library_dynamic}: ${files_objects_c} ${files_objects_objc}
+	mkdir -p ${directory_library}
+	${cc} -shared -install_name ${name_library_dynamic_major} -current_version ${version} -compatibility_version ${version_major_minor} ${files_libraries} ${files_objects_c} ${files_objects_objc} -o ${file_library_dynamic_major}
+ifneq (${debug}, 1)
+	${strip} ${strip_flags} ${file_library_dynamic_major}
+endif
+	-rm ${file_library_dynamic}
+	ln -s ${name_library_dynamic_major} ${file_library_dynamic}
+
+${file_library_object}: ${files_objects_c} ${files_objects_objc}
+	mkdir -p ${directory_library}
+	${ld} ${ld_flags} -r ${files_objects_c} ${files_objects_objc} -o ${file_library_object}
+ifneq (${debug}, 1)
+	${strip} ${strip_flags} ${file_library_object}
+endif
+
+${file_library_static}: ${files_objects_c} ${files_objects_objc}
+	mkdir -p ${directory_library}
+	${ar} ${ar_flags} ${file_library_static} ${files_objects_c} ${files_objects_objc}
 
 ${file_output_metal}: ${file_metalar_metil_all}
 	${metallib} ${metal_flags_output} ${file_metalar_metil_all} -o ${file_output_metal}
