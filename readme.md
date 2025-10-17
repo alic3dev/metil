@@ -243,6 +243,19 @@ viewport rotations are set via `scene_controller.scene.player.rotation`
 0.0   0.25 0.5 0.75 1.0
 ```
 
+## mesh_positioning
+
+- `metil_mesh_positioning_normal`:
+- - positions and sizes the mesh according to the cameras viewport projection matrix (`self->rendering_properties.camera.matrix_viewport_projection`: a combination of FOV/aspect ratio calculations) while applying `x` and `y` rotation transforms from `metil_scene_controller.scene.player.rotation` and subtractive translation transforms from `metil_scene_controller.scene.player.position`
+- `metil_mesh_positioning_player`:
+- - positions and sizes the mesh the same as `metil_mesh_positioning_normal` but does not apply `y` rotation transforms allowing the mesh to rotate with the camera instead of against it
+- `metil_mesh_positioning_static`:
+- - positions and sizes the mesh in viewport units with respect to the targeted rendering aspect ratio versus the actual aspect ratio of the viewport
+- - ex: at `1920x1080` with a rendering aspect ratio of `16/9` a mesh of size `x: 0.1f, y: 0.1f` and a position of `x: -0.5f, y: 0.5f` will render 1:1 in viewport units, if the viewport size changes to `1920x540` then that same mesh will render with a relative size of `x: 0.05, y: 0.05` at a position of `x: -0.5f, y: 0.5f`, while a viewport size of `960x1080` will render at `x: 0.1f, y: 0.1f` at a position of `x: -0.5f, y: 0.5f`
+- `metil_mesh_positioning_absolute`:
+- - positions and sizes the mesh in aboslute viewport units regardless of aspect ratio
+- - ex: `x: -1.0f, y: 1.0f` is top left, `x: 0.0f, y: 0.0f` is center, `x: 0.0f, y: -1.0f` is bottom center
+
 ## [data|control]->{flow}
 
 ```

@@ -6,7 +6,8 @@
 enum metil_mesh_positioning {
   metil_mesh_positioning_normal = 0,
   metil_mesh_positioning_player = 1,
-  metil_mesh_positioning_static = 2
+  metil_mesh_positioning_static = 2,
+  metil_mesh_positioning_absolute = 3,
 };
 
 struct metil_mesh {
