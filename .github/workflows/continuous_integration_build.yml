@@ -44,4 +44,6 @@ jobs:
       - name: make_math_c
         run: cd math_c && make math_c_dylib
       - name: make_metil
-        run: cd metil && make all
+        run: cd metil && make metil
+      - name: make_metil_examples
+        run: cd metil && make examples
