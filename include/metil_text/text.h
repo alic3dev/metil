@@ -16,6 +16,15 @@ struct metil_text_image {
   struct clic3_vector2_unsigned_int size;
 };
 
+struct metil_text_render_parameters {
+  CTFontRef font;
+  unsigned short int letter_spacing;
+  struct clic3_vector2_unsigned_short_int padding;
+  float scale;
+};
+
+extern struct metil_text_render_parameters metil_text_render_parameters_default;
+
 void metil_text_initialize();
 
 CGGlyph* metil_text_glyphs_encode(
@@ -26,7 +35,7 @@ CGGlyph* metil_text_glyphs_encode(
 
 struct metil_text_image* metil_text_render(
   char*,
-  CTFontRef
+  struct metil_text_render_parameters*
 );
 
 id<MTLTexture> metil_text_texture_render(
@@ -38,8 +47,7 @@ id<MTLTexture> metil_text_mesh_with_texture_initialize(
   id<MTLDevice>,
   struct metil_mesh*,
   char*,
-  CTFontRef,
-  float
+  struct metil_text_render_parameters*
 );
 
 void metil_text_image_destroy(

@@ -784,9 +784,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
     --index_object_fps_display
   ) {
     if (
-      char_array_fps[index_object_fps_display] == '\0' ||
-      char_array_fps[index_object_fps_display] == '.' &&
-      index_object_fps_display == metil_renderer_length_objects_fps_display - 1
+      char_array_fps[index_object_fps_display] == '\0'
     ) {
       break;
     }
@@ -797,13 +795,20 @@ void* metil_renderer_on_initialize_data = (void*)0;
       char_array_fps[index_object_fps_display]
     ];
 
-    position_x = position_x + 0.015f;
+    position_x = position_x + self->objects_fps_display[
+      index_object_fps_display
+    ].mesh.size.x / self->rendering_properties.camera.ratio_aspect_view;
 
     self->objects_fps_display[
       index_object_fps_display
     ].position.x = 1.0f - position_x;
 
     if (char_array_fps[index_object_fps_display] == '.') {
+      self->objects_fps_display[
+        index_object_fps_display
+      ].position.x = self->objects_fps_display[
+        index_object_fps_display
+      ].position.x - 0.0035f;
       self->objects_fps_display[
         index_object_fps_display
       ].position.y = 0.9675f;

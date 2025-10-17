@@ -14,6 +14,16 @@
 CTFontRef metil_font_reference_monospace = (void*)0;
 CGColorSpaceRef metil_font_color_space = (void*)0;
 
+struct metil_text_render_parameters metil_text_render_parameters_default = {
+  .font = (void*)0,
+  .letter_spacing = 2,
+  .padding = {
+    .x = 5,
+    .y = 15
+  },
+  .scale = 0.001f
+};
+
 void metil_text_initialize() {
   CFStringRef name_family_font_monospace = CFSTR(
     "monospace"
@@ -23,6 +33,10 @@ void metil_text_initialize() {
     name_family_font_monospace,
     48.0,
     (void*)0
+  );
+
+  metil_text_render_parameters_default.font = (
+    metil_font_reference_monospace
   );
 
   CFRelease(
@@ -101,7 +115,7 @@ CGGlyph* metil_text_glyphs_encode(
 
 struct metil_text_image* metil_text_render(
   char* characters,
-  CTFontRef font
+  struct metil_text_render_parameters* metil_text_render_parameters
 ) {
   unsigned int length_characters = clic3_char_array_length(
     characters
@@ -110,7 +124,7 @@ struct metil_text_image* metil_text_render(
   CGGlyph* glyphs = metil_text_glyphs_encode(
     characters,
     length_characters,
-    font
+    metil_text_render_parameters->font
   );
 
   if (
@@ -122,7 +136,7 @@ struct metil_text_image* metil_text_render(
   CGRect bounding_box_glyphs[length_characters];
 
   CTFontGetBoundingRectsForGlyphs(
-    font,
+    metil_text_render_parameters->font,
     kCTFontOrientationDefault,
     glyphs,
     bounding_box_glyphs,
@@ -136,7 +150,7 @@ struct metil_text_image* metil_text_render(
     sizeof(struct metil_text_image)
   );
 
-  text_image->size.x = 5;
+  text_image->size.x = metil_text_render_parameters->padding.x;
   text_image->size.y = 0;
 
   for (
@@ -145,13 +159,14 @@ struct metil_text_image* metil_text_render(
     ++index_glyph
   ) {
     positions_glyphs[index_glyph].x = text_image->size.x;
-    positions_glyphs[index_glyph].y = 15;
+    positions_glyphs[index_glyph].y = metil_text_render_parameters->padding.y;
 
     text_image->size.x = (
       text_image->size.x +
       bounding_box_glyphs[
         index_glyph
-      ].size.width
+      ].size.width +
+      metil_text_render_parameters->letter_spacing
     );
 
     text_image->size.y = fmax(
@@ -162,8 +177,8 @@ struct metil_text_image* metil_text_render(
     );
   }
 
-  text_image->size.x = text_image->size.x + 5;
-  text_image->size.y = text_image->size.y + 15;
+  text_image->size.x = text_image->size.x + metil_text_render_parameters->padding.x;
+  text_image->size.y = text_image->size.y + metil_text_render_parameters->padding.y;
 
   unsigned int length_text_image_data = (
     4 * (text_image->size.x) * (text_image->size.y)
@@ -208,7 +223,7 @@ struct metil_text_image* metil_text_render(
   }
 
   CTFontDrawGlyphs(
-    font,
+    metil_text_render_parameters->font,
     glyphs,
     positions_glyphs,
     length_characters,
@@ -272,12 +287,11 @@ id<MTLTexture> metil_text_mesh_with_texture_initialize(
   id<MTLDevice> metal_device,
   struct metil_mesh* mesh,
   char* characters,
-  CTFontRef font,
-  float scale
+  struct metil_text_render_parameters* metil_text_render_parameters
 ) {
   struct metil_text_image* text_image = metil_text_render(
     characters,
-    font
+    metil_text_render_parameters
   );
 
   if (
@@ -294,7 +308,7 @@ id<MTLTexture> metil_text_mesh_with_texture_initialize(
     mesh,
     text_image->size.x,
     text_image->size.y,
-    scale
+    metil_text_render_parameters->scale
   );
 
   id<MTLTexture> texture = metil_text_texture_render(
