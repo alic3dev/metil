@@ -1,21 +1,88 @@
-# metil
+# `metil`
 
 rendering_framework.utilizing(`apple::metal`)
 
-## intialization
+## usage
+
+### linking
+
+- library_files (`x` is current major version)
+- - dynamic library: `library/metil.x.dylib`
+- - dynamic library: `library/metil.dylib`: symbolically linked to `metil.x.dylib`
+- - dynamic shared library: `library/metil.x.so`
+- - dynamic shared library: `library/metil.so`: symbolically linked to `metil.x.so`
+- - library archive: `library/metil.a`
+- - object: `library/metil.o`
+- `%.metalar`
+- - `library/metil_all.metalar`: metal archive of all `air/*.air` files
+- - - `metal/basic_2d_shaders.metal`->`air/basic_2d_shaders.air`
+- - - `metal/basic_3d_shaders.metal`->`air/basic_3d_shaders.air`
+- - - `metal/metil_fps_display.metal`->`air/metil_fps_display.air`
+- - - `metal/metil_wireframe.metal`->`air/metil_wireframe.air`
+- - `library/metil_fps_display.metalar`: archive of `metil_fps_display`
+- - `library/metil_wireframe.metalar`: archive of `metil_wireframe`
+- `library/metil.metallib`: metallib built from `library/metil_all.metalar`
+- `%.plist`
+- - `library/Info.plist`: sets the storyboard name to use
+- `%.storyboardc`
+- - `library/metil.storyboardc`: default storyboard
+
+#### dynamic libraries
+
+using a dynamic library will require the produced executable to be able to find `%.x.dylib` files for
+
+- [`cer0`](https://github.com/alic3dev/cer0)
+- [`clic3`](https://github.com/alic3dev/clic3)
+- [`interrupt_handler`](https://github.com/alic3dev/interrupt_handler)
+- [`math_c`](https://github.com/alic3dev/math_c)
+
+the target version of these libraries that `metil` expects can be found within the `makefile`
+
+#### static libraries
+
+using a static library or archive requires linking the previously mentioned libraries in any format
+
+### `%.metalar`
+
+`%.metalar` files can be added during the compilation of a `metallib` for default implementations provided by `metil`
+
+```zsh
+# adds metil_fps_display shaders and metil_wireframe shaders
+xcrun -sdk macosx metallib metal_archive.metalar metil_fps_display.metalar metil_wireframe.metalar -o default.metallib
+```
+
+### includes
+
+all header files can be included within a single `#include` of `metil.h`
+
+```h
+#include <metil.h>
+```
+
+otherwise individual header files can be included as such
+
+```h
+#include <metil_mesh/mesh.h>
+#include <metil_input/controller.h>
+#include <metil_input/controller_state.h>
+```
+
+### intialization
 
 - `metil_initialize`: must be called within your `main` function and it's value returned as the exit status code.
-- `metil_library`: must be initialized within the `metil_renderer_on_initialize_function` passed to `metil_initialize`
+- `metil_library`: must be initialized within the `metil_renderer_on_initialize_function` passed to `metil_initialize` (`metil_library_initialize` is provided to simplify this)
 - - `metil_library.library`: must be set to an instance of a `metal` library (`id<MTLLibrary>`)
 - - `metil_library.function_vertex`: must be set to an instance of a `metal` vertex function (`id<MTLFunction>`)
 - - `metil_library.function_fragment`: must be set to an instance of a `metal` fragment function (`id<MTLFunction>`)
+- - `metil_library.function_fragment_fps_display`: optional | required for usage of built in `fps_display`
+- - `metil_library.function_vertex_fps_display`: optional | required for usage of built in `fps_display`
+- - `metil_library.function_fragment_wireframe`: optional | required for usage of built in `wireframe` rendering mode
+- - `metil_library.function_vertex_wireframe`: optional | required for usage of built in `wireframe` rendering mode
 
 ```obj-c
 #include <metil_initialize.h>
 #include <metil_library.h>
-#include <metil_rendering/rendering_properties.h>
-
-#include <Metal/MTLDevice.h>
+#include <metil_rendering/metil_renderer_interface.h>
 
 int main(
   int length_parameters,
@@ -33,44 +100,18 @@ void example_initialization_renderer_on_initialize(
   struct metil_renderer_interface* metil_renderer_interface,
   void* data
 ) {
-  metil_library.library = [
-    metil_renderer_interface->metal_device
-    newDefaultLibrary
-  ];
-
-  metil_library.function_vertex = [
-    metil_library.library
-    newFunctionWithName: @"example_initialization_vertex"
-  ];
-
-  metil_library.function_fragment = [
-    metil_library.library
-    newFunctionWithName: @"example_initialization_fragment"
-  ];
+  metil_library_initialize(
+    metil_renderer_interface->metal_device,
+    @"example_initialization_fragment",
+    @"example_initialization_vertex"
+  );
 
   /*
     - set: rendering_properties
     - initialize: scene
     - set: on scene change
-    - etc.
   */
 }
-```
-
-## includes
-
-all header files can be included within a single `#include` of `metil.h`
-
-```h
-#include <metil.h>
-```
-
-otherwise individual header files can be included as such
-
-```h
-#include <metil_mesh/mesh.h>
-#include <metil_input/controller.h>
-#include <metil_input/controller_state.h>
 ```
 
 ## units
@@ -338,59 +379,56 @@ metil_rendering_properties->mode = (
 
 ### prerequisites
 
+see `usage->linking->[dynamic libraries | static libraries]` for further information
+
 - [`alic3`](https://github.com/alic3dev):libraries
 - - [`cer0`](https://github.com/alic3dev/cer0)
 - - [`clic3`](https://github.com/alic3dev/clic3)
 - - [`interrupt_handler`](https://github.com/alic3dev/interrupt_handler)
 - - [`math_c`](https://github.com/alic3dev/math_c)
 
-### build
+### `make`:targets
 
 ```zsh
+# build metil
 make
+
+# build metil
+make metil
+
+# build metil examples
+make examples
+
+# build metil and examples
+make all
+
+# clean metil
+make clean
+
+# clean metil examples
+make clean_examples
+
+# clean metil and metil examples
+make clean_all
 ```
 
-#### options
+### `make`:flags
+
+These flags can be applied to any build target
 
 - `debug=1`:adds->{`debugging_symbols`}:disables->{`optimizations`};
 - `disable_metal_fast_options=1`:disables->{`metal`::`fast_modes `};
 - `target_macos_version`:sets_the_target_version.for->{`macos`|`metal`};
 
 ```zsh
-parameter=value make
-: or
-parameter_1=value_1 parameter_2=value_2 make
+# build a debugging version of metil
+make metil debug=1
+
+# build metil for macos version 26.0 with fast modes disabled for metal
+make metil disable_metal_fast_options=1 target_macos_version=26.0
 ```
 
-#### examples
-
-```zsh
-make examples
-```
-
-#### all
-
-```zsh
-make all
-```
-
-### clean
-
-```zsh
-make clean
-```
-
-#### examples
-
-```zsh
-make clean_examples
-```
-
-#### all
-
-```zsh
-make clean_all
-```
+## usage
 
 ## projects
 
