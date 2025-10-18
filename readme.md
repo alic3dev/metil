@@ -31,10 +31,10 @@ rendering_framework.utilizing(`apple::metal`)
 
 using a dynamic library will require the produced executable to be able to find `%.x.dylib` files for
 
-- [`cer0`](https://github.com/alic3dev/cer0)
-- [`clic3`](https://github.com/alic3dev/clic3)
-- [`interrupt_handler`](https://github.com/alic3dev/interrupt_handler)
-- [`math_c`](https://github.com/alic3dev/math_c)
+- [`alic3dev/cer0`](https://github.com/alic3dev/cer0)
+- [`alic3dev/clic3`](https://github.com/alic3dev/clic3)
+- [`alic3dev/interrupt_handler`](https://github.com/alic3dev/interrupt_handler)
+- [`alic3dev/math_c`](https://github.com/alic3dev/math_c)
 
 the target version of these libraries that `metil` expects can be found within the `makefile`
 
