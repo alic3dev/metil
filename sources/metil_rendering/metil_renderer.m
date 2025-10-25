@@ -985,33 +985,41 @@ void* metil_renderer_on_initialize_data = (void*)0;
 }
 
 - (void) render_object: (struct metil_object*) object {
-  [self
-    render_encode_draw: object->vertices
-    indices: object->indices
-    length_indices: object->mesh.length_indices
-    textures: object->textures
-    length_textures: object->length_textures
-    data: object->data
-    index_pipeline_render: object->index_pipeline_render
-    depth_disabled: object->depth_disabled
-    type_primitive: object->type_primitive
-    type_index: object->type_index
-  ];
+  if (
+    object->visible == 1
+  ) {
+    [self
+      render_encode_draw: object->vertices
+      indices: object->indices
+      length_indices: object->mesh.length_indices
+      textures: object->textures
+      length_textures: object->length_textures
+      data: object->data
+      index_pipeline_render: object->index_pipeline_render
+      depth_disabled: object->depth_disabled
+      type_primitive: object->type_primitive
+      type_index: object->type_index
+    ];
+  }
 }
 
 - (void) render_object_wireframe: (struct metil_object*) object {
-  [self
-    render_encode_draw: object->vertices
-    indices: object->indices
-    length_indices: object->mesh.length_indices
-    textures: (void*)0
-    length_textures: 0
-    data: object->data
-    index_pipeline_render: metil_renderer_pipelines_render_index_wireframe
-    depth_disabled: object->depth_disabled
-    type_primitive: MTLPrimitiveTypeLineStrip
-    type_index: object->type_index
-  ];
+  if (
+    object->visible == 1
+  ) {
+    [self
+      render_encode_draw: object->vertices
+      indices: object->indices
+      length_indices: object->mesh.length_indices
+      textures: (void*)0
+      length_textures: 0
+      data: object->data
+      index_pipeline_render: metil_renderer_pipelines_render_index_wireframe
+      depth_disabled: object->depth_disabled
+      type_primitive: MTLPrimitiveTypeLineStrip
+      type_index: object->type_index
+    ];
+  }
 }
 
 - (void) rendering_properties_initialize {
