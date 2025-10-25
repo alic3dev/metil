@@ -417,7 +417,7 @@ make clean_all
 These flags can be applied to any build target
 
 - `debug=1`:adds->{`debugging_symbols`}:disables->{`optimizations`};
-- `disable_metal_fast_options=1`:disables->{`metal`::`fast_modes `};
+- `disable_metal_fast_options=1`:disables->{`metal`::`fast_modes`};
 - `target_macos_version`:sets_the_target_version.for->{`macos`|`metal`};
 
 ```zsh
