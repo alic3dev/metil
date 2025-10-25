@@ -16,18 +16,18 @@ struct metil_object {
   _Nonnull id<MTLBuffer> indices;
   _Nonnull id<MTLBuffer> vertices;
 
+  MTLPrimitiveType type_primitive;
+  MTLIndexType type_index;
+
   _Nonnull id<MTLTexture>* _Nonnull textures;
   unsigned char length_textures;
 
   struct clic3_vector3_float position;
   struct clic3_vector3_float rotation;
 
-  unsigned char index_pipeline_render;
-
   unsigned char depth_disabled;
-
-  MTLPrimitiveType type_primitive;
-  MTLIndexType type_index;
+  unsigned char index_pipeline_render;
+  unsigned char visible;
 };
 
 void metil_object_initialize(

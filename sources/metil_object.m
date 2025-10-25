@@ -17,6 +17,9 @@ void metil_object_initialize(
   metil_object->indices = (void*)0;
   metil_object->vertices = (void*)0;
 
+  metil_object->type_primitive = MTLPrimitiveTypeTriangle;
+  metil_object->type_index = MTLIndexTypeUInt32;
+
   metil_object->length_textures = 0;
   metil_object->textures = malloc(
     sizeof(id<MTLTexture>) *
@@ -31,12 +34,9 @@ void metil_object_initialize(
   metil_object->rotation.y = 0.0f;
   metil_object->rotation.z = 0.0f;
 
-  metil_object->index_pipeline_render = 0;
-
   metil_object->depth_disabled = 0;
-
-  metil_object->type_primitive = MTLPrimitiveTypeTriangle;
-  metil_object->type_index = MTLIndexTypeUInt32;
+  metil_object->index_pipeline_render = 0;
+  metil_object->visible = 1;
 }
 
 void metil_object_buffers_initialize(
