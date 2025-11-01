@@ -23,7 +23,7 @@ jobs:
           key: cache_cer0_0_0_0
 
       - name: checkout_cer0
-        if: steps.cache-primes.outputs.cache-hit != 'true'
+        if: steps.cache_restore_cer0.outputs.cache-hit != 'true'
         uses: actions/checkout@v4
         with:
           repository: alic3dev/cer0
@@ -48,12 +48,12 @@ jobs:
         run: cd clic3 && make clic3
 
       - name: make_cer0
-        if: steps.cache-primes.outputs.cache-hit != 'true'
+        if: steps.cache_restore_cer0.outputs.cache-hit != 'true'
         run: cd cer0 && make cer0
 
       - name: cache_save_cer0
         id: cache_save_cer0
-        if: steps.cache-primes.outputs.cache-hit != 'true'
+        if: steps.cache_restore_cer0.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
