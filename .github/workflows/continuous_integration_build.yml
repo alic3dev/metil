@@ -57,8 +57,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: |
-            cer0/include
-            cer0/library
+            cer0
           key: cache_cer0_0_0_0
 
       - name: make_interrupt_handler
