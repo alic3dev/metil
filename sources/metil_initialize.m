@@ -16,8 +16,6 @@
 
 #include <interrupt_handler.h>
 
-#include <limits.h>
-
 #include <AppKit/AppKit.h>
 
 void metil_terminate_on_signal(int _) {
@@ -47,8 +45,6 @@ int metil_initialize_with_data(
   void* metil_renderer_on_initialize_function_data
 ) {
   metil_system_information_initialize();
-
-  srand(metil_time_milliseconds_get() % UINT_MAX);
 
   metil_renderer_on_initialize = metil_renderer_on_initialize_function;
   metil_renderer_on_initialize_data = metil_renderer_on_initialize_function_data;
