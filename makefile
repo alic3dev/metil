@@ -175,7 +175,7 @@ examples: .always
 
 ${file_library_dylib}: ${files_objects_c} ${files_objects_objc}
 	mkdir -p ${directory_library}
-	${cc} -dynamiclib -install_name ${name_library_dylib_major} -current_version ${version} -compatibility_version ${version_major_minor} ${files_libraries} ${files_objects_c} ${files_objects_objc} -o ${file_library_dylib_major}
+	${cc} -dynamiclib -install_name ${name_library_dylib_major} -target ${target_platform} -current_version ${version} -compatibility_version ${version_major_minor} ${files_libraries} ${files_objects_c} ${files_objects_objc} -o ${file_library_dylib_major}
 ifneq (${debug}, 1)
 	${strip} ${strip_flags} ${file_library_dylib_major}
 endif
@@ -184,7 +184,7 @@ endif
 
 ${file_library_dynamic}: ${files_objects_c} ${files_objects_objc}
 	mkdir -p ${directory_library}
-	${cc} -shared -install_name ${name_library_dynamic_major} -current_version ${version} -compatibility_version ${version_major_minor} ${files_libraries} ${files_objects_c} ${files_objects_objc} -o ${file_library_dynamic_major}
+	${cc} -shared -install_name ${name_library_dynamic_major} -target ${target_platform} -current_version ${version} -compatibility_version ${version_major_minor} ${files_libraries} ${files_objects_c} ${files_objects_objc} -o ${file_library_dynamic_major}
 ifneq (${debug}, 1)
 	${strip} ${strip_flags} ${file_library_dynamic_major}
 endif
