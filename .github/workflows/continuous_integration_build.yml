@@ -45,7 +45,7 @@ jobs:
           repository: alic3dev/math_c
           path: math_c
       - name: make_clic3
-        run: cd clic3 && make clic3_dylib
+        run: cd clic3 && make clic3
 
       - name: make_cer0
         if: steps.cache-primes.outputs.cache-hit != 'true'
@@ -62,9 +62,9 @@ jobs:
           key: cache_cer0_0_0_0
 
       - name: make_interrupt_handler
-        run: cd interrupt_handler && make interrupt_handler_dylib
+        run: cd interrupt_handler && make interrupt_handler
       - name: make_math_c
-        run: cd math_c && make math_c_dylib
+        run: cd math_c && make math_c
       - name: make_metil
         run: cd metil && make metil
       - name: make_metil_examples
