@@ -727,13 +727,13 @@ void* metil_renderer_on_initialize_data = (void*)0;
     ].matrix_object_projection = (
       &matrix_object_projection
     );
-    
+
     self->threads_data[
       index_thread
     ].matrix_player_projection = (
       &matrix_player_projection
     );
-    
+
     pthread_create(
       &self->threads[
         index_thread
@@ -750,7 +750,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
     poll_fps_display: &matrix_object_projection
     matrix_player_projection: &matrix_player_projection
   ];
-  
+
   for (
     unsigned int index_core_cpu = 0;
     index_core_cpu < metil_system_information.cores_cpu;
@@ -1192,9 +1192,9 @@ void metil_renderer_poll_object(
     );
   }
 
-  data->width = object->mesh.size.x;
-  data->height = object->mesh.size.y;
-  data->depth = object->mesh.size.z;
+  data->size.x = object->mesh.size.x;
+  data->size.y = object->mesh.size.y;
+  data->size.z = object->mesh.size.z;
 }
 
 void metil_renderer_after_scene_change(
