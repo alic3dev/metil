@@ -122,8 +122,8 @@ strip_flags=-x
 
 all: ${name}
 
-run: .always
-	${file_output}
+run:
+	cd ${dir ${file_output}} && ./${shell basename ${file_output}}
 
 ${name}: ${file_output}
 
@@ -178,5 +178,3 @@ clean_objects:
 
 clean_output:
 	-rm -r ${directory_output_base}
-
-.always:
