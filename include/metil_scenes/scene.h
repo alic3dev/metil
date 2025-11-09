@@ -12,12 +12,6 @@ typedef void (*metil_function_scene_poll)(struct metil_scene* _Nonnull);
 typedef void (*metil_function_scene_poll_input)(struct metil_scene* _Nonnull);
 typedef void (*metil_function_scene_destroy)(struct metil_scene* _Nonnull);
 
-enum metil_scene_type {
-  metil_scene_type_unknown,
-  metil_scene_type_menu,
-  metil_scene_type_game
-};
-
 struct metil_scene_rendering_properties {
   float brightness;
   float brightness_text;
@@ -27,8 +21,6 @@ struct metil_scene {
   _Nullable id<MTLDevice> metal_device;
 
   struct metil_player player;
-  enum metil_scene_type type;
-  int id;
 
   struct metil_renderable* _Nonnull renderables;
   unsigned int length_renderables;
