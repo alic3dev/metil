@@ -673,7 +673,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   unsigned char _index_data_buffer_frame = self->index_data_buffer_frame;
   unsigned int length_segment_objects = (
-    metil_scene_controller.scene.length_objects /
+    metil_scene_controller.scene.length_renderables /
     metil_system_information.cores_cpu
   );
 
@@ -707,17 +707,17 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
     self->threads_data[
       index_thread
-    ].objects = (
-      metil_scene_controller.scene.objects +
+    ].renderables = (
+      metil_scene_controller.scene.renderables +
       offset_index_object
     );
 
     self->threads_data[
       index_thread
-    ].length_objects = (
+    ].length_renderables = (
       index_core_cpu < metil_system_information.cores_cpu - 1
       ? length_segment_objects
-      : (metil_scene_controller.scene.length_objects) - (
+      : (metil_scene_controller.scene.length_renderables) - (
         length_segment_objects * index_core_cpu
       )
     );
@@ -863,29 +863,55 @@ void* metil_renderer_on_initialize_data = (void*)0;
 }
 
 - (void) render {
-  for (
-    unsigned int index_object = 0;
-    index_object < metil_scene_controller.scene.length_objects;
-    ++index_object
-  ) {
-    if (
-      self->rendering_properties.mode & metil_rendering_properties_mode_default
-    ) {
-      [self
-        render_object: metil_scene_controller.scene.objects[
-          index_object
-        ]
-      ];
-    }
+  struct metil_renderable* renderable = (
+    (void*)0
+  );
 
-    if (
-      self->rendering_properties.mode & metil_rendering_properties_mode_wireframe
+  for (
+    unsigned int index_renderable = 0;
+    index_renderable < metil_scene_controller.scene.length_renderables;
+    ++index_renderable
+  ) {
+    renderable = &(
+      metil_scene_controller.scene.renderables[
+        index_renderable
+      ]
+    );
+
+    switch (
+      renderable->type
     ) {
-      [self
-        render_object_wireframe: metil_scene_controller.scene.objects[
-          index_object
-        ]
-      ];
+      case metil_renderable_type_object: {
+        struct metil_object* object = (
+          renderable->renderable
+        );
+
+        if (
+          self->rendering_properties.mode & metil_rendering_properties_mode_default
+        ) {
+          [self
+            render_object: object
+          ];
+        }
+
+        if (
+          self->rendering_properties.mode & metil_rendering_properties_mode_wireframe
+        ) {
+          [self
+            render_object_wireframe: object
+          ];
+        }
+        break;
+      }
+      case metil_renderable_type_menu: {
+        break;
+      }
+      case metil_renderable_type_model: {
+        break;
+      }
+      default: {
+        break;
+      }
     }
   }
 }
@@ -1075,20 +1101,48 @@ void* metil_renderer_thread_poll_object(
     (struct metil_renderer_thread_poll_object_data*) data
   );
 
+  struct metil_renderable* renderable = (
+    (void*)0
+  );
+
   for (
-    unsigned int index_object = 0;
-    index_object < metil_renderer_thread_poll_object_data->length_objects;
-    ++index_object
+    unsigned int index_renderable = 0;
+    index_renderable < metil_renderer_thread_poll_object_data->length_renderables;
+    ++index_renderable
   ) {
-    metil_renderer_poll_object(
-      metil_renderer_thread_poll_object_data->objects[
-        index_object
-      ],
-      metil_renderer_thread_poll_object_data->matrix_static_projection,
-      metil_renderer_thread_poll_object_data->matrix_object_projection,
-      metil_renderer_thread_poll_object_data->matrix_player_projection,
-      metil_renderer_thread_poll_object_data->height_camera
+    renderable = &(
+      metil_renderer_thread_poll_object_data->renderables[
+        index_renderable
+      ]
     );
+
+    switch (
+      renderable->type
+    ) {
+      case metil_renderable_type_object: {
+        struct metil_object* object = (
+          renderable->renderable
+        );
+
+        metil_renderer_poll_object(
+          object,
+          metil_renderer_thread_poll_object_data->matrix_static_projection,
+          metil_renderer_thread_poll_object_data->matrix_object_projection,
+          metil_renderer_thread_poll_object_data->matrix_player_projection,
+          metil_renderer_thread_poll_object_data->height_camera
+        );
+        break;
+      }
+      case metil_renderable_type_menu: {
+        break;
+      }
+      case metil_renderable_type_model: {
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   return (void*)0;
