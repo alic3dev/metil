@@ -1,6 +1,6 @@
 name=metil
 
-version_major=0
+version_major=1
 version_minor=0
 version_patch=0
 version_major_minor=${version_major}.${version_minor}
