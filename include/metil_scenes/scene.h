@@ -63,6 +63,12 @@ void metil_scene_initialize(
   _Nullable id<MTLDevice>
 );
 
+void metil_scene_initialize_with_renderables(
+  struct metil_scene* _Nonnull,
+  _Nullable id<MTLDevice>,
+  unsigned int
+);
+
 void metil_scene_renderables_set_length(
   struct metil_scene* _Nonnull,
   unsigned int
