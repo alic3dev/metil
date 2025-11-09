@@ -25,8 +25,8 @@ typedef void (*metil_renderer_on_initialize_function)(
 );
 
 struct metil_renderer_thread_poll_object_data {
-  struct metil_object* _Nonnull * _Nonnull objects;
-  unsigned int length_objects;
+  struct metil_renderable* _Nonnull renderables;
+  unsigned int length_renderables;
   matrix_float3x4* _Nonnull matrix_static_projection;
   matrix_float4x4* _Nonnull matrix_object_projection;
   matrix_float4x4* _Nonnull matrix_player_projection;

@@ -37,6 +37,7 @@
 #include <metil_rendering/camera/lens.h>
 #include <metil_rendering/camera/near_far.h>
 #include <metil_rendering/descriptors/pipeline_render.h>
+#include <metil_rendering/metil_renderable.h>
 #include <metil_rendering/metil_renderer_data_frame.h>
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_rendering/metil_renderer_interface.h>

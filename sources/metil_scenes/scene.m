@@ -3,6 +3,7 @@
 #include <metil_input/cursor.h>
 #include <metil_object.h>
 #include <metil_player.h>
+#include <metil_rendering/metil_renderable.h>
 #include <metil_utilities/time.h>
 
 #include <stdlib.h>
@@ -17,14 +18,11 @@ void metil_scene_initialize(
     &scene->player
   );
 
-  scene->length_objects = 0;
-  scene->objects = malloc(
-    sizeof(struct metil_object*) *
-    scene->length_objects
+  scene->length_renderables = 0;
+  scene->renderables = malloc(
+    sizeof(struct metil_renderable) *
+    scene->length_renderables
   );
-
-  scene->type = metil_scene_type_unknown;
-  scene->id = -1;
 
   scene->player.position.x = 0.0f;
   scene->player.position.y = 0.0f;
@@ -123,19 +121,49 @@ void metil_scene_poll_default(
 void metil_scene_destroy_default(
   struct metil_scene* scene
 ) {
+  struct metil_renderable* renderable = (
+    (void*)0
+  );
+  
   for (
-    unsigned int index_object = 0;
-    index_object < scene->length_objects;
-    ++index_object
+    unsigned int index_renderable = 0;
+    index_renderable < scene->length_renderables;
+    ++index_renderable
   ) {
-    metil_object_destroy(
-      scene->objects[index_object]
+    renderable = &(
+      scene->renderables[
+        index_renderable
+      ]
     );
 
-    free(scene->objects[index_object]);
+    switch (
+      renderable->type
+    ) {
+      case metil_renderable_type_object: {
+        metil_object_destroy(
+          (struct metil_object*) (
+            renderable->renderable
+          )
+        );
+        break;
+      }
+      case metil_renderable_type_menu: {
+        break;
+      }
+      case metil_renderable_type_model: {
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    free(
+      renderable->renderable
+    );
   }
 
-  free(scene->objects);
+  free(scene->renderables);
 
   for (
     unsigned int index_texture = 0;

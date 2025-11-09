@@ -1,8 +1,8 @@
 #ifndef __metil_scenes_scene_h
 #define __metil_scenes_scene_h
 
-#include <metil_object.h>
 #include <metil_player.h>
+#include <metil_rendering/metil_renderable.h>
 
 #include <Metal/MTLDevice.h>
 
@@ -30,8 +30,8 @@ struct metil_scene {
   enum metil_scene_type type;
   int id;
 
-  struct metil_object* _Nonnull * _Nonnull objects;
-  unsigned int length_objects;
+  struct metil_renderable* _Nonnull renderables;
+  unsigned int length_renderables;
 
   _Nonnull id<MTLTexture>* _Nonnull textures;
   unsigned int length_textures;

@@ -3,6 +3,7 @@
 #include <metil_mesh/mesh_box.h>
 #include <metil_object.h>
 #include <metil_player.h>
+#include <metil_rendering/metil_renderable.h>
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_scenes/scene.h>
 
@@ -29,94 +30,65 @@ void example_3d_scene_initialize(
 
   scene->poll = example_3d_scene_poll;
 
-  scene->length_objects = 100;
-  scene->objects = realloc(
-    scene->objects,
-    sizeof(struct metil_object*) *
-    scene->length_objects
+  scene->length_renderables = 100;
+  scene->renderables = realloc(
+    scene->renderables,
+    sizeof(struct metil_renderable) *
+    scene->length_renderables
+  );
+
+  struct metil_object* object = (
+    (void*)0
   );
 
   for (
-    unsigned char index_object = 0;
-    index_object < scene->length_objects;
-    ++index_object
+    unsigned char index_renderable = 0;
+    index_renderable < scene->length_renderables;
+    ++index_renderable
   ) {
-    scene->objects[
-      index_object
-    ] = malloc(
-      sizeof(struct metil_object)
+    metil_renderable_initialize_at_index(
+      scene->renderables,
+      index_renderable,
+      metil_renderable_type_object
     );
 
-    metil_object_initialize(
-      scene->objects[
-        index_object
-      ]
+    object = (
+      scene->renderables[
+        index_renderable
+      ].renderable
     );
 
     metil_mesh_box_initialize(
-      &scene->objects[
-        index_object
-      ]->mesh, (struct clic3_vector3_float) {
+      &object->mesh,
+      (struct clic3_vector3_float) {
         .x = 0.1f,
         .y = 0.1f,
         .z = 0.1f
       }
     );
 
-    scene->objects[
-      index_object
-    ]->vertices = [metal_device
-      newBufferWithBytes: scene->objects[
-        index_object
-      ]->mesh.vertices
-      length: scene->objects[
-        index_object
-      ]->mesh.length_vertices * sizeof(
-        struct clic3_vector4_float
-      )
-      options: MTLResourceStorageModeShared
-    ];
+    metil_object_buffers_initialize(
+      object,
+      metal_device
+    );
 
-    scene->objects[
-      index_object
-    ]->indices = [metal_device
-      newBufferWithBytes: scene->objects[
-        index_object
-      ]->mesh.indices
-      length: scene->objects[
-        index_object
-      ]->mesh.length_indices * sizeof(
-        unsigned int
-      )
-      options: MTLResourceStorageModeShared
-    ];
+    struct metil_renderer_data_object* data_object = (
+      object->data.contents
+    );
 
-    scene->objects[
-      index_object
-    ]->data = [metal_device
-      newBufferWithLength: sizeof(struct metil_renderer_data_object)
-      options: MTLResourceStorageModeShared
-    ];
-
-    struct metil_renderer_data_object* data_object = scene->objects[
-      index_object
-    ]->data.contents;
-
-    data_object->id = index_object;
+    data_object->id = index_renderable;
     data_object->color.x = (
-      (float) (index_object % 10) / 10.0f
+      (float) (index_renderable % 10) / 10.0f
     );
     data_object->color.y = (
-      (float) ((index_object + 3) % 10) / 10.0f
+      (float) ((index_renderable + 3) % 10) / 10.0f
     );
     data_object->color.z = (
-      (float) ((index_object + 5) % 10) / 10.0f
+      (float) ((index_renderable + 5) % 10) / 10.0f
     );
     data_object->color.w = 1.0f;
 
-    scene->objects[
-      index_object
-    ]->position.z = (
+    object->position.z = (
       1.0f
     );
   }
@@ -127,71 +99,73 @@ void example_3d_scene_poll(
 ) {
   metil_scene_poll_default(scene);
 
+  struct metil_object* object = (
+    (void*)0
+  );
+
+  struct metil_renderer_data_object* data_object = (
+    (void*)0
+  );
+
   for (
-    unsigned char index_object = 0;
-    index_object < scene->length_objects;
-    ++index_object
+    unsigned char index_renderable = 0;
+    index_renderable < scene->length_renderables;
+    ++index_renderable
   ) {
+    object = (
+      scene->renderables[
+        index_renderable
+      ].renderable
+    );
+
     float angle = (
       (float) scene->time_elapsed / 1000.0f +
-      (float) (index_object) /
-      (float) scene->length_objects *
+      (float) (index_renderable) /
+      (float) scene->length_renderables *
       M_PI *
       4.0f
     );
 
-    struct metil_renderer_data_object* data_object = scene->objects[
-      index_object
-    ]->data.contents;
+    data_object = (
+      object->data.contents
+    );
 
     float distance = 2.0f;
 
-    scene->objects[
-      index_object
-    ]->position.x = (
-      (index_object % 2 == 0 ? -1 : 1) *
+    object->position.x = (
+      (index_renderable % 2 == 0 ? -1 : 1) *
       sin(angle) *
       distance / 2.0f
     );
 
-    scene->objects[
-      index_object
-    ]->position.y = (
-      (index_object % 2 == 0 ? -1 : 1) *
+    object->position.y = (
+      (index_renderable % 2 == 0 ? -1 : 1) *
       cos(angle) *
       distance / 2.0f
     );
 
-    scene->objects[
-      index_object
-    ]->position.z = 2.0f;
+    object->position.z = 2.0f;
 
-    scene->objects[
-      index_object
-    ]->rotation.y = fmod(
+    object->rotation.y = fmod(
       scene->time_elapsed / (
         10000.0f *
-        (float) ((index_object % 10) + 1)
+        (float) ((index_renderable % 10) + 1)
       ),
       (M_PI * 2.0f)
     );
 
-    scene->objects[
-      index_object
-    ]->rotation.x = fmod(
+    object->rotation.x = fmod(
       scene->time_elapsed / (
         11000.0f *
-        (float) (((index_object + 2) % 10) + 1)
+        (float) (((index_renderable + 2) % 10) + 1)
       ),
       (M_PI * 2.0f)
     );
 
-    scene->objects[
-      index_object
-    ]->rotation.z = fmod(
+    object->rotation.z = fmod(
       scene->time_elapsed / (
         12000.0f *
-        (float) (((index_object + 3) % 10) + 1)
+        (float) (((index_renderable + 3) % 10) + 1)
       ),
       (M_PI * 2.0f)
     );
