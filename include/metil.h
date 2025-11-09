@@ -39,11 +39,13 @@
 #include <metil_rendering/descriptors/pipeline_render.h>
 #include <metil_rendering/metil_renderer_data_frame.h>
 #include <metil_rendering/metil_renderer_data_object.h>
+#include <metil_rendering/metil_renderer_interface.h>
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
 #include <metil_rendering/metil_renderer.h>
 #include <metil_rendering/rendering_properties.h>
 #include <metil_scenes/scene_controller.h>
 #include <metil_scenes/scene.h>
+#include <metil_system_information.h>
 #include <metil_termination.h>
 #include <metil_text/text_characters.h>
 #include <metil_text/text.h>
