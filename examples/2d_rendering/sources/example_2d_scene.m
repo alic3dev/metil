@@ -24,9 +24,6 @@ void example_2d_scene_initialize(
 
   scene->player.poll_input = metil_player_poll_input_null;
 
-  scene->type = metil_scene_type_game;
-  scene->id = 0;
-
   scene->poll = example_2d_scene_poll;
 
   scene->length_renderables = 100;

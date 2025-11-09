@@ -12,13 +12,25 @@ void metil_scene_initialize(
   struct metil_scene* scene,
   id<MTLDevice> metal_device
 ) {
+  metil_scene_initialize_with_renderables(
+    scene,
+    metal_device,
+    0
+  );
+}
+
+void metil_scene_initialize_with_renderables(
+  struct metil_scene* scene,
+  id<MTLDevice> metal_device,
+  unsigned int length_renderables
+) {
   scene->metal_device = metal_device;
 
   metil_player_initialize(
     &scene->player
   );
 
-  scene->length_renderables = 0;
+  scene->length_renderables = length_renderables;
   scene->renderables = malloc(
     sizeof(struct metil_renderable) *
     scene->length_renderables
@@ -56,6 +68,18 @@ void metil_scene_initialize(
   scene->rendering_properties.brightness_text = 1.0f;
 
   scene->data = (void*)0;
+}
+
+void metil_scene_renderables_set_length(
+  struct metil_scene* _Nonnull scene,
+  unsigned int length_renderables
+) {
+  scene->length_renderables = length_renderables;
+  scene->renderables = realloc(
+    scene->renderables,
+    sizeof(struct metil_renderable) *
+    scene->length_renderables
+  );
 }
 
 void metil_scene_poll_input(
