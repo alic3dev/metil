@@ -39,12 +39,13 @@ void metil_object_initialize(
   metil_object->visible = 1;
 }
 
-void metil_object_buffers_initialize(
+void metil_object_buffers_initialize_with_data_size(
   struct metil_object* metil_object,
-  id<MTLDevice> metal_device
+  id<MTLDevice> metal_device,
+  unsigned int size_data
 ) {
   metil_object->data = [metal_device
-    newBufferWithLength: sizeof(struct metil_renderer_data_object)
+    newBufferWithLength: size_data
     options: MTLResourceStorageModeShared
   ];
 
@@ -59,6 +60,17 @@ void metil_object_buffers_initialize(
     length: metil_object->mesh.length_vertices * sizeof(struct clic3_vector4_float)
     options: MTLResourceStorageModeShared
   ];
+}
+
+void metil_object_buffers_initialize(
+  struct metil_object* metil_object,
+  id<MTLDevice> metal_device
+) {
+  metil_object_buffers_initialize_with_data_size(
+    metil_object,
+    metal_device,
+    sizeof(struct metil_renderer_data_object)
+  );
 }
 
 void metil_object_texture_add(
