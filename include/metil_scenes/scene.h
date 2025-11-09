@@ -63,6 +63,11 @@ void metil_scene_initialize(
   _Nullable id<MTLDevice>
 );
 
+void metil_scene_renderables_set_length(
+  struct metil_scene* _Nonnull,
+  unsigned int
+);
+
 void metil_scene_poll_input(
   struct metil_scene* _Nonnull,
   unsigned long int

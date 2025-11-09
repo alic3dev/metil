@@ -58,6 +58,18 @@ void metil_scene_initialize(
   scene->data = (void*)0;
 }
 
+void metil_scene_renderables_set_length(
+  struct metil_scene* _Nonnull scene,
+  unsigned int length_renderables
+) {
+  scene->length_renderables = length_renderables;
+  scene->renderables = realloc(
+    scene->renderables,
+    sizeof(struct metil_renderable) *
+    scene->length_renderables
+  );
+}
+
 void metil_scene_poll_input(
   struct metil_scene* scene,
   unsigned long int time
