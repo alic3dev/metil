@@ -36,6 +36,12 @@ void metil_scene_initialize_with_renderables(
     scene->length_renderables
   );
 
+  scene->length_textures = 0;
+  scene->textures = malloc(
+    sizeof(id<MTLTexture>) *
+    scene->length_textures
+  );
+
   scene->player.position.x = 0.0f;
   scene->player.position.y = 0.0f;
   scene->player.position.z = 0.0f;
