@@ -124,7 +124,7 @@ strip_flags=-x
 all: ${name}
 
 run: .always
-	${file_output}
+	cd ${dir ${file_output}} && ./${shell basename ${file_output}}
 
 ${name}: ${file_output}
 
