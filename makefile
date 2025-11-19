@@ -9,7 +9,9 @@ version=${version_major}.${version_minor}.${version_patch}
 directory_examples=examples
 directory_objects_base=objects
 directory_library=library
+directory_library_ios=library_ios
 directory_library_debug=${directory_library}_debug
+directory_library_iosdebug=${directory_library_ios}_debug
 
 directory_objects=${directory_objects_base}/release
 
@@ -67,7 +69,24 @@ directory_metal=metal
 directory_air=air
 directory_metalar=metalar
 
-directory_macos_sdk=${shell xcrun --show-sdk-path}
+ifndef target_device
+	target_device=mac
+endif
+
+ifndef target_macos_version
+	target_macos_version=26.1
+endif
+
+ifndef target_iphoneos_version
+	target_iphoneos_version=26.1
+endif
+
+target_macos_version_metal=${target_macos_version}
+target_platform=arm64-apple-macos${target_macos_version}
+target_platform_metal=air64-apple-macos${target_macos_version_metal}
+
+directory_macos_sdk=${shell xcrun --sdk macosx${target_macos_version} --show-sdk-path}
+directory_iphoneos_sdk=${shell xcrun --sdk iphoneos${target_iphoneos_version} --show-sdk-path}
 
 file_air_fps_display=${directory_air}/metil_fps_display.air
 file_air_wireframe=${directory_air}/metil_wireframe.air
@@ -108,14 +127,6 @@ files_storyboards=${wildcard ${directory_storyboards}/*.storyboard}
 files_storyboards_compiled=${patsubst ${directory_storyboards}/%.storyboard,${directory_library}/%.storyboardc,${files_storyboards}}
 
 files_libraries=${file_cer0_library} ${file_clic3_library} ${file_interrupt_handler_library} ${file_math_c_library}
-
-target_device=mac
-ifndef target_macos_version
-	target_macos_version=26.0
-endif
-target_macos_version_metal=${target_macos_version}
-target_platform=arm64-apple-macos${target_macos_version}
-target_platform_metal=air64-apple-macos${target_macos_version_metal}
 
 frameworks=Metal MetalKit GameController CoreAudio CoreGraphics CoreText
 
