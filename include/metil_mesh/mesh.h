@@ -3,13 +3,6 @@
 
 #include <clic3_vector.h>
 
-enum metil_mesh_positioning {
-  metil_mesh_positioning_normal = 0,
-  metil_mesh_positioning_player = 1,
-  metil_mesh_positioning_static = 2,
-  metil_mesh_positioning_absolute = 3,
-};
-
 struct metil_mesh {
   unsigned int length_indices;
   unsigned int length_vertices;
@@ -18,8 +11,6 @@ struct metil_mesh {
   struct clic3_vector4_float* vertices;
 
   struct clic3_vector3_float size;
-
-  enum metil_mesh_positioning positioning;
 
   void* data;
 };

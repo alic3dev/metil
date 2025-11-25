@@ -2,6 +2,7 @@
 #define __metil_object_h
 
 #include <metil_mesh/mesh.h>
+#include <metil_positioning.h>
 
 #include <clic3_vector.h>
 
@@ -28,6 +29,8 @@ struct metil_object {
   unsigned char depth_disabled;
   unsigned char index_pipeline_render;
   unsigned char visible;
+
+  enum metil_positioning positioning;
 };
 
 void metil_object_initialize(
