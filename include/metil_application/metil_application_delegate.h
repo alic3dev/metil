@@ -6,17 +6,15 @@
 
 @interface metil_application_delegate: NSObject<UIApplicationDelegate>
 
-- (void) applicationWillTerminate: (NSNotification*) notification;
-
-@end
 #else
 #include <AppKit/AppKit.h>
 
 @interface metil_application_delegate: NSObject<NSApplicationDelegate>
 
+#endif
+
 - (void) applicationWillTerminate: (NSNotification*) notification;
 
 @end
-#endif
 
 #endif

@@ -6,6 +6,7 @@ on:
     branches: ["*"]
 env:
   target_device_version_macos: 15.5
+  target_standard_metal: metal3.2
 jobs:
   continuous_integration_build:
     runs-on: macos-latest
@@ -78,7 +79,7 @@ jobs:
         if: steps.cache_restore_math_c.outputs.cache-hit != 'true'
         run: cd math_c && make math_c target_device_version=${{ env.target_device_version_macos }}
       - name: make_metil
-        run: cd metil && make metil target_device_version=${{ env.target_device_version_macos }}
+        run: cd metil && make metil target_device_version=${{ env.target_device_version_macos }} target_standard_metal=${{ env.target_standard_metal }}
       - name: make_metil_examples
         run: cd metil && make examples target_device_version=${{ env.target_device_version_macos }}
       - name: cache_save_cer0

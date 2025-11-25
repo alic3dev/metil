@@ -70,6 +70,9 @@ int metil_initialize_with_data(
     name
   );
 
+  #if target_device == 1
+  metil_configuration_initialize();
+  #else
   unsigned char status_configuration_load = (
     metil_configuration_load()
   );
@@ -85,6 +88,7 @@ int metil_initialize_with_data(
     #endif
     return status_configuration_load;
   }
+  #endif
 
   metil_termination_initialize();
   interrupt_handler_initialize();
@@ -134,12 +138,7 @@ int metil_initialize_with_data(
   );
 
   #if target_device == 1
-  return UIApplicationMain(
-    length_parameters,
-    parameters,
-    (void*)0,
-    NSStringFromClass([metil_application_delegate class])
-  );
+  return 0;
   #else
   metil_application* application = [metil_application sharedApplication];
   application.delegate = [metil_application_delegate alloc];

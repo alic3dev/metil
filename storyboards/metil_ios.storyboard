@@ -7,15 +7,14 @@
   version="3.0"
 >
   <scenes>
-    <scene sceneID="scene-view">
+    <scene sceneID="scene-core">
       <objects>
           <viewController
-            id="viewcontroller-view-core"
+            id="view-controller-core"
             customClass="metil_view_controller"
             sceneMemberID="viewController"
           >
             <view
-              id="view-view-core"
               key="view"
               customClass="metil_view"
             />
