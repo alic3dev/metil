@@ -1,4 +1,4 @@
-name: continuous_integration_build
+name: continuous_integration_build_ios
 on:
   push:
     branches: ["core"]
@@ -6,7 +6,6 @@ on:
     branches: ["*"]
 env:
   target_device_version_ios: 18.5
-  target_device_version_macos: 15.5
 jobs:
   continuous_integration_build:
     runs-on: macos-latest
