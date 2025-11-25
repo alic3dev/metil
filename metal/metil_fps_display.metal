@@ -10,7 +10,7 @@ struct data_vertex {
   float3 color;
 };
 
-[[vertex]] struct data_vertex metil_fps_display_vertex(
+vertex struct data_vertex metil_fps_display_vertex(
   const device simd_float4* positions [[
     buffer(
       metil_renderer_vertex_index_parameter_positions
@@ -56,7 +56,7 @@ struct data_vertex {
   return data_vertex;
 }
 
-[[fragment]] float4 metil_fps_display_fragment(
+fragment float4 metil_fps_display_fragment(
   data_vertex data_vertex [[stage_in]],
   metal::texture2d<half> texture [[texture(0)]]
 ) {

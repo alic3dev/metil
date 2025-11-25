@@ -8,7 +8,7 @@ struct data_vertex {
   float4 position [[position]];
 };
 
-[[vertex]] struct data_vertex metil_wireframe_vertex(
+vertex struct data_vertex metil_wireframe_vertex(
   const device simd_float4* positions [[
     buffer(
       metil_renderer_vertex_index_parameter_positions
@@ -36,7 +36,7 @@ struct data_vertex {
   return data_vertex;
 }
 
-[[fragment]] float4 metil_wireframe_fragment() {
+fragment float4 metil_wireframe_fragment() {
   return float4(
     1.0f,
     1.0f,
