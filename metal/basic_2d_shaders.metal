@@ -7,7 +7,7 @@ struct data_vertex {
   float4 color;
 };
 
-[[vertex]] struct data_vertex shader_2d_vertex(
+vertex struct data_vertex shader_2d_vertex(
   const device simd_float4* positions [[
     buffer(
       metil_renderer_vertex_index_parameter_positions
@@ -44,7 +44,7 @@ struct data_vertex {
   return data_vertex;
 }
 
-[[fragment]] float4 shader_2d_fragment(
+fragment float4 shader_2d_fragment(
   struct data_vertex data_vertex [[stage_in]]
 ) {
   return data_vertex.color;
