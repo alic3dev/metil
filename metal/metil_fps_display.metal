@@ -3,6 +3,7 @@
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
 
 #include <metal_stdlib>
+#include <simd/simd.h>
 
 struct data_vertex {
   float4 position [[position]];
