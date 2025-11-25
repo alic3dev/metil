@@ -1,5 +1,7 @@
 #include <metil_application/metil_window.h>
 
+#if target_device != 1
+
 #include <metil_input/cursor.h>
 #include <metil_input/map.h>
 
@@ -136,3 +138,5 @@
 }
 
 @end
+
+#endif

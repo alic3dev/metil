@@ -1,6 +1,8 @@
 #ifndef __metil_audio_audio_h
 #define __metil_audio_audio_h
 
+#if target_device != 1
+
 #include <cer0_audio_output.h>
 
 #include <CoreAudio/CoreAudio.h>
@@ -47,4 +49,5 @@ OSStatus metil_audio_output_io_proc(
   void*
 );
 
+#endif
 #endif

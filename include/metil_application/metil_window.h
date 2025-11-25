@@ -1,6 +1,8 @@
 #ifndef __metil_application_metil_window_h
 #define __metil_application_metil_window_h
 
+#if target_device != 1
+
 #include <AppKit/AppKit.h>
 
 @interface metil_window: NSWindow {
@@ -21,4 +23,5 @@
 
 @end
 
+#endif
 #endif

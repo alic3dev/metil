@@ -1,5 +1,6 @@
 #include <metil_audio/audio.h>
 
+#if target_device != 1
 #include <metil_debug/log.h>
 
 #include <cer0_audio_output.h>
@@ -230,3 +231,4 @@ OSStatus metil_audio_output_io_proc(
 
   return 0;
 }
+#endif

@@ -1,6 +1,8 @@
 air
 library
 library_debug
+library_ios
 metalar
 objects
+objects_ios
 output

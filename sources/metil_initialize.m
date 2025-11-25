@@ -16,15 +16,27 @@
 
 #include <interrupt_handler.h>
 
+#if target_device == 1
+#include <UIKit/UIKit.h>
+#else
 #include <AppKit/AppKit.h>
+#endif
 
 void metil_terminate_on_signal(int _) {
+  #if target_device == 1
+  [[UIApplication sharedApplication] terminate: 0];
+  #else
   [[NSApplication sharedApplication] terminate: 0];
+  #endif
 }
 
 int metil_initialize(
   int length_parameters,
+  #if target_device == 1
+  char** parameters,
+  #else
   const char** parameters,
+  #endif
   char* name,
   metil_renderer_on_initialize_function metil_renderer_on_initialize_function
 ) {
@@ -39,7 +51,11 @@ int metil_initialize(
 
 int metil_initialize_with_data(
   int length_parameters,
+  #if target_device == 1
+  char** parameters,
+  #else
   const char** parameters,
+  #endif
   char* name,
   metil_renderer_on_initialize_function metil_renderer_on_initialize_function,
   void* metil_renderer_on_initialize_function_data
@@ -62,7 +78,11 @@ int metil_initialize_with_data(
     status_configuration_load != 0
   ) {
     metil_paths_destroy();
+    #if target_device == 1
+    [[UIApplication sharedApplication] terminate: 0];
+    #else
     [[NSApplication sharedApplication] terminate: 0];
+    #endif
     return status_configuration_load;
   }
 
@@ -70,7 +90,9 @@ int metil_initialize_with_data(
   interrupt_handler_initialize();
   metil_input_initialize();
   metil_scene_controller_initialize();
+  #if target_device != 1
   metil_audio_initialize();
+  #endif
   metil_text_initialize();
 
   metil_configuration_values_set();
@@ -90,10 +112,12 @@ int metil_initialize_with_data(
     (void*)0
   );
 
+  #if target_device != 1
   metil_termination_on_function_add(
     metil_audio_destroy,
     (void*)0
   );
+  #endif
 
   metil_termination_on_function_add(
     metil_text_destroy,
@@ -105,15 +129,24 @@ int metil_initialize_with_data(
     (void*)0
   );
 
-  metil_application* application = [metil_application sharedApplication];
-  application.delegate = [metil_application_delegate alloc];
-
   interrupt_handler_interrupt_function_add(
     metil_terminate_on_signal
   );
+
+  #if target_device == 1
+  return UIApplicationMain(
+    length_parameters,
+    parameters,
+    (void*)0,
+    NSStringFromClass([metil_application_delegate class])
+  );
+  #else
+  metil_application* application = [metil_application sharedApplication];
+  application.delegate = [metil_application_delegate alloc];
 
   return NSApplicationMain(
     length_parameters,
     parameters
   );
+  #endif
 }
