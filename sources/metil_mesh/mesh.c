@@ -24,8 +24,6 @@ void metil_mesh_initialize(
     mesh->length_vertices
   );
 
-  mesh->positioning = metil_mesh_positioning_normal;
-
   mesh->data = (void*)0;
 }
 
