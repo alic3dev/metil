@@ -90,7 +90,7 @@ files_objects_objc=${patsubst ${directory_sources}/%.m,${directory_objects_objc}
 
 target_device=mac
 ifndef target_macos_version
-	target_macos_version=26.0
+	target_macos_version=26.1
 endif
 target_platform=arm64-apple-macos${target_macos_version}
 
