@@ -1,6 +1,7 @@
 #include <metil_object.h>
 
 #include <metil_mesh/mesh.h>
+#include <metil_positioning.h>
 #include <metil_rendering/metil_renderer_data_object.h>
 
 #include <clic3_vector.h>
@@ -37,6 +38,8 @@ void metil_object_initialize(
   metil_object->depth_disabled = 0;
   metil_object->index_pipeline_render = 0;
   metil_object->visible = 1;
+
+  metil_object->positioning = metil_positioning_normal;
 }
 
 void metil_object_buffers_initialize_with_data_size(

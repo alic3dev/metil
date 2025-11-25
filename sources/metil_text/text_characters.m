@@ -66,8 +66,6 @@ void metil_text_characters_initialize(
       character_array[0] = index_character;
     }
 
-    metil_text_characters_default.meshes[index_character].positioning = metil_mesh_positioning_static;
-
     metil_text_characters_default.textures[
       index_character
     ] = metil_text_mesh_with_texture_initialize(

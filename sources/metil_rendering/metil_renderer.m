@@ -1164,7 +1164,7 @@ void metil_renderer_poll_object(
   data->position.z = object->position.z;
 
   if (
-    object->mesh.positioning == metil_mesh_positioning_absolute
+    object->positioning == metil_positioning_absolute
   ) {
     data->view_model_matrix_projection = (matrix_float4x4) {{
       { 1.0f, 0.0f, 0.0f, 0.0f },
@@ -1173,7 +1173,7 @@ void metil_renderer_poll_object(
       { object->position.x, object->position.y, object->position.z, 1.0f }
     }};
   } else if (
-    object->mesh.positioning == metil_mesh_positioning_static
+    object->positioning == metil_positioning_static
   ) {
     data->view_model_matrix_projection = (matrix_float4x4) {{
       matrix_projection_static->columns[0],
@@ -1195,7 +1195,7 @@ void metil_renderer_poll_object(
     matrix_float4x4* matrix_projection = (void*)0;
 
     if (
-      object->mesh.positioning == metil_mesh_positioning_player
+      object->positioning == metil_positioning_player
     ) {
       matrix_projection = matrix_player_projection;
     } else {

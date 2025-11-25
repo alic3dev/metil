@@ -3,6 +3,7 @@
 #include <metil_mesh/2d/mesh_square.h>
 #include <metil_object.h>
 #include <metil_player.h>
+#include <metil_positioning.h>
 #include <metil_rendering/metil_renderable.h>
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_scenes/scene.h>
@@ -55,8 +56,8 @@ void example_2d_scene_initialize(
       0.2f
     );
 
-    object->mesh.positioning = (
-      metil_mesh_positioning_absolute
+    object->positioning = (
+      metil_positioning_absolute
     );
 
     metil_object_buffers_initialize(
