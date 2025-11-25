@@ -362,7 +362,9 @@ void metil_configuration_debug_log_parameter_invalid(
 }
 
 void metil_configuration_values_set() {
+  #if target_device != 1
   metil_audio_data.volume = metil_configuration.audio.volume;
+  #endif
 }
 
 void metil_configuration_destroy() {}
