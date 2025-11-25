@@ -4,6 +4,8 @@ on:
     branches: ["core"]
   pull_request:
     branches: ["*"]
+env:
+  target_device_version_macos: 15.5
 jobs:
   continuous_integration_build:
     runs-on: macos-latest
@@ -65,20 +67,20 @@ jobs:
           path: math_c
       - name: make_clic3
         if: steps.cache_restore_clic3.outputs.cache-hit != 'true'
-        run: cd clic3 && make clic3
+        run: cd clic3 && make clic3 target_device_version=${{ env.target_device_version_macos }}
       - name: make_cer0
         if: steps.cache_restore_cer0.outputs.cache-hit != 'true'
-        run: cd cer0 && make cer0
+        run: cd cer0 && make cer0 target_device_version=${{ env.target_device_version_macos }}
       - name: make_interrupt_handler
         if: steps.cache_restore_interrupt_handler.outputs.cache-hit != 'true'
-        run: cd interrupt_handler && make interrupt_handler
+        run: cd interrupt_handler && make interrupt_handler target_device_version=${{ env.target_device_version_macos }}
       - name: make_math_c
         if: steps.cache_restore_math_c.outputs.cache-hit != 'true'
-        run: cd math_c && make math_c
+        run: cd math_c && make math_c target_device_version=${{ env.target_device_version_macos }}
       - name: make_metil
-        run: cd metil && make metil
+        run: cd metil && make metil target_device_version=${{ env.target_device_version_macos }}
       - name: make_metil_examples
-        run: cd metil && make examples
+        run: cd metil && make examples target_device_version=${{ env.target_device_version_macos }}
       - name: cache_save_cer0
         id: cache_save_cer0
         if: steps.cache_restore_cer0.outputs.cache-hit != 'true'
