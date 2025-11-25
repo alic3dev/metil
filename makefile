@@ -110,6 +110,10 @@ endif
 
 target_version_metal=${target_device_version}
 
+ifndef target_standard_metal
+target_standard_metal=metal4.0
+endif
+
 ifeq (${target_device},mac)
 target_platform=arm64-apple-macos${target_device_version}
 target_platform_metal=air64-apple-macos${target_version_metal}
@@ -219,7 +223,7 @@ strip_flags=-x
 metal=xcrun -sdk macosx metal
 metal_ar=xcrun -sdk macosx metal-ar
 metallib=xcrun -sdk macosx metallib
-metal_flags_common=-target ${target_platform_metal} -std=metal4.0
+metal_flags_common=-target ${target_platform_metal} -std=${target_standard_metal}
 
 metal_flags=${metal_flags_common} -I${directory_include} -I${directory_clic3_include} -isysroot ${directory_sdk}
 
