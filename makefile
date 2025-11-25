@@ -219,7 +219,8 @@ strip_flags=-x
 metal=xcrun -sdk macosx metal
 metal_ar=xcrun -sdk macosx metal-ar
 metallib=xcrun -sdk macosx metallib
-metal_flags_common=-target ${target_platform_metal}
+metal_flags_common=-target ${target_platform_metal} -std=metal4.0
+
 metal_flags=${metal_flags_common} -I${directory_include} -I${directory_clic3_include} -isysroot ${directory_sdk}
 
 ifneq (${disable_metal_fast_options}, 1)
