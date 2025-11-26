@@ -43,31 +43,41 @@ directory_math_c=../math_c
 directory_math_c_include=${directory_math_c}/include
 
 ifeq (${debug}, 1)
-directory_cer0_library=${directory_cer0}/library_debug
+directory_cer0_library=${directory_cer0}/library/macos/debug
+directory_clic3_library=${directory_clic3}/library/macos/debug
+directory_interrupt_handler_library=${directory_interrupt_handler}/library/macos/debug
+directory_math_c_library=${directory_math_c}/library/macos/debug
+
 file_cer0_library=${directory_cer0_library}/cer0_debug.${version_target_cer0}.dylib
-directory_clic3_library=${directory_clic3}/library_debug
 file_clic3_library=${directory_clic3_library}/clic3_debug.${version_target_clic3}.dylib
-directory_interrupt_handler_library=${directory_interrupt_handler}/library_debug
 file_interrupt_handler_library=${directory_interrupt_handler_library}/interrupt_handler_debug.${version_target_interrupt_handler}.dylib
-directory_math_c_library=${directory_math_c}/library_debug
 file_math_c_library=${directory_math_c_library}/math_c_debug.${version_target_math_c}.dylib
 else
-directory_cer0_library=${directory_cer0}/library
+directory_cer0_library=${directory_cer0}/library/macos/release
+directory_clic3_library=${directory_clic3}/library/macos/release
+directory_interrupt_handler_library=${directory_interrupt_handler}/library/macos/release
+directory_math_c_library=${directory_math_c}/library/macos/release
+
 file_cer0_library=${directory_cer0_library}/cer0.${version_target_cer0}.dylib
-directory_clic3_library=${directory_clic3}/library
 file_clic3_library=${directory_clic3_library}/clic3.${version_target_clic3}.dylib
-directory_interrupt_handler_library=${directory_interrupt_handler}/library
 file_interrupt_handler_library=${directory_interrupt_handler_library}/interrupt_handler.${version_target_interrupt_handler}.dylib
-directory_math_c_library=${directory_math_c}/library
 file_math_c_library=${directory_math_c_library}/math_c.${version_target_math_c}.dylib
-file_math_c_library_object=${directory_math_c_library}/math_c.${version_target_math_c}.dylib
 endif
 
 directory_metal=metal
 directory_air=air
 directory_metalar=metalar
 
-directory_macos_sdk=${shell xcrun --show-sdk-path}
+target_device=mac
+ifndef target_device_version
+	target_device_version=26.1
+endif
+
+ifndef target_standard_metal
+target_standard_metal=metal4.0
+endif
+
+directory_macos_sdk=${shell xcrun --sdk macosx${target_device_version} --show-sdk-path}
 
 file_air_fps_display=${directory_air}/metil_fps_display.air
 file_air_wireframe=${directory_air}/metil_wireframe.air
@@ -109,13 +119,9 @@ files_storyboards_compiled=${patsubst ${directory_storyboards}/%.storyboard,${di
 
 files_libraries=${file_cer0_library} ${file_clic3_library} ${file_interrupt_handler_library} ${file_math_c_library}
 
-target_device=mac
-ifndef target_macos_version
-	target_macos_version=26.0
-endif
-target_macos_version_metal=${target_macos_version}
-target_platform=arm64-apple-macos${target_macos_version}
-target_platform_metal=air64-apple-macos${target_macos_version_metal}
+target_device_version_metal=${target_device_version}
+target_platform=arm64-apple-macos${target_device_version}
+target_platform_metal=air64-apple-macos${target_device_version_metal}
 
 frameworks=Metal MetalKit GameController CoreAudio CoreGraphics CoreText
 
@@ -150,7 +156,7 @@ strip_flags=-x
 metal=xcrun -sdk macosx metal
 metal_ar=xcrun -sdk macosx metal-ar
 metallib=xcrun -sdk macosx metallib
-metal_flags_common=-target ${target_platform_metal}
+metal_flags_common=-target ${target_platform_metal} -std=${target_standard_metal}
 metal_flags=${metal_flags_common} -I${directory_include} -I${directory_clic3_include} -isysroot ${directory_macos_sdk}
 
 ifneq (${disable_metal_fast_options}, 1)
@@ -237,7 +243,7 @@ ${directory_objects_objc}/%.o: ${directory_sources}/%.m
 
 ${directory_library}/%.storyboardc: ${directory_storyboards}/%.storyboard
 	mkdir -p ${directory_library}
-	ibtool --module ${name} --target-device ${target_device} --minimum-deployment-target ${target_macos_version} --output-format human-readable-text $< --compilation-directory ${directory_library}	
+	ibtool --module ${name} --target-device ${target_device} --minimum-deployment-target ${target_device_version} --output-format human-readable-text $< --compilation-directory ${directory_library}	
 
 ${file_output_info_plist}: ${file_info_plist}
 	mkdir -p ${directory_library}
