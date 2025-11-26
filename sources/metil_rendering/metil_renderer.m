@@ -1126,7 +1126,7 @@ void* metil_renderer_thread_poll_object(
           renderable->renderable
         );
 
-        metil_renderer_poll_object(
+        object->poll(
           object,
           metil_renderer_thread_poll_object_data->matrix_static_projection,
           metil_renderer_thread_poll_object_data->matrix_object_projection,
