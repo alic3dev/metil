@@ -77,7 +77,7 @@ ifndef target_standard_metal
 target_standard_metal=metal4.0
 endif
 
-directory_macos_sdk==${shell xcrun --sdk macosx${target_device_version} --show-sdk-path}
+directory_macos_sdk=${shell xcrun --sdk macosx${target_device_version} --show-sdk-path}
 
 file_air_fps_display=${directory_air}/metil_fps_display.air
 file_air_wireframe=${directory_air}/metil_wireframe.air
