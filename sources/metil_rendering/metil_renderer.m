@@ -1126,7 +1126,7 @@ void* metil_renderer_thread_poll_object(
           renderable->renderable
         );
 
-        metil_renderer_poll_object(
+        object->poll(
           object,
           metil_renderer_thread_poll_object_data->matrix_static_projection,
           metil_renderer_thread_poll_object_data->matrix_object_projection,
@@ -1163,90 +1163,16 @@ void metil_renderer_poll_object(
   data->position.y = object->position.y;
   data->position.z = object->position.z;
 
-  if (
-    object->positioning == metil_positioning_absolute
-  ) {
-    data->view_model_matrix_projection = (matrix_float4x4) {{
-      { 1.0f, 0.0f, 0.0f, 0.0f },
-      { 0.0f, 1.0f, 0.0f, 0.0f },
-      { 0.0f, 0.0f, 1.0f, 0.0f },
-      { object->position.x, object->position.y, object->position.z, 1.0f }
-    }};
-  } else if (
-    object->positioning == metil_positioning_static
-  ) {
-    data->view_model_matrix_projection = (matrix_float4x4) {{
-      matrix_projection_static->columns[0],
-      matrix_projection_static->columns[1],
-      matrix_projection_static->columns[2],
-      { object->position.x, object->position.y, object->position.z, 1.0f }
-    }};
-  } else {
-    struct clic3_vector3_float position = {
-      .x = object->position.x - metil_scene_controller.scene.player.position.x,
-      .y = (
-        object->position.y -
-        metil_scene_controller.scene.player.position.y -
-        *height_camera
-      ),
-      .z = object->position.z - metil_scene_controller.scene.player.position.z
-    };
-
-    matrix_float4x4* matrix_projection = (void*)0;
-
-    if (
-      object->positioning == metil_positioning_player
-    ) {
-      matrix_projection = matrix_player_projection;
-    } else {
-      matrix_projection = matrix_object_projection;
-    }
-
-    matrix_float4x4 matrix_projection_object_with_rotation = matrix_multiply(
-      (matrix_float4x4) {{
-        { 1.0f, 0.0f, 0.0f, 0.0f },
-        { 0.0f, 1.0f, 0.0f, 0.0f },
-        { 0.0f, 0.0f, 1.0f, 0.0f },
-        {
-          position.x,
-          position.y,
-          -position.z,
-          1
-        }
-      }},
-      (matrix_float4x4) {{
-        { 1.0f, 0.0f, 0.0f, 0.0f },
-        { 0.0f, cos(object->rotation.x), -sin(object->rotation.x), 0.0f },
-        { 0.0f, sin(object->rotation.x), cos(object->rotation.x), 0.0f },
-        { 0.0f, 0.0f, 0.0f, 1.0f }
-      }}
-    );
-
-    matrix_projection_object_with_rotation = matrix_multiply(
-      matrix_projection_object_with_rotation,
-      (matrix_float4x4) {{
-        { cos(object->rotation.y), 0.0f, -sin(object->rotation.y), 0.0f },
-        { 0.0f, 1.0f, 0.0f, 0.0f },
-        { sin(object->rotation.y), 0.0f, cos(object->rotation.y), 0.0f },
-        { 0.0f, 0.0f, 0.0f, 1.0f }
-      }}
-    );
-
-    matrix_projection_object_with_rotation = matrix_multiply(
-      matrix_projection_object_with_rotation,
-      (matrix_float4x4) {{
-        { cos(object->rotation.z), -sin(object->rotation.z), 0.0f, 0.0f },
-        { sin(object->rotation.z), cos(object->rotation.z), 0.0f, 0.0f },
-        { 0.0f, 0.0f, 1.0f, 0.0f },
-        { 0.0f, 0.0f, 0.0f, 1.0f }
-      }}
-    );
-
-    data->view_model_matrix_projection = matrix_multiply(
-      *matrix_projection,
-      matrix_projection_object_with_rotation
-    );
-  }
+  metil_positioning_view_model_matrix_projection_set(
+    object->positioning,
+    &data->view_model_matrix_projection,
+    matrix_projection_static,
+    matrix_object_projection,
+    matrix_player_projection,
+    &object->position,
+    &object->rotation,
+    *height_camera
+  );
 
   data->size.x = object->mesh.size.x;
   data->size.y = object->mesh.size.y;

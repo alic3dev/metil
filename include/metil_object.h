@@ -10,6 +10,18 @@
 #include <Metal/MTLDevice.h>
 #include <Metal/MTLRenderCommandEncoder.h>
 
+#include <simd/simd.h>
+
+struct metil_object;
+
+typedef void (*metil_object_poll)(
+  struct metil_object* _Nonnull,
+  matrix_float3x4* _Nonnull,
+  matrix_float4x4* _Nonnull,
+  matrix_float4x4* _Nonnull,
+  float* _Nonnull
+);
+
 struct metil_object {
   struct metil_mesh mesh;
 
@@ -31,6 +43,8 @@ struct metil_object {
   unsigned char visible;
 
   enum metil_positioning positioning;
+
+  metil_object_poll _Nonnull poll;
 };
 
 void metil_object_initialize(
