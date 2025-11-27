@@ -952,30 +952,22 @@ void* metil_renderer_on_initialize_data = (void*)0;
   type_primitive: (MTLPrimitiveType) type_primitive
   type_index: (MTLIndexType) type_index
 {
-  if (
-    self->index_pipelines_render_current != index_pipeline_render
-  ) {
-    [encoder_render
-      setRenderPipelineState: self->pipelines_render[
-        index_pipeline_render
-      ]
-    ];
-  }
+  [encoder_render
+    setRenderPipelineState: self->pipelines_render[
+      index_pipeline_render
+    ]
+  ];
 
   if (
-    self->depth_state_disabled != depth_disabled
+    depth_disabled == 0
   ) {
-    if (
-      depth_disabled == 0
-    ) {
-      [encoder_render
-        setDepthStencilState: self->depth_state
-      ];
-    } else {
-      [encoder_render
-        setDepthStencilState: self->depth_state_writes_disabled
-      ];
-    }
+    [encoder_render
+      setDepthStencilState: self->depth_state
+    ];
+  } else {
+    [encoder_render
+      setDepthStencilState: self->depth_state_writes_disabled
+    ];
   }
 
   [encoder_render
