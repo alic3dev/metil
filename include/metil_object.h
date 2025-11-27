@@ -54,7 +54,7 @@ void metil_object_initialize(
 void metil_object_buffers_initialize_with_data_size(
   struct metil_object* _Nonnull,
   _Nonnull id<MTLDevice>,
-  unsigned int
+  unsigned long int
 );
 
 void metil_object_buffers_initialize(

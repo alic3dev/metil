@@ -48,7 +48,7 @@ void metil_object_initialize(
 void metil_object_buffers_initialize_with_data_size(
   struct metil_object* metil_object,
   id<MTLDevice> metal_device,
-  unsigned int size_data
+  unsigned long int size_data
 ) {
   metil_object->data = [metal_device
     newBufferWithLength: size_data

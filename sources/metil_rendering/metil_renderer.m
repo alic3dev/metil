@@ -115,7 +115,6 @@ void* metil_renderer_on_initialize_data = (void*)0;
   self->renderer_interface.rendering_properties = &self->rendering_properties;
 
   if (metil_renderer_on_initialize != (void*)0) {
-    
     metil_renderer_on_initialize(
       &self->renderer_interface,
       metil_renderer_on_initialize_data
@@ -405,12 +404,21 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   self->size_view = size;
 
+  #if target_device == 1
+  metil_camera_ratio_aspect_set(
+    &self->rendering_properties.camera,
+    (float) self->size_view.width / (float) self->size_view.height,
+    (float) self->size_view.width,
+    (float) self->size_view.height
+  );
+  #else
   metil_camera_ratio_aspect_set(
     &self->rendering_properties.camera,
     16 / 9,
     (float) self->size_view.width,
     (float) self->size_view.height
   );
+  #endif
 
   self->matrix_projection_static.columns[0][0] = (
     self->rendering_properties.camera.ratio_aspect /
@@ -944,30 +952,22 @@ void* metil_renderer_on_initialize_data = (void*)0;
   type_primitive: (MTLPrimitiveType) type_primitive
   type_index: (MTLIndexType) type_index
 {
-  if (
-    self->index_pipelines_render_current != index_pipeline_render
-  ) {
-    [encoder_render
-      setRenderPipelineState: self->pipelines_render[
-        index_pipeline_render
-      ]
-    ];
-  }
+  [encoder_render
+    setRenderPipelineState: self->pipelines_render[
+      index_pipeline_render
+    ]
+  ];
 
   if (
-    self->depth_state_disabled != depth_disabled
+    depth_disabled == 0
   ) {
-    if (
-      depth_disabled == 0
-    ) {
-      [encoder_render
-        setDepthStencilState: self->depth_state
-      ];
-    } else {
-      [encoder_render
-        setDepthStencilState: self->depth_state_writes_disabled
-      ];
-    }
+    [encoder_render
+      setDepthStencilState: self->depth_state
+    ];
+  } else {
+    [encoder_render
+      setDepthStencilState: self->depth_state_writes_disabled
+    ];
   }
 
   [encoder_render
