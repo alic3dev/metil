@@ -115,7 +115,6 @@ void* metil_renderer_on_initialize_data = (void*)0;
   self->renderer_interface.rendering_properties = &self->rendering_properties;
 
   if (metil_renderer_on_initialize != (void*)0) {
-    
     metil_renderer_on_initialize(
       &self->renderer_interface,
       metil_renderer_on_initialize_data
@@ -405,12 +404,21 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   self->size_view = size;
 
+  #if target_device == 1
+  metil_camera_ratio_aspect_set(
+    &self->rendering_properties.camera,
+    (float) self->size_view.width / (float) self->size_view.height,
+    (float) self->size_view.width,
+    (float) self->size_view.height
+  );
+  #else
   metil_camera_ratio_aspect_set(
     &self->rendering_properties.camera,
     16 / 9,
     (float) self->size_view.width,
     (float) self->size_view.height
   );
+  #endif
 
   self->matrix_projection_static.columns[0][0] = (
     self->rendering_properties.camera.ratio_aspect /
