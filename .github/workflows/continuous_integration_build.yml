@@ -5,6 +5,7 @@ on:
   pull_request:
     branches: ["*"]
 env:
+  target_device_version_ios: 18.5
   target_device_version_macos: 15.5
   target_standard_metal: metal3.2
 jobs:
@@ -80,6 +81,8 @@ jobs:
         run: cd math_c && make math_c target_device_version=${{ env.target_device_version_macos }}
       - name: make_metil
         run: cd metil && make metil target_device_version=${{ env.target_device_version_macos }} target_standard_metal=${{ env.target_standard_metal }}
+      - name: make_metil_ios
+        run: cd metil && make target_device_version=${{ env.target_device_version_ios }} target_standard_metal=${{ env.target_standard_metal }} target_device=iphone
       - name: make_metil_examples
         run: cd metil && make examples target_device_version=${{ env.target_device_version_macos }}
       - name: cache_save_cer0
