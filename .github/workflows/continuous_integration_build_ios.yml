@@ -1,0 +1,114 @@
+name: continuous_integration_build_ios
+on:
+  push:
+    branches: ["core"]
+  pull_request:
+    branches: ["*"]
+env:
+  target_device_version_ios: 18.5
+  target_standard_metal: metal3.2
+jobs:
+  continuous_integration_build_ios:
+    runs-on: macos-latest
+    steps:
+      - name: git_initialization
+        run: git config --global init.defaultBranch core
+      - name: checkout_metil
+        uses: actions/checkout@v5
+        with:
+          repository: alic3dev/metil
+          path: metil
+      - name: cache_restore_cer0_ios
+        id: cache_restore_cer0_ios
+        uses: actions/cache/restore@v4
+        with:
+          path: cer0
+          key: cache_cer0_ios_0_0_0
+      - name: cache_restore_clic3_ios
+        id: cache_restore_clic3_ios
+        uses: actions/cache/restore@v4
+        with:
+          path: clic3
+          key: cache_clic3_ios_0_0_0
+      - name: cache_restore_interrupt_handler_ios
+        id: cache_restore_interrupt_handler_ios
+        uses: actions/cache/restore@v4
+        with:
+          path: interrupt_handler
+          key: cache_interrupt_handler_ios_0_0_0
+      - name: cache_restore_math_c_ios
+        id: cache_restore_math_c_ios
+        uses: actions/cache/restore@v4
+        with:
+          path: math_c
+          key: cache_math_c_ios_0_0_0
+      - name: checkout_cer0
+        if: steps.cache_restore_cer0_ios.outputs.cache-hit != 'true'
+        uses: actions/checkout@v5
+        with:
+          repository: alic3dev/cer0
+          path: cer0
+      - name: checkout_clic3
+        if: steps.cache_restore_clic3_ios.outputs.cache-hit != 'true'
+        uses: actions/checkout@v5
+        with:
+          repository: alic3dev/clic3
+          path: clic3
+      - name: checkout_interrupt_handler
+        if: steps.cache_restore_interrupt_handler_ios.outputs.cache-hit != 'true'
+        uses: actions/checkout@v5
+        with:
+          repository: alic3dev/interrupt_handler
+          path: interrupt_handler
+      - name: checkout_math_c
+        if: steps.cache_restore_math_c_ios.outputs.cache-hit != 'true'
+        uses: actions/checkout@v5
+        with:
+          repository: alic3dev/math_c
+          path: math_c
+      - name: make_clic3_ios
+        if: steps.cache_restore_clic3_ios.outputs.cache-hit != 'true'
+        run: cd clic3 && make clic3 target_device_version=${{ env.target_device_version_ios }} target_device=iphone
+      - name: make_cer0
+        if: steps.cache_restore_cer0_ios.outputs.cache-hit != 'true'
+        run: cd cer0 && make cer0 target_device_version=${{ env.target_device_version_ios }} target_device=iphone
+      - name: make_interrupt_handler_ios
+        if: steps.cache_restore_interrupt_handler_ios.outputs.cache-hit != 'true'
+        run: cd interrupt_handler && make interrupt_handler target_device_version=${{ env.target_device_version_ios }} target_device=iphone
+      - name: make_math_c_ios
+        if: steps.cache_restore_math_c_ios.outputs.cache-hit != 'true'
+        run: cd math_c && make math_c target_device_version=${{ env.target_device_version_ios }} target_device=iphone
+      - name: make_metil_ios
+        run: cd metil && make target_device_version=${{ env.target_device_version_ios }} target_standard_metal=${{ env.target_standard_metal }} target_device=iphone
+      - name: cache_save_cer0_ios
+        id: cache_save_cer0_ios
+        if: steps.cache_restore_cer0_ios.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            cer0
+          key: cache_cer0_ios_0_0_0
+      - name: cache_save_clic3_ios
+        id: cache_save_clic3_ios
+        if: steps.cache_restore_clic3_ios.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            clic3
+          key: cache_clic3_ios_0_0_0
+      - name: cache_save_interrupt_handler_ios
+        id: cache_save_interrupt_handler_ios
+        if: steps.cache_restore_interrupt_handler_ios.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            interrupt_handler
+          key: cache_interrupt_handler_ios_0_0_0
+      - name: cache_save_math_c_ios
+        id: cache_save_math_c_ios
+        if: steps.cache_restore_math_c_ios.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            math_c
+          key: cache_math_c_ios_0_0_0
