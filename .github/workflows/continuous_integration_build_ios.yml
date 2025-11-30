@@ -68,16 +68,16 @@ jobs:
           path: math_c
       - name: make_clic3_ios
         if: steps.cache_restore_clic3_ios.outputs.cache-hit != 'true'
-        run: cd clic3 && make clic3 target_device_version=${{ env.target_device_version_ios }} target_device=iphone
+        run: cd clic3 && make clic3_ios target_device_version=${{ env.target_device_version_ios }} target_device=iphone
       - name: make_cer0
         if: steps.cache_restore_cer0_ios.outputs.cache-hit != 'true'
-        run: cd cer0 && make cer0 target_device_version=${{ env.target_device_version_ios }} target_device=iphone
+        run: cd cer0 && make cer0_ios target_device_version=${{ env.target_device_version_ios }} target_device=iphone
       - name: make_interrupt_handler_ios
         if: steps.cache_restore_interrupt_handler_ios.outputs.cache-hit != 'true'
-        run: cd interrupt_handler && make interrupt_handler target_device_version=${{ env.target_device_version_ios }} target_device=iphone
+        run: cd interrupt_handler && make interrupt_handler_ios target_device_version=${{ env.target_device_version_ios }} target_device=iphone
       - name: make_math_c_ios
         if: steps.cache_restore_math_c_ios.outputs.cache-hit != 'true'
-        run: cd math_c && make math_c target_device_version=${{ env.target_device_version_ios }} target_device=iphone
+        run: cd math_c && make math_c_ios target_device_version=${{ env.target_device_version_ios }} target_device=iphone
       - name: make_metil_ios
         run: cd metil && make target_device_version=${{ env.target_device_version_ios }} target_standard_metal=${{ env.target_standard_metal }} target_device=iphone
       - name: cache_save_cer0_ios
