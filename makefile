@@ -122,7 +122,7 @@ directory_sdk=${shell xcrun --sdk macosx${target_device_version} --show-sdk-path
 endif
 
 ifeq (${target_device},iphone)
-target_platform=arm64-apple-ios${target_iphoneos_version}
+target_platform=arm64-apple-ios${target_device_version}
 target_platform_metal=air64-apple-ios${target_macos_version_metal}
 
 directory_sdk=${shell xcrun --sdk iphoneos${target_device_version} --show-sdk-path}
