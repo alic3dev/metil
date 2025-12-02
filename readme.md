@@ -447,6 +447,6 @@ make metil disable_metal_fast_options=1 target_macos_version=26.0
 
 <img width="1966" height="1250" alt="metil_example_3d_rendering" src="https://github.com/user-attachments/assets/1a2fce70-1927-4ec6-ad25-e91e0df7aad5" />
 
-## copyright
+## copyright|copyleft
 
 > ©️ [copyleft|copyright]->{alic3dev(2025)}:[all_rights_reserved|all_lefts_reserved]
