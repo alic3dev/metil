@@ -73,13 +73,14 @@ ifeq (${target_os},macos)
 file_cer0_library=${directory_cer0_library}/cer0_debug.${version_target_cer0}.dylib
 file_clic3_library=${directory_clic3_library}/clic3_debug.${version_target_clic3}.dylib
 file_interrupt_handler_library=${directory_interrupt_handler_library}/interrupt_handler_debug.${version_target_interrupt_handler}.dylib
+file_math_c_library=${directory_math_c_library}/math_c_debug.${version_target_math_c}.dylib
 else
 file_cer0_library=${directory_cer0_library}/cer0_${target_os}_debug.${version_target_cer0}.dylib
 file_clic3_library=${directory_clic3_library}/clic3_${target_os}_debug.${version_target_clic3}.dylib
 file_interrupt_handler_library=${directory_interrupt_handler_library}/interrupt_handler_${target_os}_debug.${version_target_interrupt_handler}.dylib
+file_math_c_library=${directory_math_c_library}/math_c_${target_os}_debug.${version_target_math_c}.dylib
 endif
 
-file_math_c_library=${directory_math_c_library}/math_c_debug.${version_target_math_c}.dylib
 else
 directory_cer0_library:=${directory_cer0_library}/release
 directory_clic3_library:=${directory_clic3_library}/release

@@ -2,6 +2,7 @@ air
 library
 library_debug
 library_ios
+library_ios_debug
 metalar
 objects
 objects_ios
