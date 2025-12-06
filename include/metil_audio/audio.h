@@ -1,40 +1,33 @@
 #ifndef __metil_audio_audio_h
 #define __metil_audio_audio_h
 
-#if target_device != 1
+#if target_device == 1
+#include <metil_audio/audio_ios.h>
+#else
+
+#include <metil_audio/audio_data.h>
+#include <metil_audio/audio_io_proc.h>
 
 #include <cer0_audio_output.h>
 
 #include <CoreAudio/CoreAudio.h>
 
-struct metil_audio_data;
-
 extern struct cer0_audio_output audio_output;
 extern struct metil_audio_data metil_audio_data;
-
-struct metil_audio_data {
-  cer0_audio_output_io_proc* io_procs;
-  void** data_io_procs;
-  unsigned char length_io_procs;
-
-  float volume;
-
-  unsigned char muted;
-};
 
 void metil_audio_initialize();
 
 void metil_audio_io_proc_add(
-  cer0_audio_output_io_proc
+  metil_audio_io_proc
 );
 
 void metil_audio_io_proc_add_with_data(
-  cer0_audio_output_io_proc,
+  metil_audio_io_proc,
   void*
 );
 
 unsigned char metil_audio_io_proc_remove(
-  cer0_audio_output_io_proc
+  metil_audio_io_proc
 );
 
 void metil_audio_destroy();

@@ -94,9 +94,7 @@ int metil_initialize_with_data(
   interrupt_handler_initialize();
   metil_input_initialize();
   metil_scene_controller_initialize();
-  #if target_device != 1
   metil_audio_initialize();
-  #endif
   metil_text_initialize();
 
   metil_configuration_values_set();
