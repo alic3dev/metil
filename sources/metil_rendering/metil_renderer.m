@@ -255,11 +255,9 @@ void* metil_renderer_on_initialize_data = (void*)0;
     self->rendering_properties.frame++
   );
 
-  #if target_device != 1
   if (_frame == 0) {
     metil_audio_data.muted = 0;
   }
-  #endif
 
   if (
     self->rendering_properties.frame + 1 >= UINT_MAX - 1
