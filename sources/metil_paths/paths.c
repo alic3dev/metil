@@ -140,12 +140,12 @@ void metil_paths_directory_resources_set() {
 void metil_paths_directory_textures_set() {
   metil_paths.length_directory_textures = (
     metil_paths.length_directory_resources +
-    metil_paths_length_directory_resources_textures
+    metil_paths_length_directory_textures
   );
 
   metil_paths.directory_textures = clic3_char_arrays_concatenate(
     metil_paths.directory_resources,
-    metil_paths_directory_resources_textures
+    metil_paths_directory_textures
   );
 }
 
