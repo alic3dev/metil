@@ -24,7 +24,9 @@ void metil_configuration_initialize() {
     metil_configuration_default_rendering_properties_brightness_text
   );
 
-  metil_configuration.rendering_properties.fps_display = 0;
+  metil_configuration.rendering_properties.fps_display = (
+    metil_configuration_default_rendering_properties_fps_display
+  );
 }
 
 unsigned char metil_configuration_load() {
