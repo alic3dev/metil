@@ -102,8 +102,12 @@ endif
 endif
 
 directory_metal=metal
-directory_air=air
-directory_metalar=metalar
+
+directory_air_base=air
+directory_metalar_base=metalar
+
+directory_air=${directory_air_base}/${target_os}
+directory_metalar=${directory_metalar_base}/${target_os}
 
 ifndef target_device_version
 	target_device_version=26.1
@@ -326,10 +330,10 @@ clean_examples:
 	cd ${directory_examples} && make clean
 
 clean_air:
-	-rm -r ${directory_air} 2> /dev/null
+	-rm -r ${directory_air_base} 2> /dev/null
 
 clean_metalar:
-	-rm -r ${directory_metalar} 2> /dev/null
+	-rm -r ${directory_metalar_base} 2> /dev/null
 
 clean_objects:
 	-rm -r ${directory_objects_base} 2> /dev/null
