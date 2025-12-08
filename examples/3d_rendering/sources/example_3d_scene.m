@@ -82,7 +82,6 @@ void example_3d_scene_initialize(
       object->data.contents
     );
 
-    data_object->id = 0;
     data_object->color.x = (
       (float) (index_renderable % 10) / 10.0f
     );
@@ -288,7 +287,6 @@ void example_3d_scene_initialize(
       object->data.contents
     );
 
-    data_object->id = index_renderable;
     data_object->color.x = (
       (float) (index_renderable % 10) / 10.0f
     );
