@@ -8,18 +8,32 @@ enum metil_renderable_type {
 };
 
 struct metil_renderable {
-  void* renderable;
+  void* _Nonnull renderable;
   enum metil_renderable_type type;
 };
 
+void metil_renderable_allocate_object(
+  struct metil_renderable* _Nonnull
+);
+
+void metil_renderable_allocate(
+  struct metil_renderable* _Nonnull,
+  enum metil_renderable_type type
+);
 
 void metil_renderable_initialize(
-  struct metil_renderable*,
+  struct metil_renderable* _Nonnull,
+  enum metil_renderable_type
+);
+
+void metil_renderable_allocate_at_index(
+  struct metil_renderable* _Nonnull,
+  unsigned int,
   enum metil_renderable_type
 );
 
 void metil_renderable_initialize_at_index(
-  struct metil_renderable*,
+  struct metil_renderable* _Nonnull,
   unsigned int,
   enum metil_renderable_type
 );

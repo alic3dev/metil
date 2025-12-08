@@ -8,6 +8,7 @@
 #include <metil_library.h>
 #include <metil_mesh/mesh.h>
 #include <metil_object.h>
+#include <metil_positioning.h>
 #include <metil_rendering/camera/camera.h>
 #include <metil_rendering/descriptors/pipeline_render.h>
 #include <metil_rendering/metil_renderer_data_frame.h>
@@ -464,8 +465,6 @@ void* metil_renderer_on_initialize_data = (void*)0;
     struct metil_renderer_data_object* data_object = self->objects_fps_display[
       index_object_fps_display
     ].data.contents;
-
-    data_object->id = index_object_fps_display;
   }
 }
 
@@ -857,7 +856,9 @@ void* metil_renderer_on_initialize_data = (void*)0;
       char_array_fps[index_object_fps_display]
     ];
 
-    metil_renderer_poll_object(
+    self->objects_fps_display[
+      index_object_fps_display
+    ].poll(
       &self->objects_fps_display[
         index_object_fps_display
       ],
@@ -1147,35 +1148,6 @@ void* metil_renderer_thread_poll_object(
   }
 
   return (void*)0;
-}
-
-void metil_renderer_poll_object(
-  struct metil_object* object,
-  matrix_float3x4* matrix_projection_static,
-  matrix_float4x4* matrix_object_projection,
-  matrix_float4x4* matrix_player_projection,
-  float* height_camera
-) {
-  struct metil_renderer_data_object* data = object->data.contents;
-
-  data->position.x = object->position.x;
-  data->position.y = object->position.y;
-  data->position.z = object->position.z;
-
-  metil_positioning_view_model_matrix_projection_set(
-    object->positioning,
-    &data->view_model_matrix_projection,
-    matrix_projection_static,
-    matrix_object_projection,
-    matrix_player_projection,
-    &object->position,
-    &object->rotation,
-    *height_camera
-  );
-
-  data->size.x = object->mesh.size.x;
-  data->size.y = object->mesh.size.y;
-  data->size.z = object->mesh.size.z;
 }
 
 void metil_renderer_after_scene_change(
