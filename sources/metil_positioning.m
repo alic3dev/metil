@@ -69,7 +69,7 @@ void metil_positioning_view_model_matrix_projection_set(
         {
           position_translated.x,
           position_translated.y,
-          -position_translated.z,
+          position_translated.z,
           1
         }
       }},

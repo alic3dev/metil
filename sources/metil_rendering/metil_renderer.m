@@ -662,9 +662,9 @@ void* metil_renderer_on_initialize_data = (void*)0;
     matrix_player_projection,
     (
       (matrix_float4x4) {{
-        { cos(metil_scene_controller.scene.player.rotation.y), 0.0f, -sin(metil_scene_controller.scene.player.rotation.y), 0.0f },
+        { cos(metil_scene_controller.scene.player.rotation.y), 0.0f, sin(metil_scene_controller.scene.player.rotation.y), 0.0f },
         { 0.0f, 1.0f, 0.0f, 0.0f },
-        { sin(metil_scene_controller.scene.player.rotation.y), 0.0f, cos(metil_scene_controller.scene.player.rotation.y), 0.0f },
+        { sin(metil_scene_controller.scene.player.rotation.y), 0.0f, -cos(metil_scene_controller.scene.player.rotation.y), 0.0f },
         { 0.0f, 0.0f, 0.0f, 1.0f }
       }}
     )
