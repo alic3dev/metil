@@ -14,12 +14,16 @@
 
 struct metil_object;
 
-typedef void (*metil_object_poll)(
+typedef void (*metil_object_poll_function)(
   struct metil_object* _Nonnull,
   matrix_float3x4* _Nonnull,
   matrix_float4x4* _Nonnull,
   matrix_float4x4* _Nonnull,
   float* _Nonnull
+);
+
+typedef void (*metil_object_destroy_function)(
+  struct metil_object* _Nonnull
 );
 
 struct metil_object {
@@ -44,7 +48,8 @@ struct metil_object {
 
   enum metil_positioning positioning;
 
-  metil_object_poll _Nonnull poll;
+  metil_object_poll_function _Nonnull poll;
+  metil_object_destroy_function _Nonnull destroy;
 };
 
 void metil_object_initialize(
@@ -68,6 +73,10 @@ void metil_object_texture_add(
 );
 
 void metil_object_destroy(
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_with_textures(
   struct metil_object* _Nonnull
 );
 

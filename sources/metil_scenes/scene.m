@@ -170,10 +170,12 @@ void metil_scene_destroy_default(
       renderable->type
     ) {
       case metil_renderable_type_object: {
-        metil_object_destroy(
-          (struct metil_object*) (
-            renderable->renderable
-          )
+        struct metil_object* metil_object = (
+          renderable->renderable
+        );
+
+        metil_object->destroy(
+          metil_object
         );
         break;
       }

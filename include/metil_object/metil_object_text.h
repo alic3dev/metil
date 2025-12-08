@@ -8,9 +8,13 @@
 extern unsigned char metil_object_text_index_pipeline_render_default;
 
 void metil_object_text_initialize(
-  struct metil_object* _Nonnull metil_object,
-  char* _Nonnull metil_object_text_char_array,
-  id<MTLDevice> _Nonnull metal_device
+  struct metil_object* _Nonnull,
+  char* _Nonnull,
+  id<MTLDevice> _Nonnull
+);
+
+void metil_object_text_destroy(
+  struct metil_object* _Nonnull
 );
 
 #endif

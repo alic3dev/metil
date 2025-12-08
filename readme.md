@@ -359,7 +359,7 @@ metil_rendering_properties->mode = (
 0.0: `metil_scene_destroy`
 0.0.1: default[overrideable]:`scene->destroy`
 0.0.1.0: for->{`scene`.`objects`.as(`object`)}
-0.0.1.0.0: `metil_object_destroy(object)`
+0.0.1.0.0: `object->destroy(object)`
 0.0.1.0.0.0: `metil_mesh_destroy(object.mesh)`
 0.0.1.1: for->{`scene`.`textures`.as(`texture`)}
 0.0.1.1.0: `release(texture)`
