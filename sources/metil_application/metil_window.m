@@ -114,25 +114,27 @@
   metil_input_cursor.position_window.y = event.locationInWindow.y;
 
   if (
-    metil_input_cursor.locked == 1 &&
-    moved_after_lock == 0
-  ) {
-    moved_after_lock = 1;
-  } else {
-    metil_input_cursor.delta.x = (
-      metil_input_cursor.delta.x +
-      event.deltaX
-    );
-
-    metil_input_cursor.delta.y = (
-      metil_input_cursor.delta.y +
-      event.deltaY
-    );
-  }
-
-  if (
     metil_input_cursor.locked == 1
   ) {
+    if (
+      moved_after_lock == 2
+    ) {
+      metil_input_cursor.delta.x = (
+        metil_input_cursor.delta.x +
+        event.deltaX
+      );
+
+      metil_input_cursor.delta.y = (
+        metil_input_cursor.delta.y +
+        event.deltaY
+      );
+    } else {
+      moved_after_lock = (
+        moved_after_lock +
+        1
+      );
+    }
+
     [self center_mouse];
   }
 }
