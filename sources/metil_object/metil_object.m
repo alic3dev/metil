@@ -43,6 +43,7 @@ void metil_object_initialize(
   metil_object->positioning = metil_positioning_normal;
 
   metil_object->poll = metil_renderer_poll_object;
+  metil_object->destroy = metil_object_destroy;
 }
 
 void metil_object_buffers_initialize_with_data_size(
@@ -119,9 +120,29 @@ void metil_object_destroy(
     [object->vertices release];
   }
 
-  free(object->textures);
+  free(
+    object->textures
+  );
 
   metil_mesh_destroy(
     &object->mesh
+  );
+}
+
+void metil_object_destroy_with_textures(
+  struct metil_object* metil_object
+) {
+  for (
+    unsigned char index_texture = 0;
+    index_texture < metil_object->length_textures;
+    ++index_texture
+  ) {
+    [metil_object->textures[
+      index_texture
+    ] release];
+  }
+
+  metil_object_destroy(
+    metil_object
   );
 }

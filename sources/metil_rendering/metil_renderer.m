@@ -464,8 +464,6 @@ void* metil_renderer_on_initialize_data = (void*)0;
     struct metil_renderer_data_object* data_object = self->objects_fps_display[
       index_object_fps_display
     ].data.contents;
-
-    data_object->id = index_object_fps_display;
   }
 }
 

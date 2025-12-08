@@ -69,8 +69,6 @@ void example_2d_scene_initialize(
       object->data.contents
     );
 
-    data_object->id = index_renderable;
-
     data_object->color.x = (
       (float) index_renderable /
       (scene->length_renderables - 1)
