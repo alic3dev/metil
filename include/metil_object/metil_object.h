@@ -1,5 +1,5 @@
-#ifndef __metil_object_h
-#define __metil_object_h
+#ifndef __metil_object_metil_object_h
+#define __metil_object_metil_object_h
 
 #include <metil_mesh/mesh.h>
 #include <metil_positioning.h>
