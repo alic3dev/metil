@@ -444,6 +444,12 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
     self->objects_fps_display[
       index_object_fps_display
+    ].positioning = (
+      metil_positioning_static
+    );
+
+    self->objects_fps_display[
+      index_object_fps_display
     ].data = [self->metal_device
       newBufferWithLength: sizeof(struct metil_renderer_data_object)
       options: MTLResourceStorageModeShared
@@ -745,10 +751,14 @@ void* metil_renderer_on_initialize_data = (void*)0;
     );
   }
 
-  [self
-    poll_fps_display: &matrix_object_projection
-    matrix_player_projection: &matrix_player_projection
-  ];
+  if (
+    self->rendering_properties.fps_display == 1
+  ) {
+    [self
+      poll_fps_display: &matrix_object_projection
+      matrix_player_projection: &matrix_player_projection
+    ];
+  }
 
   for (
     unsigned int index_core_cpu = 0;
