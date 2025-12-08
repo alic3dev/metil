@@ -144,14 +144,6 @@ void* _Nullable metil_renderer_thread_poll_object(
   void* _Nonnull
 );
 
-void metil_renderer_poll_object(
-  struct metil_object* _Nonnull,
-  matrix_float3x4* _Nonnull,
-  matrix_float4x4* _Nonnull,
-  matrix_float4x4* _Nonnull,
-  float* _Nonnull
-);
-
 void metil_renderer_after_scene_change(int, void* _Nonnull);
 void metil_renderer_on_termination(void* _Nonnull);
 
