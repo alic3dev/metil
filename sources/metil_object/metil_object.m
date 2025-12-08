@@ -104,7 +104,7 @@ void metil_object_poll(
   matrix_float3x4* matrix_projection_static,
   matrix_float4x4* matrix_object_projection,
   matrix_float4x4* matrix_player_projection,
-  float* height_camera
+  struct metil_camera* metil_camera
 ) {
   struct metil_renderer_data_object* data = (
     metil_object->data.contents
@@ -122,7 +122,7 @@ void metil_object_poll(
     matrix_player_projection,
     &metil_object->position,
     &metil_object->rotation,
-    *height_camera
+    metil_camera
   );
 
   data->size.x = metil_object->mesh.size.x;

@@ -10,25 +10,25 @@
 
 void metil_scene_initialize(
   struct metil_scene* scene,
-  id<MTLDevice> metal_device
+  struct metil_renderer_interface* renderer_interface
 ) {
   metil_scene_initialize_with_renderables(
     scene,
-    metal_device,
+    renderer_interface,
     0
   );
 }
 
 void metil_scene_initialize_with_renderables(
   struct metil_scene* scene,
-  id<MTLDevice> metal_device,
+  struct metil_renderer_interface* renderer_interface,
   unsigned int length_renderables
 ) {
-  scene->metal_device = metal_device;
+  scene->renderer_interface = renderer_interface;
 
   metil_player_initialize(
     &scene->player
-  );
+);
 
   scene->length_renderables = length_renderables;
   scene->renderables = malloc(

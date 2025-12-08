@@ -3,8 +3,7 @@
 
 #include <metil_player.h>
 #include <metil_rendering/metil_renderable.h>
-
-#include <Metal/MTLDevice.h>
+#include <metil_rendering/metil_renderer_interface.h>
 
 struct metil_scene;
 
@@ -18,7 +17,7 @@ struct metil_scene_rendering_properties {
 };
 
 struct metil_scene {
-  _Nullable id<MTLDevice> metal_device;
+  struct metil_renderer_interface* _Nullable renderer_interface;
 
   struct metil_player player;
 
@@ -52,12 +51,12 @@ struct metil_scene {
 
 void metil_scene_initialize(
   struct metil_scene* _Nonnull,
-  _Nullable id<MTLDevice>
+  struct metil_renderer_interface* _Nullable
 );
 
 void metil_scene_initialize_with_renderables(
   struct metil_scene* _Nonnull,
-  _Nullable id<MTLDevice>,
+  struct metil_renderer_interface* _Nullable,
   unsigned int
 );
 

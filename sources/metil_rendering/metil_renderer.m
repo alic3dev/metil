@@ -13,6 +13,7 @@
 #include <metil_rendering/descriptors/pipeline_render.h>
 #include <metil_rendering/metil_renderer_data_frame.h>
 #include <metil_rendering/metil_renderer_data_object.h>
+#include <metil_rendering/metil_renderer_thread_poll_object_data.h>
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
 #include <metil_scenes/scene.h>
 #include <metil_scenes/scene_controller.h>
@@ -86,8 +87,8 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
     self->threads_data[
       index_thread
-    ].height_camera = (
-      &self->rendering_properties.camera.height
+    ].camera = (
+      &self->rendering_properties.camera
     );
   }
 
@@ -651,28 +652,54 @@ void* metil_renderer_on_initialize_data = (void*)0;
     self->rendering_properties.brightness_text
   );
 
+  matrix_float4x4 matrix_player_rotation_x = (matrix_float4x4) {{
+    { 1.0f, 0.0f, 0.0f, 0.0f },
+    { 0.0f, cos(metil_scene_controller.scene.player.rotation.x), -sin(metil_scene_controller.scene.player.rotation.x), 0.0f },
+    { 0.0f, sin(metil_scene_controller.scene.player.rotation.x), cos(metil_scene_controller.scene.player.rotation.x), 0.0f },
+    { 0.0f, 0.0f, 0.0f, 1.0f }
+  }};
+
+  if (
+    self->rendering_properties.camera.mode == metil_camera_mode_third_person
+  ) {
+    matrix_player_rotation_x.columns[
+      3
+    ].y = (
+      self->rendering_properties.camera.height * (
+        1.0f - (
+          (
+            -metil_scene_controller.scene.player.rotation.x
+          ) / (
+            M_PI / 2.0f
+          )
+        )
+      )
+    );
+
+    matrix_player_rotation_x.columns[
+      3
+    ].z = -(
+      matrix_player_rotation_x.columns[
+        3
+      ].y
+    );
+  }
+
+  matrix_float4x4 matrix_player_rotation_y = (matrix_float4x4) {{
+    { cos(metil_scene_controller.scene.player.rotation.y), 0.0f, sin(metil_scene_controller.scene.player.rotation.y), 0.0f },
+    { 0.0f, 1.0f, 0.0f, 0.0f },
+    { sin(metil_scene_controller.scene.player.rotation.y), 0.0f, -cos(metil_scene_controller.scene.player.rotation.y), 0.0f },
+    { 0.0f, 0.0f, 0.0f, 1.0f }
+  }};
+
   matrix_float4x4 matrix_player_projection = matrix_multiply(
     self->rendering_properties.camera.matrix_viewport_projection,
-    (
-      (matrix_float4x4) {{
-        { 1.0f, 0.0f, 0.0f, 0.0f },
-        { 0.0f, cos(metil_scene_controller.scene.player.rotation.x), -sin(metil_scene_controller.scene.player.rotation.x), 0.0f },
-        { 0.0f, sin(metil_scene_controller.scene.player.rotation.x), cos(metil_scene_controller.scene.player.rotation.x), 0.0f },
-        { 0.0f, 0.0f, 0.0f, 1.0f }
-      }}
-    )
+    matrix_player_rotation_x
   );
 
   matrix_float4x4 matrix_object_projection = matrix_multiply(
     matrix_player_projection,
-    (
-      (matrix_float4x4) {{
-        { cos(metil_scene_controller.scene.player.rotation.y), 0.0f, sin(metil_scene_controller.scene.player.rotation.y), 0.0f },
-        { 0.0f, 1.0f, 0.0f, 0.0f },
-        { sin(metil_scene_controller.scene.player.rotation.y), 0.0f, -cos(metil_scene_controller.scene.player.rotation.y), 0.0f },
-        { 0.0f, 0.0f, 0.0f, 1.0f }
-      }}
-    )
+    matrix_player_rotation_y
   );
 
   unsigned char _index_data_buffer_frame = self->index_data_buffer_frame;
@@ -865,7 +892,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
       &self->matrix_projection_static,
       matrix_object_projection,
       matrix_player_projection,
-      &self->rendering_properties.camera.height
+      &rendering_properties.camera
     );
   }
 
@@ -1100,11 +1127,11 @@ void* metil_renderer_thread_poll_object(
   void* data
 ) {
   struct metil_renderer_thread_poll_object_data* metil_renderer_thread_poll_object_data = (
-    (struct metil_renderer_thread_poll_object_data*) data
+    data
   );
 
   struct metil_renderable* renderable = (
-    (void*)0
+    (void*) 0
   );
 
   for (
@@ -1131,7 +1158,7 @@ void* metil_renderer_thread_poll_object(
           metil_renderer_thread_poll_object_data->matrix_static_projection,
           metil_renderer_thread_poll_object_data->matrix_object_projection,
           metil_renderer_thread_poll_object_data->matrix_player_projection,
-          metil_renderer_thread_poll_object_data->height_camera
+          metil_renderer_thread_poll_object_data->camera
         );
         break;
       }

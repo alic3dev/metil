@@ -1,6 +1,8 @@
 #ifndef __metil_positioning_h
 #define __metil_positioning_h
 
+#include <metil_rendering/camera/camera.h>
+
 #include <clic3_vector.h>
 
 #include <simd/simd.h>
@@ -20,7 +22,7 @@ void metil_positioning_view_model_matrix_projection_set(
   matrix_float4x4* _Nonnull,
   struct clic3_vector3_float* _Nonnull,
   struct clic3_vector3_float* _Nonnull,
-  float
+  struct metil_camera* _Nonnull
 );
 
 #endif
