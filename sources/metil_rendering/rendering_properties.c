@@ -38,7 +38,9 @@ void metil_rendering_properties_initialize(
   metil_rendering_properties->color_clear.z = 0.0f;
   metil_rendering_properties->color_clear.w = 1.0f;
 
-  metil_rendering_properties->fps_display = 0;
+  metil_rendering_properties->fps_display = (
+    metil_configuration_default_rendering_properties_fps_display
+  );
   metil_rendering_properties->fps = 0.0f;
 
   for (
