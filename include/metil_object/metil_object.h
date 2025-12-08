@@ -72,6 +72,14 @@ void metil_object_texture_add(
   _Nullable id<MTLTexture>
 );
 
+void metil_object_poll(
+  struct metil_object* _Nonnull,
+  matrix_float3x4* _Nonnull,
+  matrix_float4x4* _Nonnull,
+  matrix_float4x4* _Nonnull,
+  float* _Nonnull
+);
+
 void metil_object_destroy(
   struct metil_object* _Nonnull
 );

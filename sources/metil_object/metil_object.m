@@ -42,7 +42,7 @@ void metil_object_initialize(
 
   metil_object->positioning = metil_positioning_normal;
 
-  metil_object->poll = metil_renderer_poll_object;
+  metil_object->poll = metil_object_poll;
   metil_object->destroy = metil_object_destroy;
 }
 
@@ -97,6 +97,37 @@ void metil_object_texture_add(
   metil_object->textures[
     metil_object->length_textures - 1
   ] = texture;
+}
+
+void metil_object_poll(
+  struct metil_object* metil_object,
+  matrix_float3x4* matrix_projection_static,
+  matrix_float4x4* matrix_object_projection,
+  matrix_float4x4* matrix_player_projection,
+  float* height_camera
+) {
+  struct metil_renderer_data_object* data = (
+    metil_object->data.contents
+  );
+
+  data->position.x = metil_object->position.x;
+  data->position.y = metil_object->position.y;
+  data->position.z = metil_object->position.z;
+
+  metil_positioning_view_model_matrix_projection_set(
+    metil_object->positioning,
+    &data->view_model_matrix_projection,
+    matrix_projection_static,
+    matrix_object_projection,
+    matrix_player_projection,
+    &metil_object->position,
+    &metil_object->rotation,
+    *height_camera
+  );
+
+  data->size.x = metil_object->mesh.size.x;
+  data->size.y = metil_object->mesh.size.y;
+  data->size.z = metil_object->mesh.size.z;
 }
 
 void metil_object_destroy(
