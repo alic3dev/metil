@@ -29,8 +29,6 @@ void example_3d_rendering_renderer_on_initialize(
     @"shader_3d_vertex"
   );
 
-  metil_renderer_interface->rendering_properties->camera.height = 0.0f;
-
   example_3d_scene_initialize(
     &metil_scene_controller.scene,
     metil_renderer_interface->metal_device
