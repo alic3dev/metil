@@ -1,9 +1,12 @@
 #include <metil_positioning.h>
 
+#include <metil_rendering/camera/camera.h>
+#include <metil_rendering/camera/camera_mode.h>
 #include <metil_scenes/scene_controller.h>
 
 #include <clic3_vector.h>
 
+#include <math.h>
 #include <simd/simd.h>
 
 void metil_positioning_view_model_matrix_projection_set(
@@ -14,7 +17,7 @@ void metil_positioning_view_model_matrix_projection_set(
   matrix_float4x4* matrix_player_projection,
   struct clic3_vector3_float* position,
   struct clic3_vector3_float* rotation,
-  float height_camera
+  struct metil_camera* metil_camera
 ) {
   if (
     positioning == metil_positioning_absolute
@@ -43,7 +46,7 @@ void metil_positioning_view_model_matrix_projection_set(
       .y = (
         position->y -
         metil_scene_controller.scene.player.position.y -
-        height_camera
+        metil_camera->height
       ),
       .z = (
         position->z -

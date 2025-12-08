@@ -6,7 +6,7 @@ metil_header_includes_create() {
       realpath $1
     )
   )/../include")
-  local path_metil_header="${path_metil_include}/metil.h"
+  local path_metil_header="${path_metil_include}/metil_all.h"
 
   if [[ 
     -f "${path_metil_header}"

@@ -3,6 +3,7 @@
 
 #include <metil_object.h>
 #include <metil_rendering/metil_renderer_interface.h>
+#include <metil_rendering/metil_renderer_thread_poll_object_data.h>
 #include <metil_rendering/rendering_properties.h>
 
 #include <Metal/MTLBuffer.h>
@@ -23,15 +24,6 @@ typedef void (*metil_renderer_on_initialize_function)(
   struct metil_renderer_interface* _Nonnull,
   void* _Nullable
 );
-
-struct metil_renderer_thread_poll_object_data {
-  struct metil_renderable* _Nonnull renderables;
-  unsigned int length_renderables;
-  matrix_float3x4* _Nonnull matrix_static_projection;
-  matrix_float4x4* _Nonnull matrix_object_projection;
-  matrix_float4x4* _Nonnull matrix_player_projection;
-  float* _Nonnull height_camera;
-};
 
 extern _Nullable metil_renderer_on_initialize_function metil_renderer_on_initialize;
 extern void* _Nullable metil_renderer_on_initialize_data;

@@ -197,12 +197,16 @@ void metil_player_poll_input(
   }
 
   player->rotation.y = fmod(
-    player->rotation.y,
-    (M_PI * 2.0f)
+    player->rotation.y, (
+      M_PI * 2.0f
+    )
   );
 
   float ratio_axis = -(
-    player->rotation.y / (M_PI * 2.0f)
+    player->rotation.y / (
+      M_PI *
+      2.0f
+    )
   );
 
   if (

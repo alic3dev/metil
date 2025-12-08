@@ -1,6 +1,7 @@
 #ifndef __metil_rendering_camera_camera_h
 #define __metil_rendering_camera_camera_h
 
+#include <metil_rendering/camera/camera_mode.h>
 #include <metil_rendering/camera/lens.h>
 #include <metil_rendering/camera/near_far.h>
 
@@ -13,6 +14,8 @@
 extern float metil_camera_height_default;
 
 struct metil_camera {
+  enum metil_camera_mode mode;
+
   struct metil_lens lens;
 
   float ratio_aspect;

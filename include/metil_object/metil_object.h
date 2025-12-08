@@ -3,6 +3,7 @@
 
 #include <metil_mesh/mesh.h>
 #include <metil_positioning.h>
+#include <metil_rendering/camera/camera.h>
 
 #include <clic3_vector.h>
 
@@ -19,7 +20,7 @@ typedef void (*metil_object_poll_function)(
   matrix_float3x4* _Nonnull,
   matrix_float4x4* _Nonnull,
   matrix_float4x4* _Nonnull,
-  float* _Nonnull
+  struct metil_camera* _Nonnull
 );
 
 typedef void (*metil_object_destroy_function)(
@@ -77,7 +78,7 @@ void metil_object_poll(
   matrix_float3x4* _Nonnull,
   matrix_float4x4* _Nonnull,
   matrix_float4x4* _Nonnull,
-  float* _Nonnull
+  struct metil_camera* _Nonnull
 );
 
 void metil_object_destroy(
