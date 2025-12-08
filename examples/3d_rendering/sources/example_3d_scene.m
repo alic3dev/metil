@@ -25,7 +25,7 @@ void example_3d_scene_initialize(
 
   scene->poll = example_3d_scene_poll;
 
-  scene->length_renderables = 2;
+  scene->length_renderables = 400;
   scene->renderables = realloc(
     scene->renderables,
     sizeof(struct metil_renderable) *
@@ -36,53 +36,67 @@ void example_3d_scene_initialize(
     (void*)0
   );
 
-   metil_renderable_initialize_at_index(
-    scene->renderables,
-    0,
-    metil_renderable_type_object
-  );
+  for (
+    unsigned int index_renderable = 0;
+    index_renderable < 200;
+    ++index_renderable
+  ) {
+    metil_renderable_initialize_at_index(
+      scene->renderables,
+      index_renderable,
+      metil_renderable_type_object
+    );
 
-  object = (
-    scene->renderables[
-      0
-    ].renderable
-  );
+    object = (
+      scene->renderables[
+        index_renderable
+      ].renderable
+    );
 
-  metil_mesh_box_initialize(
-    &object->mesh,
-    (struct clic3_vector3_float) {
-      .x = 10.0f,
-      .y = 10.0f,
-      .z = 10.0f
-    }
-  );
+    metil_mesh_box_initialize(
+      &object->mesh,
+      (struct clic3_vector3_float) {
+        .x = 10.0f,
+        .y = 10.0f,
+        .z = 10.0f
+      }
+    );
 
-  metil_object_buffers_initialize(
-    object,
-    metal_device
-  );
+    metil_object_buffers_initialize(
+      object,
+      metal_device
+    );
 
-  object->position.x = 100.0f;
-  object->position.z = 100.0f;
+    object->position.x = ((float) (
+      index_renderable % 21 + index_renderable % 32
+    ) / 53.0f - 0.5f) * 1000.0f;
+    object->position.y = (
+      object->mesh.size.y +
+      index_renderable % 14
+    );
+    object->position.z = ((float) (
+      index_renderable % 34 + index_renderable % 23
+    ) / 57.0f - 0.5f) * 1000.0f;
 
-  struct metil_renderer_data_object* data_object = (
-    object->data.contents
-  );
+    struct metil_renderer_data_object* data_object = (
+      object->data.contents
+    );
 
-  data_object->id = 0;
-  data_object->color.x = (
-    (float) (0 % 10) / 10.0f
-  );
-  data_object->color.y = (
-    (float) ((0 + 3) % 10) / 10.0f
-  );
-  data_object->color.z = (
-    (float) ((0 + 5) % 10) / 10.0f
-  );
-  data_object->color.w = 1.0f;
+    data_object->id = 0;
+    data_object->color.x = (
+      (float) (index_renderable % 10) / 10.0f
+    );
+    data_object->color.y = (
+      (float) ((index_renderable + 3) % 10) / 10.0f
+    );
+    data_object->color.z = (
+      (float) ((index_renderable + 5) % 10) / 10.0f
+    );
+    data_object->color.w = 1.0f;
+  }
 
   for (
-    unsigned int index_renderable = 1;
+    unsigned int index_renderable = 200;
     index_renderable < scene->length_renderables;
     ++index_renderable
   ) {
@@ -106,9 +120,9 @@ void example_3d_scene_initialize(
       metil_mesh
     );
 
-    metil_mesh->size.x = 100.0f;
+    metil_mesh->size.x = 10000.0f;
     metil_mesh->size.y = 0.0f;
-    metil_mesh->size.z = 100.0f;
+    metil_mesh->size.z = 10000.0f;
 
     metil_mesh->length_vertices = 400;
     metil_mesh->length_indices = 404;
@@ -147,7 +161,9 @@ void example_3d_scene_initialize(
 
           metil_mesh->vertices[
             index
-          ].z = -metil_mesh->size.z / 2.0f;
+          ].z = -metil_mesh->size.z / 2.0f - (
+            index % 26 + index % 14 + index % 64
+          ) * size_segment;
           break;
         }
         case 1: {
@@ -159,13 +175,17 @@ void example_3d_scene_initialize(
 
           metil_mesh->vertices[
             index
-          ].z = metil_mesh->size.z / 2.0f;
+          ].z = metil_mesh->size.z / 2.0f + (
+            index % 14 + index % 64 + index % 8 +  index % 10
+          ) * size_segment;
           break;
         }
         case 2: {
           metil_mesh->vertices[
             index
-          ].x = -metil_mesh->size.x / 2.0f;
+          ].x = -metil_mesh->size.x / 2.0f - (
+            index % 7 + index % 47 + index % 27 + index % 37 + index % 17 + index % 67
+          ) * size_segment;
 
           metil_mesh->vertices[
             index
@@ -177,7 +197,9 @@ void example_3d_scene_initialize(
         case 3: {
           metil_mesh->vertices[
             index
-          ].x = metil_mesh->size.x / 2.0f;
+          ].x = metil_mesh->size.x / 2.0f + (
+            index % 42 + index % 31 + index % 26
+          ) * size_segment;
 
           metil_mesh->vertices[
             index
@@ -236,7 +258,26 @@ void example_3d_scene_initialize(
       403
     ] = 199;
 
-    object->type_primitive = MTLPrimitiveTypeLine;
+    object->type_primitive = MTLPrimitiveTypeLineStrip;
+
+    object->position.x = 100.0f * ((float) (index_renderable % 40) / 40) - 50.0f;
+    object->position.z = 100.0f * ((float) (index_renderable % 20 + index_renderable % 5) / 25.0f) - 50.0f;
+
+    switch (
+      index_renderable % 3
+    ) {
+      case 0: {
+        object->rotation.x = (M_PI / 2.0f);
+        break;
+      }
+      case 1: {
+        object->rotation.z = (M_PI / 2.0f);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
 
     metil_object_buffers_initialize(
       object,
@@ -249,13 +290,13 @@ void example_3d_scene_initialize(
 
     data_object->id = index_renderable;
     data_object->color.x = (
-      (float) (0 % 10) / 10.0f
+      (float) (index_renderable % 10) / 10.0f
     );
     data_object->color.y = (
-      (float) ((0 + 3) % 10) / 10.0f
+      (float) ((index_renderable * 3) % 10) / 10.0f
     );
     data_object->color.z = (
-      (float) ((0 + 5) % 10) / 10.0f
+      (float) ((index_renderable * 5) % 10) / 10.0f
     );
     data_object->color.w = 1.0f;
   }
@@ -264,7 +305,57 @@ void example_3d_scene_initialize(
 void example_3d_scene_poll(
   struct metil_scene* scene
 ) {
-  metil_scene_poll_default(scene);
+  metil_scene_poll_default(
+    scene
+  );
 
- 
+  float color_shift = (
+    scene->player.position.x +
+    scene->player.position.y +
+    scene->player.position.z +
+    scene->player.rotation.x +
+    scene->player.rotation.y +
+    scene->player.rotation.z
+  ) / 100.0f;
+
+  for (
+    unsigned int index_renderable = 0;
+    index_renderable < scene->length_renderables;
+    ++index_renderable
+  ) {
+    struct metil_object* object = (
+      scene->renderables[
+        index_renderable
+      ].renderable
+    );
+
+    if (
+      index_renderable < 200
+    ) {
+      object->rotation.x = (
+        object->rotation.x +
+        (index_renderable % 10) * 0.003f + 0.001f
+      );
+      object->rotation.y = (
+        object->rotation.y +
+        (index_renderable % 10) * 0.002f + 0.002f
+      );
+      object->rotation.z = (
+        object->rotation.z + 
+        (index_renderable % 10) * 0.001f + 0.003f
+      );
+    }
+
+    struct metil_renderer_data_object* data_object = (
+      object->data.contents
+    );
+
+
+
+    data_object->color.x = (float) (index_renderable % 10) / 10.0f + color_shift;
+    data_object->color.y = (float) ((index_renderable * 3) % 10) / 10.0f + color_shift;
+    data_object->color.z = (float) ((index_renderable * 5) % 10) / 10.0f + color_shift;
+
+    data_object->color.w = 1.0f;
+  }
 }

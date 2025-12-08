@@ -23,6 +23,8 @@ void example_3d_rendering_renderer_on_initialize(
   struct metil_renderer_interface* metil_renderer_interface,
   void* data
 ) {
+  metil_renderer_interface->rendering_properties->camera.distance_view.far = 100.0f;
+
   metil_library_initialize(
     metil_renderer_interface->metal_device,
     @"shader_3d_fragment",
