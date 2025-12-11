@@ -45,6 +45,7 @@ other versions and standards may or may not work: see [`make`:flags](#makeflags)
 - `library/metil.metallib`: metallib built from `library/metil_all.metalar`
 - `%.plist`
 - - `library/Info.plist`: sets the storyboard name to use
+- - `library/Info_ios.plist`: sets the storyboard name to use and additional required properties for ios
 - `%.storyboardc`
 - - `library/metil.storyboardc`: default storyboard
 
