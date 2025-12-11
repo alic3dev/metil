@@ -304,7 +304,7 @@ viewport rotations are set via `scene_controller.scene.player.rotation`
 - `metil_rendering_properties_mode_default`: normal rendering
 - `metil_rendering_properties_mode_wireframe`: renders wireframes (requires `metil_library.function_[fragment|vertex]_wireframe` to be set)
 
-Any combination of rendering mode flags may be set using `|` operators
+any combination of rendering mode flags may be set using `|` operators
 
 ```c
 // Enable wireframe rendering overtop of default rendering
@@ -416,7 +416,7 @@ make clean_all
 
 ### `make`:flags
 
-These flags can be applied to any build target
+these flags can be applied to any build target
 
 - `debug=1`:adds->{`debugging_symbols`}:disables->{`optimizations`};
 - `disable_metal_fast_options=1`:disables->{`metal`::`fast_modes`};
