@@ -16,23 +16,17 @@
 
 void example_2d_scene_initialize(
   struct metil_scene* scene,
-  id<MTLDevice> metal_device
+  struct metil_renderer_interface* metil_renderer_interface
 ) {
-  metil_scene_initialize(
+  metil_scene_initialize_with_renderables(
     scene,
-    metal_device
+    metil_renderer_interface,
+    100
   );
 
   scene->player.poll_input = metil_player_poll_input_null;
 
   scene->poll = example_2d_scene_poll;
-
-  scene->length_renderables = 100;
-  scene->renderables = realloc(
-    scene->renderables,
-    sizeof(struct metil_renderable) *
-    scene->length_renderables
-  );
 
   for (
     unsigned char index_renderable = 0;
@@ -62,7 +56,7 @@ void example_2d_scene_initialize(
 
     metil_object_buffers_initialize(
       object,
-      metal_device
+      scene->renderer_interface->metal_device
     );
 
     struct metil_renderer_data_object* data_object = (

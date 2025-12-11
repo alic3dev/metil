@@ -1,13 +1,12 @@
 #ifndef __example_2d_scene_h
 #define __example_2d_scene_h
 
+#include <metil_rendering/metil_renderer_interface.h>
 #include <metil_scenes/scene.h>
-
-#include <Metal/MTLDevice.h>
 
 void example_2d_scene_initialize(
   struct metil_scene*,
-  id<MTLDevice>
+  struct metil_renderer_interface* metil_renderer_interface
 );
 
 void example_2d_scene_poll(
