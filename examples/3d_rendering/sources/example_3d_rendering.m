@@ -33,6 +33,6 @@ void example_3d_rendering_renderer_on_initialize(
 
   example_3d_scene_initialize(
     &metil_scene_controller.scene,
-    metil_renderer_interface->metal_device
+    metil_renderer_interface
   );
 }
