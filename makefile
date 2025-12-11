@@ -110,25 +110,27 @@ directory_air=${directory_air_base}/${target_os}
 directory_metalar=${directory_metalar_base}/${target_os}
 
 ifndef target_device_version
-	target_device_version=26.1
+target_device_version=26.1
 endif
 
-target_version_metal=${target_device_version}
+ifndef target_metal_version
+target_metal_version=${target_device_version}
+endif
 
-ifndef target_standard_metal
-target_standard_metal=metal4.0
+ifndef target_metal_standard
+target_metal_standard=metal4.0
 endif
 
 ifeq (${target_device},mac)
 target_platform=arm64-apple-macos${target_device_version}
-target_platform_metal=air64-apple-macos${target_version_metal}
+target_platform_metal=air64-apple-macos${target_metal_version}
 
 directory_sdk=${shell xcrun --sdk macosx${target_device_version} --show-sdk-path}
 endif
 
 ifeq (${target_device},iphone)
 target_platform=arm64-apple-ios${target_device_version}
-target_platform_metal=air64-apple-ios${target_macos_version_metal}
+target_platform_metal=air64-apple-ios${target_metal_version}
 
 directory_sdk=${shell xcrun --sdk iphoneos${target_device_version} --show-sdk-path}
 endif
@@ -228,7 +230,7 @@ strip_flags=-x
 metal=xcrun -sdk macosx metal
 metal_ar=xcrun -sdk macosx metal-ar
 metallib=xcrun -sdk macosx metallib
-metal_flags_common=-target ${target_platform_metal} -std=${target_standard_metal}
+metal_flags_common=-target ${target_platform_metal} -std=${target_metal_standard}
 
 metal_flags=${metal_flags_common} -I${directory_include} -I${directory_clic3_include} -isysroot ${directory_sdk}
 

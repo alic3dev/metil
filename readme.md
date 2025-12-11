@@ -2,6 +2,27 @@
 
 rendering_framework.utilizing(`apple::metal`)
 
+## releases
+
+- [`latest`](https://github.com/alic3dev/metil/releases/latest)
+- [`metil`:version->{`0.0.0`}](https://github.com/alic3dev/metil/releases/tag/release_version-%3E%7B0.0.0%7D%3B)::[macos_only]
+
+### development
+
+- [`core`](https://github.com/alic3dev/metil/tree/core)::[prone_to_changes:consider->{[`core`](https://github.com/alic3dev/metil/tree/core)}.as_a_development_or_nightly_build]
+- [`metil`:version->{`1.0.0`}](https://github.com/alic3dev/metil/tree/metil_1_0_0)::[introduction_of_ios_support]
+
+## supported_platforms
+
+- `macos`
+- `ios`
+
+## supported_versions
+
+development work is being done while targeting `macos26.1`, `iphoneos26.1`, and `metal4.0`
+
+other versions and standards may or may not work: see [`make`:flags](#makeflags) for compilation options
+
 ## usage
 
 ### linking
@@ -24,6 +45,7 @@ rendering_framework.utilizing(`apple::metal`)
 - `library/metil.metallib`: metallib built from `library/metil_all.metalar`
 - `%.plist`
 - - `library/Info.plist`: sets the storyboard name to use
+- - `library/Info_ios.plist`: sets the storyboard name to use and additional required properties for ios
 - `%.storyboardc`
 - - `library/metil.storyboardc`: default storyboard
 
@@ -152,10 +174,10 @@ viewport rotations are set via `scene_controller.scene.player.rotation`
 - - rotations in the negative rotate the viewport to look towards the left
 
 ```
-`struct metil_object X;`
-`X.position.x = 1.0f;`
-`X.position.y = 0.0f;`
-`X.position.z = 1.0f;`
+`struct metil_renderable renderable;`
+`renderable.position.x = 0.0f;`
+`renderable.position.y = 0.0f;`
+`renderable.position.z = 1.0f;`
 
 `scene.player.rotation.x = 0.0;`
 `scene.player.rotation.y = 0.45;`
@@ -304,7 +326,7 @@ viewport rotations are set via `scene_controller.scene.player.rotation`
 - `metil_rendering_properties_mode_default`: normal rendering
 - `metil_rendering_properties_mode_wireframe`: renders wireframes (requires `metil_library.function_[fragment|vertex]_wireframe` to be set)
 
-Any combination of rendering mode flags may be set using `|` operators
+any combination of rendering mode flags may be set using `|` operators
 
 ```c
 // Enable wireframe rendering overtop of default rendering
@@ -340,11 +362,13 @@ metil_rendering_properties->mode = (
 0.2.0: set->{`scene`.[`time_[![input|elapsed]]*`]}
 0.2.1: default[overrideable]:`scene->poll()`
 0.2.1.0: default[overrideable]:`scene->player.poll()`
-0.3: for->{`scene`.`objects`.as(`object`)}
-0.3.0: `poll_object`(`object`)[[instantiate|update]:data_properties]
+0.3: for->{`scene`.`renderables`.as(`renderable`)}
+0.3.0: `switch->{`renderable->type`}
+0.3.0.0: case[`metil_renderable_type_object`]->{`poll_object`(`renderable->renderable`))[[instantiate|update]:data_properties]}
 1: `render`
-1.0: for->{`scene`.`objects`.as(`object`)}
-1.0.0: `render_object`(`object`)
+1.0: for->{`scene`.`renderables`.as(`renderable`)}
+1.0.0: `switch->{`renderable->type`}
+1.0.0.0: case[`metil_renderable_type_object`]->{`render_object`(`renderable->renderable`)}
 2: display->{commands_sent_to_gpu_for_output}
 3: wait_for.next_frame_call().then->{goto->{0}};
 
@@ -358,9 +382,10 @@ metil_rendering_properties->mode = (
 0. `metil_scene_controller_destroy`
 0.0: `metil_scene_destroy`
 0.0.1: default[overrideable]:`scene->destroy`
-0.0.1.0: for->{`scene`.`objects`.as(`object`)}
-0.0.1.0.0: `object->destroy(object)`
-0.0.1.0.0.0: `metil_mesh_destroy(object.mesh)`
+0.0.1.0: for->{`scene`.`renderables`.as(`renderable`)}
+0.0.1.0.0: `switch->{`renderable->type`}
+0.0.1.0.0.0: case[`metil_renderable_type_object`]->{`renderable->renderable->destroy()`}
+0.0.1.0.0.0.0: `metil_mesh_destroy(renderable->renderable.mesh)`
 0.0.1.1: for->{`scene`.`textures`.as(`texture`)}
 0.0.1.1.0: `release(texture)`
 0.0.1.2: `scene->player.destroy`
@@ -368,8 +393,6 @@ metil_rendering_properties->mode = (
 2: `metil_paths_destroy`
 3: `metil_audio_destroy`
 4: `metil_text_destroy`
-4.0: `release(color_space)`
-4.1: `release(font_reference)`
 5: `metil_configuration_destroy`
 6: `metil_renderer_on_termination`
 6.0: `metil_renderer->destroy()`
@@ -381,7 +404,7 @@ metil_rendering_properties->mode = (
 
 ### prerequisites
 
-see `usage->linking->[dynamic libraries | static libraries]` for further information
+see [`usage->linking->[dynamic libraries | static libraries]`](#linking) for further information
 
 - [`alic3`](https://github.com/alic3dev):libraries
 - - [`cer0`](https://github.com/alic3dev/cer0)
@@ -416,11 +439,22 @@ make clean_all
 
 ### `make`:flags
 
-These flags can be applied to any build target
+these flags can be applied to any build target
 
 - `debug=1`:adds->{`debugging_symbols`}:disables->{`optimizations`};
 - `disable_metal_fast_options=1`:disables->{`metal`::`fast_modes`};
-- `target_macos_version`:sets_the_target_version.for->{`macos`|`metal`};
+- `target_device`:sets_the_target_device_platform->{values::[`mac`|`iphone`]}
+- `target_device_version`:sets_the_target_device_version.for->{`macos`|`ios`};
+- - platforms
+- - - macos->{`arm64-apple-macos${target_device_version}`}
+- - - ios->{`arm64-apple-ios${target_device_version}`}
+- - sdks
+- - - macos->{`macosx${target_device_version}`}
+- - - ios->{`iphoneos${target_device_version}`}
+- `target_metal_version`:sets_the_target_metal_version::(will_use->{`target_device_version`}_if_not_set)
+- - platforms
+- - - macos->{`arm64-apple-macos${target_metal_version}`}
+- - - ios->{`arm64-apple-ios${target_metal_version}`}
 
 ```zsh
 # build a debugging version of metil
@@ -428,15 +462,25 @@ make metil debug=1
 
 # build metil for macos version 26.0 with fast modes disabled for metal
 make metil disable_metal_fast_options=1 target_macos_version=26.0
+
+# build an ios version of metil
+make target_device=iphone
 ```
 
 ## usage
 
 ## projects
 
-- [`alic3`](https://github.com/alic3dev)
+### macos
+
+- [`alic3dev`](https://github.com/alic3dev)
 - - [`c938`](https://github.com/alic3dev/c938)
 - - [`zoe`](https://github.com/alic3dev/zoe)
+
+### ios
+
+- [`alic3dev`](https://github.com/alic3dev)
+- - [`ff`](https://github.com/alic3dev/ff)
 
 ## examples
 
