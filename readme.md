@@ -340,11 +340,13 @@ metil_rendering_properties->mode = (
 0.2.0: set->{`scene`.[`time_[![input|elapsed]]*`]}
 0.2.1: default[overrideable]:`scene->poll()`
 0.2.1.0: default[overrideable]:`scene->player.poll()`
-0.3: for->{`scene`.`objects`.as(`object`)}
-0.3.0: `poll_object`(`object`)[[instantiate|update]:data_properties]
+0.3: for->{`scene`.`renderables`.as(`renderable`)}
+0.3.0: `switch->{`renderable->type`}
+0.3.0.0: case[`metil_renderable_type_object`]->{`poll_object`(`renderable->renderable`))[[instantiate|update]:data_properties]}
 1: `render`
-1.0: for->{`scene`.`objects`.as(`object`)}
-1.0.0: `render_object`(`object`)
+1.0: for->{`scene`.`renderables`.as(`renderable`)}
+1.0.0: `switch->{`renderable->type`}
+1.0.0.0: case[`metil_renderable_type_object`]->{`render_object`(`renderable->renderable`)}
 2: display->{commands_sent_to_gpu_for_output}
 3: wait_for.next_frame_call().then->{goto->{0}};
 
