@@ -152,10 +152,10 @@ viewport rotations are set via `scene_controller.scene.player.rotation`
 - - rotations in the negative rotate the viewport to look towards the left
 
 ```
-`struct metil_object X;`
-`X.position.x = 1.0f;`
-`X.position.y = 0.0f;`
-`X.position.z = 1.0f;`
+`struct metil_renderable renderable;`
+`renderable.position.x = 0.0f;`
+`renderable.position.y = 0.0f;`
+`renderable.position.z = 1.0f;`
 
 `scene.player.rotation.x = 0.0;`
 `scene.player.rotation.y = 0.45;`
