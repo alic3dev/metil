@@ -403,7 +403,7 @@ metil_rendering_properties->mode = (
 
 ### prerequisites
 
-see `usage->linking->[dynamic libraries | static libraries]` for further information
+see [`usage->linking->[dynamic libraries | static libraries]`](#linking) for further information
 
 - [`alic3`](https://github.com/alic3dev):libraries
 - - [`cer0`](https://github.com/alic3dev/cer0)
