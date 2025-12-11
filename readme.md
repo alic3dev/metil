@@ -360,9 +360,10 @@ metil_rendering_properties->mode = (
 0. `metil_scene_controller_destroy`
 0.0: `metil_scene_destroy`
 0.0.1: default[overrideable]:`scene->destroy`
-0.0.1.0: for->{`scene`.`objects`.as(`object`)}
-0.0.1.0.0: `object->destroy(object)`
-0.0.1.0.0.0: `metil_mesh_destroy(object.mesh)`
+0.0.1.0: for->{`scene`.`renderables`.as(`renderable`)}
+0.0.1.0.0: `switch->{`renderable->type`}
+0.0.1.0.0.0: case[`metil_renderable_type_object`]->{`renderable->renderable->destroy()`}
+0.0.1.0.0.0.0: `metil_mesh_destroy(renderable->renderable.mesh)`
 0.0.1.1: for->{`scene`.`textures`.as(`texture`)}
 0.0.1.1.0: `release(texture)`
 0.0.1.2: `scene->player.destroy`
@@ -370,8 +371,6 @@ metil_rendering_properties->mode = (
 2: `metil_paths_destroy`
 3: `metil_audio_destroy`
 4: `metil_text_destroy`
-4.0: `release(color_space)`
-4.1: `release(font_reference)`
 5: `metil_configuration_destroy`
 6: `metil_renderer_on_termination`
 6.0: `metil_renderer->destroy()`
