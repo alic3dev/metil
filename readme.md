@@ -420,7 +420,18 @@ these flags can be applied to any build target
 
 - `debug=1`:adds->{`debugging_symbols`}:disables->{`optimizations`};
 - `disable_metal_fast_options=1`:disables->{`metal`::`fast_modes`};
-- `target_macos_version`:sets_the_target_version.for->{`macos`|`metal`};
+- `target_device`:sets_the_target_device_platform->{values::[`mac`|`iphone`]}
+- `target_device_version`:sets_the_target_device_version.for->{`macos`|`ios`};
+- - platforms
+- - - macos->{`arm64-apple-macos${target_device_version}`}
+- - - ios->{`arm64-apple-ios${target_device_version}`}
+- - sdks
+- - - macos->{`macosx${target_device_version}`}
+- - - ios->{`iphoneos${target_device_version}`}
+- `target_metal_version`:sets_the_target_metal_version::(will_use->{`target_device_version`}_if_not_set)
+- - platforms
+- - - macos->{`arm64-apple-macos${target_metal_version}`}
+- - - ios->{`arm64-apple-ios${target_metal_version}`}
 
 ```zsh
 # build a debugging version of metil
@@ -428,6 +439,9 @@ make metil debug=1
 
 # build metil for macos version 26.0 with fast modes disabled for metal
 make metil disable_metal_fast_options=1 target_macos_version=26.0
+
+# build an ios version of metil
+make target_device=iphone
 ```
 
 ## usage
