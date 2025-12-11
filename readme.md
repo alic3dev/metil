@@ -434,9 +434,16 @@ make metil disable_metal_fast_options=1 target_macos_version=26.0
 
 ## projects
 
+### macos
+
 - [`alic3`](https://github.com/alic3dev)
 - - [`c938`](https://github.com/alic3dev/c938)
 - - [`zoe`](https://github.com/alic3dev/zoe)
+
+### ios
+
+- [`alic3`](https://github.com/alic3dev)
+- - [`ff`](https://github.com/alic3dev/ff)
 
 ## examples
 
