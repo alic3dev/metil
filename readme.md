@@ -451,13 +451,13 @@ make target_device=iphone
 
 ### macos
 
-- [`alic3`](https://github.com/alic3dev)
+- [`alic3dev`](https://github.com/alic3dev)
 - - [`c938`](https://github.com/alic3dev/c938)
 - - [`zoe`](https://github.com/alic3dev/zoe)
 
 ### ios
 
-- [`alic3`](https://github.com/alic3dev)
+- [`alic3dev`](https://github.com/alic3dev)
 - - [`ff`](https://github.com/alic3dev/ff)
 
 ## examples
