@@ -110,10 +110,12 @@ directory_air=${directory_air_base}/${target_os}
 directory_metalar=${directory_metalar_base}/${target_os}
 
 ifndef target_device_version
-	target_device_version=26.1
+target_device_version=26.1
 endif
 
-target_version_metal=${target_device_version}
+ifndef target_metal_version
+target_metal_version=${target_device_version}
+endif
 
 ifndef target_standard_metal
 target_standard_metal=metal4.0
@@ -121,14 +123,14 @@ endif
 
 ifeq (${target_device},mac)
 target_platform=arm64-apple-macos${target_device_version}
-target_platform_metal=air64-apple-macos${target_version_metal}
+target_platform_metal=air64-apple-macos${target_metal_version}
 
 directory_sdk=${shell xcrun --sdk macosx${target_device_version} --show-sdk-path}
 endif
 
 ifeq (${target_device},iphone)
 target_platform=arm64-apple-ios${target_device_version}
-target_platform_metal=air64-apple-ios${target_version_metal}
+target_platform_metal=air64-apple-ios${target_metal_version}
 
 directory_sdk=${shell xcrun --sdk iphoneos${target_device_version} --show-sdk-path}
 endif
