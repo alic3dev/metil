@@ -2,6 +2,27 @@
 
 rendering_framework.utilizing(`apple::metal`)
 
+## releases
+
+- [`latest`](https://github.com/alic3dev/metil/releases/latest)
+- [`metil`:version->{`0.0.0`}](https://github.com/alic3dev/metil/releases/tag/release_version-%3E%7B0.0.0%7D%3B)::[macos_only]
+
+### development
+
+- [`core`](https://github.com/alic3dev/metil/tree/core)::[prone_to_changes:consider->{[`core`](https://github.com/alic3dev/metil/tree/core)}.as_a_development_or_nightly_build]
+- [`metil`:version->{`1.0.0`}](https://github.com/alic3dev/metil/tree/metil_1_0_0)::[introduction_of_ios_support]
+
+## supported_platforms
+
+- `macos`
+- `ios`
+
+## supported_versions
+
+development work is being done while targeting `macos26.1`, `iphoneos26.1`, and `metal4.0`
+
+other versions and standards may or may not work: see [`make`:flags](#makeflags) for compilation options
+
 ## usage
 
 ### linking
