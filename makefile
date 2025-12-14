@@ -252,7 +252,7 @@ ${name}_object: ${file_library_object}
 ${name}_static: ${file_library_static}
 
 examples: .always
-	cd ${directory_examples} && make all
+	cd ${directory_examples} && make all target_device_version=${{ env.target_device_version }} target_metal_standard=${{ env.target_metal_standard }}
 
 ${file_library_dylib}: ${files_objects_c} ${files_objects_objc}
 	mkdir -p ${directory_library}
