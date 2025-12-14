@@ -26,7 +26,7 @@ clean: clean_all
 clean_all: $(directories_prefixed_clean)
 
 $(prefix_directory)/%: %
-	cd $< && if [[ -z "$$(cat makefile | grep "all:")" ]]; then make target_device_version=${{ env.target_device_version }} target_metal_version=${{ env.target_metal_version }} target_metal_standard=${{ env.target_metal_standard }}; else make all target_device_version=${{ env.target_device_version }} target_metal_version=${{ env.target_metal_version }} target_metal_standard=${{ env.target_metal_standard }}; fi
+	cd $< && if [[ -z "$$(cat makefile | grep "all:")" ]]; then make target_device_version=${target_device_version} target_metal_version=${target_metal_version} target_metal_standard=${target_metal_standard}; else make all target_device_version=${target_device_version} target_metal_version=${target_metal_version} target_metal_standard=${target_metal_standard}; fi
 
 $(prefix_directory_clean)/%: %
 	cd $< && if [[ -z "$$(cat makefile | grep "clean_all:")" ]]; then make clean; else make clean_all; fi
