@@ -153,9 +153,9 @@ all: ${name}
 run:
 	cd ${dir ${file_output}} && ./${shell basename ${file_output}}
 
-${name}: ${file_output}
+${name}: ${file_output} ${file_output_info_plist} ${file_output_metal} ${file_output_storyboard}
 
-${file_output}: ${files_objects_c} ${files_objects_objc} ${file_output_info_plist} ${file_output_metal} ${file_output_storyboard}
+${file_output}: ${files_objects_c} ${files_objects_objc}
 	mkdir -p ${directory_app_contents_macos}
 	${cc} ${c_flags_output} ${files_objects_c} ${files_objects_objc} ${files_libraries} -o ${file_output}
 ifneq (${debug}, 1)
@@ -203,13 +203,15 @@ ${file_output_info_plist}: ${file_info_plist}
 
 clean_all: clean
 
-clean: clean_air clean_metalar clean_objects clean_output
+clean: clean_metal clean_objects clean_output
+
+clean_metal: clean_air clean_metalib
 
 clean_air:
-	-rm -r ${directory_air_base} 2> /dev/null
+	-rm -r "${directory_air}" 2> /dev/null
 
-clean_metalar:
-	-rm -r ${directory_metalar_base} 2> /dev/null
+clean_metalib:
+	-rm "${file_output_metal}" 2> /dev/null
 
 clean_objects:
 	-rm -r ${directory_objects_base} 2> /dev/null
