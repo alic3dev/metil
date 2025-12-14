@@ -32,11 +32,16 @@ struct data_vertex {
     positions[id_vertex]
   );
 
+  float brightness = 1.0f - ((
+    positions[id_vertex].z +
+    0.2
+  ) / 0.5f);
+
   data_vertex.color = float4(
-    data_object->color.x,
-    data_object->color.y,
-    data_object->color.z,
-    data_object->color.w
+    1.0f * brightness,
+    0.98f * brightness,
+    0.9f * brightness,
+    1.0f
   );
 
   return data_vertex;

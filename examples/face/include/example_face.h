@@ -3,8 +3,6 @@
 
 #include <metil_rendering/metil_renderer_interface.h>
 
-#include <Metal/MTLDevice.h>
-
 int main(
   int,
   const char**
