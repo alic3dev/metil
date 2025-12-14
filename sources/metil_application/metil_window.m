@@ -5,6 +5,7 @@
 #include <metil_input/cursor.h>
 #include <metil_input/map.h>
 
+#include <AppKit/AppKit.h>
 #include <CoreGraphics/CoreGraphics.h>
 
 @implementation metil_window {}
@@ -36,7 +37,9 @@
 
 - (void) flagsChanged: (NSEvent*) event {
   // TODO: Find what determines if this is a keyup or keydown
-  if (event.keyCode < metil_input_map_keydown_length) {
+  if (
+    event.keyCode < metil_input_map_keydown_length
+  ) {
     metil_input_map_keydown[
       event.keyCode
     ] = metil_input_map_keydown[
@@ -67,7 +70,8 @@
   }
 
   if (
-    event.keyCode == metil_keycode_esc
+    event.keyCode == metil_keycode_esc &&
+    metil_input_cursor.lockable == 1
   ) {
     metil_input_cursor.locked = 0;
 
@@ -76,7 +80,19 @@
 }
 
 - (void) mouseDown: (NSEvent*) event {
+  metil_input_cursor.down = 1;
+
+  metil_input_cursor.position_down_screen.x = NSEvent.mouseLocation.x;
+  metil_input_cursor.position_down_screen.y = NSEvent.mouseLocation.y;
+
+  metil_input_cursor.position_down_window.x = event.locationInWindow.x;
+  metil_input_cursor.position_down_window.y = event.locationInWindow.y;
+
+  metil_input_cursor.delta_down.x = event.deltaX;
+  metil_input_cursor.delta_down.y = event.deltaY;
+
   if (
+    metil_input_cursor.lockable == 1 &&
     metil_input_cursor.locked != 1
   ) {
     metil_input_cursor.locked = 1;
@@ -103,6 +119,7 @@
 }
 
 - (void) mouseUp: (NSEvent*) event {
+  metil_input_cursor.down = 0;
   metil_input_cursor.dragging = 0;
 }
 
@@ -114,6 +131,7 @@
   metil_input_cursor.position_window.y = event.locationInWindow.y;
 
   if (
+    metil_input_cursor.lockable == 1 &&
     metil_input_cursor.locked == 1
   ) {
     if (
