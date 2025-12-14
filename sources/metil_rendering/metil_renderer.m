@@ -1,5 +1,6 @@
 #include <metil_rendering/metil_renderer.h>
 
+#include <metil_application/metil_renderer_size.h>
 #include <metil_audio/audio.h>
 #include <metil_configuration/configuration.h>
 #include <metil_input/controller_state.h>
@@ -401,14 +402,14 @@ void* metil_renderer_on_initialize_data = (void*)0;
     1920x1203 is fine
     1920x1202 causes slow down
   */
-
-  self->size_view = size;
+  metil_renderer_size.x = size.width;
+  metil_renderer_size.y = size.height;
 
   metil_camera_ratio_aspect_set(
     &self->rendering_properties.camera,
     16 / 9,
-    (float) self->size_view.width,
-    (float) self->size_view.height
+    metil_renderer_size.x,
+    metil_renderer_size.y
   );
 
   self->matrix_projection_static.columns[0][0] = (

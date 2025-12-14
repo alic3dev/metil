@@ -13,8 +13,4 @@ void example_3d_scene_poll(
   struct metil_scene*
 );
 
-void example_3d_scene_destroy(
-  struct metil_scene*
-);
-
 #endif
