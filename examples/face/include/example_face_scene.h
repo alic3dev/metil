@@ -2,8 +2,7 @@
 #define __example_face_scene_h
 
 #include <metil_scenes/scene.h>
-
-#include <Metal/MTLDevice.h>
+#include <metil_rendering/metil_renderer_interface.h>
 
 void example_face_scene_initialize(
   struct metil_scene*,
