@@ -58,13 +58,19 @@ void metil_object_buffers_initialize_with_data_size(
 
   metil_object->indices = [metal_device
     newBufferWithBytes: metil_object->mesh.indices
-    length: metil_object->mesh.length_indices * sizeof(unsigned int)
+    length: (
+      metil_object->mesh.length_indices *
+      sizeof(unsigned int)
+    )
     options: MTLResourceStorageModeShared
   ];
 
   metil_object->vertices = [metal_device
     newBufferWithBytes: metil_object->mesh.vertices
-    length: metil_object->mesh.length_vertices * sizeof(struct clic3_vector4_float)
+    length: (
+      metil_object->mesh.length_vertices *
+      sizeof(struct clic3_vector4_float)
+    )
     options: MTLResourceStorageModeShared
   ];
 }

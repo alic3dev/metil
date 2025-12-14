@@ -35,8 +35,6 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 @interface metil_renderer : NSObject<MTKViewDelegate> {
   id<MTLCommandQueue> command_queue;
 
-  CGSize size_view;
-
   id<MTLBuffer> data_buffer_frame[metil_count_max_frames];
   unsigned char index_data_buffer_frame;
 

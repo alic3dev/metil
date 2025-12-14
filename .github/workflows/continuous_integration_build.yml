@@ -81,7 +81,7 @@ jobs:
       - name: make_metil
         run: cd metil && make metil target_device_version=${{ env.target_device_version }} target_metal_standard=${{ env.target_metal_standard }}
       - name: make_metil_examples
-        run: cd metil && make examples target_device_version=${{ env.target_device_version }}
+        run: cd metil && make examples target_device_version=${{ env.target_device_version }} target_metal_standard=${{ env.target_metal_standard }}
       - name: cache_save_cer0
         id: cache_save_cer0
         if: steps.cache_restore_cer0.outputs.cache-hit != 'true'
