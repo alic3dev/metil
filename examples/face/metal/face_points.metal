@@ -5,10 +5,11 @@
 
 struct data_vertex {
   float4 position [[position]];
+  float point_size [[point_size]];
   float4 color;
 };
 
-[[vertex]] struct data_vertex face_vertex(
+[[vertex]] struct data_vertex face_points_vertex(
   const device simd_float4* positions [[
     buffer(
       metil_renderer_vertex_index_parameter_positions
@@ -33,22 +34,43 @@ struct data_vertex {
     positions[id_vertex]
   );
 
-  float brightness = 1.0f - ((
-    positions[id_vertex].z +
-    0.2
-  ) / 0.5f);
+  if (
+    id_vertex + 1 == data_object->vertex_held
+  ) {
+    data_vertex.color = float4(
+      0.0f,
+      0.0f,
+      1.0f,
+      1.0f
+    );
 
-  data_vertex.color = float4(
-    1.0f * brightness,
-    0.98f * brightness,
-    0.9f * brightness,
-    1.0f
-  );
+    data_vertex.point_size = 2.0f;
+  } else if (
+    id_vertex + 1 == data_object->vertex_hovered
+  ) {
+    data_vertex.color = float4(
+      1.0f,
+      0.0f,
+      1.0f,
+      1.0f
+    );
+
+    data_vertex.point_size = 10.0f;
+  } else {
+    data_vertex.color = float4(
+      1.0f,
+      1.0f,
+      1.0f,
+      1.0f
+    );
+
+    data_vertex.point_size = 5.0f;
+  }
 
   return data_vertex;
 }
 
-[[fragment]] float4 face_fragment(
+[[fragment]] float4 face_points_fragment(
   struct data_vertex data_vertex [[stage_in]]
 ) {
   return data_vertex.color;
