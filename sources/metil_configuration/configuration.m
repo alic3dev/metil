@@ -364,7 +364,7 @@ void metil_configuration_debug_log_parameter_invalid(
 }
 
 void metil_configuration_values_set() {
-  #if target_device != 1
+  #if !target_os_ios
   metil_audio_data.volume = metil_configuration.audio.volume;
   #endif
 }

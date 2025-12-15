@@ -1,7 +1,7 @@
 #ifndef __metil_audio_audio_io_proc_h
 #define __metil_audio_audio_io_proc_h
 
-#if target_device == 1
+#if target_os_ios
 
 #include <AVFAudio/AVFAudio.h>
 

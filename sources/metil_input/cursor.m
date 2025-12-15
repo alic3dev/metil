@@ -1,6 +1,6 @@
 #include <metil_input/cursor.h>
 
-#if target_device != 1
+#if !target_os_ios
 #include <AppKit/AppKit.h>
 #endif
 
@@ -35,7 +35,7 @@ struct metil_input_cursor metil_input_cursor = {
   }
 };
 
-#if target_device != 1
+#if !target_os_ios
 
 void metil_input_cursor_lockable_set() {
   metil_input_cursor.lockable = 1;

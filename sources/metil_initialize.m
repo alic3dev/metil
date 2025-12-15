@@ -16,14 +16,14 @@
 
 #include <interrupt_handler.h>
 
-#if target_device == 1
+#if target_os_ios
 #include <UIKit/UIKit.h>
 #else
 #include <AppKit/AppKit.h>
 #endif
 
 void metil_terminate_on_signal(int _) {
-  #if target_device == 1
+  #if target_os_ios
   [[UIApplication sharedApplication] terminate: 0];
   #else
   [[NSApplication sharedApplication] terminate: 0];
@@ -32,7 +32,7 @@ void metil_terminate_on_signal(int _) {
 
 int metil_initialize(
   int length_parameters,
-  #if target_device == 1
+  #if target_os_ios
   char** parameters,
   #else
   const char** parameters,
@@ -51,7 +51,7 @@ int metil_initialize(
 
 int metil_initialize_with_data(
   int length_parameters,
-  #if target_device == 1
+  #if target_os_ios
   char** parameters,
   #else
   const char** parameters,
@@ -70,7 +70,7 @@ int metil_initialize_with_data(
     name
   );
 
-  #if target_device == 1
+  #if target_os_ios
   metil_configuration_initialize();
   #else
   unsigned char status_configuration_load = (
@@ -81,7 +81,7 @@ int metil_initialize_with_data(
     status_configuration_load != 0
   ) {
     metil_paths_destroy();
-    #if target_device == 1
+    #if target_os_ios
     [[UIApplication sharedApplication] terminate: 0];
     #else
     [[NSApplication sharedApplication] terminate: 0];
@@ -114,7 +114,7 @@ int metil_initialize_with_data(
     (void*)0
   );
 
-  #if target_device != 1
+  #if !target_os_ios
   metil_termination_on_function_add(
     metil_audio_destroy,
     (void*)0
@@ -135,7 +135,7 @@ int metil_initialize_with_data(
     metil_terminate_on_signal
   );
 
-  #if target_device == 1
+  #if target_os_ios
   return 0;
   #else
   metil_application* application = [metil_application sharedApplication];

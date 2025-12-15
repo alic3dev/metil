@@ -199,13 +199,13 @@ c_flags_c=${c_flags_platform} ${c_flags_includes}
 c_flags_objc=${c_flags_platform} ${c_flags_includes} -x objective-c -fmodules -fconstant-cfstrings
 
 ifeq (${target_device},mac)
-c_flags_c:=${c_flags_c} -DTARGET_MACOS -Dtarget_device=0
-c_flags_objc:=${c_flags_objc} -DTARGET_MACOS -Dtarget_device=0
+c_flags_c:=${c_flags_c}
+c_flags_objc:=${c_flags_objc}
 endif
 
 ifeq (${target_device},iphone)
-c_flags_c:=${c_flags_c} -DTARGET_IOS -Dtarget_device=1
-c_flags_objc:=${c_flags_objc} -DTARGET_IOS -Dtarget_device=1
+c_flags_c:=${c_flags_c} -Dtarget_os_ios
+c_flags_objc:=${c_flags_objc} -Dtarget_os_ios
 endif
 
 c_flags_frameworks=${addprefix -framework ,${frameworks}}

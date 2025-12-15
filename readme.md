@@ -73,6 +73,10 @@ using a static library or archive requires linking the previously mentioned libr
 xcrun -sdk macosx metallib metal_archive.metalar metil_fps_display.metalar metil_wireframe.metalar -o default.metallib
 ```
 
+### preprocessor
+
+- `target_os_ios`:switches_conditionals_to_target_ios
+
 ### includes
 
 all header files can be included within a single `#include` of `metil.h`

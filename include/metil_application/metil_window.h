@@ -1,7 +1,7 @@
 #ifndef __metil_application_metil_window_h
 #define __metil_application_metil_window_h
 
-#if target_device != 1
+#if !target_os_ios
 
 #include <AppKit/AppKit.h>
 

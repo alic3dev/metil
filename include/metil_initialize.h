@@ -7,7 +7,7 @@ void metil_terminate_on_signal(int);
 
 int metil_initialize(
   int,
-  #if target_device == 1
+  #if target_os_ios
   char**,
   #else
   const char**,
@@ -18,7 +18,7 @@ int metil_initialize(
 
 int metil_initialize_with_data(
   int,
-  #if target_device == 1
+  #if target_os_ios
   char**,
   #else
   const char**,

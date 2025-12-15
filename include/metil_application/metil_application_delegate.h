@@ -1,7 +1,7 @@
 #ifndef __metil_application_metil_application_delegate_h
 #define __metil_application_metil_application_delegate_h
 
-#if target_device == 1
+#if target_os_ios
 #include <UIKit/UIKit.h>
 
 @interface metil_application_delegate: NSObject<UIApplicationDelegate>
