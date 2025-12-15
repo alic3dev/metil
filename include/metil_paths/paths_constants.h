@@ -2,7 +2,7 @@
 #define __metil_paths_paths_constants_h
 
 #define metil_paths_length_directory_configuration 8
-#if target_device == 1
+#if target_os_ios
 #define metil_paths_length_directory_resources 2
 #else
 #define metil_paths_length_directory_resources 13
@@ -11,7 +11,7 @@
 
 #define metil_paths_directory_configuration ".config/"
 
-#if target_device == 1
+#if target_os_ios
 #define metil_paths_directory_resources "./"
 #else
 #define metil_paths_directory_resources "../Resources/"

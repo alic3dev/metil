@@ -3,7 +3,7 @@
 
 #include <MetalKit/MTKView.h>
 
-#if target_device == 1
+#if target_os_ios
 @interface metil_view_controller: UIViewController<MTKViewDelegate>
 @end
 #else

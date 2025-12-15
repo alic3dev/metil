@@ -1,4 +1,4 @@
-#if target_device != 1
+#if !target_os_ios
 
 #include <metil_audio/audio.h>
 #include <metil_audio/audio_io_proc.h>

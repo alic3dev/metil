@@ -22,7 +22,7 @@ struct metil_input_cursor {
 extern struct metil_input_cursor metil_input_cursor;
 
 
-#if target_device != 1
+#if !target_os_ios
 void metil_input_cursor_lockable_set();
 void metil_input_cursor_lockable_unset();
 #endif
