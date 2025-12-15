@@ -451,6 +451,7 @@ these flags can be applied to any build target
 - - sdks
 - - - macos->{`macosx${target_device_version}`}
 - - - ios->{`iphoneos${target_device_version}`}
+- `target_metal_standard`:sets_the_target_metal_standard::(will_use->{`metal4.0`}_if_not_set)
 - `target_metal_version`:sets_the_target_metal_version::(will_use->{`target_device_version`}_if_not_set)
 - - platforms
 - - - macos->{`arm64-apple-macos${target_metal_version}`}
