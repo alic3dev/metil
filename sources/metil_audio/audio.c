@@ -9,7 +9,7 @@
 
 #include <CoreAudio/CoreAudio.h>
 
-struct cer0_audio_output audio_output;
+struct cer0_audio_output metil_audio_output;
 struct metil_audio_data metil_audio_data;
 
 void metil_audio_initialize() {
@@ -28,7 +28,7 @@ void metil_audio_initialize() {
   metil_audio_data.volume = 0.2f;
 
   cer0_audio_output_initialize(
-    &audio_output,
+    &metil_audio_output,
     metil_audio_output_io_proc,
     (void*)0
   );
@@ -160,7 +160,7 @@ unsigned char metil_audio_io_proc_remove(
 
 void metil_audio_destroy() {
   unsigned char status_audio_destory = cer0_audio_output_destroy(
-    &audio_output
+    &metil_audio_output
   );
 
   free(metil_audio_data.io_procs);
