@@ -5,11 +5,11 @@
 
 #include <AVFAudio/AVFAudio.h>
 
-typedef OSStatus (*metil_audio_io_proc)(
-  BOOL* _Nonnull,
-  const AudioTimeStamp* _Nonnull,
-  AVAudioFrameCount,
-  AudioBufferList* _Nonnull,
+typedef int (*metil_audio_io_proc)(
+  unsigned char,
+  const struct AudioTimeStamp* _Nonnull,
+  unsigned int,
+  struct AudioBufferList* _Nonnull,
   void* _Nullable
 );
 

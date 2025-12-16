@@ -236,7 +236,7 @@ OSStatus metil_audio_output_io_proc(
     OSStatus status_io_proc = metil_audio_data.io_procs[
       index_io_proc
     ](
-      silence,
+      *silence,
       timestamp,
       frame_count,
       output_data,
