@@ -110,5 +110,11 @@ void metil_termination_terminate() {
     );
   }
 
-  free(metil_termination_on_functions);
+  free(
+    metil_termination_on_functions
+  );
+
+  free(
+    metil_termination_on_functions_data
+  );
 }
