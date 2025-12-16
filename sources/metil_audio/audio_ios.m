@@ -20,7 +20,7 @@ void metil_audio_initialize() {
   );
 
   metil_audio_data.muted = 1;
-  metil_audio_data.volume = 0.2f;
+  metil_audio_data.volume = 1.0f;
 
   AVAudioSession* session_audio_shared = [
     AVAudioSession
