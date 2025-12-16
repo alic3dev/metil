@@ -24,7 +24,8 @@
 
 void metil_terminate_on_signal(int _) {
   #if target_os_ios
-  [[UIApplication sharedApplication] terminate: 0];
+  metil_termination_terminate();
+  exit(0);
   #else
   [[NSApplication sharedApplication] terminate: 0];
   #endif
@@ -82,7 +83,7 @@ int metil_initialize_with_data(
   ) {
     metil_paths_destroy();
     #if target_os_ios
-    [[UIApplication sharedApplication] terminate: 0];
+    exit(status_configuration_load);
     #else
     [[NSApplication sharedApplication] terminate: 0];
     #endif
@@ -114,12 +115,10 @@ int metil_initialize_with_data(
     (void*)0
   );
 
-  #if !target_os_ios
   metil_termination_on_function_add(
     metil_audio_destroy,
     (void*)0
   );
-  #endif
 
   metil_termination_on_function_add(
     metil_text_destroy,

@@ -2,9 +2,11 @@
 #define __metil_application_metil_application_delegate_h
 
 #if target_os_ios
-#include <UIKit/UIKit.h>
+#import <UIKit/UIKit.h>
 
-@interface metil_application_delegate: NSObject<UIApplicationDelegate>
+@interface metil_application_delegate: UIResponder <UIApplicationDelegate>
+
+@property (strong, nonatomic) UIWindow* window;
 
 #else
 #include <AppKit/AppKit.h>

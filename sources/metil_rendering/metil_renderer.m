@@ -219,7 +219,10 @@ void* metil_renderer_on_initialize_data = (void*)0;
   ) {
     [self->encoder_render endEncoding];
   }
+  
+  #if !target_os_ios
   [self->encoder_render release];
+  #endif
 
   for (
     unsigned char index_pipeline_render = 0;
