@@ -1,7 +1,8 @@
 #include <metil_rendering/metil_renderer.h>
 
 #include <metil_application/metil_renderer_size.h>
-#include <metil_audio/audio.h>
+#include <metil_audio/metil_audio.h>
+#include <metil_audio/metil_audio_data.h>
 #include <metil_configuration/configuration.h>
 #include <metil_input/controller_state.h>
 #include <metil_input/map.h>

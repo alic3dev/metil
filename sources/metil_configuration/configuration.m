@@ -1,6 +1,6 @@
 #include <metil_configuration/configuration.h>
 
-#include <metil_audio/audio.h>
+#include <metil_audio/metil_audio_data.h>
 #include <metil_debug/log.h>
 #include <metil_paths/paths.h>
 
