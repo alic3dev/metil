@@ -6,8 +6,11 @@
 #include <metil_audio/audio_ios_data.h>
 #include <metil_audio/audio_io_proc.h>
 
+#include <cer0_audio_output.h>
+
 #include <AVFAudio/AVFAudio.h>
 
+extern struct cer0_audio_output metil_audio_output;
 extern struct metil_audio_data metil_audio_data;
 
 void metil_audio_initialize();
@@ -28,10 +31,11 @@ unsigned char metil_audio_io_proc_remove(
 void metil_audio_destroy();
 
 OSStatus metil_audio_output_io_proc(
-  BOOL* _Nonnull,
+  unsigned char,
   const AudioTimeStamp* _Nonnull,
-  AVAudioFrameCount,
-  AudioBufferList* _Nonnull
+  unsigned int,
+  AudioBufferList* _Nonnull,
+  void* _Nullable
 );
 
 #endif

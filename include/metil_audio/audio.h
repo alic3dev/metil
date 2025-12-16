@@ -12,7 +12,7 @@
 
 #include <CoreAudio/CoreAudio.h>
 
-extern struct cer0_audio_output audio_output;
+extern struct cer0_audio_output metil_audio_output;
 extern struct metil_audio_data metil_audio_data;
 
 void metil_audio_initialize();

@@ -3,8 +3,11 @@
 #include <metil_audio/audio_ios.h>
 #include <metil_audio/audio_io_proc.h>
 
+#include <cer0_audio_output.h>
+
 #include <AVFAudio/AVFAudio.h>
 
+struct cer0_audio_output metil_audio_output;
 struct metil_audio_data metil_audio_data;
 
 void metil_audio_initialize() {
@@ -20,67 +23,13 @@ void metil_audio_initialize() {
   );
 
   metil_audio_data.muted = 1;
-  metil_audio_data.volume = 0.2f;
-
-  AVAudioSession* session_audio_shared = [
-    AVAudioSession
-    sharedInstance
-  ];
+  metil_audio_data.volume = 1.0f;
   
-  [session_audio_shared 
-    setCategory: AVAudioSessionCategoryPlayback
-    mode: AVAudioSessionModeDefault
-    options: AVAudioSessionCategoryOptionMixWithOthers
-    error: (void*)0
-  ];
-  
-  [session_audio_shared
-    setActive: 1
-    error: (void*)0
-  ];
-  
-  metil_audio_data.engine_audio = [
-    [
-      AVAudioEngine
-      alloc
-    ]
-    init
-  ];
-
-  
-  AVAudioMixerNode* node_output = (
-    metil_audio_data.engine_audio.mainMixerNode
+  cer0_audio_output_initialize(
+    &metil_audio_output,
+    metil_audio_output_io_proc,
+    (void*)0
   );
-
-  AVAudioFormat* format_output = [
-    node_output
-    inputFormatForBus: 0
-  ];
-
-  AVAudioSourceNode* node_source = [
-    [
-      AVAudioSourceNode
-      alloc
-    ]
-    initWithFormat: format_output
-    renderBlock: ^OSStatus(
-      BOOL* _Nonnull silence,
-      const AudioTimeStamp* _Nonnull timestamp,
-      AVAudioFrameCount frame_count,
-      AudioBufferList* _Nonnull output_data
-    ) {
-      return metil_audio_output_io_proc(
-        silence,
-        timestamp,
-        frame_count,
-        output_data
-      );
-    }
-  ];
-  
-  [metil_audio_data.engine_audio attachNode: node_source];
-  [metil_audio_data.engine_audio connect: node_source to: node_output format: format_output];
-  [metil_audio_data.engine_audio startAndReturnError: (void*)0];
 }
 
 void metil_audio_io_proc_add(
@@ -216,11 +165,12 @@ void metil_audio_destroy() {
   free(metil_audio_data.data_io_procs);
 }
 
-OSStatus metil_audio_output_io_proc(
-  BOOL* _Nonnull silence,
+int metil_audio_output_io_proc(
+  unsigned char silence,
   const AudioTimeStamp* _Nonnull timestamp,
   AVAudioFrameCount frame_count,
-  AudioBufferList* _Nonnull output_data
+  AudioBufferList* _Nonnull output_data,
+  void* cer0_data
 ) {
   if (
     metil_audio_data.muted == 1
