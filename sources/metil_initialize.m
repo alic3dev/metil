@@ -2,7 +2,7 @@
 
 #include <metil_application/metil_application.h>
 #include <metil_application/metil_application_delegate.h>
-#include <metil_audio/audio.h>
+#include <metil_audio/metil_audio.h>
 #include <metil_configuration/configuration.h>
 #include <metil_input/input.h>
 #include <metil_library.h>
@@ -16,15 +16,28 @@
 
 #include <interrupt_handler.h>
 
+#if target_os_ios
+#include <UIKit/UIKit.h>
+#else
 #include <AppKit/AppKit.h>
+#endif
 
 void metil_terminate_on_signal(int _) {
+  #if target_os_ios
+  metil_termination_terminate();
+  exit(0);
+  #else
   [[NSApplication sharedApplication] terminate: 0];
+  #endif
 }
 
 int metil_initialize(
   int length_parameters,
+  #if target_os_ios
+  char** parameters,
+  #else
   const char** parameters,
+  #endif
   char* name,
   metil_renderer_on_initialize_function metil_renderer_on_initialize_function
 ) {
@@ -39,7 +52,11 @@ int metil_initialize(
 
 int metil_initialize_with_data(
   int length_parameters,
+  #if target_os_ios
+  char** parameters,
+  #else
   const char** parameters,
+  #endif
   char* name,
   metil_renderer_on_initialize_function metil_renderer_on_initialize_function,
   void* metil_renderer_on_initialize_function_data
@@ -54,6 +71,9 @@ int metil_initialize_with_data(
     name
   );
 
+  #if target_os_ios
+  metil_configuration_initialize();
+  #else
   unsigned char status_configuration_load = (
     metil_configuration_load()
   );
@@ -62,9 +82,14 @@ int metil_initialize_with_data(
     status_configuration_load != 0
   ) {
     metil_paths_destroy();
+    #if target_os_ios
+    exit(status_configuration_load);
+    #else
     [[NSApplication sharedApplication] terminate: 0];
+    #endif
     return status_configuration_load;
   }
+  #endif
 
   metil_termination_initialize();
   interrupt_handler_initialize();
@@ -105,15 +130,19 @@ int metil_initialize_with_data(
     (void*)0
   );
 
-  metil_application* application = [metil_application sharedApplication];
-  application.delegate = [metil_application_delegate alloc];
-
   interrupt_handler_interrupt_function_add(
     metil_terminate_on_signal
   );
+
+  #if target_os_ios
+  return 0;
+  #else
+  metil_application* application = [metil_application sharedApplication];
+  application.delegate = [metil_application_delegate alloc];
 
   return NSApplicationMain(
     length_parameters,
     parameters
   );
+  #endif
 }

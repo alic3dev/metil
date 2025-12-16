@@ -7,14 +7,22 @@ void metil_terminate_on_signal(int);
 
 int metil_initialize(
   int,
+  #if target_os_ios
+  char**,
+  #else
   const char**,
+  #endif
   char*,
   metil_renderer_on_initialize_function
 );
 
 int metil_initialize_with_data(
   int,
+  #if target_os_ios
+  char**,
+  #else
   const char**,
+  #endif
   char*,
   metil_renderer_on_initialize_function,
   void*

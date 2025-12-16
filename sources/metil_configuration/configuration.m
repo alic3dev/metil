@@ -1,6 +1,6 @@
 #include <metil_configuration/configuration.h>
 
-#include <metil_audio/audio.h>
+#include <metil_audio/metil_audio_data.h>
 #include <metil_debug/log.h>
 #include <metil_paths/paths.h>
 
@@ -24,7 +24,9 @@ void metil_configuration_initialize() {
     metil_configuration_default_rendering_properties_brightness_text
   );
 
-  metil_configuration.rendering_properties.fps_display = 0;
+  metil_configuration.rendering_properties.fps_display = (
+    metil_configuration_default_rendering_properties_fps_display
+  );
 }
 
 unsigned char metil_configuration_load() {
@@ -362,7 +364,9 @@ void metil_configuration_debug_log_parameter_invalid(
 }
 
 void metil_configuration_values_set() {
+  #if !target_os_ios
   metil_audio_data.volume = metil_configuration.audio.volume;
+  #endif
 }
 
 void metil_configuration_destroy() {}

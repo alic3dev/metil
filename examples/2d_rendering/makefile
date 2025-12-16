@@ -17,7 +17,7 @@ version_target_cer0=0
 version_target_clic3=0
 version_target_interrupt_handler=0
 version_target_math_c=0
-version_target_metil=0
+version_target_metil=1
 
 directory_metil=../..
 
@@ -90,7 +90,7 @@ files_objects_objc=${patsubst ${directory_sources}/%.m,${directory_objects_objc}
 
 target_device=mac
 ifndef target_macos_version
-	target_macos_version=26.0
+	target_macos_version=26.1
 endif
 target_platform=arm64-apple-macos${target_macos_version}
 
@@ -123,7 +123,7 @@ strip_flags=-x
 
 all: ${name}
 
-run: .always
+run:
 	cd ${dir ${file_output}} && ./${shell basename ${file_output}}
 
 ${name}: ${file_output}
@@ -179,5 +179,3 @@ clean_objects:
 
 clean_output:
 	-rm -r ${directory_output_base}
-
-.always:

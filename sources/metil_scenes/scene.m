@@ -3,28 +3,44 @@
 #include <metil_input/cursor.h>
 #include <metil_object.h>
 #include <metil_player.h>
+#include <metil_rendering/metil_renderable.h>
 #include <metil_utilities/time.h>
 
 #include <stdlib.h>
 
 void metil_scene_initialize(
   struct metil_scene* scene,
-  id<MTLDevice> metal_device
+  struct metil_renderer_interface* renderer_interface
 ) {
-  scene->metal_device = metal_device;
+  metil_scene_initialize_with_renderables(
+    scene,
+    renderer_interface,
+    0
+  );
+}
+
+void metil_scene_initialize_with_renderables(
+  struct metil_scene* scene,
+  struct metil_renderer_interface* renderer_interface,
+  unsigned int length_renderables
+) {
+  scene->renderer_interface = renderer_interface;
 
   metil_player_initialize(
     &scene->player
+);
+
+  scene->length_renderables = length_renderables;
+  scene->renderables = malloc(
+    sizeof(struct metil_renderable) *
+    scene->length_renderables
   );
 
-  scene->length_objects = 0;
-  scene->objects = malloc(
-    sizeof(struct metil_object*) *
-    scene->length_objects
+  scene->length_textures = 0;
+  scene->textures = malloc(
+    sizeof(id<MTLTexture>) *
+    scene->length_textures
   );
-
-  scene->type = metil_scene_type_unknown;
-  scene->id = -1;
 
   scene->player.position.x = 0.0f;
   scene->player.position.y = 0.0f;
@@ -58,6 +74,18 @@ void metil_scene_initialize(
   scene->rendering_properties.brightness_text = 1.0f;
 
   scene->data = (void*)0;
+}
+
+void metil_scene_renderables_set_length(
+  struct metil_scene* _Nonnull scene,
+  unsigned int length_renderables
+) {
+  scene->length_renderables = length_renderables;
+  scene->renderables = realloc(
+    scene->renderables,
+    sizeof(struct metil_renderable) *
+    scene->length_renderables
+  );
 }
 
 void metil_scene_poll_input(
@@ -123,19 +151,51 @@ void metil_scene_poll_default(
 void metil_scene_destroy_default(
   struct metil_scene* scene
 ) {
+  struct metil_renderable* renderable = (
+    (void*)0
+  );
+  
   for (
-    unsigned int index_object = 0;
-    index_object < scene->length_objects;
-    ++index_object
+    unsigned int index_renderable = 0;
+    index_renderable < scene->length_renderables;
+    ++index_renderable
   ) {
-    metil_object_destroy(
-      scene->objects[index_object]
+    renderable = &(
+      scene->renderables[
+        index_renderable
+      ]
     );
 
-    free(scene->objects[index_object]);
+    switch (
+      renderable->type
+    ) {
+      case metil_renderable_type_object: {
+        struct metil_object* metil_object = (
+          renderable->renderable
+        );
+
+        metil_object->destroy(
+          metil_object
+        );
+        break;
+      }
+      case metil_renderable_type_menu: {
+        break;
+      }
+      case metil_renderable_type_model: {
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    free(
+      renderable->renderable
+    );
   }
 
-  free(scene->objects);
+  free(scene->renderables);
 
   for (
     unsigned int index_texture = 0;

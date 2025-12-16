@@ -3,6 +3,8 @@
 #include <metil_mesh/2d/mesh_square.h>
 #include <metil_object.h>
 #include <metil_player.h>
+#include <metil_positioning.h>
+#include <metil_rendering/metil_renderable.h>
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_scenes/scene.h>
 
@@ -14,85 +16,79 @@
 
 void example_2d_scene_initialize(
   struct metil_scene* scene,
-  id<MTLDevice> metal_device
+  struct metil_renderer_interface* metil_renderer_interface
 ) {
-  metil_scene_initialize(
+  metil_scene_initialize_with_renderables(
     scene,
-    metal_device
+    metil_renderer_interface,
+    100
   );
 
   scene->player.poll_input = metil_player_poll_input_null;
 
-  scene->type = metil_scene_type_game;
-  scene->id = 0;
-
   scene->poll = example_2d_scene_poll;
 
-  scene->length_objects = 100;
-  scene->objects = realloc(
-    scene->objects,
-    sizeof(struct metil_object*) *
-    scene->length_objects
-  );
-
   for (
-    unsigned char index_object = 0;
-    index_object < scene->length_objects;
-    ++index_object
+    unsigned char index_renderable = 0;
+    index_renderable < scene->length_renderables;
+    ++index_renderable
   ) {
-    scene->objects[
-      index_object
-    ] = malloc(
-      sizeof(struct metil_object)
+    metil_renderable_initialize_at_index(
+      scene->renderables,
+      index_renderable,
+      metil_renderable_type_object
     );
 
-    metil_object_initialize(
-      scene->objects[
-        index_object
-      ]
+    struct metil_object* object = (
+      scene->renderables[
+        index_renderable
+      ].renderable
     );
 
     metil_mesh_square_initialize(
-      &scene->objects[
-        index_object
-      ]->mesh,
+      &object->mesh,
       0.2f
     );
 
-    scene->objects[index_object]->mesh.positioning = metil_mesh_positioning_absolute;
-
-    metil_object_buffers_initialize(
-      scene->objects[
-        index_object
-      ],
-      metal_device
+    object->positioning = (
+      metil_positioning_absolute
     );
 
-    struct metil_renderer_data_object* data_object = scene->objects[
-      index_object
-    ]->data.contents;
+    metil_object_buffers_initialize(
+      object,
+      scene->renderer_interface->metal_device
+    );
 
-    data_object->id = index_object;
-    data_object->color.x = (float) index_object / (scene->length_objects - 1);
-    data_object->color.y = (float) ((index_object + 33) % scene->length_objects) / (scene->length_objects - 1);
-    data_object->color.z = (float) ((index_object + 66) % scene->length_objects) / (scene->length_objects - 1);
+    struct metil_renderer_data_object* data_object = (
+      object->data.contents
+    );
+
+    data_object->color.x = (
+      (float) index_renderable /
+      (scene->length_renderables - 1)
+    );
+
+    data_object->color.y = (
+      (float) ((index_renderable + 33) % scene->length_renderables) /
+      (scene->length_renderables - 1)
+    );
+
+    data_object->color.z = (
+      (float) ((index_renderable + 66) % scene->length_renderables) /
+      (scene->length_renderables - 1)
+    );
+
     data_object->color.w = 1.0f;
 
-    scene->objects[
-      index_object
-    ]->position.x = (
-      (float) (index_object % 10)
+    object->position.x = (
+      (float) (index_renderable % 10)
     ) * 0.2f - 0.9f;
 
-    scene->objects[
-      index_object
-    ]->position.y = (
-      (float) (index_object / 10)
+    object->position.y = (
+      (float) (index_renderable / 10)
     ) * 0.2f - 0.9f;
 
-    scene->objects[
-      index_object
-    ]->position.z = (
+    object->position.z = (
       1.0f
     );
   }
@@ -106,18 +102,20 @@ void example_2d_scene_poll(
   float brightness_minimum = 0.25f;
 
   for (
-    unsigned char index_object = 0;
-    index_object < scene->length_objects;
-    ++index_object
+    unsigned char index_renderable = 0;
+    index_renderable < scene->length_renderables;
+    ++index_renderable
   ) {
-    struct metil_renderer_data_object* data_object = scene->objects[
-      index_object
-    ]->data.contents;
+    struct metil_renderer_data_object* data_object = (
+      (struct metil_object*) scene->renderables[
+        index_renderable
+      ].renderable
+    )->data.contents;
 
     struct clic3_vector3_unsigned_int time_offset = {
-      .x = scene->time + (index_object + 2) * 20,
-      .y = scene->time + (index_object + 3) * 30,
-      .z = scene->time + (index_object + 1) * 10
+      .x = scene->time + (index_renderable + 2) * 20,
+      .y = scene->time + (index_renderable + 3) * 30,
+      .z = scene->time + (index_renderable + 1) * 10
     };
 
     data_object->color.x = (
