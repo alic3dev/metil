@@ -2,7 +2,7 @@
 
 #include <metil_application/metil_application.h>
 #include <metil_application/metil_application_delegate.h>
-#include <metil_audio/audio.h>
+#include <metil_audio/metil_audio.h>
 #include <metil_configuration/configuration.h>
 #include <metil_input/input.h>
 #include <metil_library.h>
