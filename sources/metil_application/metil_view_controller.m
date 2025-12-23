@@ -3,8 +3,6 @@
 #include <metil_application/metil_view.h>
 #include <metil_rendering/metil_renderer.h>
 
-#include <stdio.h>
-
 @implementation metil_view_controller {
   metil_view* view;
   metil_renderer* renderer;
