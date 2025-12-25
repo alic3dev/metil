@@ -4,6 +4,7 @@
 #include <metil_audio/metil_audio.h>
 #include <metil_audio/metil_audio_data.h>
 #include <metil_configuration/configuration.h>
+#include <metil_group.h>
 #include <metil_input/controller_state.h>
 #include <metil_input/map.h>
 #include <metil_input/keycodes.h>
@@ -904,6 +905,64 @@ void* metil_renderer_on_initialize_data = (void*)0;
   free(char_array_fps);
 }
 
+- (void) render_renderable:
+  (struct metil_renderable*) metil_renderable
+{
+  switch (
+    metil_renderable->type
+  ) {
+    case metil_renderable_type_group: {
+      struct metil_group* metil_group = (
+        metil_renderable->renderable
+      );
+
+      for (
+        unsigned int index_group_renderable = 0;
+        index_group_renderable < metil_group->length;
+        ++index_group_renderable
+      ) {
+        [self
+          render_renderable: metil_group->renderables[
+            index_group_renderable
+          ]
+        ];
+      }
+      break;
+    }
+    case metil_renderable_type_object: {
+      struct metil_object* object = (
+        metil_renderable->renderable
+      );
+
+      if (
+        self->rendering_properties.mode & metil_rendering_properties_mode_default
+      ) {
+        [self
+          render_object: object
+        ];
+      }
+
+      if (
+        self->rendering_properties.mode & metil_rendering_properties_mode_wireframe
+      ) {
+        [self
+          render_object_wireframe: object
+        ];
+      }
+      break;
+    }
+    case metil_renderable_type_menu: {
+      break;
+    }
+    case metil_renderable_type_model: {
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+}
+
 - (void) render {
   struct metil_renderable* renderable = (
     (void*)0
@@ -920,41 +979,9 @@ void* metil_renderer_on_initialize_data = (void*)0;
       ]
     );
 
-    switch (
-      renderable->type
-    ) {
-      case metil_renderable_type_object: {
-        struct metil_object* object = (
-          renderable->renderable
-        );
-
-        if (
-          self->rendering_properties.mode & metil_rendering_properties_mode_default
-        ) {
-          [self
-            render_object: object
-          ];
-        }
-
-        if (
-          self->rendering_properties.mode & metil_rendering_properties_mode_wireframe
-        ) {
-          [self
-            render_object_wireframe: object
-          ];
-        }
-        break;
-      }
-      case metil_renderable_type_menu: {
-        break;
-      }
-      case metil_renderable_type_model: {
-        break;
-      }
-      default: {
-        break;
-      }
-    }
+    [self
+      render_renderable: renderable
+    ];
   }
 }
 
@@ -1128,6 +1155,59 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
 @end
 
+void metil_renderer_poll_object(
+  struct metil_renderer_thread_poll_object_data* metil_renderer_thread_poll_object_data,
+  struct metil_renderable* metil_renderable
+) {
+  switch (
+    metil_renderable->type
+  ) {
+    case metil_renderable_type_group: {
+      struct metil_group* metil_group = (
+        metil_renderable->renderable
+      );
+
+      for (
+        unsigned int index_group_renderable = 0;
+        index_group_renderable < metil_group->length;
+        ++index_group_renderable
+      ) {
+        metil_renderer_poll_object(
+          metil_renderer_thread_poll_object_data,
+          metil_group->renderables[
+            index_group_renderable
+          ]
+        );
+      }
+
+      break;
+    }
+    case metil_renderable_type_object: {
+      struct metil_object* object = (
+        metil_renderable->renderable
+      );
+
+      object->poll(
+        object,
+        metil_renderer_thread_poll_object_data->matrix_static_projection,
+        metil_renderer_thread_poll_object_data->matrix_object_projection,
+        metil_renderer_thread_poll_object_data->matrix_player_projection,
+        metil_renderer_thread_poll_object_data->camera
+      );
+      break;
+    }
+    case metil_renderable_type_menu: {
+      break;
+    }
+    case metil_renderable_type_model: {
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+}
+
 void* metil_renderer_thread_poll_object(
   void* data
 ) {
@@ -1135,51 +1215,24 @@ void* metil_renderer_thread_poll_object(
     data
   );
 
-  struct metil_renderable* renderable = (
-    (void*) 0
-  );
-
   for (
     unsigned int index_renderable = 0;
     index_renderable < metil_renderer_thread_poll_object_data->length_renderables;
     ++index_renderable
   ) {
-    renderable = &(
-      metil_renderer_thread_poll_object_data->renderables[
-        index_renderable
-      ]
+    metil_renderer_poll_object(
+      metil_renderer_thread_poll_object_data,
+      &(
+        metil_renderer_thread_poll_object_data->renderables[
+          index_renderable
+        ]
+      )
     );
-
-    switch (
-      renderable->type
-    ) {
-      case metil_renderable_type_object: {
-        struct metil_object* object = (
-          renderable->renderable
-        );
-
-        object->poll(
-          object,
-          metil_renderer_thread_poll_object_data->matrix_static_projection,
-          metil_renderer_thread_poll_object_data->matrix_object_projection,
-          metil_renderer_thread_poll_object_data->matrix_player_projection,
-          metil_renderer_thread_poll_object_data->camera
-        );
-        break;
-      }
-      case metil_renderable_type_menu: {
-        break;
-      }
-      case metil_renderable_type_model: {
-        break;
-      }
-      default: {
-        break;
-      }
-    }
   }
 
-  return (void*)0;
+  return (
+    (void*) 0
+  );
 }
 
 void metil_renderer_after_scene_change(
