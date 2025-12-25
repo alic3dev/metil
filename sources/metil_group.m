@@ -162,7 +162,7 @@ void metil_group_destroy_renderable_at_index(
 ) {
   metil_renderable_destroy(
     metil_group->renderables[
-      index_renderable
+      index_renderable_removal
     ]
   );
 
