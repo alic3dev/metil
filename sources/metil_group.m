@@ -160,17 +160,17 @@ void metil_group_destroy_renderable_at_index(
   struct metil_group* metil_group,
   unsigned int index_renderable_removal
 ) {
+  metil_renderable_destroy(
+    metil_group->renderables[
+      index_renderable
+    ]
+  );
+
   for (
     unsigned int index_renderable = index_renderable_removal;
     index_renderable < metil_group->length - 1;
     ++index_renderable
   ) {
-    metil_renderable_destroy(
-      metil_group->renderables[
-        index_renderable
-      ]
-    );
-
     metil_group->renderables[
       index_renderable
     ] = metil_group->renderables[
