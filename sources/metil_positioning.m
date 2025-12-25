@@ -77,9 +77,9 @@ void metil_positioning_view_model_matrix_projection_set(
         }
       }},
       (matrix_float4x4) {{
-        { 1.0f, 0.0f, 0.0f, 0.0f },
-        { 0.0f, cos(rotation->x), -sin(rotation->x), 0.0f },
-        { 0.0f, sin(rotation->x), cos(rotation->x), 0.0f },
+        { cos(rotation->y), 0.0f, -sin(rotation->y), 0.0f },
+        { 0.0f, 1.0f, 0.0f, 0.0f },
+        { sin(rotation->y), 0.0f, cos(rotation->y), 0.0f },
         { 0.0f, 0.0f, 0.0f, 1.0f }
       }}
     );
@@ -87,9 +87,9 @@ void metil_positioning_view_model_matrix_projection_set(
     matrix_projection_object_with_rotation = matrix_multiply(
       matrix_projection_object_with_rotation,
       (matrix_float4x4) {{
-        { cos(rotation->y), 0.0f, -sin(rotation->y), 0.0f },
-        { 0.0f, 1.0f, 0.0f, 0.0f },
-        { sin(rotation->y), 0.0f, cos(rotation->y), 0.0f },
+        { 1.0f, 0.0f, 0.0f, 0.0f },
+        { 0.0f, cos(rotation->x), -sin(rotation->x), 0.0f },
+        { 0.0f, sin(rotation->x), cos(rotation->x), 0.0f },
         { 0.0f, 0.0f, 0.0f, 1.0f }
       }}
     );
