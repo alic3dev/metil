@@ -151,47 +151,17 @@ void metil_scene_poll_default(
 void metil_scene_destroy_default(
   struct metil_scene* scene
 ) {
-  struct metil_renderable* renderable = (
-    (void*)0
-  );
-  
   for (
     unsigned int index_renderable = 0;
     index_renderable < scene->length_renderables;
     ++index_renderable
   ) {
-    renderable = &(
-      scene->renderables[
-        index_renderable
-      ]
-    );
-
-    switch (
-      renderable->type
-    ) {
-      case metil_renderable_type_object: {
-        struct metil_object* metil_object = (
-          renderable->renderable
-        );
-
-        metil_object->destroy(
-          metil_object
-        );
-        break;
-      }
-      case metil_renderable_type_menu: {
-        break;
-      }
-      case metil_renderable_type_model: {
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-
-    free(
-      renderable->renderable
+    metil_renderable_destroy(
+      &(
+        scene->renderables[
+          index_renderable
+        ]
+      )
     );
   }
 

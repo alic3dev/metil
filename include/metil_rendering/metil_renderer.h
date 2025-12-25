@@ -107,6 +107,7 @@ extern void* _Nullable metil_renderer_on_initialize_data;
   matrix_player_projection: (nonnull matrix_float4x4*) matrix_player_projection;
 
 - (void) render;
+- (void) render_renderable: (nonnull struct metil_renderable*) metil_renderable;
 - (void) render_fps_display;
 - (void) render_object: (nonnull struct metil_object*) object;
 - (void) render_object_wireframe: (nonnull struct metil_object*) object;
@@ -130,11 +131,22 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 
 @end
 
+void metil_renderer_poll_object(
+  struct metil_renderer_thread_poll_object_data* _Nonnull,
+  struct metil_renderable* _Nonnull
+);
+
 void* _Nullable metil_renderer_thread_poll_object(
   void* _Nonnull
 );
 
-void metil_renderer_after_scene_change(int, void* _Nonnull);
-void metil_renderer_on_termination(void* _Nonnull);
+void metil_renderer_after_scene_change(
+  int,
+  void* _Nonnull
+);
+
+void metil_renderer_on_termination(
+  void* _Nonnull
+);
 
 #endif
