@@ -50,16 +50,20 @@ void example_model_scene_initialize(
     (void*) 0
   );
 
+  struct metil_mesh* metil_mesh = (
+    (void*) 0
+  );
+
   metil_model->data = 0;
 
   metil_model_objects_add_length(
     metil_model,
-    17
+    18
   );
 
   for (
     unsigned char index_object = 0;
-    index_object < metil_model->length_objects;
+    index_object < metil_model->length_objects - 1;
     ++index_object
   ) {
     metil_object = &(
@@ -68,7 +72,7 @@ void example_model_scene_initialize(
       ]
     );
 
-    struct metil_mesh* metil_mesh = (
+    metil_mesh = (
       &metil_object->mesh
     );
 
@@ -94,11 +98,103 @@ void example_model_scene_initialize(
     } else if (
       index_object == 15
     ) {
-      metil_object->position.z = 35.0f;
+      metil_object->position.z = 15.0f;
     } else {
       metil_object->position.z = 5.0f;
     }
   }
+
+  metil_object = &(
+    metil_model->objects[
+      metil_model->length_objects -
+      1
+    ]
+  );
+
+  metil_mesh = &(
+    metil_object->mesh
+  );
+
+  metil_mesh_initialize(
+    metil_mesh
+  );
+
+  metil_mesh->length_indices = 29;
+  metil_mesh->length_vertices = (
+    metil_model->length_objects -
+    1
+  );
+
+  metil_mesh->indices = realloc(
+    metil_mesh->indices,
+    sizeof(unsigned int) *
+    metil_mesh->length_indices
+  );
+
+  metil_mesh->vertices = realloc(
+    metil_mesh->vertices,
+    sizeof(struct clic3_vector4_float) *
+    metil_mesh->length_vertices
+  );
+
+  metil_object->type_primitive = MTLPrimitiveTypeLineStrip;
+
+  for (
+    unsigned char index_vertex = 0;
+    index_vertex < metil_mesh->length_vertices;
+    ++index_vertex
+  ) {
+    metil_object = &(
+      metil_model->objects[
+        index_vertex
+      ]
+    );
+
+    metil_mesh->vertices[index_vertex].x = metil_object->position.x;
+    metil_mesh->vertices[index_vertex].y = metil_object->position.y;
+    metil_mesh->vertices[index_vertex].z = metil_object->position.z;
+    metil_mesh->vertices[index_vertex].w = 1.0f;
+  }
+
+  metil_mesh->indices[0] = 2;
+  metil_mesh->indices[1] = 1;
+  metil_mesh->indices[2] = 0;
+
+  metil_mesh->indices[3] = 15;
+
+  metil_mesh->indices[4] = 3;
+  metil_mesh->indices[5] = 4;
+  metil_mesh->indices[6] = 5;
+  metil_mesh->indices[7] = 4;
+  metil_mesh->indices[8] = 3;
+
+  metil_mesh->indices[9] = 15;
+
+  metil_mesh->indices[10] = 6;
+  metil_mesh->indices[11] = 7;
+  metil_mesh->indices[12] = 8;
+  metil_mesh->indices[13] = 7;
+  metil_mesh->indices[14] = 6;
+
+  metil_mesh->indices[15] = 15;
+
+  metil_mesh->indices[16] = 9;
+  metil_mesh->indices[17] = 10;
+  metil_mesh->indices[18] = 11;
+  metil_mesh->indices[19] = 10;
+  metil_mesh->indices[20] = 9;
+
+  metil_mesh->indices[21] = 15;
+
+  metil_mesh->indices[22] = 12;
+  metil_mesh->indices[23] = 13;
+  metil_mesh->indices[24] = 14;
+  metil_mesh->indices[25] = 13;
+  metil_mesh->indices[26] = 12;
+
+  metil_mesh->indices[27] = 15;
+
+  metil_mesh->indices[28] = 16;
 
   metil_model_buffers_initialize(
     metil_model,
@@ -111,7 +207,7 @@ void example_model_scene_initialize(
     ].renderable
   );
 
-  struct metil_mesh* metil_mesh = (
+  metil_mesh = (
     &metil_object->mesh
   );
 
@@ -195,23 +291,16 @@ void example_model_scene_poll(
   );
 
   float shift = (
-    0.0005f *
+    0.0000625f *
     scene->time_delta
-  );
-
-  metil_model->rotation.x = (
-    metil_model->rotation.x +
-    shift
-  );
-
-  metil_model->rotation.y = (
-    metil_model->rotation.y +
-    shift
   );
 
   for (
     unsigned char index_object = 0;
-    index_object < metil_model->length_objects;
+    index_object < (
+      metil_model->length_objects -
+      1
+    );
     ++index_object
   ) {
     metil_object = (
@@ -243,7 +332,12 @@ void example_model_scene_poll(
   ) {
     metil_model->position.y = (
       metil_model->position.y +
-      shift 
+      shift * 8.0f
+    );
+
+    metil_model->rotation.x = (
+      metil_model->rotation.x +
+      shift
     );
 
     if (
@@ -254,6 +348,11 @@ void example_model_scene_poll(
   } else {
     metil_model->position.y = (
       metil_model->position.y -
+      shift * 8.0f
+    );
+
+    metil_model->rotation.x = (
+      metil_model->rotation.x -
       shift
     );
 
@@ -266,7 +365,7 @@ void example_model_scene_poll(
 
   shift = (
     shift *
-    2.0f
+    16.0f
   );
 
   metil_object = (
