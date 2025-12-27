@@ -191,15 +191,52 @@ void example_model_scene_poll(
   );
 
   struct metil_object* metil_object = (
-    scene->renderables[
-      1
-    ].renderable
+    (void*) 0
   );
 
   float shift = (
-    0.001f *
+    0.0005f *
     scene->time_delta
   );
+
+  metil_model->rotation.x = (
+    metil_model->rotation.x +
+    shift
+  );
+
+  metil_model->rotation.y = (
+    metil_model->rotation.y +
+    shift
+  );
+
+  for (
+    unsigned char index_object = 0;
+    index_object < metil_model->length_objects;
+    ++index_object
+  ) {
+    metil_object = (
+      &metil_model->objects[
+        index_object
+      ]
+    );
+
+    metil_object->rotation.x = (
+      metil_object->rotation.x +
+      shift * (
+        metil_model->length_objects -
+        index_object +
+        1
+      )
+    );
+
+    metil_object->rotation.y = (
+      metil_object->rotation.y +
+      shift * (
+        index_object +
+        1
+      )
+    );
+  }
 
   if (
     metil_model->data == 0
@@ -216,8 +253,8 @@ void example_model_scene_poll(
     }
   } else {
     metil_model->position.y = (
-      metil_model->position.y +
-      -shift 
+      metil_model->position.y -
+      shift
     );
 
     if (
@@ -226,6 +263,17 @@ void example_model_scene_poll(
       metil_model->data = 0;
     }
   }
+
+  shift = (
+    shift *
+    2.0f
+  );
+
+  metil_object = (
+    scene->renderables[
+      1
+    ].renderable
+  );
 
   metil_object->rotation.x = (
     metil_object->rotation.x +
@@ -245,7 +293,7 @@ void example_model_scene_poll(
 
   shift = (
     shift /
-    10.0f
+    20.0f
   );
 
   metil_renderer_data_object->color.x = (
