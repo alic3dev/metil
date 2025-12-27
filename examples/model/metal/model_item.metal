@@ -34,10 +34,15 @@ struct data_vertex {
     vertices[id_vertex]
   );
 
+  float offset = (
+    (float) id_vertex /
+    10.0f
+  );
+
   data_vertex.color = float4(
-    metal::fmod(data_object->color.x, 1.0f),
-    metal::fmod(data_object->color.y, 1.0f),
-    metal::fmod(data_object->color.z, 1.0f),
+    metal::fmod(data_object->color.x + offset, 1.0f),
+    metal::fmod(data_object->color.y + offset, 1.0f),
+    metal::fmod(data_object->color.z + offset, 1.0f),
     data_object->color.w
   );
 
