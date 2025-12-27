@@ -31,6 +31,18 @@ void example_model_renderer_on_initialize(
     @"model_vertex"
   );
 
+  example_model_pipeline_index_model_item = [
+    metil_renderer_interface->renderer
+    pipeline_add: [
+      metil_library.library
+      newFunctionWithName: @"model_item_fragment"
+    ]
+    function_vertex: [
+      metil_library.library
+      newFunctionWithName: @"model_item_vertex"
+    ]
+  ];
+
   example_model_scene_initialize(
     &metil_scene_controller.scene,
     metil_renderer_interface

@@ -26,6 +26,8 @@ void example_model_scene_initialize(
     2
   );
 
+  scene->player.position.z = 5.0f;
+
   metil_renderable_initialize_at_index(
     scene->renderables,
     0,
@@ -124,12 +126,38 @@ void example_model_scene_initialize(
     }
   );
 
-  metil_object->position.y = 15.0f;
+  metil_object->position.y = 12.5f;
   metil_object->position.z = 35.0f;
 
   metil_object_buffers_initialize(
     metil_object,
     scene->renderer_interface->metal_device
+  );
+
+  struct metil_renderer_data_object* metil_renderer_data_object = (
+    metil_object->buffers_vertex[
+      metil_object_buffer_default_index_data
+    ].buffer.contents
+  );
+
+  metil_renderer_data_object->color.x = (
+    0.0f
+  );
+
+  metil_renderer_data_object->color.y = (
+    1.0f / 3.0f
+  );
+
+  metil_renderer_data_object->color.z = (
+    2.0f / 3.0f
+  );
+
+  metil_renderer_data_object->color.w = (
+    1.0f
+  );
+  
+  metil_object->index_pipeline_render = (
+    example_model_pipeline_index_model_item
   );
 
   scene->destroy = example_model_scene_destroy;
@@ -156,6 +184,53 @@ void example_model_scene_poll(
 ) {
   metil_scene_poll_default(
     scene
+  );
+
+  struct metil_object* metil_object = (
+    scene->renderables[
+      1
+    ].renderable
+  );
+
+  float shift = (
+    0.001f *
+    scene->time_delta
+  );
+
+  metil_object->rotation.x = (
+    metil_object->rotation.x +
+    shift
+  );
+
+  metil_object->rotation.y = (
+    metil_object->rotation.y +
+    shift
+  );
+
+  struct metil_renderer_data_object* metil_renderer_data_object = (
+    metil_object->buffers_vertex[
+      metil_object_buffer_default_index_data
+    ].buffer.contents
+  );
+
+  shift = (
+    shift /
+    10.0f
+  );
+
+  metil_renderer_data_object->color.x = (
+    metil_renderer_data_object->color.x +
+    shift
+  );
+
+  metil_renderer_data_object->color.y = (
+    metil_renderer_data_object->color.y +
+    shift
+  );
+
+  metil_renderer_data_object->color.z = (
+    metil_renderer_data_object->color.z +
+    shift
   );
 }
 

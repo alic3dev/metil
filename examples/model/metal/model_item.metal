@@ -9,7 +9,7 @@ struct data_vertex {
   float4 color;
 };
 
-[[vertex]] struct data_vertex model_points_vertex(
+[[vertex]] struct data_vertex model_item_vertex(
   const device simd_float4* vertices [[
     buffer(
       metil_renderer_vertex_index_parameter_vertices
@@ -34,43 +34,17 @@ struct data_vertex {
     vertices[id_vertex]
   );
 
-  if (
-    id_vertex + 1 == data_object->vertex_held
-  ) {
-    data_vertex.color = float4(
-      0.0f,
-      0.0f,
-      1.0f,
-      1.0f
-    );
-
-    data_vertex.point_size = 2.0f;
-  } else if (
-    id_vertex + 1 == data_object->vertex_hovered
-  ) {
-    data_vertex.color = float4(
-      1.0f,
-      0.0f,
-      1.0f,
-      1.0f
-    );
-
-    data_vertex.point_size = 10.0f;
-  } else {
-    data_vertex.color = float4(
-      1.0f,
-      1.0f,
-      1.0f,
-      1.0f
-    );
-
-    data_vertex.point_size = 5.0f;
-  }
+  data_vertex.color = float4(
+    metal::fmod(data_object->color.x, 1.0f),
+    metal::fmod(data_object->color.y, 1.0f),
+    metal::fmod(data_object->color.z, 1.0f),
+    data_object->color.w
+  );
 
   return data_vertex;
 }
 
-[[fragment]] float4 model_points_fragment(
+[[fragment]] float4 model_item_fragment(
   struct data_vertex data_vertex [[stage_in]]
 ) {
   return data_vertex.color;
