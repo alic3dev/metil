@@ -2,9 +2,13 @@
 #define __metil_renderer_vertex_index_parameter_h
 
 enum metil_renderer_vertex_index_parameter {
-  metil_renderer_vertex_index_parameter_data_object = 0,
-  metil_renderer_vertex_index_parameter_data_frame = 1,
-  metil_renderer_vertex_index_parameter_positions = 2
+  metil_renderer_vertex_index_parameter_data_object = 2,
+  metil_renderer_vertex_index_parameter_data_frame = 0,
+  metil_renderer_vertex_index_parameter_vertices = 1
+};
+
+enum metil_renderer_fragment_index_parameter {
+  metil_renderer_fragment_index_parameter_data_frame = 0
 };
 
 #endif

@@ -60,7 +60,9 @@ void example_2d_scene_initialize(
     );
 
     struct metil_renderer_data_object* data_object = (
-      object->data.contents
+      object->buffers_vertex[
+        metil_object_buffer_default_index_data
+      ].buffer.contents
     );
 
     data_object->color.x = (
@@ -110,7 +112,9 @@ void example_2d_scene_poll(
       (struct metil_object*) scene->renderables[
         index_renderable
       ].renderable
-    )->data.contents;
+    )->buffers_vertex[
+      metil_object_buffer_default_index_data
+    ].buffer.contents;
 
     struct clic3_vector3_unsigned_int time_offset = {
       .x = scene->time + (index_renderable + 2) * 20,

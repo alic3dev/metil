@@ -12,12 +12,25 @@
 #include <Metal/MTLRenderCommandEncoder.h>
 #include <Metal/MTLResource.h>
 
+#include <stdlib.h>
+
 void metil_object_initialize(
   struct metil_object* metil_object
 ) {
-  metil_object->data = (void*)0;
+  metil_object->length_buffers_fragment = 0;
+  metil_object->length_buffers_vertex = 0;  
+
+  metil_object->buffers_fragment = malloc(
+    sizeof(struct metil_object_buffer) *
+    metil_object->length_buffers_fragment
+  );
+
+  metil_object->buffers_vertex = malloc(
+    sizeof(struct metil_object_buffer) *
+    metil_object->length_buffers_vertex
+  );
+
   metil_object->indices = (void*)0;
-  metil_object->vertices = (void*)0;
 
   metil_object->type_primitive = MTLPrimitiveTypeTriangle;
   metil_object->type_index = MTLIndexTypeUInt32;
@@ -46,16 +59,10 @@ void metil_object_initialize(
   metil_object->destroy = metil_object_destroy;
 }
 
-void metil_object_buffers_initialize_with_data_size(
+void metil_object_indices_initialize(
   struct metil_object* metil_object,
-  id<MTLDevice> metal_device,
-  unsigned long int size_data
+  id<MTLDevice> metal_device
 ) {
-  metil_object->data = [metal_device
-    newBufferWithLength: size_data
-    options: MTLResourceStorageModeShared
-  ];
-
   metil_object->indices = [metal_device
     newBufferWithBytes: metil_object->mesh.indices
     length: (
@@ -64,13 +71,50 @@ void metil_object_buffers_initialize_with_data_size(
     )
     options: MTLResourceStorageModeShared
   ];
+}
 
-  metil_object->vertices = [metal_device
+void metil_object_buffers_initialize_with_data_size(
+  struct metil_object* metil_object,
+  id<MTLDevice> metal_device,
+  unsigned long int size_data
+) {
+  metil_object_indices_initialize(
+    metil_object,
+    metal_device
+  );
+
+  unsigned char offset_buffer = (
+    metil_object->length_buffers_vertex
+  );
+
+  metil_object_buffers_add(
+    metil_object,
+    metal_device,
+    metil_object_buffer_type_vertex
+  );
+
+  metil_object_buffers_add(
+    metil_object,
+    metal_device,
+    metil_object_buffer_type_vertex
+  );
+
+  metil_object->buffers_vertex[
+    offset_buffer
+  ].buffer = [metal_device
     newBufferWithBytes: metil_object->mesh.vertices
     length: (
       metil_object->mesh.length_vertices *
       sizeof(struct clic3_vector4_float)
     )
+    options: MTLResourceStorageModeShared
+  ];
+
+  metil_object->buffers_vertex[
+    offset_buffer +
+    1
+  ].buffer = [metal_device
+    newBufferWithLength: size_data
     options: MTLResourceStorageModeShared
   ];
 }
@@ -83,6 +127,83 @@ void metil_object_buffers_initialize(
     metil_object,
     metal_device,
     sizeof(struct metil_renderer_data_object)
+  );
+}
+
+void metil_object_buffers_add(
+  struct metil_object* metil_object,
+  id<MTLDevice> metal_device,
+  enum metil_object_buffer_type metil_object_buffer_type
+) {
+  struct metil_object_buffer** buffers = (
+    (void*) 0
+  );
+
+  unsigned char* length_buffers = (
+    (void*) 0
+  );
+
+  switch (
+    metil_object_buffer_type
+  ) {
+    case metil_object_buffer_type_fragment: {
+      buffers = &(
+        metil_object->buffers_fragment
+      );
+
+      length_buffers = &(
+        metil_object->length_buffers_fragment
+      );
+      break;
+    }
+    case metil_object_buffer_type_vertex:
+    default: {
+      buffers = &(
+        metil_object->buffers_vertex
+      );
+
+      length_buffers = &(
+        metil_object->length_buffers_vertex
+      );
+
+      break;
+    }
+  }
+
+  unsigned char index_buffer = (
+    *length_buffers
+  );
+
+  *length_buffers = (
+    *length_buffers +
+    1
+  );
+
+  *buffers = realloc(
+    *buffers,
+    sizeof(
+      struct metil_object_buffer
+    ) *
+    *length_buffers
+  );
+
+  (*buffers)[
+    index_buffer
+  ].buffer = (
+    (void*) 0
+  );
+
+  (*buffers)[
+    index_buffer
+  ].index = (
+    index_buffer +
+    1
+  );
+
+  (*buffers)[
+    index_buffer
+  ].offset = (
+    0
   );
 }
 
@@ -113,7 +234,9 @@ void metil_object_poll(
   struct metil_camera* metil_camera
 ) {
   struct metil_renderer_data_object* data = (
-    metil_object->data.contents
+    metil_object->buffers_vertex[
+      metil_object_buffer_default_index_data
+    ].buffer.contents
   );
 
   data->position.x = metil_object->position.x;
@@ -140,22 +263,34 @@ void metil_object_destroy(
   struct metil_object* object
 ) {
   if (
-    object->data != (void*)0
-  ) {
-    [object->data release];
-  }
-
-  if (
     object->indices != (void*)0
   ) {
     [object->indices release];
   }
 
-  if (
-    object->vertices != (void*)0
+  for (
+    unsigned char index_buffer_fragment = 0;
+    index_buffer_fragment < object->length_buffers_fragment;
+    ++index_buffer_fragment
   ) {
-    [object->vertices release];
+    [object->buffers_fragment[index_buffer_fragment].buffer release];
   }
+
+  for (
+    unsigned char index_buffer_vertex = 0;
+    index_buffer_vertex < object->length_buffers_vertex;
+    ++index_buffer_vertex
+  ) {
+    [object->buffers_vertex[index_buffer_vertex].buffer release];
+  }
+
+  free(
+    object->buffers_fragment
+  );
+
+  free(
+    object->buffers_vertex
+  );
 
   free(
     object->textures
