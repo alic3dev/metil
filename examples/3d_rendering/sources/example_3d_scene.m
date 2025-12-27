@@ -73,7 +73,9 @@ void example_3d_scene_initialize(
     ) / 57.0f - 0.5f) * 1000.0f;
 
     struct metil_renderer_data_object* data_object = (
-      object->data.contents
+      object->buffers_vertex[
+        metil_object_buffer_default_index_data
+      ].buffer.contents
     );
 
     data_object->color.x = (
@@ -278,7 +280,9 @@ void example_3d_scene_initialize(
     );
 
     struct metil_renderer_data_object* data_object = (
-      object->data.contents
+      object->buffers_vertex[
+        metil_object_buffer_default_index_data
+      ].buffer.contents
     );
 
     data_object->color.x = (
@@ -339,10 +343,10 @@ void example_3d_scene_poll(
     }
 
     struct metil_renderer_data_object* data_object = (
-      object->data.contents
+      object->buffers_vertex[
+        metil_object_buffer_default_index_data
+      ].buffer.contents
     );
-
-
 
     data_object->color.x = (float) (index_renderable % 10) / 10.0f + color_shift;
     data_object->color.y = (float) ((index_renderable * 3) % 10) / 10.0f + color_shift;

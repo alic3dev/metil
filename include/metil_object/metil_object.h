@@ -2,6 +2,7 @@
 #define __metil_object_metil_object_h
 
 #include <metil_mesh/mesh.h>
+#include <metil_object/metil_object_buffer.h>
 #include <metil_positioning.h>
 #include <metil_rendering/camera/camera.h>
 
@@ -30,9 +31,13 @@ typedef void (*metil_object_destroy_function)(
 struct metil_object {
   struct metil_mesh mesh;
 
-  _Nonnull id<MTLBuffer> data;
+  struct metil_object_buffer* _Nonnull buffers_fragment;
+  struct metil_object_buffer* _Nonnull buffers_vertex;
+  
+  unsigned char length_buffers_vertex;
+  unsigned char length_buffers_fragment;
+
   _Nonnull id<MTLBuffer> indices;
-  _Nonnull id<MTLBuffer> vertices;
 
   MTLPrimitiveType type_primitive;
   MTLIndexType type_index;
@@ -57,6 +62,11 @@ void metil_object_initialize(
   struct metil_object* _Nonnull
 );
 
+void metil_object_indices_initialize(
+  struct metil_object* _Nonnull,
+  _Nonnull id<MTLDevice>
+);
+
 void metil_object_buffers_initialize_with_data_size(
   struct metil_object* _Nonnull,
   _Nonnull id<MTLDevice>,
@@ -66,6 +76,12 @@ void metil_object_buffers_initialize_with_data_size(
 void metil_object_buffers_initialize(
   struct metil_object* _Nonnull,
   _Nonnull id<MTLDevice>
+);
+
+void metil_object_buffers_add(
+  struct metil_object* _Nonnull,
+  _Nonnull id<MTLDevice>,
+  enum metil_object_buffer_type
 );
 
 void metil_object_texture_add(

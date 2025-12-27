@@ -250,7 +250,18 @@ void* metil_renderer_on_initialize_data = (void*)0;
     index_object_fps_display < metil_renderer_length_objects_fps_display;
     ++index_object_fps_display
   ) {
-    [self->objects_fps_display[index_object_fps_display].data release];
+    struct metil_object* metil_object = &(
+      self->objects_fps_display[
+        index_object_fps_display
+      ]
+    );
+
+    [
+      metil_object->buffers_vertex[
+        metil_object_buffer_default_index_data
+      ].buffer
+      release
+    ];
   }
 
   metil_rendering_properties_destory(
@@ -435,6 +446,22 @@ void* metil_renderer_on_initialize_data = (void*)0;
       ]
     );
 
+    metil_object_buffers_add(
+      &self->objects_fps_display[
+        index_object_fps_display
+      ],
+      self->metal_device,
+      metil_object_buffer_type_vertex
+    );
+
+    metil_object_buffers_add(
+      &self->objects_fps_display[
+        index_object_fps_display
+      ],
+      self->metal_device,
+      metil_object_buffer_type_vertex
+    );
+
     metil_object_texture_add(
       &self->objects_fps_display[
         index_object_fps_display
@@ -458,7 +485,9 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
     self->objects_fps_display[
       index_object_fps_display
-    ].data = [self->metal_device
+    ].buffers_vertex[
+      metil_object_buffer_default_index_data
+    ].buffer = [self->metal_device
       newBufferWithLength: sizeof(struct metil_renderer_data_object)
       options: MTLResourceStorageModeShared
     ];
@@ -469,9 +498,13 @@ void* metil_renderer_on_initialize_data = (void*)0;
       metil_renderer_pipelines_render_index_fps_display
     );
 
-    struct metil_renderer_data_object* data_object = self->objects_fps_display[
-      index_object_fps_display
-    ].data.contents;
+    struct metil_renderer_data_object* data_object = (
+      self->objects_fps_display[
+        index_object_fps_display
+      ].buffers_vertex[
+        metil_object_buffer_default_index_data
+      ].buffer.contents
+    );
   }
 }
 
@@ -879,9 +912,25 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
     self->objects_fps_display[
       index_object_fps_display
-    ].vertices = metil_text_characters_default.vertices[
-      char_array_fps[index_object_fps_display]
+    ].buffers_vertex[
+      metil_object_buffer_default_index_vertices
+    ].buffer = metil_text_characters_default.vertices[
+      char_array_fps[
+        index_object_fps_display
+      ]
     ];
+
+    self->objects_fps_display[
+      index_object_fps_display
+    ].buffers_vertex[
+      metil_object_buffer_default_index_vertices
+    ].offset = 0;
+
+    self->objects_fps_display[
+      index_object_fps_display
+    ].buffers_vertex[
+      metil_object_buffer_default_index_vertices
+    ].index = metil_object_buffer_default_index_data;
 
     self->objects_fps_display[
       index_object_fps_display
@@ -1000,12 +1049,14 @@ void* metil_renderer_on_initialize_data = (void*)0;
 }
 
 - (void) render_encode_draw:
-  (id<MTLBuffer>) vertices
+  (struct metil_object_buffer*) buffers_vertex
+  length_buffers_vertex: (unsigned int) length_buffers_vertex
+  buffers_fragment: (struct metil_object_buffer*) buffers_fragment
+  length_buffers_fragment: (unsigned int) length_buffers_fragment
   indices: (id<MTLBuffer>) indices
   length_indices: (unsigned int) length_indices
   textures: (id<MTLTexture>*) textures
   length_textures: (unsigned char) length_textures
-  data: (id<MTLBuffer>) data
   index_pipeline_render: (unsigned short int) index_pipeline_render
   depth_disabled: (unsigned char) depth_disabled
   type_primitive: (MTLPrimitiveType) type_primitive
@@ -1029,6 +1080,14 @@ void* metil_renderer_on_initialize_data = (void*)0;
     ];
   }
 
+  struct metil_object_buffer* buffer_vertex = (
+    (void*) 0
+  );
+
+  struct metil_object_buffer* buffer_fragment = (
+    (void*) 0
+  );
+
   [encoder_render
     setVertexBuffer: self->data_buffer_frame[
       self->index_data_buffer_frame
@@ -1036,6 +1095,50 @@ void* metil_renderer_on_initialize_data = (void*)0;
     offset: 0
     atIndex: metil_renderer_vertex_index_parameter_data_frame
   ];
+
+  for (
+    unsigned char index_buffer_vertex = 0;
+    index_buffer_vertex < length_buffers_vertex;
+    ++index_buffer_vertex
+  ) {
+    buffer_vertex = &(
+      buffers_vertex[
+        index_buffer_vertex
+      ]
+    );
+
+    [encoder_render
+      setVertexBuffer: buffer_vertex->buffer
+      offset: buffer_vertex->offset
+      atIndex: buffer_vertex->index
+    ];
+  }
+
+  [encoder_render
+    setFragmentBuffer: self->data_buffer_frame[
+      self->index_data_buffer_frame
+    ]
+    offset: 0
+    atIndex: metil_renderer_fragment_index_parameter_data_frame
+  ];
+
+  for (
+    unsigned char index_buffer_fragment = 0;
+    index_buffer_fragment < length_buffers_fragment;
+    ++index_buffer_fragment
+  ) {
+    buffer_fragment = &(
+      buffers_fragment[
+        index_buffer_fragment
+      ]
+    );
+
+    [encoder_render
+      setFragmentBuffer: buffer_fragment->buffer
+      offset: buffer_fragment->offset
+      atIndex: buffer_fragment->index
+    ];
+  }
 
   for (
     unsigned char index_texture = 0;
@@ -1051,18 +1154,6 @@ void* metil_renderer_on_initialize_data = (void*)0;
   }
 
   [encoder_render
-    setVertexBuffer: vertices
-    offset: 0
-    atIndex: metil_renderer_vertex_index_parameter_positions
-  ];
-
-  [encoder_render
-    setVertexBuffer: data
-    offset: 0
-    atIndex: metil_renderer_vertex_index_parameter_data_object
-  ];
-
-  [encoder_render
     drawIndexedPrimitives: type_primitive
     indexCount: length_indices
     indexType: type_index
@@ -1076,12 +1167,14 @@ void* metil_renderer_on_initialize_data = (void*)0;
     object->visible == 1
   ) {
     [self
-      render_encode_draw: object->vertices
+      render_encode_draw: object->buffers_vertex
+      length_buffers_vertex: object->length_buffers_vertex
+      buffers_fragment: object->buffers_fragment
+      length_buffers_fragment: object->length_buffers_fragment
       indices: object->indices
       length_indices: object->mesh.length_indices
       textures: object->textures
       length_textures: object->length_textures
-      data: object->data
       index_pipeline_render: object->index_pipeline_render
       depth_disabled: object->depth_disabled
       type_primitive: object->type_primitive
@@ -1095,12 +1188,14 @@ void* metil_renderer_on_initialize_data = (void*)0;
     object->visible == 1
   ) {
     [self
-      render_encode_draw: object->vertices
+      render_encode_draw: object->buffers_vertex
+      length_buffers_vertex: object->length_buffers_vertex
+      buffers_fragment: object->buffers_fragment
+      length_buffers_fragment: object->length_buffers_fragment
       indices: object->indices
       length_indices: object->mesh.length_indices
       textures: (void*)0
       length_textures: 0
-      data: object->data
       index_pipeline_render: metil_renderer_pipelines_render_index_wireframe
       depth_disabled: object->depth_disabled
       type_primitive: MTLPrimitiveTypeLineStrip

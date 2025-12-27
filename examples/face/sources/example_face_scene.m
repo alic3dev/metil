@@ -468,7 +468,9 @@ void example_face_scene_initialize(
   );
 
   struct example_face_renderer_data_object* data_object = (
-    object->data.contents
+    object->buffers_vertex[
+      metil_object_buffer_default_index_data
+    ].buffer.contents
   );
 
   data_object->vertex_hovered = 0;
@@ -495,9 +497,37 @@ void example_face_scene_initialize(
 
   object_points->index_pipeline_render = example_face_pipeline_index_face_points;
 
-  object_points->vertices = object->vertices;
   object_points->indices = object->indices;
-  object_points->data = object->data;
+
+  for (
+    unsigned char index_buffer_vertex = 0;
+    index_buffer_vertex < object->length_buffers_vertex;
+    ++index_buffer_vertex
+  ) {
+    metil_object_buffers_add(
+      object_points,
+      scene->renderer_interface->metal_device,
+      metil_object_buffer_type_vertex
+    );
+
+    object_points->buffers_vertex[
+      index_buffer_vertex
+    ].buffer = object->buffers_vertex[
+      index_buffer_vertex
+    ].buffer;
+
+    object_points->buffers_vertex[
+      index_buffer_vertex
+    ].index = object->buffers_vertex[
+      index_buffer_vertex
+    ].index;
+
+    object_points->buffers_vertex[
+      index_buffer_vertex
+    ].offset = object->buffers_vertex[
+      index_buffer_vertex
+    ].offset;
+  }
 
   scene->poll = example_face_scene_poll;
 }
@@ -514,11 +544,15 @@ void example_face_scene_poll(
   );
 
   struct example_face_renderer_data_object* data_object = (
-    object->data.contents
+    object->buffers_vertex[
+      metil_object_buffer_default_index_data
+    ].buffer.contents
   );
 
   struct clic3_vector4_float* vertices = (
-    object->vertices.contents
+    object->buffers_vertex[
+      metil_object_buffer_default_index_vertices
+    ].buffer.contents
   );
 
   data_object->vertex_hovered = 0;
@@ -633,9 +667,9 @@ void example_face_scene_destroy(
     ].renderable
   );
 
-  object_points->data = (void*) 0;
+  object_points->length_buffers_vertex = 0;
+
   object_points->indices = (void*) 0;
-  object_points->vertices = (void*) 0;
 
   metil_scene_destroy_default(
     scene

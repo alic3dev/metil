@@ -1,7 +1,8 @@
 #ifndef __metil_renderer_h
 #define __metil_renderer_h
 
-#include <metil_object.h>
+#include <metil_object/metil_object.h>
+#include <metil_object/metil_object_buffer.h>
 #include <metil_rendering/metil_renderer_interface.h>
 #include <metil_rendering/metil_renderer_thread_poll_object_data.h>
 #include <metil_rendering/rendering_properties.h>
@@ -112,12 +113,14 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 - (void) render_object: (nonnull struct metil_object*) object;
 - (void) render_object_wireframe: (nonnull struct metil_object*) object;
 - (void) render_encode_draw:
-  (nonnull id<MTLBuffer>) vertices
+  (struct metil_object_buffer* _Nonnull) buffers_vertex
+  length_buffers_vertex: (unsigned int) length_buffers_vertex
+  buffers_fragment: (struct metil_object_buffer* _Nonnull) buffers_fragment
+  length_buffers_fragment: (unsigned int) length_buffers_fragment
   indices: (nonnull id<MTLBuffer>) indices
   length_indices: (unsigned int) length_indices
   textures: (_Nonnull id<MTLTexture>* _Nullable) textures
   length_textures: (unsigned char) length_textures
-  data: (nonnull id<MTLBuffer>) data
   index_pipeline_render: (unsigned short int) index_pipeline_render
   depth_disabled: (unsigned char) depth_disabled
   type_primitive: (MTLPrimitiveType) type_primitive
