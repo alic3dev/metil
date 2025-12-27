@@ -17,6 +17,10 @@ void metil_renderable_allocate_group(
   struct metil_renderable* _Nonnull
 );
 
+void metil_renderable_allocate_model(
+  struct metil_renderable* _Nonnull
+);
+
 void metil_renderable_allocate_object(
   struct metil_renderable* _Nonnull
 );

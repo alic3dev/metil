@@ -1,13 +1,15 @@
+#include <example_model_renderer_data_object.h>
+
 #include <metil_rendering/metil_renderer_data_frame.h>
-#include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
 
 struct data_vertex {
   float4 position [[position]];
+  float point_size [[point_size]];
   float4 color;
 };
 
-[[vertex]] struct data_vertex shader_2d_vertex(
+[[vertex]] struct data_vertex model_points_vertex(
   const device simd_float4* vertices [[
     buffer(
       metil_renderer_vertex_index_parameter_vertices
@@ -18,7 +20,7 @@ struct data_vertex {
       metil_renderer_vertex_index_parameter_data_frame
     )
   ]],
-  constant struct metil_renderer_data_object* data_object [[
+  constant struct example_model_renderer_data_object* data_object [[
     buffer(
       metil_renderer_vertex_index_parameter_data_object
     )
@@ -29,22 +31,46 @@ struct data_vertex {
 
   data_vertex.position = (
     data_object->view_model_matrix_projection *
-    vertices[
-      id_vertex
-    ]
+    vertices[id_vertex]
   );
 
-  data_vertex.color = float4(
-    data_object->color.x,
-    data_object->color.y,
-    data_object->color.z,
-    data_object->color.w
-  );
+  if (
+    id_vertex + 1 == data_object->vertex_held
+  ) {
+    data_vertex.color = float4(
+      0.0f,
+      0.0f,
+      1.0f,
+      1.0f
+    );
+
+    data_vertex.point_size = 2.0f;
+  } else if (
+    id_vertex + 1 == data_object->vertex_hovered
+  ) {
+    data_vertex.color = float4(
+      1.0f,
+      0.0f,
+      1.0f,
+      1.0f
+    );
+
+    data_vertex.point_size = 10.0f;
+  } else {
+    data_vertex.color = float4(
+      1.0f,
+      1.0f,
+      1.0f,
+      1.0f
+    );
+
+    data_vertex.point_size = 5.0f;
+  }
 
   return data_vertex;
 }
 
-[[fragment]] float4 shader_2d_fragment(
+[[fragment]] float4 model_points_fragment(
   struct data_vertex data_vertex [[stage_in]]
 ) {
   return data_vertex.color;

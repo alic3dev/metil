@@ -9,7 +9,7 @@ struct data_vertex {
 };
 
 [[vertex]] struct data_vertex face_vertex(
-  const device simd_float4* positions [[
+  const device simd_float4* vertices [[
     buffer(
       metil_renderer_vertex_index_parameter_vertices
     )
@@ -30,11 +30,11 @@ struct data_vertex {
 
   data_vertex.position = (
     data_object->view_model_matrix_projection *
-    positions[id_vertex]
+    vertices[id_vertex]
   );
 
   float brightness = 1.0f - ((
-    positions[id_vertex].z +
+    vertices[id_vertex].z +
     0.2
   ) / 0.5f);
 
