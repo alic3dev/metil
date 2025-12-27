@@ -10,6 +10,7 @@
 #include <metil_input/keycodes.h>
 #include <metil_library.h>
 #include <metil_mesh/mesh.h>
+#include <metil_model/metil_model.h>
 #include <metil_object.h>
 #include <metil_positioning.h>
 #include <metil_rendering/camera/camera.h>
@@ -979,7 +980,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
       break;
     }
     case metil_renderable_type_object: {
-      struct metil_object* object = (
+      struct metil_object* metil_object = (
         metil_renderable->renderable
       );
 
@@ -987,7 +988,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
         self->rendering_properties.mode & metil_rendering_properties_mode_default
       ) {
         [self
-          render_object: object
+          render_object: metil_object
         ];
       }
 
@@ -995,7 +996,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
         self->rendering_properties.mode & metil_rendering_properties_mode_wireframe
       ) {
         [self
-          render_object_wireframe: object
+          render_object_wireframe: metil_object
         ];
       }
       break;
@@ -1004,6 +1005,37 @@ void* metil_renderer_on_initialize_data = (void*)0;
       break;
     }
     case metil_renderable_type_model: {
+      struct metil_model* metil_model = (
+        metil_renderable->renderable
+      );
+
+      for (
+        unsigned char index_object = 0;
+        index_object < metil_model->length_objects;
+        ++index_object
+      ) {
+        struct metil_object* metil_object = &(
+          metil_model->objects[
+            index_object
+          ]
+        );
+
+        if (
+          self->rendering_properties.mode & metil_rendering_properties_mode_default
+        ) {
+          [self
+            render_object: metil_object
+          ];
+        }
+
+        if (
+          self->rendering_properties.mode & metil_rendering_properties_mode_wireframe
+        ) {
+          [self
+            render_object_wireframe: metil_object
+          ];
+        }
+      }
       break;
     }
     default: {
@@ -1295,6 +1327,17 @@ void metil_renderer_poll_object(
       break;
     }
     case metil_renderable_type_model: {
+      struct metil_model* metil_model = (
+        metil_renderable->renderable
+      );
+
+      metil_model->poll(
+        metil_model,
+        metil_renderer_thread_poll_object_data->matrix_static_projection,
+        metil_renderer_thread_poll_object_data->matrix_object_projection,
+        metil_renderer_thread_poll_object_data->matrix_player_projection,
+        metil_renderer_thread_poll_object_data->camera
+      );
       break;
     }
     default: {

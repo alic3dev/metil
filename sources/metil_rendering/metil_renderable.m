@@ -1,6 +1,7 @@
 #include <metil_rendering/metil_renderable.h>
 
 #include <metil_group.h>
+#include <metil_model/metil_model.h>
 #include <metil_object.h>
 
 void metil_renderable_allocate_group(
@@ -19,6 +20,14 @@ void metil_renderable_allocate_object(
   );
 }
 
+void metil_renderable_allocate_model(
+  struct metil_renderable* renderable
+) {
+  renderable->renderable = malloc(
+    sizeof(struct metil_model)
+  );
+}
+
 void metil_renderable_allocate(
   struct metil_renderable* renderable,
   enum metil_renderable_type type
@@ -32,18 +41,24 @@ void metil_renderable_allocate(
       metil_renderable_allocate_group(
         renderable
       );
+
       break;
     }
     case metil_renderable_type_object: {
       metil_renderable_allocate_object(
         renderable
       );
+
       break;
     }
     case metil_renderable_type_menu: {
       break;
     }
     case metil_renderable_type_model: {
+      metil_renderable_allocate_model(
+        renderable
+      );
+
       break;
     }
     default: {
@@ -68,18 +83,24 @@ void metil_renderable_initialize(
       metil_group_initialize(
         renderable->renderable
       );
+
       break;
     }
     case metil_renderable_type_object: {
       metil_object_initialize(
         renderable->renderable
       );
+
       break;
     }
     case metil_renderable_type_menu: {
       break;
     }
     case metil_renderable_type_model: {
+      metil_model_initialize(
+        renderable->renderable
+      );
+
       break;
     }
     default: {
@@ -140,6 +161,13 @@ void metil_renderable_destroy(
       break;
     }
     case metil_renderable_type_model: {
+      struct metil_model* metil_model = (
+        renderable->renderable
+      );
+
+      metil_model->destroy(
+        metil_model
+      );
       break;
     }
     default: {
