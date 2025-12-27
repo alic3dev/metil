@@ -9,6 +9,18 @@
 #include <math.h>
 #include <simd/simd.h>
 
+const struct clic3_vector3_float metil_positioning_position_offset_none = {
+  .x = 0.0f,
+  .y = 0.0f,
+  .z = 0.0f
+};
+
+const struct clic3_vector3_float metil_positioning_rotation_offset_none = {
+  .x = 0.0f,
+  .y = 0.0f,
+  .z = 0.0f
+};
+
 void metil_positioning_view_model_matrix_projection_set(
   enum metil_positioning positioning,
   matrix_float4x4* view_model_matrix_projection,
@@ -19,6 +31,32 @@ void metil_positioning_view_model_matrix_projection_set(
   struct clic3_vector3_float* rotation,
   struct metil_camera* metil_camera
 ) {
+  metil_positioning_view_model_matrix_projection_with_offsets_set(
+    positioning,
+    view_model_matrix_projection,
+    matrix_projection_static,
+    matrix_object_projection,
+    matrix_player_projection,
+    position,
+    rotation,
+    (struct clic3_vector3_float*) &metil_positioning_position_offset_none,
+    (struct clic3_vector3_float*) &metil_positioning_rotation_offset_none,
+    metil_camera
+  );
+}
+
+void metil_positioning_view_model_matrix_projection_with_offsets_set(
+  enum metil_positioning positioning,
+  matrix_float4x4* view_model_matrix_projection,
+  matrix_float3x4* matrix_projection_static,
+  matrix_float4x4* matrix_object_projection,
+  matrix_float4x4* matrix_player_projection,
+  struct clic3_vector3_float* position,
+  struct clic3_vector3_float* rotation,
+  struct clic3_vector3_float* position_offset,
+  struct clic3_vector3_float* rotation_offset,
+  struct metil_camera* metil_camera
+) {
   if (
     positioning == metil_positioning_absolute
   ) {
@@ -26,7 +64,18 @@ void metil_positioning_view_model_matrix_projection_set(
       { 1.0f, 0.0f, 0.0f, 0.0f },
       { 0.0f, 1.0f, 0.0f, 0.0f },
       { 0.0f, 0.0f, 1.0f, 0.0f },
-      { position->x, position->y, position->z, 1.0f }
+      { (
+          position->x +
+          position_offset->x
+        ), (
+          position->y +
+          position_offset->y
+        ), (
+          position->z +
+          position_offset->z
+        ),
+        1.0f
+      }
     }};
   } else if (
     positioning == metil_positioning_static
@@ -35,21 +84,35 @@ void metil_positioning_view_model_matrix_projection_set(
       matrix_projection_static->columns[0],
       matrix_projection_static->columns[1],
       matrix_projection_static->columns[2],
-      { position->x, position->y, position->z, 1.0f }
+      { (
+          position->x +
+          position_offset->x
+        ), (
+          position->y +
+          position_offset->y
+        ), (
+          position->z +
+          position_offset->z
+        ),
+        1.0f
+      }
     }};
   } else {
     struct clic3_vector3_float position_translated = {
       .x = (
-        position->x -
+        position->x +
+        position_offset->x -
         metil_scene_controller.scene.player.position.x
       ),
       .y = (
-        position->y -
+        position->y +
+        position_offset->y -
         metil_scene_controller.scene.player.position.y -
         metil_camera->height
       ),
       .z = (
-        position->z -
+        position->z +
+        position_offset->z -
         metil_scene_controller.scene.player.position.z
       )
     };

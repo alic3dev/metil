@@ -50,6 +50,8 @@ struct metil_model {
 
   _Nonnull metil_model_destroy_function destroy;
   _Nonnull metil_model_poll_function poll;
+
+  void* _Nullable data;
 };
 
 void metil_model_initialize(
@@ -81,6 +83,14 @@ void metil_model_texture_add(
 
 void metil_model_poll(
   struct metil_model* _Nonnull,
+  matrix_float3x4* _Nonnull,
+  matrix_float4x4* _Nonnull,
+  matrix_float4x4* _Nonnull,
+  struct metil_camera* _Nonnull
+);
+
+void metil_model_object_poll(
+  struct metil_object* _Nonnull,
   matrix_float3x4* _Nonnull,
   matrix_float4x4* _Nonnull,
   matrix_float4x4* _Nonnull,

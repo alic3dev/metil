@@ -50,6 +50,8 @@ void example_model_scene_initialize(
     (void*) 0
   );
 
+  metil_model->data = 0;
+
   metil_model_objects_add_length(
     metil_model,
     17
@@ -64,10 +66,6 @@ void example_model_scene_initialize(
       metil_model->objects[
         index_object
       ]
-    );
-
-    metil_object_initialize(
-      metil_object
     );
 
     struct metil_mesh* metil_mesh = (
@@ -186,6 +184,12 @@ void example_model_scene_poll(
     scene
   );
 
+  struct metil_model* metil_model = (
+    scene->renderables[
+      0
+    ].renderable
+  );
+
   struct metil_object* metil_object = (
     scene->renderables[
       1
@@ -196,6 +200,32 @@ void example_model_scene_poll(
     0.001f *
     scene->time_delta
   );
+
+  if (
+    metil_model->data == 0
+  ) {
+    metil_model->position.y = (
+      metil_model->position.y +
+      shift 
+    );
+
+    if (
+      metil_model->position.y >= 1.0f
+    ) {
+      metil_model->data = (void*) 1;
+    }
+  } else {
+    metil_model->position.y = (
+      metil_model->position.y +
+      -shift 
+    );
+
+    if (
+      metil_model->position.y <= 0.0f
+    ) {
+      metil_model->data = 0;
+    }
+  }
 
   metil_object->rotation.x = (
     metil_object->rotation.x +
@@ -237,6 +267,14 @@ void example_model_scene_poll(
 void example_model_scene_destroy(
   struct metil_scene* scene
 ) {
+  struct metil_model* metil_model = (
+    scene->renderables[
+      0
+    ].renderable
+  );
+
+  metil_model->data = 0;
+
   metil_scene_destroy_default(
     scene
   );

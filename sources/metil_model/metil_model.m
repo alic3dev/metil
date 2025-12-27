@@ -2,6 +2,8 @@
 
 #include <metil_joint.h>
 #include <metil_model/metil_model_segment.h>
+#include <metil_positioning.h>
+#include <metil_rendering/metil_renderer_data_object.h>
 
 void metil_model_initialize(
   struct metil_model* metil_model
@@ -38,6 +40,10 @@ void metil_model_initialize(
 
   metil_model->destroy = metil_model_destroy;
   metil_model->poll = metil_model_poll;
+
+  metil_model->data = (
+    (void*) 0
+  );
 }
 
 void metil_model_objects_add(
@@ -63,6 +69,27 @@ void metil_model_objects_add_length(
     sizeof(struct metil_object) *
     metil_model->length_objects
   );
+
+  for (
+    unsigned char index_object = (
+      metil_model->length_objects -
+      length
+    );
+    index_object < metil_model->length_objects;
+    ++index_object
+  ) {
+    struct metil_object* metil_object = (
+      &metil_model->objects[
+        index_object
+      ]
+    );
+
+    metil_object_initialize(
+      metil_object
+    );
+
+    metil_object->poll = metil_model_object_poll;
+  }
 }
 
 void metil_model_joints_add(
@@ -111,7 +138,6 @@ void metil_model_texture_add(
 
 }
 
-
 void metil_model_poll(
   struct metil_model* metil_model,
   matrix_float3x4* matrix_projection_static,
@@ -130,6 +156,29 @@ void metil_model_poll(
       ]
     );
 
+    struct metil_renderer_data_object* data = (
+      metil_object->buffers_vertex[
+        metil_object_buffer_default_index_data
+      ].buffer.contents
+    );
+
+    data->position.x = metil_object->position.x;
+    data->position.y = metil_object->position.y;
+    data->position.z = metil_object->position.z;
+
+    metil_positioning_view_model_matrix_projection_with_offsets_set(
+      metil_object->positioning,
+      &data->view_model_matrix_projection,
+      matrix_projection_static,
+      matrix_object_projection,
+      matrix_player_projection,
+      &metil_object->position,
+      &metil_object->rotation,
+      &metil_model->position,
+      &metil_model->rotation,
+      metil_camera
+    );
+
     metil_object->poll(
       metil_object,
       matrix_projection_static,
@@ -140,6 +189,23 @@ void metil_model_poll(
   }
 }
 
+void metil_model_object_poll(
+  struct metil_object* metil_object,
+  matrix_float3x4* matrix_projection_static,
+  matrix_float4x4* matrix_object_projection,
+  matrix_float4x4* matrix_player_projection,
+  struct metil_camera* metil_camera
+) {
+  struct metil_renderer_data_object* data = (
+    metil_object->buffers_vertex[
+      metil_object_buffer_default_index_data
+    ].buffer.contents
+  );
+
+  data->size.x = metil_object->mesh.size.x;
+  data->size.y = metil_object->mesh.size.y;
+  data->size.z = metil_object->mesh.size.z;
+}
 
 void metil_model_destroy(
   struct metil_model* metil_model
@@ -170,6 +236,12 @@ void metil_model_destroy(
         index_joint
       ]
     );
+  }
+
+  if (
+    metil_model->data != (void*) 0
+  ) {
+    free(metil_model->data);
   }
 
   free(metil_model->joints);
