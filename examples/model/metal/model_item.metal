@@ -1,7 +1,6 @@
-#include <example_model_renderer_data_object.h>
-
 #include <metil_rendering/metil_renderer_data_frame.h>
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
+#include <metil_rendering/metil_renderer_data_object.h>
 
 struct data_vertex {
   float4 position [[position]];
@@ -20,7 +19,7 @@ struct data_vertex {
       metil_renderer_vertex_index_parameter_data_frame
     )
   ]],
-  constant struct example_model_renderer_data_object* data_object [[
+  constant struct metil_renderer_data_object* data_object [[
     buffer(
       metil_renderer_vertex_index_parameter_data_object
     )

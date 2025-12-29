@@ -5,6 +5,8 @@
 
 enum metil_object_buffer_default_index {
   metil_object_buffer_default_index_data = 1,
+  metil_object_buffer_default_index_joints = 3,
+  metil_object_buffer_default_index_vertex_joint_map = 2,
   metil_object_buffer_default_index_vertices = 0
 };
 

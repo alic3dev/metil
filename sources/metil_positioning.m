@@ -39,9 +39,11 @@ void metil_positioning_view_model_matrix_projection_set(
     matrix_player_projection,
     position,
     rotation,
-    (struct clic3_vector3_float*) &metil_positioning_position_offset_none,
-    (struct clic3_vector3_float*) &metil_positioning_rotation_offset_none,
-    metil_camera
+    (void*) 0,
+    (void*) 0,
+    metil_camera,
+    (void*) 0,
+    (void*) 0
   );
 }
 
@@ -55,66 +57,113 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
   struct clic3_vector3_float* rotation,
   struct clic3_vector3_float* position_offset,
   struct clic3_vector3_float* rotation_offset,
-  struct metil_camera* metil_camera
+  struct metil_camera* metil_camera,
+  matrix_float4x4* matrix_projection_object_offset_with_rotation_destination,
+  matrix_float4x4* matrix_projection_object_with_rotation_destination
 ) {
   if (
     positioning == metil_positioning_absolute
   ) {
-    *view_model_matrix_projection = (matrix_float4x4) {{
-      { 1.0f, 0.0f, 0.0f, 0.0f },
-      { 0.0f, 1.0f, 0.0f, 0.0f },
-      { 0.0f, 0.0f, 1.0f, 0.0f },
-      { (
-          position->x +
-          position_offset->x
-        ), (
-          position->y +
-          position_offset->y
-        ), (
-          position->z +
-          position_offset->z
-        ),
-        1.0f
-      }
-    }};
+    if (
+      position_offset != (void*) 0
+    ) {
+      *view_model_matrix_projection = (matrix_float4x4) {{
+        { 1.0f, 0.0f, 0.0f, 0.0f },
+        { 0.0f, 1.0f, 0.0f, 0.0f },
+        { 0.0f, 0.0f, 1.0f, 0.0f },
+        { (
+            position->x +
+            position_offset->x
+          ), (
+            position->y +
+            position_offset->y
+          ), (
+            position->z +
+            position_offset->z
+          ),
+          1.0f
+        }
+      }};
+    } else {
+      *view_model_matrix_projection = (matrix_float4x4) {{
+        { 1.0f, 0.0f, 0.0f, 0.0f },
+        { 0.0f, 1.0f, 0.0f, 0.0f },
+        { 0.0f, 0.0f, 1.0f, 0.0f },
+        {
+          position->x,
+          position->y,
+          position->z,
+          1.0f
+        }
+      }};
+    }
   } else if (
     positioning == metil_positioning_static
   ) {
-    *view_model_matrix_projection = (matrix_float4x4) {{
-      matrix_projection_static->columns[0],
-      matrix_projection_static->columns[1],
-      matrix_projection_static->columns[2],
-      { (
-          position->x +
-          position_offset->x
-        ), (
-          position->y +
-          position_offset->y
-        ), (
-          position->z +
-          position_offset->z
-        ),
-        1.0f
-      }
-    }};
+    if (
+      position_offset != (void*) 0
+    ) {
+      *view_model_matrix_projection = (matrix_float4x4) {{
+        matrix_projection_static->columns[0],
+        matrix_projection_static->columns[1],
+        matrix_projection_static->columns[2],
+        { (
+            position->x +
+            position_offset->x
+          ), (
+            position->y +
+            position_offset->y
+          ), (
+            position->z +
+            position_offset->z
+          ),
+          1.0f
+        }
+      }};
+    } else {
+      *view_model_matrix_projection = (matrix_float4x4) {{
+        matrix_projection_static->columns[0],
+        matrix_projection_static->columns[1],
+        matrix_projection_static->columns[2],
+        {
+          position->x,
+          position->y,
+          position->z,
+          1.0f
+        }
+      }};
+    }
   } else {
-    struct clic3_vector3_float position_translated = {
-      .x = (
+    struct clic3_vector3_float position_translated;
+
+    if (
+      position_offset != (void*) 0
+    ) {
+      position_translated.x = (
         position_offset->x -
         metil_scene_controller.scene.player.position.x
-      ),
-      .y = (
+      );
+
+      position_translated.y = (
         position_offset->y -
         metil_scene_controller.scene.player.position.y -
         metil_camera->height
-      ),
-      .z = (
+      );
+
+      position_translated.z = (
         position_offset->z -
         metil_scene_controller.scene.player.position.z
-      )
-    };
+      );
+    } else {
+      position_translated.x = -metil_scene_controller.scene.player.position.x;
+      position_translated.y = (
+        -metil_scene_controller.scene.player.position.y -
+        metil_camera->height
+      );
+      position_translated.z = -metil_scene_controller.scene.player.position.z;
+    }
 
-    matrix_float4x4* matrix_projection = (void*)0;
+    matrix_float4x4* matrix_projection = (void*) 0;
 
     if (
       positioning == metil_positioning_player
@@ -133,7 +182,7 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
           position->x,
           position->y,
           position->z,
-          1
+          1.0f
         }
       }},
       (matrix_float4x4) {{
@@ -164,54 +213,87 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
       }}
     );
 
-    matrix_float4x4 matrix_projection_object_offset_with_rotation = matrix_multiply(
-      (matrix_float4x4) {{
-        { 1.0f, 0.0f, 0.0f, 0.0f },
-        { 0.0f, 1.0f, 0.0f, 0.0f },
-        { 0.0f, 0.0f, 1.0f, 0.0f },
-        {
-          position_translated.x,
-          position_translated.y,
-          position_translated.z,
-          1
-        }
-      }},
-      (matrix_float4x4) {{
-        { cos(rotation_offset->y), 0.0f, -sin(rotation_offset->y), 0.0f },
-        { 0.0f, 1.0f, 0.0f, 0.0f },
-        { sin(rotation_offset->y), 0.0f, cos(rotation_offset->y), 0.0f },
-        { 0.0f, 0.0f, 0.0f, 1.0f }
-      }}
-    );
+    matrix_float4x4 matrix_projection_object_offset_with_rotation = {{
+      { 1.0f, 0.0f, 0.0f, 0.0f },
+      { 0.0f, 1.0f, 0.0f, 0.0f },
+      { 0.0f, 0.0f, 1.0f, 0.0f },
+      {
+        position_translated.x,
+        position_translated.y,
+        position_translated.z,
+        1.0f
+      }
+    }};
 
-    matrix_projection_object_offset_with_rotation = matrix_multiply(
-      matrix_projection_object_offset_with_rotation,
-      (matrix_float4x4) {{
-        { 1.0f, 0.0f, 0.0f, 0.0f },
-        { 0.0f, cos(rotation_offset->x), -sin(rotation_offset->x), 0.0f },
-        { 0.0f, sin(rotation_offset->x), cos(rotation_offset->x), 0.0f },
-        { 0.0f, 0.0f, 0.0f, 1.0f }
-      }}
-    );
+    if (
+      rotation_offset != (void*)0
+    ) {
+      matrix_projection_object_offset_with_rotation = matrix_multiply(
+        matrix_projection_object_offset_with_rotation,
+        (matrix_float4x4) {{
+          { cos(rotation_offset->y), 0.0f, -sin(rotation_offset->y), 0.0f },
+          { 0.0f, 1.0f, 0.0f, 0.0f },
+          { sin(rotation_offset->y), 0.0f, cos(rotation_offset->y), 0.0f },
+          { 0.0f, 0.0f, 0.0f, 1.0f }
+        }}
+      );
 
-    matrix_projection_object_offset_with_rotation = matrix_multiply(
-      matrix_projection_object_offset_with_rotation,
-      (matrix_float4x4) {{
-        { cos(rotation_offset->z), -sin(rotation_offset->z), 0.0f, 0.0f },
-        { sin(rotation_offset->z), cos(rotation_offset->z), 0.0f, 0.0f },
-        { 0.0f, 0.0f, 1.0f, 0.0f },
-        { 0.0f, 0.0f, 0.0f, 1.0f }
-      }}
-    );
+      matrix_projection_object_offset_with_rotation = matrix_multiply(
+        matrix_projection_object_offset_with_rotation,
+        (matrix_float4x4) {{
+          { 1.0f, 0.0f, 0.0f, 0.0f },
+          { 0.0f, cos(rotation_offset->x), -sin(rotation_offset->x), 0.0f },
+          { 0.0f, sin(rotation_offset->x), cos(rotation_offset->x), 0.0f },
+          { 0.0f, 0.0f, 0.0f, 1.0f }
+        }}
+      );
 
-    *view_model_matrix_projection = matrix_multiply(
-      matrix_projection_object_offset_with_rotation,
-      matrix_projection_object_with_rotation
-    );
+      matrix_projection_object_offset_with_rotation = matrix_multiply(
+        matrix_projection_object_offset_with_rotation,
+        (matrix_float4x4) {{
+          { cos(rotation_offset->z), -sin(rotation_offset->z), 0.0f, 0.0f },
+          { sin(rotation_offset->z), cos(rotation_offset->z), 0.0f, 0.0f },
+          { 0.0f, 0.0f, 1.0f, 0.0f },
+          { 0.0f, 0.0f, 0.0f, 1.0f }
+        }}
+      );
 
-    *view_model_matrix_projection = matrix_multiply(
-      *matrix_projection,
-      *view_model_matrix_projection
-    );
+      if (
+        matrix_projection_object_offset_with_rotation_destination != (void*) 0 &&
+        matrix_projection_object_with_rotation_destination != (void*) 0
+      ) {
+        *matrix_projection_object_offset_with_rotation_destination = (
+          matrix_projection_object_offset_with_rotation
+        );
+
+        *matrix_projection_object_with_rotation_destination = (
+          matrix_projection_object_with_rotation
+        );
+
+        *view_model_matrix_projection = (
+          *matrix_projection
+        );
+      } else {
+        *view_model_matrix_projection = matrix_multiply(
+          matrix_projection_object_offset_with_rotation,
+          matrix_projection_object_with_rotation
+        );
+
+        *view_model_matrix_projection = matrix_multiply(
+          *matrix_projection,
+          *view_model_matrix_projection
+        );
+      }
+    } else {
+      *view_model_matrix_projection = matrix_multiply(
+        matrix_projection_object_offset_with_rotation,
+        matrix_projection_object_with_rotation
+      );
+
+      *view_model_matrix_projection = matrix_multiply(
+        *matrix_projection,
+        *view_model_matrix_projection
+      );
+    }
   }
 }
