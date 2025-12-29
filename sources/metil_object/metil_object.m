@@ -104,8 +104,8 @@ void metil_object_buffers_initialize_with_data_size(
   ].buffer = [metal_device
     newBufferWithBytes: metil_object->mesh.vertices
     length: (
-      metil_object->mesh.length_vertices *
-      sizeof(struct clic3_vector4_float)
+      sizeof(struct clic3_vector4_float) *
+      metil_object->mesh.length_vertices
     )
     options: MTLResourceStorageModeShared
   ];
@@ -154,6 +154,7 @@ void metil_object_buffers_add(
       length_buffers = &(
         metil_object->length_buffers_fragment
       );
+
       break;
     }
     case metil_object_buffer_type_vertex:

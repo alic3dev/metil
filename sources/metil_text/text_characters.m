@@ -93,7 +93,7 @@ void metil_text_characters_initialize(
       sizeof(unsigned int) *
       metil_text_characters_default.meshes[0].length_indices
     )
-    options: MTLResourceStorageModePrivate
+    options: MTLResourceStorageModeShared
   ];
 }
 

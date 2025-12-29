@@ -1,7 +1,6 @@
 #include <example_model_scene.h>
 
 #include <example_model_pipeline_index.h>
-#include <example_model_renderer_data_object.h>
 
 #include <metil_application/metil_renderer_size.h>
 #include <metil_mesh/mesh.h>
@@ -94,7 +93,22 @@ void example_model_scene_initialize(
       index_object < 15
     ) {
       metil_object->position.x =  -20.0f + (7.5f * (index_object / 3));
-      metil_object->position.z = 55.0f + (15.0f * (index_object % 3));
+
+      if (
+        index_object < 6
+      ) {
+        metil_object->position.z = 55.0f + (15.0f * (index_object % 3));
+      } else if (
+        index_object < 9
+      ) {
+        metil_object->position.z = 60.0f + (16.0f * (index_object % 3));
+      } else if (
+        index_object < 12
+      ) {
+        metil_object->position.z = 53.0f + (14.0f * (index_object % 3));
+      } else {
+        metil_object->position.z = 50.0f + (10.0f * (index_object % 3));
+      } 
     } else if (
       index_object == 15
     ) {
@@ -196,6 +210,128 @@ void example_model_scene_initialize(
 
   metil_mesh->indices[28] = 16;
 
+  metil_model_joints_add_length(
+    metil_model,
+    16
+  );
+
+  struct metil_joint* metil_joint;
+
+  metil_model_vertex_joint_maps_initialize(
+    metil_model
+  );
+
+  for (
+    unsigned char index_object = 0;
+    index_object < 15;
+    ++index_object
+  ) {
+    metil_object = &(
+      metil_model->objects[
+        index_object
+      ]
+    );
+
+    unsigned int index_joint = (
+      index_object +
+      1
+    );
+
+    if (
+      index_object % 3 == 0
+    ) {
+      metil_joint_attach(
+        &(
+          metil_model->joints[
+            0
+          ]
+        ),
+        &(
+          metil_model->joints[
+            index_joint
+          ]
+        )
+      );
+
+      metil_joint_attach(
+        &(
+          metil_model->joints[
+            index_joint
+          ]
+        ),
+        &(
+          metil_model->joints[
+            index_joint + 1
+          ]
+        )
+      );
+
+      metil_joint_attach(
+        &(
+          metil_model->joints[
+            index_joint + 1
+          ]
+        ),
+        &(
+          metil_model->joints[
+            index_joint + 2
+          ]
+        )
+      );
+    }
+
+    for (
+      unsigned int index_vertex = 0;
+      index_vertex < metil_object->mesh.length_vertices;
+      ++index_vertex
+    ) {
+      metil_model_vertex_joint_attach(
+        metil_model,
+        index_object,
+        index_vertex,
+        index_joint
+      );
+    }
+
+    metil_model_vertex_joint_attach(
+      metil_model, (
+        metil_model->length_objects -
+        1
+      ),
+      index_object,
+      index_joint
+    );
+  }
+
+  for (
+    unsigned char index_joint = 1;
+    index_joint < metil_model->length_joints;
+    ++index_joint
+  ) {
+    metil_joint = &(
+      metil_model->joints[
+        index_joint
+      ]
+    );
+
+    metil_object = &(
+      metil_model->objects[
+        index_joint -
+        1
+      ]
+    );
+
+    metil_joint->position.x = metil_object->position.x;
+    metil_joint->position.z = (
+      metil_object->position.z -
+      2.5f - (
+        ((index_joint - 1) % 3) == 0
+        ? 5.0f
+        : 0.0f
+      )
+    );
+  }
+
   metil_model_buffers_initialize(
     metil_model,
     scene->renderer_interface->metal_device
@@ -286,6 +422,134 @@ void example_model_scene_poll(
     ].renderable
   );
 
+  for (
+    unsigned char index_joint = 1;
+    index_joint < metil_model->length_joints;
+    ++index_joint
+  ) {
+    if (
+      index_joint == 1
+    ) {
+      if (
+        (long int) metil_model->data < 4
+      ) {
+        metil_model->joints[index_joint].translation.y = (
+          metil_model->joints[index_joint].translation.y +
+          0.001f
+        );
+      } else {
+        metil_model->joints[index_joint].translation.y = (
+          metil_model->joints[index_joint].translation.y -
+          0.001f
+        );
+      }
+    }
+
+    if (
+      index_joint < 4
+    ) {
+      if (
+        (long int) metil_model->data < 4
+      ) {
+        metil_model->joints[index_joint].rotation.x = (
+          metil_model->joints[index_joint].rotation.x - (
+            (index_joint - 1) % 3 == 0 
+            ? 0.001f
+            : (index_joint - 1) % 3 == 1
+            ? 0.0025f
+            :0.001f
+          ) / 2.3f
+        );
+
+        metil_model->joints[index_joint].rotation.y = (
+          metil_model->joints[index_joint].rotation.y - (
+            (index_joint - 1) % 3 == 0 
+            ? 0.001f
+            : (index_joint - 1) % 3 == 1
+            ? 0.0025f
+            :0.001f
+          ) / 2.3f
+        );
+      } else {
+        metil_model->joints[index_joint].rotation.x = (
+          metil_model->joints[index_joint].rotation.x + (
+            (index_joint - 1) % 3 == 0 
+            ? 0.001f
+            : (index_joint - 1) % 3 == 1
+            ? 0.0025f
+            : 0.001f
+          ) / 2.3f
+        );
+
+        metil_model->joints[index_joint].rotation.y = (
+          metil_model->joints[index_joint].rotation.y + (
+            (index_joint - 1) % 3 == 0 
+            ? 0.001f
+            : (index_joint - 1) % 3 == 1
+            ? 0.0025f
+            : 0.001f
+          ) / 2.3f
+        );
+      }
+    } else {
+      if (
+        (long int) metil_model->data < 4
+      ) {
+        metil_model->joints[index_joint].rotation.x = (
+          metil_model->joints[index_joint].rotation.x - (
+            (index_joint - 1) % 3 == 0 
+            ? 0.001f
+            : (index_joint - 1) % 3 == 1
+            ? 0.0025f
+            :0.0012f
+          ) * (
+            (
+              (
+                index_joint -
+                1
+              ) %
+              3
+            ) +
+            2
+          ) /
+          2.0f
+        );
+      } else {
+        metil_model->joints[index_joint].rotation.x = (
+          metil_model->joints[index_joint].rotation.x + (
+            (index_joint - 1) % 3 == 0 
+            ? 0.001f
+            : (index_joint - 1) % 3 == 1
+            ? 0.0025f
+            : 0.00125f
+          ) * (
+            (
+              (
+                index_joint -
+                1
+              ) %
+              3
+            ) +
+            2
+          ) /
+          2.0f
+        );
+      }
+    }
+  }
+
+  for (
+    unsigned char index_joint = 1;
+    index_joint < metil_model->length_joints;
+    index_joint += 3
+  ) {
+    metil_joint_propagate(
+      &metil_model->joints[
+        index_joint
+      ]
+    );
+  }
+
   struct metil_object* metil_object = (
     (void*) 0
   );
@@ -295,40 +559,8 @@ void example_model_scene_poll(
     scene->time_delta
   );
 
-  for (
-    unsigned char index_object = 0;
-    index_object < (
-      metil_model->length_objects -
-      1
-    );
-    ++index_object
-  ) {
-    metil_object = (
-      &metil_model->objects[
-        index_object
-      ]
-    );
-
-    metil_object->rotation.x = (
-      metil_object->rotation.x +
-      shift * (
-        metil_model->length_objects -
-        index_object +
-        1
-      )
-    );
-
-    metil_object->rotation.y = (
-      metil_object->rotation.y +
-      shift * (
-        index_object +
-        1
-      )
-    );
-  }
-
   if (
-    metil_model->data == 0
+    (long int) metil_model->data % 2 == 0
   ) {
     metil_model->position.y = (
       metil_model->position.y +
@@ -343,7 +575,7 @@ void example_model_scene_poll(
     if (
       metil_model->position.y >= 1.0f
     ) {
-      metil_model->data = (void*) 1;
+      metil_model->data = (void*) ((long int) metil_model->data + 1);
     }
   } else {
     metil_model->position.y = (
@@ -359,7 +591,7 @@ void example_model_scene_poll(
     if (
       metil_model->position.y <= 0.0f
     ) {
-      metil_model->data = 0;
+      metil_model->data = (void*) (((long int) metil_model->data + 1) % 8);
     }
   }
 

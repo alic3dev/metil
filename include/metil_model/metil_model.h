@@ -2,7 +2,6 @@
 #define __metil_model_metil_model_h
 
 #include <metil_joint.h>
-#include <metil_model/metil_model_segment.h>
 #include <metil_mesh/mesh.h>
 #include <metil_object.h>
 #include <metil_positioning.h>
@@ -33,10 +32,13 @@ typedef void (*metil_model_destroy_function)(
 
 struct metil_model {
   struct metil_object* _Nonnull objects;
+  unsigned int* _Nullable * _Nonnull vertex_joint_maps;
   unsigned char length_objects;
 
   struct metil_joint* _Nonnull joints;
   unsigned char length_joints;
+
+  _Nonnull id<MTLBuffer> buffer_joints;
   
   _Nonnull id<MTLTexture>* _Nonnull textures;
   unsigned char length_textures;
@@ -71,6 +73,22 @@ void metil_model_joints_add(
   struct metil_model* _Nonnull
 );
 
+void metil_model_joints_add_length(
+  struct metil_model* _Nonnull,
+  unsigned char
+);
+
+void metil_model_vertex_joint_maps_initialize(
+  struct metil_model* _Nonnull
+);
+
+void metil_model_vertex_joint_attach(
+  struct metil_model* _Nonnull,
+  unsigned char,
+  unsigned int,
+  unsigned char
+);
+
 void metil_model_buffers_initialize(
   struct metil_model* _Nonnull,
   _Nonnull id<MTLDevice>
@@ -87,6 +105,10 @@ void metil_model_poll(
   matrix_float4x4* _Nonnull,
   matrix_float4x4* _Nonnull,
   struct metil_camera* _Nonnull
+);
+
+void metil_model_buffer_joints_poll(
+  struct metil_model* _Nonnull
 );
 
 void metil_model_object_poll(
