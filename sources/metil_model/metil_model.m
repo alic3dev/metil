@@ -1,7 +1,7 @@
 #include <metil_model/metil_model.h>
 
 #include <metil_joint/metil_joint.h>
-#include <metil_joint/metil_joint_id.h>
+#include <metil_joint/metil_joint_id_offset.h>
 #include <metil_positioning.h>
 #include <metil_rendering/metil_renderer_data_model_object.h>
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
