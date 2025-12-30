@@ -1,5 +1,5 @@
-#ifndef __metil_joint_h
-#define __metil_joint_h
+#ifndef __metil_joint_metil_joint_h
+#define __metil_joint_metil_joint_h
 
 #include <clic3_vector.h>
 

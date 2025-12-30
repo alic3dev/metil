@@ -1,5 +1,5 @@
-#ifndef __metil_joint_id_offset_h
-#define __metil_joint_id_offset_h
+#ifndef __metil_joint_metil_joint_id_offset_h
+#define __metil_joint_metil_joint_id_offset_h
 
 #define metil_joint_id_offset_length 3
 
