@@ -95,7 +95,9 @@ otherwise individual header files can be included as such
 
 ### intialization
 
-- `metil_initialize`: must be called within your `main` function and it's value returned as the exit status code.
+- [macos] `metil_initialize`: must be called within your `main` function and it's value returned as the exit status code.
+- [ios] `metil_initialize`: must be called after `UIApplicationMain` and before `metil_renderer` initialization 
+- - `metil_view_controller`: `viewDidLoad` is a spot in between these two that can be tapped into using `metil_view_controller_on_view_did_load`
 - `metil_library`: must be initialized within the `metil_renderer_on_initialize_function` passed to `metil_initialize` (`metil_library_initialize` is provided to simplify this)
 - - `metil_library.library`: must be set to an instance of a `metal` library (`id<MTLLibrary>`)
 - - `metil_library.function_vertex`: must be set to an instance of a `metal` vertex function (`id<MTLFunction>`)
@@ -104,6 +106,9 @@ otherwise individual header files can be included as such
 - - `metil_library.function_vertex_fps_display`: optional | required for usage of built in `fps_display`
 - - `metil_library.function_fragment_wireframe`: optional | required for usage of built in `wireframe` rendering mode
 - - `metil_library.function_vertex_wireframe`: optional | required for usage of built in `wireframe` rendering mode
+
+
+#### macos
 
 ```obj-c
 #include <metil_initialize.h>
@@ -118,11 +123,11 @@ int main(
     length_parameters,
     parameters,
     "example_initialization",
-    example_initialization_renderer_on_initialize
+    renderer_on_initialize
   );
 }
 
-void example_initialization_renderer_on_initialize(
+void renderer_on_initialize(
   struct metil_renderer_interface* metil_renderer_interface,
   void* data
 ) {
@@ -136,6 +141,72 @@ void example_initialization_renderer_on_initialize(
     - set: rendering_properties
     - initialize: scene
     - set: on scene change
+    - etc...
+  */
+}
+```
+
+#### ios
+
+ios requires `metil` to be initialized after `UIApplicationMain` is called.
+using the global `metil_view_controller_on_view_did_load` you can initialize `metil` from the earliest available entry point within `metil_view_controller` at `viewDidLoad`
+
+```obj-c
+#include <metil_application/metil_application.h>
+#include <metil_application/metil_application_delegate.h>
+#include <metil_application/metil_view_controller.h>
+#include <metil_initialize.h>
+#include <metil_library.h>
+#include <metil_rendering/metil_renderer_interface.h>
+
+#import <UIKit/UIKit.h>
+
+char* executable_path;
+
+int main(
+  int length_parameters,
+  char** parameters
+) {
+  executable_path = (
+    parameters[0]
+  );
+
+  metil_view_controller_on_view_did_load = (
+    view_controller_on_view_did_load
+  );
+
+  return UIApplicationMain(
+    length_parameters,
+    parameters,
+    NSStringFromClass([metil_application class]),
+    NSStringFromClass([metil_application_delegate class])
+  );
+}
+
+void view_controller_on_view_did_load() {
+  metil_initialize(
+    1,
+    &executable_path,
+    "example_initialization",
+    renderer_on_initialize
+  );
+}
+
+void renderer_on_initialize(
+  struct metil_renderer_interface* metil_renderer_interface,
+  void* data
+) {
+  metil_library_initialize(
+    metil_renderer_interface->metal_device,
+    @"example_initialization_fragment",
+    @"example_initialization_vertex"
+  );
+
+  /*
+    - set: rendering_properties
+    - initialize: scene
+    - set: on scene change
+    - etc...
   */
 }
 ```

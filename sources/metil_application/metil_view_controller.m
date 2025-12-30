@@ -1,7 +1,10 @@
 #include <metil_application/metil_view_controller.h>
 
+#include <metil_application/metil_application.h>
 #include <metil_application/metil_view.h>
 #include <metil_rendering/metil_renderer.h>
+
+metil_view_controller_on_view_did_load_function metil_view_controller_on_view_did_load = (void*) 0;
 
 @implementation metil_view_controller {
   metil_view* view;
@@ -11,12 +14,39 @@
 - (void) viewDidLoad {
   [super viewDidLoad];
 
-  view = (metil_view*) self.view;
-  view.device = MTLCreateSystemDefaultDevice();
+  if (
+    metil_view_controller_on_view_did_load != (void*) 0
+  ) {
+    metil_view_controller_on_view_did_load();
+  }
+
+  metil_application* metil_application_shared = (
+    (metil_application*) [
+      metil_application
+      sharedApplication
+    ]
+  );
+
+  self->metil = (
+    metil_application_shared->metil
+  );
+
+  view = (
+    (metil_view*) self.view
+  );
+
+  view->metil = (
+    self->metil
+  );
+
+  view.device = (
+    MTLCreateSystemDefaultDevice()
+  );
 
   renderer = [
     [metil_renderer alloc]
-    initWithMetalKitView: view
+    metil_renderer_initialize: view
+    metil: self->metil
   ];
 
   [renderer

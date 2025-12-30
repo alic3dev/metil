@@ -5,7 +5,6 @@
 #include <clic3_vector.h>
 
 #include <stdlib.h>
-#include <stdio.h>
 
 void metil_mesh_text_initialize(
   struct metil_mesh* mesh,

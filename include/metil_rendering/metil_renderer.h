@@ -1,11 +1,13 @@
 #ifndef __metil_renderer_h
 #define __metil_renderer_h
 
+#include <metil.h>
 #include <metil_object/metil_object.h>
 #include <metil_object/metil_object_buffer.h>
 #include <metil_rendering/metil_renderer_interface.h>
 #include <metil_rendering/metil_renderer_thread_poll_object_data.h>
 #include <metil_rendering/rendering_properties.h>
+#include <metil_termination/metil_termination.h>
 
 #include <Metal/MTLBuffer.h>
 #include <Metal/MTLCommandQueue.h>
@@ -34,6 +36,8 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 #define metil_renderer_pipelines_render_index_wireframe 2
 
 @interface metil_renderer : NSObject<MTKViewDelegate> {
+  struct metil* metil;
+
   id<MTLCommandQueue> command_queue;
 
   id<MTLBuffer> data_buffer_frame[metil_count_max_frames];
@@ -70,7 +74,9 @@ extern void* _Nullable metil_renderer_on_initialize_data;
   matrix_float3x4 matrix_projection_static;
 }
 
-- (nonnull instancetype) initWithMetalKitView: (nonnull MTKView*) metal_kit_view;
+- (nonnull instancetype) metil_renderer_initialize:
+  (nonnull MTKView*) metal_kit_view
+  metil: (nonnull struct metil*) parameter_metil;
 
 - (void) after_scene_change;
 
@@ -113,9 +119,9 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 - (void) render_object: (nonnull struct metil_object*) object;
 - (void) render_object_wireframe: (nonnull struct metil_object*) object;
 - (void) render_encode_draw:
-  (struct metil_object_buffer* _Nonnull) buffers_vertex
+  (nonnull struct metil_object_buffer*) buffers_vertex
   length_buffers_vertex: (unsigned int) length_buffers_vertex
-  buffers_fragment: (struct metil_object_buffer* _Nonnull) buffers_fragment
+  buffers_fragment: (nonnull struct metil_object_buffer*) buffers_fragment
   length_buffers_fragment: (unsigned int) length_buffers_fragment
   indices: (nonnull id<MTLBuffer>) indices
   length_indices: (unsigned int) length_indices

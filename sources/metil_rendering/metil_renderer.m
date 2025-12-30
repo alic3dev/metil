@@ -22,7 +22,7 @@
 #include <metil_scenes/scene.h>
 #include <metil_scenes/scene_controller.h>
 #include <metil_system_information.h>
-#include <metil_termination.h>
+#include <metil_termination/metil_termination.h>
 #include <metil_text/text_characters.h>
 #include <metil_utilities/time.h>
 
@@ -48,7 +48,10 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
 @implementation metil_renderer
 
-- (nonnull instancetype) initWithMetalKitView: (nonnull MTKView*) metal_kit_view {
+- (nonnull instancetype) metil_renderer_initialize:
+  (nonnull MTKView*) metal_kit_view
+  metil: (nonnull struct metil*) parameter_metil
+{
   self = [super init];
 
   if (
@@ -56,6 +59,10 @@ void* metil_renderer_on_initialize_data = (void*)0;
   ) {
     return self;
   }
+
+  self->metil = (
+    parameter_metil
+  );
 
   [self initialize_null];
 
@@ -96,7 +103,9 @@ void* metil_renderer_on_initialize_data = (void*)0;
     );
   }
 
-  self->metal_device = metal_kit_view.device;
+  self->metal_device = (
+    metal_kit_view.device
+  );
 
   [self rendering_properties_initialize];
   [self termination_functions_initialize];
@@ -1270,11 +1279,13 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
 - (void) termination_functions_initialize {
   metil_termination_on_function_add(
+    &self->metil->termination,
     metil_renderer_on_termination,
     self
   );
 
   metil_termination_on_function_add(
+    &self->metil->termination,
     metil_text_characters_destroy,
     (void*)0
   );

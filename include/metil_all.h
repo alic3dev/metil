@@ -66,7 +66,7 @@
 #include <metil_scenes/scene.h>
 #include <metil_status.h>
 #include <metil_system_information.h>
-#include <metil_termination.h>
+#include <metil_termination/metil_termination.h>
 #include <metil_text/text_characters.h>
 #include <metil_text/text.h>
 #include <metil_utilities/stopwatch.h>
