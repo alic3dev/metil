@@ -22,9 +22,9 @@
 #include <metil_input/metil_controller_state.h>
 #include <metil_input/metil_controller.h>
 #include <metil_input/metil_cursor.h>
+#include <metil_input/metil_input_map.h>
 #include <metil_input/metil_input.h>
 #include <metil_input/metil_keycodes.h>
-#include <metil_input/metil_input_map.h>
 #include <metil_joint/metil_joint_id_offset.h>
 #include <metil_joint/metil_joint.h>
 #include <metil_library.h>
@@ -35,9 +35,9 @@
 #include <metil_mesh/metil_mesh_2d/metil_mesh_square.h>
 #include <metil_mesh/metil_mesh_2d/metil_mesh_triangle.h>
 #include <metil_mesh/metil_mesh_box.h>
+#include <metil_mesh/metil_mesh_parse.h>
 #include <metil_mesh/metil_mesh_text.h>
 #include <metil_mesh/metil_mesh.h>
-#include <metil_mesh/metil_mesh_parse.h>
 #include <metil_model/metil_model.h>
 #include <metil_object.h>
 #include <metil_object/metil_object_buffer.h>
@@ -66,10 +66,12 @@
 #include <metil_scenes/metil_scene.h>
 #include <metil_status.h>
 #include <metil_system_information.h>
+#include <metil_termination/metil_terminate_on_signal.h>
 #include <metil_termination/metil_termination.h>
 #include <metil_text/metil_text_characters.h>
 #include <metil_text/metil_text.h>
 #include <metil_utilities/metil_stopwatch.h>
 #include <metil_utilities/metil_time.h>
+#include <metil.h>
 
 #endif
