@@ -1,5 +1,5 @@
-#include <metil_utilities/stopwatch.h>
-#include <metil_utilities/time.h>
+#include <metil_utilities/metil_stopwatch.h>
+#include <metil_utilities/metil_time.h>
 
 #include <sys/time.h>
 

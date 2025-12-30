@@ -3,7 +3,7 @@
 
 #include <clic3_vector.h>
 
-#include <metil_rendering/camera/camera.h>
+#include <metil_rendering/metil_camera/metil_camera.h>
 
 struct metil_player;
 

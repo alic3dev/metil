@@ -8,7 +8,7 @@
 #include <metil_audio/metil_audio_io_proc_macos.h>
 #endif
 
-#include <metil_debug/log.h>
+#include <metil_debug/metil_log.h>
 
 #include <cer0_audio_output.h>
 

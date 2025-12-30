@@ -1,7 +1,7 @@
 #include <metil_object/metil_object_text.h>
 
 #include <metil_object/metil_object.h>
-#include <metil_text/text.h>
+#include <metil_text/metil_text.h>
 
 #include <Metal/MTLArgument.h>
 #include <Metal/MTLDevice.h>

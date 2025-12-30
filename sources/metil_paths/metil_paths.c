@@ -1,5 +1,5 @@
-#include <metil_paths/paths.h>
-#include <metil_paths/paths_constants.h>
+#include <metil_paths/metil_paths.h>
+#include <metil_paths/metil_paths_constants.h>
 
 #include <clic3_char_arrays.h>
 #include <clic3_bytes.h>

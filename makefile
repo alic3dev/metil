@@ -39,6 +39,7 @@ endif
 directory_include=include
 directory_objects_c=${directory_objects}/c
 directory_objects_objc=${directory_objects}/objc
+directory_plist=plist
 directory_sources=sources
 directory_storyboards=storyboards
 
@@ -137,7 +138,7 @@ endif
 
 file_air_fps_display=${directory_air}/metil_fps_display.air
 file_air_wireframe=${directory_air}/metil_wireframe.air
-file_info_plist=Info.plist
+file_info_plist=${directory_plist}/Info.plist
 
 file_library_object=${directory_library}/${name}.o
 
@@ -158,7 +159,11 @@ file_output_metalar_metil_all=${directory_library}/metil_all.metalar
 file_output_metalar_metil_fps_display=${directory_library}/metil_fps_display.metalar
 file_output_metalar_metil_wireframe=${directory_library}/metil_wireframe.metalar
 
+ifeq (${target_device},iphone)
+file_output_info_plist=${directory_library}/Info_ios.plist
+else
 file_output_info_plist=${directory_library}/Info.plist
+endif
 file_output_metal=${directory_library}/metil.metallib
 
 files_sources_c=${shell find ${directory_sources} -name "*.c"}

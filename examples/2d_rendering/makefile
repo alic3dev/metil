@@ -38,6 +38,8 @@ directory_interrupt_handler_include=${directory_interrupt_handler}/include
 directory_math_c=../../../math_c
 
 directory_metil_include=${directory_metil}/include
+directory_metil_plist=${directory_metil}/plist
+
 ifeq (${debug}, 1)
 directory_cer0_library=${directory_cer0}/library/macos/debug
 directory_clic3_library=${directory_clic3}/library/macos/debug
@@ -74,7 +76,7 @@ directory_macos_sdk=${shell xcrun --show-sdk-path}
 file_metil_metallib=${directory_metil_library}/metil.metallib
 file_metil_storyboard=${directory_metil_library}/metil.storyboardc
 
-file_info_plist=${directory_metil}/Info.plist
+file_info_plist=${directory_metil_plist}/Info.plist
 file_output=${directory_app_contents_macos}/${name}
 file_output_info_plist=${directory_app_contents}/Info.plist
 file_output_metal=${directory_app_contents_resources}/default.metallib

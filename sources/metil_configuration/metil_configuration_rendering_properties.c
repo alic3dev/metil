@@ -1,4 +1,4 @@
-#include <metil_configuration/configuration_rendering_properties.h>
+#include <metil_configuration/metil_configuration_rendering_properties.h>
 
 float metil_configuration_default_rendering_properties_brightness = 1.0f;
 float metil_configuration_default_rendering_properties_brightness_text = 1.0f;

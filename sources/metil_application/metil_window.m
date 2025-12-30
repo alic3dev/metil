@@ -2,8 +2,8 @@
 
 #if !target_os_ios
 
-#include <metil_input/cursor.h>
-#include <metil_input/map.h>
+#include <metil_input/metil_cursor.h>
+#include <metil_input/metil_input_map.h>
 
 #include <AppKit/AppKit.h>
 #include <CoreGraphics/CoreGraphics.h>

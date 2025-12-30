@@ -1,10 +1,10 @@
 #ifndef __metil_object_metil_object_h
 #define __metil_object_metil_object_h
 
-#include <metil_mesh/mesh.h>
+#include <metil_mesh/metil_mesh.h>
 #include <metil_object/metil_object_buffer.h>
 #include <metil_positioning.h>
-#include <metil_rendering/camera/camera.h>
+#include <metil_rendering/metil_camera/metil_camera.h>
 
 #include <clic3_vector.h>
 

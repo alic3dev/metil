@@ -1,4 +1,4 @@
-#include <metil_input/cursor.h>
+#include <metil_input/metil_cursor.h>
 
 #if !target_os_ios
 #include <AppKit/AppKit.h>

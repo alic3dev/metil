@@ -88,9 +88,9 @@ all header files can be included within a single `#include` of `metil_all.h`
 otherwise individual header files can be included as such
 
 ```h
-#include <metil_mesh/mesh.h>
-#include <metil_input/controller.h>
-#include <metil_input/controller_state.h>
+#include <metil_mesh/metil_mesh.h>
+#include <metil_input/metil_controller.h>
+#include <metil_input/metil_controller_state.h>
 ```
 
 ### intialization

@@ -1,8 +1,8 @@
-#include <metil_configuration/configuration.h>
+#include <metil_configuration/metil_configuration.h>
 
 #include <metil_audio/metil_audio_data.h>
-#include <metil_debug/log.h>
-#include <metil_paths/paths.h>
+#include <metil_debug/metil_log.h>
+#include <metil_paths/metil_paths.h>
 
 #include <clic3_bytes.h>
 #include <clic3_char_arrays.h>

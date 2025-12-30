@@ -1,6 +1,6 @@
-#include <metil_rendering/camera/camera.h>
+#include <metil_rendering/metil_camera/metil_camera.h>
 
-#include <metil_rendering/camera/camera_mode.h>
+#include <metil_rendering/metil_camera/metil_camera_mode.h>
 
 #include <math.h>
 

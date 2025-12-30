@@ -1,7 +1,7 @@
-#include <metil_text/text.h>
+#include <metil_text/metil_text.h>
 
-#include <metil_debug/log.h>
-#include <metil_mesh/mesh_text.h>
+#include <metil_debug/metil_log.h>
+#include <metil_mesh/metil_mesh_text.h>
 
 #include <clic3_char_arrays.h>
 

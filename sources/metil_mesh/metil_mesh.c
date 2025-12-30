@@ -1,4 +1,4 @@
-#include <metil_mesh/mesh.h>
+#include <metil_mesh/metil_mesh.h>
 
 #include <clic3.h>
 

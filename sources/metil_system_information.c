@@ -1,6 +1,6 @@
 #include <metil_system_information.h>
 
-#include <metil_debug/log.h>
+#include <metil_debug/metil_log.h>
 
 #include <sys/sysctl.h>
 

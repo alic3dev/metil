@@ -6,7 +6,7 @@
 #include <metil_object/metil_object_buffer.h>
 #include <metil_rendering/metil_renderer_interface.h>
 #include <metil_rendering/metil_renderer_thread_poll_object_data.h>
-#include <metil_rendering/rendering_properties.h>
+#include <metil_rendering/metil_rendering_properties.h>
 #include <metil_termination/metil_termination.h>
 
 #include <Metal/MTLBuffer.h>

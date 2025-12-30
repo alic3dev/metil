@@ -1,6 +1,6 @@
-#include <metil_mesh/mesh_box.h>
+#include <metil_mesh/metil_mesh_box.h>
 
-#include <metil_mesh/mesh.h>
+#include <metil_mesh/metil_mesh.h>
 
 #include <stdlib.h>
 

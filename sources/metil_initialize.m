@@ -4,17 +4,17 @@
 #include <metil_application/metil_application.h>
 #include <metil_application/metil_application_delegate.h>
 #include <metil_audio/metil_audio.h>
-#include <metil_configuration/configuration.h>
-#include <metil_input/input.h>
+#include <metil_configuration/metil_configuration.h>
+#include <metil_input/metil_input.h>
 #include <metil_library.h>
-#include <metil_paths/paths.h>
+#include <metil_paths/metil_paths.h>
 #include <metil_rendering/metil_renderer.h>
-#include <metil_scenes/scene_controller.h>
+#include <metil_scenes/metil_scene_controller.h>
 #include <metil_system_information.h>
 #include <metil_termination/metil_termination.h>
 #include <metil_termination/metil_terminate_on_signal.h>
-#include <metil_text/text.h>
-#include <metil_utilities/time.h>
+#include <metil_text/metil_text.h>
+#include <metil_utilities/metil_time.h>
 
 #include <interrupt_handler.h>
 

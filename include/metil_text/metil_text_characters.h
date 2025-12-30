@@ -1,7 +1,7 @@
 #ifndef __metil_text_text_characters_h
 #define __metil_text_text_characters_h
 
-#include <metil_mesh/mesh.h>
+#include <metil_mesh/metil_mesh.h>
 
 #include <Metal/MTLBuffer.h>
 #include <Metal/MTLDevice.h>

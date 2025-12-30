@@ -1,6 +1,6 @@
-#include <metil_mesh/mesh_text.h>
+#include <metil_mesh/metil_mesh_text.h>
 
-#include <metil_mesh/mesh.h>
+#include <metil_mesh/metil_mesh.h>
 
 #include <clic3_vector.h>
 

@@ -1,4 +1,4 @@
-#include <metil_menus/menu_item.h>
+#include <metil_menus/metil_menu_item.h>
 
 void metil_menu_item_initialize(
   struct metil_menu_item* menu_item,

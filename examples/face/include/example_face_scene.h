@@ -1,7 +1,7 @@
 #ifndef __example_face_scene_h
 #define __example_face_scene_h
 
-#include <metil_scenes/scene.h>
+#include <metil_scenes/metil_scene.h>
 #include <metil_rendering/metil_renderer_interface.h>
 
 void example_face_scene_initialize(

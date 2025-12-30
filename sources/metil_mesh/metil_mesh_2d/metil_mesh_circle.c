@@ -1,6 +1,6 @@
-#include <metil_mesh/2d/mesh_circle.h>
+#include <metil_mesh/metil_mesh_2d/metil_mesh_circle.h>
 
-#include <metil_mesh/mesh.h>
+#include <metil_mesh/metil_mesh.h>
 
 #include <math.h>
 #include <stdlib.h>

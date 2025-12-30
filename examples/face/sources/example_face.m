@@ -4,10 +4,10 @@
 #include <example_face_scene.h>
 
 #include <metil_initialize.h>
-#include <metil_input/cursor.h>
+#include <metil_input/metil_cursor.h>
 #include <metil_library.h>
 #include <metil_rendering/metil_renderer_interface.h>
-#include <metil_scenes/scene_controller.h>
+#include <metil_scenes/metil_scene_controller.h>
 
 int main(
   int length_parameters,

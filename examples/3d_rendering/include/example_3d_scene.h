@@ -2,7 +2,7 @@
 #define __example_3d_scene_h
 
 #include <metil_rendering/metil_renderer_interface.h>
-#include <metil_scenes/scene.h>
+#include <metil_scenes/metil_scene.h>
 
 void example_3d_scene_initialize(
   struct metil_scene*,

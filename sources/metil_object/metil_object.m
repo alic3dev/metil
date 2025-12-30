@@ -1,6 +1,6 @@
 #include <metil_object.h>
 
-#include <metil_mesh/mesh.h>
+#include <metil_mesh/metil_mesh.h>
 #include <metil_positioning.h>
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_rendering/metil_renderer.h>

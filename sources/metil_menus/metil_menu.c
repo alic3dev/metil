@@ -1,9 +1,9 @@
-#include <metil_menus/menu.h>
+#include <metil_menus/metil_menu.h>
 
-#include <metil_input/controller_state.h>
-#include <metil_input/keycodes.h>
-#include <metil_input/map.h>
-#include <metil_menus/menu_item.h>
+#include <metil_input/metil_controller_state.h>
+#include <metil_input/metil_keycodes.h>
+#include <metil_input/metil_input_map.h>
+#include <metil_menus/metil_menu_item.h>
 
 #include <stdlib.h>
 #include <sys/time.h>

@@ -1,7 +1,7 @@
 #ifndef __metil_renderer_interface_h
 #define __metil_renderer_interface_h
 
-#include <metil_rendering/rendering_properties.h>
+#include <metil_rendering/metil_rendering_properties.h>
 
 #include <Metal/MTLDevice.h>
 #include <Metal/MTLLibrary.h>

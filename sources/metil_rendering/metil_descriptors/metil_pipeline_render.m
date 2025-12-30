@@ -1,4 +1,4 @@
-#include <metil_rendering/descriptors/pipeline_render.h>
+#include <metil_rendering/metil_descriptors/metil_pipeline_render.h>
 
 #include <Metal/MTLRenderPipeline.h>
 

@@ -1,6 +1,6 @@
-#include <metil_input/controller_state.h>
+#include <metil_input/metil_controller_state.h>
 
-#include <metil_input/controller.h>
+#include <metil_input/metil_controller.h>
 
 #include <GameController/GameController.h>
 

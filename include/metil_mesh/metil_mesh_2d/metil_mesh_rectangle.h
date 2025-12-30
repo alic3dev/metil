@@ -1,7 +1,7 @@
 #ifndef __metil_mesh_2d_mesh_rectangle_h
 #define __metil_mesh_2d_mesh_rectangle_h
 
-#include <metil_mesh/mesh.h>
+#include <metil_mesh/metil_mesh.h>
 
 #include <clic3_vector.h>
 

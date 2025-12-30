@@ -2,10 +2,10 @@
 
 #include <clic3_vector.h>
 
-#include <metil_input/controller_state.h>
-#include <metil_input/cursor.h>
-#include <metil_input/keycodes.h>
-#include <metil_input/map.h>
+#include <metil_input/metil_controller_state.h>
+#include <metil_input/metil_cursor.h>
+#include <metil_input/metil_keycodes.h>
+#include <metil_input/metil_input_map.h>
 
 #include <math.h>
 

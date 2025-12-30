@@ -1,6 +1,6 @@
-#include <metil_scenes/scene_controller.h>
+#include <metil_scenes/metil_scene_controller.h>
 
-#include <metil_scenes/scene.h>
+#include <metil_scenes/metil_scene.h>
 
 #include <stdlib.h>
 

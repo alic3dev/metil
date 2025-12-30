@@ -3,15 +3,15 @@
 #include <example_model_pipeline_index.h>
 
 #include <metil_application/metil_renderer_size.h>
-#include <metil_mesh/mesh.h>
-#include <metil_mesh/mesh_box.h>
+#include <metil_mesh/metil_mesh.h>
+#include <metil_mesh/metil_mesh_box.h>
 #include <metil_model/metil_model.h>
-#include <metil_input/cursor.h>
+#include <metil_input/metil_cursor.h>
 #include <metil_object.h>
 #include <metil_player.h>
 #include <metil_rendering/metil_renderable.h>
 #include <metil_rendering/metil_renderer_data_object.h>
-#include <metil_scenes/scene.h>
+#include <metil_scenes/metil_scene.h>
 
 #include <math.h>
 

@@ -1,4 +1,4 @@
-#include <metil_input/controller.h>
+#include <metil_input/metil_controller.h>
 
 struct metil_controller metil_controller = {
   .controller = (void*)0,

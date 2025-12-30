@@ -1,6 +1,6 @@
-#include <metil_input/map.h>
+#include <metil_input/metil_input_map.h>
 
-#include <metil_input/keycodes.h>
+#include <metil_input/metil_keycodes.h>
 
 unsigned char metil_input_map_keydown[
   metil_input_map_keydown_length

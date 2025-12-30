@@ -1,7 +1,7 @@
 #ifndef __metil_scene_controller_h
 #define __metil_scene_controller_h
 
-#include <metil_scenes/scene.h>
+#include <metil_scenes/metil_scene.h>
 
 typedef void (*metil_scene_controller_on_scene_change)(int, void*);
 typedef void (*metil_scene_controller_after_scene_change)(int, void*);

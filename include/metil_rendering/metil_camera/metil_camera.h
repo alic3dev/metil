@@ -1,9 +1,9 @@
 #ifndef __metil_rendering_camera_camera_h
 #define __metil_rendering_camera_camera_h
 
-#include <metil_rendering/camera/camera_mode.h>
-#include <metil_rendering/camera/lens.h>
-#include <metil_rendering/camera/near_far.h>
+#include <metil_rendering/metil_camera/metil_camera_mode.h>
+#include <metil_rendering/metil_camera/metil_lens.h>
+#include <metil_rendering/metil_camera/metil_near_far.h>
 
 #include <clic3_vector.h>
 

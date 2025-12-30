@@ -1,6 +1,6 @@
-#include <metil_text/text_characters.h>
+#include <metil_text/metil_text_characters.h>
 
-#include <metil_text/text.h>
+#include <metil_text/metil_text.h>
 
 #include <clic3_vector.h>
 

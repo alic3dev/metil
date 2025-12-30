@@ -1,7 +1,7 @@
-#include <metil_rendering/rendering_properties.h>
+#include <metil_rendering/metil_rendering_properties.h>
 
-#include <metil_configuration/configuration_rendering_properties.h>
-#include <metil_rendering/camera/camera.h>
+#include <metil_configuration/metil_configuration_rendering_properties.h>
+#include <metil_rendering/metil_camera/metil_camera.h>
 
 #include <pthread.h>
 
