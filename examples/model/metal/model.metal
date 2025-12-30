@@ -1,3 +1,4 @@
+#include <metil_joint_id.h>
 #include <metil_rendering/metil_renderer_data_frame.h>
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
 #include <metil_rendering/metil_renderer_data_model_object.h>
@@ -37,21 +38,26 @@ struct data_vertex {
 ) {
   struct data_vertex data_vertex;
 
-  unsigned int id_joint_position = (
+  unsigned int id_joint = (
     vertex_joint_map[
       id_vertex
     ] *
-    3
+    metil_joint_id_offset_length
   );
 
-  unsigned int id_joint_translation = (
-    id_joint_position +
-    1
+  unsigned int id_joint_position = (
+    id_joint +
+    metil_joint_id_offset_position
   );
 
   unsigned int id_joint_rotation = (
-    id_joint_translation +
-    1
+    id_joint +
+    metil_joint_id_offset_rotation
+  );
+
+  unsigned int id_joint_translation = (
+    id_joint +
+    metil_joint_id_offset_translation
   );
 
   matrix_float4x4 matrix_projection_object_with_rotation = (
@@ -74,61 +80,59 @@ struct data_vertex {
       { 0.0f, 0.0f, 0.0f, 1.0f }
     }}
   );
+
+  float4 position_object = {
+    data_object->position.x,
+    data_object->position.y,
+    data_object->position.z,
+    0.0f
+  };
+
+  float4 position_vertex_object_relation = (
+    vertices[id_vertex] +
+    position_object
+  );
+
+  float4 position_joint = {
+    joints[id_joint_position].x,
+    joints[id_joint_position].y,
+    joints[id_joint_position].z,
+    0.0f
+  };
+
+  float4 position_joint_translation = {
+    joints[id_joint_translation].x,
+    joints[id_joint_translation].y,
+    joints[id_joint_translation].z,
+    0.0f
+  };
+
+  float4 position_vertex_object_relation_offset_joint_origin = (
+    position_vertex_object_relation - 
+    position_joint
+  );
+
+  float4 position_vertex_object_relation_offset_joint_origin_rotated = (
+    position_vertex_object_relation_offset_joint_origin *
+    matrix_projection_object_with_rotation
+  );
   
-  float4 l = (
-    (
-      (
-        (
-          (float4) {
-            vertices[id_vertex].x,
-            vertices[id_vertex].y,
-            vertices[id_vertex].z,
-            vertices[id_vertex].w
-          } + (float4) {
-            data_object->position.x,
-            data_object->position.y,
-            data_object->position.z,
-            0.0f
-          }
-        ) - (float4) {
-          joints[id_joint_position].x,
-          joints[id_joint_position].y,
-          joints[id_joint_position].z,
-          0.0f
-        }
-      ) * matrix_projection_object_with_rotation 
-    ) + (float4) {
-      joints[id_joint_position].x,
-      joints[id_joint_position].y,
-      joints[id_joint_position].z,
-      0.0f
-    } + (float4) {
-      joints[id_joint_translation].x,
-      joints[id_joint_translation].y,
-      joints[id_joint_translation].z,
-      0.0f
-    } - (float4) {
-      data_object->position.x,
-      data_object->position.y,
-      data_object->position.z,
-      0.0f
-    }
+  float4 position_vertex = (
+    position_vertex_object_relation_offset_joint_origin_rotated +
+    position_joint +
+    position_joint_translation -
+    position_object
   );
 
   data_vertex.position = (
-    data_object->view_model_matrix_projection * (
-      data_object->matrix_projection_object_offset_with_rotation *
-      data_object->matrix_projection_object_with_rotation
-    ) *
-    l
+    data_object->view_model_matrix_projection *
+    position_vertex
   );
 
-  float brightness = 1.0f;
-
   data_vertex.color = float4(
-    1.0f * brightness,
-    1.0f * brightness,
-    1.0f * brightness,
+    1.0f,
+    1.0f,
+    1.0f,
     1.0f
   );
 
