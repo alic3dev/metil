@@ -79,10 +79,10 @@ xcrun -sdk macosx metallib metal_archive.metalar metil_fps_display.metalar metil
 
 ### includes
 
-all header files can be included within a single `#include` of `metil.h`
+all header files can be included within a single `#include` of `metil_all.h`
 
 ```h
-#include <metil.h>
+#include <metil_all.h>
 ```
 
 otherwise individual header files can be included as such
