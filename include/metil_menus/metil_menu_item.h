@@ -1,5 +1,5 @@
-#ifndef __metil_menus_menu_item_h
-#define __metil_menus_menu_item_h
+#ifndef __metil_menus_metil_menu_item_h
+#define __metil_menus_metil_menu_item_h
 
 struct metil_menu_item;
 

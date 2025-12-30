@@ -1,5 +1,5 @@
-#ifndef __metil_paths_paths_constants_h
-#define __metil_paths_paths_constants_h
+#ifndef __metil_paths_metil_paths_constants_h
+#define __metil_paths_metil_paths_constants_h
 
 #define metil_paths_length_directory_configuration 8
 #if target_os_ios

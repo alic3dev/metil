@@ -1,5 +1,5 @@
-#ifndef __metil_mesh_text_h
-#define __metil_mesh_text_h
+#ifndef __metil_mesh_metil_mesh_text_h
+#define __metil_mesh_metil_mesh_text_h
 
 #include <metil_mesh/metil_mesh.h>
 

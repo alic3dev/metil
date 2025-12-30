@@ -1,5 +1,5 @@
-#ifndef __metil_mesh_h
-#define __metil_mesh_h
+#ifndef __metil_mesh_metil_mesh_h
+#define __metil_mesh_metil_mesh_h
 
 #include <clic3_vector.h>
 

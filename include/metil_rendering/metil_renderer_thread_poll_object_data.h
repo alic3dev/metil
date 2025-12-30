@@ -1,5 +1,5 @@
-#ifndef __metil_renderer_thread_poll_object_data_h
-#define __metil_renderer_thread_poll_object_data_h
+#ifndef __metil_rendering_metil_renderer_thread_poll_object_data_h
+#define __metil_rendering_metil_renderer_thread_poll_object_data_h
 
 #include <metil_rendering/metil_camera/metil_camera.h>
 

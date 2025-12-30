@@ -1,5 +1,5 @@
-#ifndef __metil_renderer_interface_h
-#define __metil_renderer_interface_h
+#ifndef __metil_rendering_metil_renderer_interface_h
+#define __metil_rendering_metil_renderer_interface_h
 
 #include <metil_rendering/metil_rendering_properties.h>
 

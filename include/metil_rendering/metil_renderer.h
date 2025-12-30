@@ -1,5 +1,5 @@
-#ifndef __metil_renderer_h
-#define __metil_renderer_h
+#ifndef __metil_rendering_metil_renderer_h
+#define __metil_rendering_metil_renderer_h
 
 #include <metil.h>
 #include <metil_object/metil_object.h>

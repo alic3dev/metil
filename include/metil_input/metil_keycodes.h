@@ -1,5 +1,5 @@
-#ifndef __metil_keycodes_h
-#define __metil_keycodes_h
+#ifndef __metil_input_metil_keycodes_h
+#define __metil_input_metil_keycodes_h
 
 #define metil_keycode_a 0
 #define metil_keycode_s 1

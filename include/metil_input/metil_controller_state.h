@@ -1,5 +1,5 @@
-#ifndef __metil_input_controller_state_h
-#define __metil_input_controller_state_h
+#ifndef __metil_input_metil_controller_state_h
+#define __metil_input_metil_controller_state_h
 
 #include <clic3_vector.h>
 

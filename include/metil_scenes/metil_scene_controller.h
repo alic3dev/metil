@@ -1,5 +1,5 @@
-#ifndef __metil_scene_controller_h
-#define __metil_scene_controller_h
+#ifndef __metil_scenes_metil_scene_controller_h
+#define __metil_scenes_metil_scene_controller_h
 
 #include <metil_scenes/metil_scene.h>
 

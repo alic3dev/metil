@@ -1,5 +1,5 @@
-#ifndef __metil_configuration_configuration_h
-#define __metil_configuration_configuration_h
+#ifndef __metil_configuration_metil_configuration_h
+#define __metil_configuration_metil_configuration_h
 
 #include <metil_configuration/metil_configuration_audio.h>
 #include <metil_configuration/metil_configuration_rendering_properties.h>

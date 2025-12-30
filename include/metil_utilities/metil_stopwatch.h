@@ -1,5 +1,5 @@
-#ifndef __metil_utilities_stopwatch_h
-#define __metil_utilities_stopwatch_h
+#ifndef __metil_utilities_metil_stopwatch_h
+#define __metil_utilities_metil_stopwatch_h
 
 #include <sys/time.h>
 

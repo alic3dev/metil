@@ -1,5 +1,5 @@
-#ifndef __metil_paths_h
-#define __metil_paths_h
+#ifndef __metil_paths_metil_paths_h
+#define __metil_paths_metil_paths_h
 
 struct metil_paths {
   char* directory_root;

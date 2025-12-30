@@ -1,5 +1,5 @@
-#ifndef __metil_rendering_camera_lens_h
-#define __metil_rendering_camera_lens_h
+#ifndef __metil_rendering_metil_camera_metil_lens_h
+#define __metil_rendering_metil_camera_metil_lens_h
 
 struct metil_lens {
   float length_focal;

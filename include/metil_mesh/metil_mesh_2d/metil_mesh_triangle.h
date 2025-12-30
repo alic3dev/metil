@@ -1,5 +1,5 @@
-#ifndef __metil_mesh_2d_mesh_triangle_h
-#define __metil_mesh_2d_mesh_triangle_h
+#ifndef __metil_mesh_metil_mesh_2d_metil_mesh_triangle_h
+#define __metil_mesh_metil_mesh_2d_metil_mesh_triangle_h
 
 #include <metil_mesh/metil_mesh.h>
 

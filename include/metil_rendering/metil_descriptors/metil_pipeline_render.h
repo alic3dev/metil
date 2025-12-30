@@ -1,5 +1,5 @@
-#ifndef __metil_rendering_descriptors_pipeline_render_h
-#define __metil_rendering_descriptors_pipeline_render_h
+#ifndef __metil_rendering_metil_descriptors_metil_pipeline_render_h
+#define __metil_rendering_metil_descriptors_metil_pipeline_render_h
 
 #include <Metal/MTLRenderPipeline.h>
 

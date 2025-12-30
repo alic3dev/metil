@@ -1,5 +1,5 @@
-#ifndef __metil_renderer_vertex_index_parameter_h
-#define __metil_renderer_vertex_index_parameter_h
+#ifndef __metil_rendering_metil_renderer_vertex_index_parameter_h
+#define __metil_rendering_metil_renderer_vertex_index_parameter_h
 
 enum metil_renderer_vertex_index_parameter {
   metil_renderer_vertex_index_parameter_data_object = 2,

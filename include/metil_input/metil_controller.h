@@ -1,5 +1,5 @@
-#ifndef __metil_input_controller_h
-#define __metil_input_controller_h
+#ifndef __metil_input_metil_controller_h
+#define __metil_input_metil_controller_h
 
 #include <GameController/GCController.h>
 #include <GameController/GCDualSenseGamepad.h>

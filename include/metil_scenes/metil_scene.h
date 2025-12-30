@@ -1,5 +1,5 @@
-#ifndef __metil_scenes_scene_h
-#define __metil_scenes_scene_h
+#ifndef __metil_scenes_metil_scene_h
+#define __metil_scenes_metil_scene_h
 
 #include <metil_player.h>
 #include <metil_rendering/metil_renderable.h>

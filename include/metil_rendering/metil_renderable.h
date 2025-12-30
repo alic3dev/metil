@@ -1,5 +1,5 @@
-#ifndef __metil_renderable_h
-#define __metil_renderable_h
+#ifndef __metil_rendering_metil_renderable_h
+#define __metil_rendering_metil_renderable_h
 
 enum metil_renderable_type {
   metil_renderable_type_group = 0,

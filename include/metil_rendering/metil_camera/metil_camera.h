@@ -1,5 +1,5 @@
-#ifndef __metil_rendering_camera_camera_h
-#define __metil_rendering_camera_camera_h
+#ifndef __metil_rendering_metil_camera_metil_camera_h
+#define __metil_rendering_metil_camera_metil_camera_h
 
 #include <metil_rendering/metil_camera/metil_camera_mode.h>
 #include <metil_rendering/metil_camera/metil_lens.h>

@@ -1,5 +1,5 @@
-#ifndef __metil_cursor_h
-#define __metil_cursor_h
+#ifndef __metil_input_metil_cursor_h
+#define __metil_input_metil_cursor_h
 
 #include <clic3_vector.h>
 

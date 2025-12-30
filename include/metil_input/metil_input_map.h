@@ -1,5 +1,5 @@
-#ifndef __metil_input_map_h
-#define __metil_input_map_h
+#ifndef __metil_input_metil_input_map_h
+#define __metil_input_metil_input_map_h
 
 #include <metil_input/metil_keycodes.h>
 
