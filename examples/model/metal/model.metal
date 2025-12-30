@@ -74,58 +74,59 @@ struct data_vertex {
       { 0.0f, 0.0f, 0.0f, 1.0f }
     }}
   );
+
+  float4 position_object = {
+    data_object->position.x,
+    data_object->position.y,
+    data_object->position.z,
+    0.0f
+  };
+
+  float4 position_vertex_object_relation = (
+    vertices[id_vertex] +
+    position_object
+  );
+
+  float4 position_joint = {
+    joints[id_joint_position].x,
+    joints[id_joint_position].y,
+    joints[id_joint_position].z,
+    0.0f
+  };
+
+  float4 position_joint_translation = {
+    joints[id_joint_translation].x,
+    joints[id_joint_translation].y,
+    joints[id_joint_translation].z,
+    0.0f
+  };
+
+  float4 position_vertex_object_relation_offset_joint_origin = (
+    position_vertex_object_relation - 
+    position_joint
+  );
+
+  float4 position_vertex_object_relation_offset_joint_origin_rotated = (
+    position_vertex_object_relation_offset_joint_origin *
+    matrix_projection_object_with_rotation
+  );
   
-  float4 l = (
-    (
-      (
-        (
-          (float4) {
-            vertices[id_vertex].x,
-            vertices[id_vertex].y,
-            vertices[id_vertex].z,
-            vertices[id_vertex].w
-          } + (float4) {
-            data_object->position.x,
-            data_object->position.y,
-            data_object->position.z,
-            0.0f
-          }
-        ) - (float4) {
-          joints[id_joint_position].x,
-          joints[id_joint_position].y,
-          joints[id_joint_position].z,
-          0.0f
-        }
-      ) * matrix_projection_object_with_rotation 
-    ) + (float4) {
-      joints[id_joint_position].x,
-      joints[id_joint_position].y,
-      joints[id_joint_position].z,
-      0.0f
-    } + (float4) {
-      joints[id_joint_translation].x,
-      joints[id_joint_translation].y,
-      joints[id_joint_translation].z,
-      0.0f
-    } - (float4) {
-      data_object->position.x,
-      data_object->position.y,
-      data_object->position.z,
-      0.0f
-    }
+  float4 position_vertex = (
+    position_vertex_object_relation_offset_joint_origin_rotated +
+    position_joint +
+    position_joint_translation -
+    position_object
   );
 
   data_vertex.position = (
     data_object->view_model_matrix_projection *
-    l
+    position_vertex
   );
 
-  float brightness = 1.0f;
-
   data_vertex.color = float4(
-    1.0f * brightness,
-    1.0f * brightness,
-    1.0f * brightness,
+    1.0f,
+    1.0f,
+    1.0f,
     1.0f
   );
 
