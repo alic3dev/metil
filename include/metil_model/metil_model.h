@@ -1,7 +1,7 @@
 #ifndef __metil_model_metil_model_h
 #define __metil_model_metil_model_h
 
-#include <metil_joint.h>
+#include <metil_joint/metil_joint.h>
 #include <metil_mesh/metil_mesh.h>
 #include <metil_object.h>
 #include <metil_positioning.h>

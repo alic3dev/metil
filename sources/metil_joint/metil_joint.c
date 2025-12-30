@@ -1,4 +1,4 @@
-#include <metil_joint.h>
+#include <metil_joint/metil_joint.h>
 
 #include <simd/simd.h>
 

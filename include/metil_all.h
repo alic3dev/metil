@@ -25,8 +25,8 @@
 #include <metil_input/metil_input.h>
 #include <metil_input/metil_keycodes.h>
 #include <metil_input/metil_input_map.h>
-#include <metil_joint_id.h>
-#include <metil_joint.h>
+#include <metil_joint/metil_joint_id.h>
+#include <metil_joint/metil_joint.h>
 #include <metil_library.h>
 #include <metil_menus/metil_menu_item.h>
 #include <metil_menus/metil_menu.h>
