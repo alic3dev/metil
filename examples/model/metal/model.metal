@@ -116,10 +116,7 @@ struct data_vertex {
   );
 
   data_vertex.position = (
-    data_object->view_model_matrix_projection * (
-      data_object->matrix_projection_object_offset_with_rotation *
-      data_object->matrix_projection_object_with_rotation
-    ) *
+    data_object->view_model_matrix_projection *
     l
   );
 

@@ -41,9 +41,7 @@ void metil_positioning_view_model_matrix_projection_set(
     rotation,
     (void*) 0,
     (void*) 0,
-    metil_camera,
-    (void*) 0,
-    (void*) 0
+    metil_camera
   );
 }
 
@@ -57,9 +55,7 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
   struct clic3_vector3_float* rotation,
   struct clic3_vector3_float* position_offset,
   struct clic3_vector3_float* rotation_offset,
-  struct metil_camera* metil_camera,
-  matrix_float4x4* matrix_projection_object_offset_with_rotation_destination,
-  matrix_float4x4* matrix_projection_object_with_rotation_destination
+  struct metil_camera* metil_camera
 ) {
   if (
     positioning == metil_positioning_absolute
@@ -258,32 +254,15 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
         }}
       );
 
-      if (
-        matrix_projection_object_offset_with_rotation_destination != (void*) 0 &&
-        matrix_projection_object_with_rotation_destination != (void*) 0
-      ) {
-        *matrix_projection_object_offset_with_rotation_destination = (
-          matrix_projection_object_offset_with_rotation
-        );
+      *view_model_matrix_projection = matrix_multiply(
+        matrix_projection_object_offset_with_rotation,
+        matrix_projection_object_with_rotation
+      );
 
-        *matrix_projection_object_with_rotation_destination = (
-          matrix_projection_object_with_rotation
-        );
-
-        *view_model_matrix_projection = (
-          *matrix_projection
-        );
-      } else {
-        *view_model_matrix_projection = matrix_multiply(
-          matrix_projection_object_offset_with_rotation,
-          matrix_projection_object_with_rotation
-        );
-
-        *view_model_matrix_projection = matrix_multiply(
-          *matrix_projection,
-          *view_model_matrix_projection
-        );
-      }
+      *view_model_matrix_projection = matrix_multiply(
+        *matrix_projection,
+        *view_model_matrix_projection
+      );
     } else {
       *view_model_matrix_projection = matrix_multiply(
         matrix_projection_object_offset_with_rotation,

@@ -347,8 +347,8 @@ void metil_model_poll(
       &metil_model->position,
       &metil_model->rotation,
       metil_camera,
-      &data->matrix_projection_object_offset_with_rotation,
-      &data->matrix_projection_object_with_rotation
+      (void*)0,
+      (void*)0
     );
 
     metil_object->poll(
