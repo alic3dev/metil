@@ -1,3 +1,4 @@
+#include <metil_joint_id.h>
 #include <metil_rendering/metil_renderer_data_frame.h>
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
 #include <metil_rendering/metil_renderer_data_model_object.h>
@@ -37,21 +38,26 @@ struct data_vertex {
 ) {
   struct data_vertex data_vertex;
 
-  unsigned int id_joint_position = (
+  unsigned int id_joint = (
     vertex_joint_map[
       id_vertex
     ] *
-    3
+    metil_joint_id_offset_length
   );
 
-  unsigned int id_joint_translation = (
-    id_joint_position +
-    1
+  unsigned int id_joint_position = (
+    id_joint +
+    metil_joint_id_offset_position
   );
 
   unsigned int id_joint_rotation = (
-    id_joint_translation +
-    1
+    id_joint +
+    metil_joint_id_offset_rotation
+  );
+
+  unsigned int id_joint_translation = (
+    id_joint +
+    metil_joint_id_offset_translation
   );
 
   matrix_float4x4 matrix_projection_object_with_rotation = (

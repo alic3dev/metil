@@ -1,6 +1,7 @@
 #include <metil_model/metil_model.h>
 
 #include <metil_joint.h>
+#include <metil_joint_id.h>
 #include <metil_positioning.h>
 #include <metil_rendering/metil_renderer_data_model_object.h>
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
@@ -346,9 +347,7 @@ void metil_model_poll(
       &metil_object->rotation,
       &metil_model->position,
       &metil_model->rotation,
-      metil_camera,
-      (void*)0,
-      (void*)0
+      metil_camera
     );
 
     metil_object->poll(
@@ -377,16 +376,20 @@ void metil_model_buffer_joints_poll(
       ]
     );
 
+    unsigned int id_buffer_joint = (
+      (
+        index_joint +
+        1
+      ) *
+      metil_joint_id_offset_length
+    );
+
     buffer_joints_contents_joint = &(
       (
-        (struct clic3_vector3_float*)
-        metil_model->buffer_joints.contents
+        (struct clic3_vector3_float*) metil_model->buffer_joints.contents
       )[
-        (
-          index_joint +
-          1
-        ) *
-        3
+        id_buffer_joint +
+        metil_joint_id_offset_position
       ]
     );
 
@@ -404,41 +407,10 @@ void metil_model_buffer_joints_poll(
 
     buffer_joints_contents_joint = &(
       (
-        (struct clic3_vector3_float*)
-        metil_model->buffer_joints.contents
+        (struct clic3_vector3_float*) metil_model->buffer_joints.contents
       )[
-        (
-          index_joint +
-          1
-        ) *
-        3 +
-        1
-      ]
-    );
-
-    buffer_joints_contents_joint->x = (
-      metil_joint->translation.x
-    );
-
-    buffer_joints_contents_joint->y = (
-      metil_joint->translation.y
-    );
-
-    buffer_joints_contents_joint->z = (
-      metil_joint->translation.z
-    );
-
-    buffer_joints_contents_joint = &(
-      (
-        (struct clic3_vector3_float*)
-        metil_model->buffer_joints.contents
-      )[
-        (
-          index_joint +
-          1
-        ) *
-        3 +
-        2
+        id_buffer_joint +
+        metil_joint_id_offset_rotation
       ]
     );
 
@@ -455,6 +427,27 @@ void metil_model_buffer_joints_poll(
     buffer_joints_contents_joint->z = (
       metil_joint->rotation.z +
       metil_joint->rotation_applied.z
+    );
+
+    buffer_joints_contents_joint = &(
+      (
+        (struct clic3_vector3_float*) metil_model->buffer_joints.contents
+      )[
+        id_buffer_joint +
+        metil_joint_id_offset_translation
+      ]
+    );
+
+    buffer_joints_contents_joint->x = (
+      metil_joint->translation.x
+    );
+
+    buffer_joints_contents_joint->y = (
+      metil_joint->translation.y
+    );
+
+    buffer_joints_contents_joint->z = (
+      metil_joint->translation.z
     );
   }
 }
