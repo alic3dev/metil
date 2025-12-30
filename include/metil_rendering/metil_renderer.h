@@ -24,7 +24,7 @@
 #define metil_renderer_length_objects_fps_display 5
 
 typedef void (*metil_renderer_on_initialize_function)(
-  struct metil_renderer_interface* _Nonnull,
+  struct metil* _Nonnull,
   void* _Nullable
 );
 
@@ -63,9 +63,6 @@ extern void* _Nullable metil_renderer_on_initialize_data;
   id<MTLRenderPipelineState>* pipelines_render;
   unsigned short int length_pipelines_render;
   unsigned short int index_pipelines_render_current;
-
-  struct metil_renderer_interface renderer_interface;
-  struct metil_rendering_properties rendering_properties;
 
   pthread_t* threads;
   struct metil_renderer_thread_poll_object_data* threads_data;

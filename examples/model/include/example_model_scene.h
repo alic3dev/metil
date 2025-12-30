@@ -1,12 +1,12 @@
 #ifndef __example_model_scene_h
 #define __example_model_scene_h
 
+#include <metil.h>
 #include <metil_scenes/metil_scene.h>
-#include <metil_rendering/metil_renderer_interface.h>
 
 void example_model_scene_initialize(
-  struct metil_scene*,
-  struct metil_renderer_interface*
+  struct metil*,
+  struct metil_scene*
 );
 
 void example_model_scene_poll(

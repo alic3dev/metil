@@ -17,20 +17,21 @@ struct metil_library {
   _Nullable id<MTLFunction> function_vertex_wireframe;
 };
 
-extern struct metil_library metil_library;
-
 void metil_library_initialize(
+  struct metil_library* _Nonnull,
   _Nonnull id<MTLDevice>,
   NSString* _Nonnull,
   NSString* _Nonnull
 );
 
 void metil_library_fps_display_initialize(
+  struct metil_library* _Nonnull,
   _Nonnull id<MTLDevice>,
   _Nullable id<MTLLibrary>
 );
 
 void metil_library_wireframe_initialize(
+  struct metil_library* _Nonnull,
   _Nonnull id<MTLDevice>,
   _Nullable id<MTLLibrary>
 );

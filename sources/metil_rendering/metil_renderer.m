@@ -99,7 +99,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
     self->threads_data[
       index_thread
     ].camera = (
-      &self->rendering_properties.camera
+      &self->metil->rendering_properties.camera
     );
   }
 
@@ -125,13 +125,12 @@ void* metil_renderer_on_initialize_data = (void*)0;
   [self fps_display_objects_initialize];
   [self descriptor_pipeline_render_initialize];
 
-  self->renderer_interface.renderer = self;
-  self->renderer_interface.metal_device = self->metal_device;
-  self->renderer_interface.rendering_properties = &self->rendering_properties;
+  self->metil->renderer_interface.renderer = self;
+  self->metil->renderer_interface.metal_device = self->metal_device;
 
   if (metil_renderer_on_initialize != (void*)0) {
     metil_renderer_on_initialize(
-      &self->renderer_interface,
+      self->metil,
       metil_renderer_on_initialize_data
     );
   }
@@ -275,13 +274,13 @@ void* metil_renderer_on_initialize_data = (void*)0;
   }
 
   metil_rendering_properties_destory(
-    &self->rendering_properties
+    &self->metil->rendering_properties
   );
 }
 
 - (void) drawInMTKView: (nonnull MTKView*) metal_kit_view {
   const unsigned int _frame = (
-    self->rendering_properties.frame++
+    self->metil->rendering_properties.frame++
   );
 
   if (_frame == 0) {
@@ -289,20 +288,20 @@ void* metil_renderer_on_initialize_data = (void*)0;
   }
 
   if (
-    self->rendering_properties.frame + 1 >= UINT_MAX - 1
+    self->metil->rendering_properties.frame + 1 >= UINT_MAX - 1
   ) {
-    self->rendering_properties.frame = 1;
+    self->metil->rendering_properties.frame = 1;
   }
 
-  self->rendering_properties.count_completed_frames = (
-    self->rendering_properties.count_completed_frames - 1
+  self->metil->rendering_properties.count_completed_frames = (
+    self->metil->rendering_properties.count_completed_frames - 1
   );
 
   if (
-    self->rendering_properties.count_completed_frames <= 0
+    self->metil->rendering_properties.count_completed_frames <= 0
   ) {
     pthread_mutex_lock(
-      &self->rendering_properties.mutex_frame
+      &self->metil->rendering_properties.mutex_frame
     );
   }
 
@@ -314,10 +313,10 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   MTLRenderPassDescriptor* descriptor_render_pass = metal_kit_view.currentRenderPassDescriptor;
   descriptor_render_pass.colorAttachments[0].clearColor = MTLClearColorMake(
-    self->rendering_properties.color_clear.x,
-    self->rendering_properties.color_clear.y,
-    self->rendering_properties.color_clear.z,
-    self->rendering_properties.color_clear.w
+    self->metil->rendering_properties.color_clear.x,
+    self->metil->rendering_properties.color_clear.y,
+    self->metil->rendering_properties.color_clear.z,
+    self->metil->rendering_properties.color_clear.w
   );
 
   encoder_render = [command_buffer renderCommandEncoderWithDescriptor: descriptor_render_pass];
@@ -351,11 +350,11 @@ void* metil_renderer_on_initialize_data = (void*)0;
   [self render];
 
   if (
-    self->rendering_properties.fps_display == 1 &&
+    self->metil->rendering_properties.fps_display == 1 &&
     self->pipelines_render[
       metil_renderer_pipelines_render_index_fps_display
     ] != (void*)0 &&
-    self->rendering_properties.frame > 10
+    self->metil->rendering_properties.frame > 10
   ) {
     [self render_fps_display];
   }
@@ -364,8 +363,8 @@ void* metil_renderer_on_initialize_data = (void*)0;
   self->encoder_render_encoding = 0;
 
   [command_buffer addCompletedHandler:^(id<MTLCommandBuffer> buffer) {
-    self->rendering_properties.count_completed_frames = (
-      self->rendering_properties.count_completed_frames + 1
+    self->metil->rendering_properties.count_completed_frames = (
+      self->metil->rendering_properties.count_completed_frames + 1
     );
 
     for (
@@ -373,14 +372,14 @@ void* metil_renderer_on_initialize_data = (void*)0;
       index_time_frame < metil_count_time_frames - 1;
       ++index_time_frame
     ) {
-      self->rendering_properties.time_frames[
+      self->metil->rendering_properties.time_frames[
         index_time_frame
-      ] = self->rendering_properties.time_frames[
+      ] = self->metil->rendering_properties.time_frames[
         index_time_frame + 1
       ];
     }
 
-    self->rendering_properties.time_frames[
+    self->metil->rendering_properties.time_frames[
       metil_count_time_frames - 1
     ] = metil_time_milliseconds_get() - 1759219190000;
 
@@ -393,25 +392,25 @@ void* metil_renderer_on_initialize_data = (void*)0;
     ) {
       time_difference_average = (
         time_difference_average + (float) (
-          self->rendering_properties.time_frames[
+          self->metil->rendering_properties.time_frames[
           index_time_frame + 1
-        ] - self->rendering_properties.time_frames[
+        ] - self->metil->rendering_properties.time_frames[
           index_time_frame
         ]) / (float) (metil_count_time_frames - 1)
       );
     }
 
-    self->rendering_properties.fps = (
+    self->metil->rendering_properties.fps = (
       1000.0f /
       time_difference_average
     );
 
     if (
-      self->rendering_properties.count_completed_frames == 0 ||
-      self->rendering_properties.count_completed_frames == 1
+      self->metil->rendering_properties.count_completed_frames == 0 ||
+      self->metil->rendering_properties.count_completed_frames == 1
     ) {
       pthread_mutex_unlock(
-        &self->rendering_properties.mutex_frame
+        &self->metil->rendering_properties.mutex_frame
       );
     }
   }];
@@ -432,15 +431,15 @@ void* metil_renderer_on_initialize_data = (void*)0;
   metil_renderer_size.y = size.height;
 
   metil_camera_ratio_aspect_set(
-    &self->rendering_properties.camera,
+    &self->metil->rendering_properties.camera,
     16 / 9,
     metil_renderer_size.x,
     metil_renderer_size.y
   );
 
   self->matrix_projection_static.columns[0][0] = (
-    self->rendering_properties.camera.ratio_aspect /
-    self->rendering_properties.camera.ratio_aspect_view
+    self->metil->rendering_properties.camera.ratio_aspect /
+    self->metil->rendering_properties.camera.ratio_aspect_view
   );
 }
 
@@ -641,24 +640,24 @@ void* metil_renderer_on_initialize_data = (void*)0;
 - (void) pipeline_render_library_initiliaze {
   [self
     pipeline_render_initialize: metil_renderer_pipelines_render_index_library
-    function_fragment: metil_library.function_fragment
-    function_vertex: metil_library.function_vertex
+    function_fragment: self->metil->library.function_fragment
+    function_vertex: self->metil->library.function_vertex
   ];
 }
 
 - (void) pipeline_render_wireframe_initialize {
   [self
     pipeline_render_initialize: metil_renderer_pipelines_render_index_wireframe
-    function_fragment: metil_library.function_fragment_wireframe
-    function_vertex: metil_library.function_vertex_wireframe
+    function_fragment: self->metil->library.function_fragment_wireframe
+    function_vertex: self->metil->library.function_vertex_wireframe
   ];
 }
 
 - (void) pipeline_render_fps_display_initiliaze {
   [self
     pipeline_render_initialize: metil_renderer_pipelines_render_index_fps_display
-    function_fragment: metil_library.function_fragment_fps_display
-    function_vertex: metil_library.function_vertex_fps_display
+    function_fragment: self->metil->library.function_fragment_fps_display
+    function_vertex: self->metil->library.function_vertex_fps_display
   ];
 }
 
@@ -693,12 +692,12 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   data_frame->brightness = (
     metil_scene_controller.scene.rendering_properties.brightness *
-    self->rendering_properties.brightness
+    self->metil->rendering_properties.brightness
   );
 
   data_frame->brightness_text = (
     metil_scene_controller.scene.rendering_properties.brightness_text *
-    self->rendering_properties.brightness_text
+    self->metil->rendering_properties.brightness_text
   );
 
   matrix_float4x4 matrix_player_rotation_x = (matrix_float4x4) {{
@@ -709,12 +708,12 @@ void* metil_renderer_on_initialize_data = (void*)0;
   }};
 
   if (
-    self->rendering_properties.camera.mode == metil_camera_mode_third_person
+    self->metil->rendering_properties.camera.mode == metil_camera_mode_third_person
   ) {
     matrix_player_rotation_x.columns[
       3
     ].y = (
-      self->rendering_properties.camera.height * (
+      self->metil->rendering_properties.camera.height * (
         1.0f - (
           (
             -metil_scene_controller.scene.player.rotation.x
@@ -742,7 +741,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
   }};
 
   matrix_float4x4 matrix_player_projection = matrix_multiply(
-    self->rendering_properties.camera.matrix_viewport_projection,
+    self->metil->rendering_properties.camera.matrix_viewport_projection,
     matrix_player_rotation_x
   );
 
@@ -827,7 +826,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
   }
 
   if (
-    self->rendering_properties.fps_display == 1
+    self->metil->rendering_properties.fps_display == 1
   ) {
     [self
       poll_fps_display: &matrix_object_projection
@@ -864,14 +863,14 @@ void* metil_renderer_on_initialize_data = (void*)0;
   matrix_player_projection: (matrix_float4x4*) matrix_player_projection
 {
   if (
-    self->rendering_properties.frame == 0 ||
-    self->rendering_properties.frame % 10 != 0
+    self->metil->rendering_properties.frame == 0 ||
+    self->metil->rendering_properties.frame % 10 != 0
   ) {
     return;
   }
 
   char* char_array_fps = clic3_char_array_from_float(
-    self->rendering_properties.fps
+    self->metil->rendering_properties.fps
   );
 
   float position_x = 0.0f;
@@ -895,7 +894,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
     position_x = position_x + self->objects_fps_display[
       index_object_fps_display
-    ].mesh.size.x / self->rendering_properties.camera.ratio_aspect_view;
+    ].mesh.size.x / self->metil->rendering_properties.camera.ratio_aspect_view;
 
     self->objects_fps_display[
       index_object_fps_display
@@ -957,7 +956,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
       &self->matrix_projection_static,
       matrix_object_projection,
       matrix_player_projection,
-      &rendering_properties.camera
+      &self->metil->rendering_properties.camera
     );
   }
 
@@ -994,7 +993,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
       );
 
       if (
-        self->rendering_properties.mode & metil_rendering_properties_mode_default
+        self->metil->rendering_properties.mode & metil_rendering_properties_mode_default
       ) {
         [self
           render_object: metil_object
@@ -1002,7 +1001,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
       }
 
       if (
-        self->rendering_properties.mode & metil_rendering_properties_mode_wireframe
+        self->metil->rendering_properties.mode & metil_rendering_properties_mode_wireframe
       ) {
         [self
           render_object_wireframe: metil_object
@@ -1030,7 +1029,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
         );
 
         if (
-          self->rendering_properties.mode & metil_rendering_properties_mode_default
+          self->metil->rendering_properties.mode & metil_rendering_properties_mode_default
         ) {
           [self
             render_object: metil_object
@@ -1038,7 +1037,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
         }
 
         if (
-          self->rendering_properties.mode & metil_rendering_properties_mode_wireframe
+          self->metil->rendering_properties.mode & metil_rendering_properties_mode_wireframe
         ) {
           [self
             render_object_wireframe: metil_object
@@ -1247,18 +1246,18 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
 - (void) rendering_properties_initialize {
   metil_rendering_properties_initialize(
-    &self->rendering_properties
+    &self->metil->rendering_properties
   );
 
-  self->rendering_properties.brightness = (
+  self->metil->rendering_properties.brightness = (
     metil_configuration.rendering_properties.brightness
   );
 
-  self->rendering_properties.brightness_text = (
+  self->metil->rendering_properties.brightness_text = (
     metil_configuration.rendering_properties.brightness_text
   );
 
-  self->rendering_properties.fps_display = (
+  self->metil->rendering_properties.fps_display = (
     metil_configuration.rendering_properties.fps_display
   );
 }

@@ -1,5 +1,6 @@
 #include <example_2d_scene.h>
 
+#include <metil.h>
 #include <metil_mesh/metil_mesh_2d/metil_mesh_square.h>
 #include <metil_object.h>
 #include <metil_player.h>
@@ -10,17 +11,15 @@
 
 #include <clic3_vector.h>
 
-#include <Metal/MTLDevice.h>
-
 #include <stdlib.h>
 
 void example_2d_scene_initialize(
-  struct metil_scene* scene,
-  struct metil_renderer_interface* metil_renderer_interface
+  struct metil* metil,
+  struct metil_scene* scene
 ) {
   metil_scene_initialize_with_renderables(
     scene,
-    metil_renderer_interface,
+    &metil->renderer_interface,
     100
   );
 

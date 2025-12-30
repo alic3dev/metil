@@ -3,10 +3,10 @@
 #include <example_face_pipeline_index.h>
 #include <example_face_scene.h>
 
+#include <metil.h>
 #include <metil_initialize.h>
 #include <metil_input/metil_cursor.h>
 #include <metil_library.h>
-#include <metil_rendering/metil_renderer_interface.h>
 #include <metil_scenes/metil_scene_controller.h>
 
 int main(
@@ -22,31 +22,32 @@ int main(
 }
 
 void example_face_renderer_on_initialize(
-  struct metil_renderer_interface* metil_renderer_interface,
+  struct metil* metil,
   void* data
 ) {
   metil_input_cursor_lockable_unset();
 
   metil_library_initialize(
-    metil_renderer_interface->metal_device,
+    &metil->library,
+    metil->renderer_interface.metal_device,
     @"face_fragment",
     @"face_vertex"
   );
 
   example_face_pipeline_index_face_points = [
-    metil_renderer_interface->renderer
+    metil->renderer_interface.renderer
     pipeline_add: [
-      metil_library.library
+      metil->library.library
       newFunctionWithName: @"face_points_fragment"
     ]
     function_vertex: [
-      metil_library.library
+      metil->library.library
       newFunctionWithName: @"face_points_vertex"
     ]
   ];
 
   example_face_scene_initialize(
-    &metil_scene_controller.scene,
-    metil_renderer_interface
+    metil,
+    &metil_scene_controller.scene
   );
 }

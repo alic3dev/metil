@@ -56,6 +56,10 @@ int metil_initialize_with_data(
 ) {
   static struct metil metil;
 
+  metil.renderer_interface.rendering_properties = &(
+    metil.rendering_properties
+  );
+
   metil_system_information_initialize();
 
   metil_renderer_on_initialize = metil_renderer_on_initialize_function;

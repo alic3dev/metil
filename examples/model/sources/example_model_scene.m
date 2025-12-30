@@ -16,12 +16,12 @@
 #include <math.h>
 
 void example_model_scene_initialize(
-  struct metil_scene* scene,
-  struct metil_renderer_interface* metil_renderer_interface
+  struct metil* metil,
+  struct metil_scene* scene
 ) {
   metil_scene_initialize_with_renderables(
     scene,
-    metil_renderer_interface,
+    &metil->renderer_interface,
     2
   );
 

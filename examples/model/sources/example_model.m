@@ -3,10 +3,9 @@
 #include <example_model_pipeline_index.h>
 #include <example_model_scene.h>
 
+#include <metil.h>
 #include <metil_initialize.h>
-#include <metil_input/metil_cursor.h>
 #include <metil_library.h>
-#include <metil_rendering/metil_renderer_interface.h>
 #include <metil_scenes/metil_scene_controller.h>
 
 int main(
@@ -22,29 +21,30 @@ int main(
 }
 
 void example_model_renderer_on_initialize(
-  struct metil_renderer_interface* metil_renderer_interface,
+  struct metil* metil,
   void* data
 ) {
   metil_library_initialize(
-    metil_renderer_interface->metal_device,
+    &metil->library,
+    metil->renderer_interface.metal_device,
     @"model_fragment",
     @"model_vertex"
   );
 
   example_model_pipeline_index_model_item = [
-    metil_renderer_interface->renderer
+    metil->renderer_interface.renderer
     pipeline_add: [
-      metil_library.library
+      metil->library.library
       newFunctionWithName: @"model_item_fragment"
     ]
     function_vertex: [
-      metil_library.library
+      metil->library.library
       newFunctionWithName: @"model_item_vertex"
     ]
   ];
 
   example_model_scene_initialize(
-    &metil_scene_controller.scene,
-    metil_renderer_interface
+    metil,
+    &metil_scene_controller.scene
   );
 }

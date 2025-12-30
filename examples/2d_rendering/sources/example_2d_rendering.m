@@ -20,17 +20,18 @@ int main(
 }
 
 void example_2d_rendering_renderer_on_initialize(
-  struct metil_renderer_interface* metil_renderer_interface,
+  struct metil* metil,
   void* data
 ) {
   metil_library_initialize(
-    metil_renderer_interface->metal_device,
+    &metil->library,
+    metil->renderer_interface.metal_device,
     @"shader_2d_fragment",
     @"shader_2d_vertex"
   );
 
   example_2d_scene_initialize(
-    &metil_scene_controller.scene,
-    metil_renderer_interface
+    metil,
+    &metil_scene_controller.scene
   );
 }
