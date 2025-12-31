@@ -1,5 +1,5 @@
-#ifndef __metil_player_h
-#define __metil_player_h
+#ifndef __metil_player_metil_player_h
+#define __metil_player_metil_player_h
 
 #include <clic3_vector.h>
 
