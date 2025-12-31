@@ -9,18 +9,6 @@
 #include <math.h>
 #include <simd/simd.h>
 
-const struct clic3_vector3_float metil_positioning_position_offset_none = {
-  .x = 0.0f,
-  .y = 0.0f,
-  .z = 0.0f
-};
-
-const struct clic3_vector3_float metil_positioning_rotation_offset_none = {
-  .x = 0.0f,
-  .y = 0.0f,
-  .z = 0.0f
-};
-
 void metil_positioning_view_model_matrix_projection_set(
   enum metil_positioning positioning,
   matrix_float4x4* view_model_matrix_projection,
