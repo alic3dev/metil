@@ -23,7 +23,10 @@ void metil_destroy(
   
   metil_paths_destroy();
   
-  metil_audio_destroy();
+  metil_audio_destroy(
+    &metil->audio,
+    &metil->configuration
+  );
   
   metil_text_destroy();
 

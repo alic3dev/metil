@@ -15,7 +15,7 @@
 #include <metil_configuration/metil_configuration_audio.h>
 #include <metil_configuration/metil_configuration_rendering_properties.h>
 #include <metil_configuration/metil_configuration.h>
-#include <metil_debug/metil_log.h>
+#include <metil_debug/metil_debug_log.h>
 #include <metil_group.h>
 #include <metil_initialize.h>
 #include <metil_input/metil_controller_state.h>

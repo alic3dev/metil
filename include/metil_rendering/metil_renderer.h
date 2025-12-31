@@ -54,8 +54,6 @@ extern void* _Nullable metil_renderer_on_initialize_data;
 
   id<MTLBuffer> index_buffer_mesh_current;
 
-  id<MTLDevice> metal_device;
-
   struct metil_object objects_fps_display[
     metil_renderer_length_objects_fps_display
   ];

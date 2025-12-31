@@ -1,6 +1,6 @@
 #include <metil_text/metil_text.h>
 
-#include <metil_debug/metil_log.h>
+#include <metil_debug/metil_debug_log.h>
 #include <metil_mesh/metil_mesh_text.h>
 
 #include <clic3_char_arrays.h>
@@ -24,7 +24,9 @@ struct metil_text_render_parameters metil_text_render_parameters_default = {
   .scale = 0.001f
 };
 
-void metil_text_initialize() {
+void metil_text_initialize(
+  struct metil_configuration* metil_configuration
+) {
   CFStringRef name_family_font_monospace = CFSTR(
     "monospace"
   );
@@ -49,6 +51,7 @@ void metil_text_initialize() {
     metil_font_color_space == (void*)0
   ) {
     metil_debug_log_error(
+      metil_configuration->debug_log_level,
       "couldn't create color space\n"
     );
   }
@@ -57,7 +60,8 @@ void metil_text_initialize() {
 CGGlyph* metil_text_glyphs_encode(
   char* characters,
   unsigned int length_characters,
-  CTFontRef font
+  CTFontRef font,
+  struct metil_configuration* metil_configuration
 ) {
   static CGGlyph* glyphs;
 
@@ -99,6 +103,7 @@ CGGlyph* metil_text_glyphs_encode(
     );
 
     metil_debug_log_error(
+      metil_configuration->debug_log_level,
       message_debug_log_error_with_newline
     );
 
@@ -115,7 +120,8 @@ CGGlyph* metil_text_glyphs_encode(
 
 struct metil_text_image* metil_text_render(
   char* characters,
-  struct metil_text_render_parameters* metil_text_render_parameters
+  struct metil_text_render_parameters* metil_text_render_parameters,
+  struct metil_configuration* metil_configuration
 ) {
   unsigned int length_characters = clic3_char_array_length(
     characters
@@ -124,7 +130,8 @@ struct metil_text_image* metil_text_render(
   CGGlyph* glyphs = metil_text_glyphs_encode(
     characters,
     length_characters,
-    metil_text_render_parameters->font
+    metil_text_render_parameters->font,
+    metil_configuration
   );
 
   if (
@@ -216,6 +223,7 @@ struct metil_text_image* metil_text_render(
     context_bitmap == (void*)0
   ) {
     metil_debug_log_error(
+      metil_configuration->debug_log_level,
       "failed_to_create->{CGBitmapContext}\n"
     );
 
@@ -253,7 +261,8 @@ struct metil_text_image* metil_text_render(
 
 id<MTLTexture> metil_text_texture_render(
   id<MTLDevice> metal_device,
-  struct metil_text_image* text_image
+  struct metil_text_image* text_image,
+  struct metil_configuration* metil_configuration
 ) {
   MTLTextureDescriptor* texture_descriptor = [[MTLTextureDescriptor alloc] init];
 
@@ -287,17 +296,20 @@ id<MTLTexture> metil_text_mesh_with_texture_initialize(
   id<MTLDevice> metal_device,
   struct metil_mesh* mesh,
   char* characters,
-  struct metil_text_render_parameters* metil_text_render_parameters
+  struct metil_text_render_parameters* metil_text_render_parameters,
+  struct metil_configuration* metil_configuration
 ) {
   struct metil_text_image* text_image = metil_text_render(
     characters,
-    metil_text_render_parameters
+    metil_text_render_parameters,
+    metil_configuration
   );
 
   if (
     text_image == (void*)0
   ) {
     metil_debug_log_error(
+      metil_configuration->debug_log_level,
       "failed_to_render_text_image\n"
     );
 
@@ -313,10 +325,13 @@ id<MTLTexture> metil_text_mesh_with_texture_initialize(
 
   id<MTLTexture> texture = metil_text_texture_render(
     metal_device,
-    text_image
+    text_image,
+    metil_configuration
   );
 
-  metil_text_image_destroy(text_image);
+  metil_text_image_destroy(
+    text_image
+  );
 
   return texture;
 }
@@ -324,8 +339,13 @@ id<MTLTexture> metil_text_mesh_with_texture_initialize(
 void metil_text_image_destroy(
   struct metil_text_image* text_image
 ) {
-  free(text_image->data);
-  free(text_image);
+  free(
+    text_image->data
+  );
+  
+  free(
+    text_image
+  );
 }
 
 void metil_text_destroy() {

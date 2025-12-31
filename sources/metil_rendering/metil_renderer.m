@@ -102,14 +102,16 @@ void* metil_renderer_on_initialize_data = (void*)0;
     );
   }
 
-  self->metal_device = (
+  self->metil->renderer_interface.renderer = self;
+  self->metil->renderer_interface.metal_device = (
     metal_kit_view.device
   );
 
   [self termination_functions_initialize];
 
   metil_text_characters_initialize(
-    self->metal_device
+    self->metil->renderer_interface.metal_device,
+    &self->metil->configuration
   );
 
   metil_scene_controller_after_scene_change_add(
@@ -122,9 +124,6 @@ void* metil_renderer_on_initialize_data = (void*)0;
   [self stencils_depth_initialize];
   [self fps_display_objects_initialize];
   [self descriptor_pipeline_render_initialize];
-
-  self->metil->renderer_interface.renderer = self;
-  self->metil->renderer_interface.metal_device = self->metal_device;
 
   if (metil_renderer_on_initialize != (void*)0) {
     metil_renderer_on_initialize(
@@ -141,7 +140,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
 - (void) after_scene_change {}
 
 - (void) command_queue_initialize {
-  self->command_queue = [self->metal_device
+  self->command_queue = [self->metil->renderer_interface.metal_device
     newCommandQueue
   ];
 }
@@ -154,7 +153,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
   ) {
     data_buffer_frame[
       index_buffer
-    ] = [self->metal_device
+    ] = [self->metil->renderer_interface.metal_device
       newBufferWithLength: sizeof(struct metil_renderer_data_frame)
       options: MTLResourceStorageModeShared
     ];
@@ -209,7 +208,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
   free(self->threads);
   free(self->threads_data);
 
-  [self->metal_device release];
+  [self->metil->renderer_interface.metal_device release];
 
   for (
     unsigned char index_data_buffer_frame_release = 0;
@@ -282,7 +281,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
   );
 
   if (_frame == 0) {
-    metil_audio_data.muted = 0;
+    self->metil->audio.muted = 0;
   }
 
   if (
@@ -457,7 +456,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
       &self->objects_fps_display[
         index_object_fps_display
       ],
-      self->metal_device,
+      self->metil->renderer_interface.metal_device,
       metil_object_buffer_type_vertex
     );
 
@@ -465,7 +464,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
       &self->objects_fps_display[
         index_object_fps_display
       ],
-      self->metal_device,
+      self->metil->renderer_interface.metal_device,
       metil_object_buffer_type_vertex
     );
 
@@ -494,7 +493,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
       index_object_fps_display
     ].buffers_vertex[
       metil_object_buffer_default_index_data
-    ].buffer = [self->metal_device
+    ].buffer = [self->metil->renderer_interface.metal_device
       newBufferWithLength: sizeof(struct metil_renderer_data_object)
       options: MTLResourceStorageModeShared
     ];
@@ -516,7 +515,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
 }
 
 - (void) initialize_null {
-  self->metal_device = (void*)0;
+  self->metil->renderer_interface.metal_device = (void*)0;
 
   self->command_queue = (void*)0;
   self->depth_state = (void*)0;
@@ -580,7 +579,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   self->pipelines_render[
     self->length_pipelines_render - 1
-  ] = [self->metal_device
+  ] = [self->metil->renderer_interface.metal_device
     newRenderPipelineStateWithDescriptor: self->descriptor_pipeline_render
     error: (void*)0
   ];
@@ -627,7 +626,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
     self->pipelines_render[
       index_pipeline_render
-    ] = [self->metal_device
+    ] = [self->metil->renderer_interface.metal_device
       newRenderPipelineStateWithDescriptor: self->descriptor_pipeline_render
       error: (void*)0
     ];
@@ -1248,12 +1247,12 @@ void* metil_renderer_on_initialize_data = (void*)0;
   MTLDepthStencilDescriptor* descriptor_stencil_depth = [[MTLDepthStencilDescriptor alloc] init];
   descriptor_stencil_depth.depthCompareFunction = MTLCompareFunctionLessEqual;
   descriptor_stencil_depth.depthWriteEnabled = 1;
-  self->depth_state = [self->metal_device
+  self->depth_state = [self->metil->renderer_interface.metal_device
     newDepthStencilStateWithDescriptor: descriptor_stencil_depth
   ];
 
   descriptor_stencil_depth.depthWriteEnabled = 0;
-  self->depth_state_writes_disabled = [self->metal_device
+  self->depth_state_writes_disabled = [self->metil->renderer_interface.metal_device
     newDepthStencilStateWithDescriptor: descriptor_stencil_depth
   ];
 }

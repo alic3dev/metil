@@ -5,6 +5,7 @@
 #include <metil_application/metil_application_delegate.h>
 #include <metil_audio/metil_audio.h>
 #include <metil_configuration/metil_configuration.h>
+#include <metil_configuration/metil_configuration_values_set.h>
 #include <metil_input/metil_input.h>
 #include <metil_library.h>
 #include <metil_paths/metil_paths.h>
@@ -60,10 +61,6 @@ int metil_initialize_with_data(
     metil.rendering_properties
   );
 
-  metil_system_information_initialize(
-    &metil.system_information
-  );
-
   metil_renderer_on_initialize = metil_renderer_on_initialize_function;
   metil_renderer_on_initialize_data = metil_renderer_on_initialize_function_data;
 
@@ -98,19 +95,34 @@ int metil_initialize_with_data(
   }
   #endif
 
+  metil_system_information_initialize(
+    &metil.system_information,
+    &metil.configuration
+  );
+
   metil_termination_initialize(
     &metil.termination
   );
 
   interrupt_handler_initialize();
+  
   metil_input_initialize();
+  
   metil_scene_controller_initialize(
     &metil
   );
-  metil_audio_initialize();
-  metil_text_initialize();
+
+  metil_audio_initialize(
+    &metil,
+    &metil.audio
+  );
+
+  metil_text_initialize(
+    &metil.configuration
+  );
 
   metil_configuration_values_set(
+    &metil,
     &metil.configuration
   );
 

@@ -1,12 +1,9 @@
-#include <metil_debug/metil_log.h>
+#include <metil_debug/metil_debug_log.h>
 
 #include <stdio.h>
 
-enum metil_debug_log_level metil_debug_log_level = (
-  metil_debug_log_level_error
-);
-
 void metil_debug_log(
+  enum metil_debug_log_level metil_debug_log_level,
   char* buffer_output
 ) {
   if (
@@ -23,6 +20,7 @@ void metil_debug_log(
 }
 
 void metil_debug_log_error(
+  enum metil_debug_log_level metil_debug_log_level,
   char* buffer_output
 ) {
   if (

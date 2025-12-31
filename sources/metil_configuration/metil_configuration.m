@@ -1,7 +1,8 @@
 #include <metil_configuration/metil_configuration.h>
 
+#include <metil.h>
 #include <metil_audio/metil_audio_data.h>
-#include <metil_debug/metil_log.h>
+#include <metil_debug/metil_debug_log.h>
 #include <metil_paths/metil_paths.h>
 
 #include <clic3_bytes.h>
@@ -16,6 +17,10 @@ void metil_configuration_initialize(
 ) {
   metil_configuration->audio.volume = (
     metil_configuration_default_audio_volume
+  );
+
+  metil_configuration->debug_log_level = (
+    metil_debug_log_level_error
   );
 
   metil_configuration_rendering_properties_initialize(
@@ -43,6 +48,7 @@ unsigned char metil_configuration_load(
     file_configuration == (void*)0
   ) {
     metil_debug_log_error(
+      metil_configuration->debug_log_level,
       "failed_to_[open|create]->{configuration}"
     );
 
@@ -69,6 +75,7 @@ unsigned char metil_configuration_load(
       length_buffer + 1 >= UINT_MAX - 1
     ) {
       metil_debug_log_error(
+        metil_configuration->debug_log_level,
         "configuration_file_contains_too_long_of_a_line"
       );
 
@@ -108,6 +115,7 @@ unsigned char metil_configuration_load(
           buffer[length_buffer - 1] != ';'
         ) {
           metil_debug_log_error(
+            metil_configuration->debug_log_level,
             "invalid_configuration_file"
           );
 
@@ -174,11 +182,17 @@ unsigned char metil_configuration_load(
           );
 
           metil_debug_log_error(
+            metil_configuration->debug_log_level,
             message_debug_log_error
           );
 
-          free(message_debug_log_error_prefix);
-          free(message_debug_log_error);
+          free(
+            message_debug_log_error_prefix
+          );
+
+          free(
+            message_debug_log_error
+          );
 
           status_configuration_load = 1;
 
@@ -188,6 +202,7 @@ unsigned char metil_configuration_load(
         switch (index_parameter) {
           case 0: {
             float audio_volume = metil_configuration_value_float_parse(
+              metil_configuration,
               buffer_parameter,
               buffer_value
             );
@@ -202,6 +217,7 @@ unsigned char metil_configuration_load(
           }
           case 1: {
             float rendering_brightness = metil_configuration_value_float_parse(
+              metil_configuration,
               buffer_parameter,
               buffer_value
             );
@@ -216,6 +232,7 @@ unsigned char metil_configuration_load(
           }
           case 2: {
             float rendering_brightness_text = metil_configuration_value_float_parse(
+              metil_configuration,
               buffer_parameter,
               buffer_value
             );
@@ -230,6 +247,7 @@ unsigned char metil_configuration_load(
           }
           case 3: {
             int fps_display = metil_configuration_value_int_parse(
+              metil_configuration,
               buffer_parameter,
               buffer_value
             );
@@ -275,6 +293,7 @@ unsigned char metil_configuration_load(
 }
 
 int metil_configuration_value_int_parse(
+  struct metil_configuration* metil_configuration,
   char* parameter,
   char* value
 ) {
@@ -291,6 +310,7 @@ int metil_configuration_value_int_parse(
     value_int != 1
   ) {
     metil_configuration_debug_log_parameter_invalid(
+      metil_configuration,
       parameter,
       value
     );
@@ -302,6 +322,7 @@ int metil_configuration_value_int_parse(
 }
 
 float metil_configuration_value_float_parse(
+  struct metil_configuration* metil_configuration,
   char* parameter,
   char* value
 ) {
@@ -317,6 +338,7 @@ float metil_configuration_value_float_parse(
     value_float < 0.0f
   ) {
     metil_configuration_debug_log_parameter_invalid(
+      metil_configuration,
       parameter,
       value
     );
@@ -328,6 +350,7 @@ float metil_configuration_value_float_parse(
 }
 
 void metil_configuration_debug_log_parameter_invalid(
+  struct metil_configuration* metil_configuration,
   char* parameter,
   char* value
 ) {
@@ -352,6 +375,7 @@ void metil_configuration_debug_log_parameter_invalid(
   );
 
   metil_debug_log_error(
+    metil_configuration->debug_log_level,
     message_debug_log_error
   );
 
@@ -370,14 +394,6 @@ void metil_configuration_debug_log_parameter_invalid(
   free(
     message_debug_log_error
   );
-}
-
-void metil_configuration_values_set(
-  struct metil_configuration* metil_configuration
-) {
-  #if !target_os_ios
-  metil_audio_data.volume = metil_configuration->audio.volume;
-  #endif
 }
 
 void metil_configuration_destroy(

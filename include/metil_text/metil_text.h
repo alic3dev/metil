@@ -1,6 +1,7 @@
 #ifndef __metil_text_metil_text_h
 #define __metil_text_metil_text_h
 
+#include <metil_configuration/metil_configuration.h>
 #include <metil_mesh/metil_mesh.h>
 
 #include <clic3_vector.h>
@@ -9,15 +10,15 @@
 #include <CoreText/CoreText.h>
 #include <Metal/MTLDevice.h>
 
-extern CTFontRef metil_font_reference_monospace;
+extern CTFontRef _Nonnull metil_font_reference_monospace;
 
 struct metil_text_image {
-  unsigned char* data;
+  unsigned char* _Nonnull data;
   struct clic3_vector2_unsigned_int size;
 };
 
 struct metil_text_render_parameters {
-  CTFontRef font;
+  CTFontRef _Nonnull font;
   unsigned short int letter_spacing;
   struct clic3_vector2_unsigned_short_int padding;
   float scale;
@@ -25,33 +26,39 @@ struct metil_text_render_parameters {
 
 extern struct metil_text_render_parameters metil_text_render_parameters_default;
 
-void metil_text_initialize();
+void metil_text_initialize(
+  struct metil_configuration* _Nonnull
+);
 
-CGGlyph* metil_text_glyphs_encode(
-  char*,
+CGGlyph* _Nullable metil_text_glyphs_encode(
+  char* _Nonnull,
   unsigned int,
-  CTFontRef
+  CTFontRef _Nonnull,
+  struct metil_configuration* _Nonnull
 );
 
-struct metil_text_image* metil_text_render(
-  char*,
-  struct metil_text_render_parameters*
+struct metil_text_image* _Nullable metil_text_render(
+  char* _Nonnull,
+  struct metil_text_render_parameters* _Nonnull,
+  struct metil_configuration* _Nonnull
 );
 
-id<MTLTexture> metil_text_texture_render(
-  id<MTLDevice>,
-  struct metil_text_image*
+id<MTLTexture> _Nullable metil_text_texture_render(
+  id<MTLDevice> _Nonnull,
+  struct metil_text_image* _Nonnull,
+  struct metil_configuration* _Nonnull
 );
 
-id<MTLTexture> metil_text_mesh_with_texture_initialize(
-  id<MTLDevice>,
-  struct metil_mesh*,
-  char*,
-  struct metil_text_render_parameters*
+id<MTLTexture> _Nullable metil_text_mesh_with_texture_initialize(
+  id<MTLDevice> _Nonnull,
+  struct metil_mesh* _Nonnull,
+  char* _Nonnull,
+  struct metil_text_render_parameters* _Nonnull,
+  struct metil_configuration* _Nonnull
 );
 
 void metil_text_image_destroy(
-  struct metil_text_image*
+  struct metil_text_image* _Nonnull
 );
 
 void metil_text_destroy();

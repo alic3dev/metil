@@ -17,7 +17,8 @@ struct metil_text_characters metil_text_characters_default = {
 };
 
 void metil_text_characters_initialize(
-  id<MTLDevice> metal_device
+  id<MTLDevice> metal_device,
+  struct metil_configuration* metil_configuration
 ) {
   metil_text_characters_default.meshes = malloc(
     sizeof(struct metil_mesh) *
@@ -70,9 +71,12 @@ void metil_text_characters_initialize(
       index_character
     ] = metil_text_mesh_with_texture_initialize(
       metal_device,
-      &metil_text_characters_default.meshes[index_character],
+      &metil_text_characters_default.meshes[
+        index_character
+      ],
       character_array,
-      &metil_text_render_parameters
+      &metil_text_render_parameters,
+      metil_configuration
     );
 
     metil_text_characters_default.vertices[

@@ -1,6 +1,7 @@
 #ifndef __metil_text_metil_text_characters_h
 #define __metil_text_metil_text_characters_h
 
+#include <metil_configuration/metil_configuration.h>
 #include <metil_mesh/metil_mesh.h>
 
 #include <Metal/MTLBuffer.h>
@@ -21,7 +22,8 @@ struct metil_text_characters {
 extern struct metil_text_characters metil_text_characters_default;
 
 void metil_text_characters_initialize(
-  _Nonnull id<MTLDevice>
+  _Nonnull id<MTLDevice>,
+  struct metil_configuration* _Nonnull
 );
 
 void metil_text_characters_destroy();
