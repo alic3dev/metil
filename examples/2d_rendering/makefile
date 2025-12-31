@@ -71,8 +71,6 @@ directory_app_contents=${directory_app}/Contents
 directory_app_contents_macos=${directory_app_contents}/MacOS
 directory_app_contents_resources=${directory_app_contents}/Resources
 
-directory_macos_sdk=${shell xcrun --show-sdk-path}
-
 file_metil_metallib=${directory_metil_library}/metil.metallib
 file_metil_storyboard=${directory_metil_library}/metil.storyboardc
 
@@ -90,11 +88,22 @@ files_sources_objc=${shell find ${directory_sources} -name "*.m"}
 files_objects_c=${patsubst ${directory_sources}/%.c,${directory_objects_c}/%.o,${files_sources_c}}
 files_objects_objc=${patsubst ${directory_sources}/%.m,${directory_objects_objc}/%.o,${files_sources_objc}}
 
-target_device=mac
-ifndef target_macos_version
-	target_macos_version=26.1
+ifndef target_device_version
+target_device_version=26.1
 endif
-target_platform=arm64-apple-macos${target_macos_version}
+
+ifndef target_metal_version
+target_metal_version=${target_device_version}
+endif
+
+ifndef target_metal_standard
+target_metal_standard=metal4.0
+endif
+
+target_platform=arm64-apple-macos${target_device_version}
+target_platform_metal=air64-apple-macos${target_metal_version}
+
+directory_sdk=${shell xcrun --sdk macosx${target_device_version} --show-sdk-path}
 
 frameworks=Metal MetalKit GameController CoreAudio CoreGraphics CoreText
 
