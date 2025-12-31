@@ -23,6 +23,8 @@ void example_fog_renderer_on_initialize(
   struct metil* metil,
   void* data
 ) {
+
+  metil->rendering_properties.mode = metil_rendering_properties_mode_wireframe;
   // metil->rendering_properties.camera.distance_view.far = 100.0f;
 
   metil_library_initialize(

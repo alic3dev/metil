@@ -1,6 +1,7 @@
 #include <example_fog_scene.h>
 
 #include <metil.h>
+#include <metil_mesh/metil_mesh_ball.h>
 #include <metil_mesh/metil_mesh_dollop.h>
 #include <metil_mesh/metil_mesh_gem.h>
 #include <metil_mesh/metil_mesh_mushroom.h>
@@ -24,7 +25,7 @@ void example_fog_scene_initialize(
   metil_scene_initialize_with_renderables(
     metil,
     scene,
-    2000
+    200
   );
 
   scene->poll = example_fog_scene_poll;
@@ -50,80 +51,93 @@ void example_fog_scene_initialize(
       ].renderable
     );
 
-    switch (
-      index_renderable % 5
-    ) {
-      case 0: {
-        metil_mesh_dollop_initialize(
-          &object->mesh,
-          (struct clic3_vector3_float) {
-            .x = 10.0f,
-            .y = 10.0f,
-            .z = 10.0f
-          }, (struct clic3_vector2_unsigned_short_int) {
-            .x = 10,
-            .y = 10
-          }
-        );
-        break;
+    metil_mesh_ball_initialize(
+      &object->mesh,
+      2.0f * ((index_renderable * 3) % 10),
+      (struct clic3_vector2_unsigned_short_int) {
+        .x = 10 + (
+          index_renderable % 2
+        ),
+        .y = 10 + (
+          index_renderable % 3 == 0 ? 1 : 0
+        )
       }
-      case 1: {
-        metil_mesh_gem_initialize(
-          &object->mesh,
-          (struct clic3_vector3_float) {
-            .x = 10.0f,
-            .y = 10.0f,
-            .z = 10.0f
-          }, (struct clic3_vector2_unsigned_short_int) {
-            .x = 10,
-            .y = 10
-          }
-        );
-        break;
-      }
-      case 2: {
-        metil_mesh_mushroom_initialize(
-          &object->mesh,
-          (struct clic3_vector3_float) {
-            .x = 10.0f,
-            .y = 10.0f,
-            .z = 10.0f
-          }, (struct clic3_vector2_unsigned_short_int) {
-            .x = 10,
-            .y = 10
-          }
-        );
-        break;
-      }
-      case 3: {
-        metil_mesh_shuttle_initialize(
-          &object->mesh,
-          (struct clic3_vector3_float) {
-            .x = 10.0f,
-            .y = 10.0f,
-            .z = 10.0f
-          }, (struct clic3_vector2_unsigned_short_int) {
-            .x = 10,
-            .y = 10
-          }
-        );
-        break;
-      }
-      case 4: {
-        metil_mesh_tube_initialize(
-          &object->mesh,
-          (struct clic3_vector3_float) {
-            .x = 10.0f,
-            .y = 10.0f,
-            .z = 10.0f
-          }, (struct clic3_vector2_unsigned_short_int) {
-            .x = 10,
-            .y = 10
-          }
-        );
-        break;
-      }
-    }
+    );
+
+    // switch (
+    //   index_renderable % 5
+    // ) {
+    //   case 0: {
+    //     metil_mesh_dollop_initialize(
+    //       &object->mesh,
+    //       (struct clic3_vector3_float) {
+    //         .x = 10.0f,
+    //         .y = 10.0f,
+    //         .z = 10.0f
+    //       }, (struct clic3_vector2_unsigned_short_int) {
+    //         .x = 10,
+    //         .y = 10
+    //       }
+    //     );
+    //     break;
+    //   }
+    //   case 1: {
+    //     metil_mesh_gem_initialize(
+    //       &object->mesh,
+    //       (struct clic3_vector3_float) {
+    //         .x = 10.0f,
+    //         .y = 10.0f,
+    //         .z = 10.0f
+    //       }, (struct clic3_vector2_unsigned_short_int) {
+    //         .x = 10,
+    //         .y = 10
+    //       }
+    //     );
+    //     break;
+    //   }
+    //   case 2: {
+    //     metil_mesh_mushroom_initialize(
+    //       &object->mesh,
+    //       (struct clic3_vector3_float) {
+    //         .x = 10.0f,
+    //         .y = 10.0f,
+    //         .z = 10.0f
+    //       }, (struct clic3_vector2_unsigned_short_int) {
+    //         .x = 10,
+    //         .y = 10
+    //       }
+    //     );
+    //     break;
+    //   }
+    //   case 3: {
+    //     metil_mesh_shuttle_initialize(
+    //       &object->mesh,
+    //       (struct clic3_vector3_float) {
+    //         .x = 10.0f,
+    //         .y = 10.0f,
+    //         .z = 10.0f
+    //       }, (struct clic3_vector2_unsigned_short_int) {
+    //         .x = 10,
+    //         .y = 10
+    //       }
+    //     );
+    //     break;
+    //   }
+    //   case 4: {
+    //     metil_mesh_tube_initialize(
+    //       &object->mesh,
+    //       (struct clic3_vector3_float) {
+    //         .x = 10.0f,
+    //         .y = 10.0f,
+    //         .z = 10.0f
+    //       }, (struct clic3_vector2_unsigned_short_int) {
+    //         .x = 10,
+    //         .y = 10
+    //       }
+    //     );
+    //     break;
+    //   }
+    // }
 
     metil_object_buffers_initialize(
       object,

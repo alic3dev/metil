@@ -5,6 +5,7 @@
 struct data_vertex {
   float4 position [[position]];
   float4 color;
+  float brightness;
 };
 
 [[vertex]] struct data_vertex fog_object_vertex(
@@ -57,11 +58,21 @@ struct data_vertex {
     data_object->color.w
   );
 
+  data_vertex.brightness = (
+    (vertices[id_vertex].z + data_object->size.z / 2.0f) /
+    (data_object->size.z)
+  );
+
   return data_vertex;
 }
 
 [[fragment]] float4 fog_object_fragment(
   struct data_vertex data_vertex [[stage_in]]
 ) {
-  return data_vertex.color;
+  return float4(
+    data_vertex.color.r * data_vertex.brightness,
+    data_vertex.color.g * data_vertex.brightness,
+    data_vertex.color.b * data_vertex.brightness,
+    data_vertex.color.a
+  );
 }
