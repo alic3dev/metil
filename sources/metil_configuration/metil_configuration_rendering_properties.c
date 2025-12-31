@@ -1,6 +1,25 @@
 #include <metil_configuration/metil_configuration_rendering_properties.h>
 
-float metil_configuration_default_rendering_properties_brightness = 1.0f;
-float metil_configuration_default_rendering_properties_brightness_text = 1.0f;
+void metil_configuration_rendering_properties_initialize(
+  struct metil_configuration_rendering_properties* metil_configuration_rendering_properties
+) {
+  if (
+    metil_configuration_rendering_properties->defaults.initialized != 1
+  ) {
+    metil_configuration_rendering_properties_defaults_initialize(
+      &metil_configuration_rendering_properties->defaults
+    );
+  }
 
-unsigned char metil_configuration_default_rendering_properties_fps_display = 0;
+  metil_configuration_rendering_properties->brightness = (
+    metil_configuration_rendering_properties->defaults.brightness
+  );
+
+  metil_configuration_rendering_properties->brightness_text = (
+    metil_configuration_rendering_properties->defaults.brightness_text
+  );
+
+  metil_configuration_rendering_properties->fps_display = (
+    metil_configuration_rendering_properties->defaults.fps_display
+  );
+}

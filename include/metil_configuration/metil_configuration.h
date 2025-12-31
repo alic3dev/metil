@@ -9,13 +9,17 @@ struct metil_configuration {
   struct metil_configuration_rendering_properties rendering_properties;
 };
 
-extern struct metil_configuration metil_configuration;
+void metil_configuration_initialize(
+  struct metil_configuration*
+);
 
-void metil_configuration_initialize();
+unsigned char metil_configuration_load(
+  struct metil_configuration*
+);
 
-unsigned char metil_configuration_load();
-
-void metil_configuration_values_set();
+void metil_configuration_values_set(
+  struct metil_configuration*
+);
 
 int metil_configuration_value_int_parse(
   char*,
@@ -32,6 +36,8 @@ void metil_configuration_debug_log_parameter_invalid(
   char*
 );
 
-void metil_configuration_destroy();
+void metil_configuration_destroy(
+  struct metil_configuration*
+);
 
 #endif

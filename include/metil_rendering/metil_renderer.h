@@ -129,8 +129,6 @@ extern void* _Nullable metil_renderer_on_initialize_data;
   type_primitive: (MTLPrimitiveType) type_primitive
   type_index: (MTLIndexType) type_index;
 
-- (void) rendering_properties_initialize;
-
 - (void) stencils_depth_initialize;
 
 - (void) termination_functions_initialize;

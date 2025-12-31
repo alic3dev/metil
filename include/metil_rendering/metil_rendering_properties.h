@@ -1,6 +1,7 @@
 #ifndef __metil_rendering_metil_rendering_properties_h
 #define __metil_rendering_metil_rendering_properties_h
 
+#include <metil_configuration/metil_configuration_rendering_properties.h>
 #include <metil_rendering/metil_camera/metil_camera.h>
 
 #include <clic3_vector.h>
@@ -31,11 +32,14 @@ struct metil_rendering_properties {
 
   unsigned char mode;
 
-  unsigned long int time_frames[metil_count_time_frames];
+  unsigned long int time_frames[
+    metil_count_time_frames
+  ];
 };
 
 void metil_rendering_properties_initialize(
-  struct metil_rendering_properties*
+  struct metil_rendering_properties*,
+  struct metil_configuration_rendering_properties*
 );
 
 void metil_rendering_properties_destory(

@@ -29,7 +29,9 @@ struct metil_scene_controller {
 
 extern struct metil_scene_controller metil_scene_controller;
 
-void metil_scene_controller_initialize();
+void metil_scene_controller_initialize(
+  struct metil*
+);
 
 void metil_scene_controller_scene_change(
   struct metil*,

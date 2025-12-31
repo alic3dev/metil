@@ -19,8 +19,8 @@ void example_model_scene_initialize(
   struct metil_scene* scene
 ) {
   metil_scene_initialize_with_renderables(
+    metil,
     scene,
-    &metil->renderer_interface,
     2
   );
 
@@ -333,7 +333,7 @@ void example_model_scene_initialize(
 
   metil_model_buffers_initialize(
     metil_model,
-    scene->renderer_interface->metal_device
+    metil->renderer_interface.metal_device
   );
 
   metil_object = (
@@ -360,7 +360,7 @@ void example_model_scene_initialize(
 
   metil_object_buffers_initialize(
     metil_object,
-    scene->renderer_interface->metal_device
+    metil->renderer_interface.metal_device
   );
 
   struct metil_renderer_data_object* metil_renderer_data_object = (

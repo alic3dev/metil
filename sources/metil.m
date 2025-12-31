@@ -9,8 +9,12 @@
 #include <interrupt_handler.h>
 
 void metil_destroy(
-  void* metil
+  void* metil_pointer
 ) {
+  struct metil* metil = (
+    metil_pointer
+  );
+
   metil_scene_controller_destroy(
     metil
   );
@@ -23,5 +27,7 @@ void metil_destroy(
   
   metil_text_destroy();
 
-  metil_configuration_destroy();
+  metil_configuration_destroy(
+    &metil->configuration
+  );
 }

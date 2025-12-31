@@ -1,12 +1,14 @@
 #include <metil_rendering/metil_rendering_properties.h>
 
+#include <metil_configuration/metil_configuration_rendering_properties_defaults.h>
 #include <metil_configuration/metil_configuration_rendering_properties.h>
 #include <metil_rendering/metil_camera/metil_camera.h>
 
 #include <pthread.h>
 
 void metil_rendering_properties_initialize(
-  struct metil_rendering_properties* metil_rendering_properties
+  struct metil_rendering_properties* metil_rendering_properties,
+  struct metil_configuration_rendering_properties* metil_configuration_rendering_properties
 ) {
   metil_rendering_properties->mode = (
     metil_rendering_properties_mode_default
@@ -26,11 +28,11 @@ void metil_rendering_properties_initialize(
   );
 
   metil_rendering_properties->brightness = (
-    metil_configuration_default_rendering_properties_brightness
+    metil_configuration_rendering_properties->brightness
   );
 
   metil_rendering_properties->brightness_text = (
-    metil_configuration_default_rendering_properties_brightness_text
+    metil_configuration_rendering_properties->brightness_text
   );
 
   metil_rendering_properties->color_clear.x = 0.0f;
@@ -39,7 +41,7 @@ void metil_rendering_properties_initialize(
   metil_rendering_properties->color_clear.w = 1.0f;
 
   metil_rendering_properties->fps_display = (
-    metil_configuration_default_rendering_properties_fps_display
+    metil_configuration_rendering_properties->fps_display
   );
   metil_rendering_properties->fps = 0.0f;
 

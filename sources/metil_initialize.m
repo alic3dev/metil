@@ -73,10 +73,14 @@ int metil_initialize_with_data(
   );
 
   #if target_os_ios
-  metil_configuration_initialize();
+  metil_configuration_initialize(
+    &metil.configuration
+  );
   #else
   unsigned char status_configuration_load = (
-    metil_configuration_load()
+    metil_configuration_load(
+      &metil.configuration
+    )
   );
 
   if (
@@ -100,11 +104,20 @@ int metil_initialize_with_data(
 
   interrupt_handler_initialize();
   metil_input_initialize();
-  metil_scene_controller_initialize();
+  metil_scene_controller_initialize(
+    &metil
+  );
   metil_audio_initialize();
   metil_text_initialize();
 
-  metil_configuration_values_set();
+  metil_configuration_values_set(
+    &metil.configuration
+  );
+
+  metil_rendering_properties_initialize(
+    &metil.rendering_properties,
+    &metil.configuration.rendering_properties
+  );
 
   metil_termination_on_function_add(
     &metil.termination,

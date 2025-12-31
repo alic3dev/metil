@@ -106,7 +106,6 @@ void* metil_renderer_on_initialize_data = (void*)0;
     metal_kit_view.device
   );
 
-  [self rendering_properties_initialize];
   [self termination_functions_initialize];
 
   metil_text_characters_initialize(
@@ -692,12 +691,12 @@ void* metil_renderer_on_initialize_data = (void*)0;
   data_frame->position_player.z = metil_scene_controller.scene.player.position.z;
 
   data_frame->brightness = (
-    metil_scene_controller.scene.rendering_properties.brightness *
+    self->metil->rendering_properties.brightness *
     self->metil->rendering_properties.brightness
   );
 
   data_frame->brightness_text = (
-    metil_scene_controller.scene.rendering_properties.brightness_text *
+    self->metil->rendering_properties.brightness_text *
     self->metil->rendering_properties.brightness_text
   );
 
@@ -1243,24 +1242,6 @@ void* metil_renderer_on_initialize_data = (void*)0;
       type_index: object->type_index
     ];
   }
-}
-
-- (void) rendering_properties_initialize {
-  metil_rendering_properties_initialize(
-    &self->metil->rendering_properties
-  );
-
-  self->metil->rendering_properties.brightness = (
-    metil_configuration.rendering_properties.brightness
-  );
-
-  self->metil->rendering_properties.brightness_text = (
-    metil_configuration.rendering_properties.brightness_text
-  );
-
-  self->metil->rendering_properties.fps_display = (
-    metil_configuration.rendering_properties.fps_display
-  );
 }
 
 - (void) stencils_depth_initialize {

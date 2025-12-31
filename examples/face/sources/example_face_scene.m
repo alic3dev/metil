@@ -19,8 +19,8 @@ void example_face_scene_initialize(
   struct metil_scene* scene
 ) {
   metil_scene_initialize_with_renderables(
+    metil,
     scene,
-    &metil->renderer_interface,
     2
   );
 
@@ -461,7 +461,7 @@ void example_face_scene_initialize(
 
   metil_object_buffers_initialize_with_data_size(
     object,
-    scene->renderer_interface->metal_device,
+    metil->renderer_interface.metal_device,
     sizeof(
       struct example_face_renderer_data_object
     )

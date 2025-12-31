@@ -29,8 +29,6 @@ struct metil_scene_rendering_properties {
 };
 
 struct metil_scene {
-  struct metil_renderer_interface* _Nullable renderer_interface;
-
   struct metil_player player;
 
   struct metil_renderable* _Nonnull renderables;
@@ -56,19 +54,17 @@ struct metil_scene {
   _Nonnull metil_function_scene_poll_input poll_input;
   _Nonnull metil_function_scene_destroy destroy;
 
-  struct metil_scene_rendering_properties rendering_properties;
-
   void* _Nullable data;
 };
 
 void metil_scene_initialize(
-  struct metil_scene* _Nonnull,
-  struct metil_renderer_interface* _Nullable
+  struct metil* _Nonnull,
+  struct metil_scene* _Nonnull
 );
 
 void metil_scene_initialize_with_renderables(
+  struct metil* _Nonnull,
   struct metil_scene* _Nonnull,
-  struct metil_renderer_interface* _Nullable,
   unsigned int
 );
 

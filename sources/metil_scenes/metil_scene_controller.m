@@ -17,10 +17,12 @@ struct metil_scene_controller metil_scene_controller = {
   .after_scene_change_data = (void*)0
 };
 
-void metil_scene_controller_initialize() {
+void metil_scene_controller_initialize(
+  struct metil* metil
+) {
   metil_scene_initialize(
-    &metil_scene_controller.scene,
-    (void*)0
+    metil,
+    &metil_scene_controller.scene
   );
 
   metil_scene_controller.on_scene_change = malloc(

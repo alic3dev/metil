@@ -18,8 +18,8 @@ void example_2d_scene_initialize(
   struct metil_scene* scene
 ) {
   metil_scene_initialize_with_renderables(
+    metil,
     scene,
-    &metil->renderer_interface,
     100
   );
 
@@ -55,7 +55,7 @@ void example_2d_scene_initialize(
 
     metil_object_buffers_initialize(
       object,
-      scene->renderer_interface->metal_device
+      metil->renderer_interface.metal_device
     );
 
     struct metil_renderer_data_object* data_object = (

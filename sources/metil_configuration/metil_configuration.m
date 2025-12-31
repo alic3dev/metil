@@ -11,26 +11,24 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-struct metil_configuration metil_configuration;
-
-void metil_configuration_initialize() {
-  metil_configuration.audio.volume = metil_configuration_default_audio_volume;
-
-  metil_configuration.rendering_properties.brightness = (
-    metil_configuration_default_rendering_properties_brightness
+void metil_configuration_initialize(
+  struct metil_configuration* metil_configuration
+) {
+  metil_configuration->audio.volume = (
+    metil_configuration_default_audio_volume
   );
 
-  metil_configuration.rendering_properties.brightness_text = (
-    metil_configuration_default_rendering_properties_brightness_text
-  );
-
-  metil_configuration.rendering_properties.fps_display = (
-    metil_configuration_default_rendering_properties_fps_display
+  metil_configuration_rendering_properties_initialize(
+    &metil_configuration->rendering_properties
   );
 }
 
-unsigned char metil_configuration_load() {
-  metil_configuration_initialize();
+unsigned char metil_configuration_load(
+  struct metil_configuration* metil_configuration
+) {
+  metil_configuration_initialize(
+    metil_configuration
+  );
 
   unsigned char status_configuration_load = 0;
 
@@ -195,7 +193,7 @@ unsigned char metil_configuration_load() {
             );
 
             if (audio_volume >= 0.0f) {
-              metil_configuration.audio.volume = audio_volume;
+              metil_configuration->audio.volume = audio_volume;
             } else {
               status_configuration_load = 1;
             }
@@ -209,7 +207,7 @@ unsigned char metil_configuration_load() {
             );
 
             if (rendering_brightness >= 0.0f) {
-              metil_configuration.rendering_properties.brightness = rendering_brightness;
+              metil_configuration->rendering_properties.brightness = rendering_brightness;
             } else {
               status_configuration_load = 1;
             }
@@ -223,7 +221,7 @@ unsigned char metil_configuration_load() {
             );
 
             if (rendering_brightness_text >= 0.0f) {
-              metil_configuration.rendering_properties.brightness_text = rendering_brightness_text;
+              metil_configuration->rendering_properties.brightness_text = rendering_brightness_text;
             } else {
               status_configuration_load = 1;
             }
@@ -239,7 +237,7 @@ unsigned char metil_configuration_load() {
             if (
               fps_display != -1
             ) {
-              metil_configuration.rendering_properties.fps_display = fps_display;
+              metil_configuration->rendering_properties.fps_display = fps_display;
             } else {
               status_configuration_load = 1;
             }
@@ -357,16 +355,31 @@ void metil_configuration_debug_log_parameter_invalid(
     message_debug_log_error
   );
 
-  free(message_debug_log_error_prefix);
-  free(message_debug_log_error_split);
-  free(message_debug_log_error_value);
-  free(message_debug_log_error);
+  free(
+    message_debug_log_error_prefix
+  );
+
+  free(
+    message_debug_log_error_split
+  );
+
+  free(
+    message_debug_log_error_value
+  );
+
+  free(
+    message_debug_log_error
+  );
 }
 
-void metil_configuration_values_set() {
+void metil_configuration_values_set(
+  struct metil_configuration* metil_configuration
+) {
   #if !target_os_ios
-  metil_audio_data.volume = metil_configuration.audio.volume;
+  metil_audio_data.volume = metil_configuration->audio.volume;
   #endif
 }
 
-void metil_configuration_destroy() {}
+void metil_configuration_destroy(
+  struct metil_configuration* metil_configuration
+) {}

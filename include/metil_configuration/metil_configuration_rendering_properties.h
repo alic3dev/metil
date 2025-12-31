@@ -1,16 +1,19 @@
 #ifndef __metil_configuration_metil_configuration_rendering_properties_h
 #define __metil_configuration_metil_configuration_rendering_properties_h
 
-extern float metil_configuration_default_rendering_properties_brightness;
-extern float metil_configuration_default_rendering_properties_brightness_text;
-
-extern unsigned char metil_configuration_default_rendering_properties_fps_display;
+#include <metil_configuration/metil_configuration_rendering_properties_defaults.h>
 
 struct metil_configuration_rendering_properties {
   float brightness;
   float brightness_text;
 
   unsigned char fps_display;
+
+  struct metil_configuration_rendering_properties_defaults defaults;
 };
+
+void metil_configuration_rendering_properties_initialize(
+  struct metil_configuration_rendering_properties*
+);
 
 #endif

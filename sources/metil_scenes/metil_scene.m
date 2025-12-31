@@ -9,26 +9,24 @@
 #include <stdlib.h>
 
 void metil_scene_initialize(
-  struct metil_scene* scene,
-  struct metil_renderer_interface* renderer_interface
+  struct metil* metil,
+  struct metil_scene* scene
 ) {
   metil_scene_initialize_with_renderables(
+    metil,
     scene,
-    renderer_interface,
     0
   );
 }
 
 void metil_scene_initialize_with_renderables(
+  struct metil* metil,
   struct metil_scene* scene,
-  struct metil_renderer_interface* renderer_interface,
   unsigned int length_renderables
 ) {
-  scene->renderer_interface = renderer_interface;
-
   metil_player_initialize(
     &scene->player
-);
+  );
 
   scene->length_renderables = length_renderables;
   scene->renderables = malloc(
@@ -70,8 +68,8 @@ void metil_scene_initialize_with_renderables(
 
   scene->loading = 0;
 
-  scene->rendering_properties.brightness = 1.0f;
-  scene->rendering_properties.brightness_text = 1.0f;
+  metil->rendering_properties.brightness = 1.0f;
+  metil->rendering_properties.brightness_text = 1.0f;
 
   scene->data = (void*)0;
 }

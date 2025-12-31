@@ -15,7 +15,7 @@ void metil_player_initialize(
   struct metil_player* metil_player
 ) {
   if (
-    metil_player->defaults.initialized == 0
+    metil_player->defaults.initialized != 1
   ) {
     metil_player_defaults_initialize(
       &metil_player->defaults
