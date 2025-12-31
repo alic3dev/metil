@@ -9,9 +9,7 @@
 
 #include <simd/simd.h>
 
-#define __metil_camera_height_default 16.0f
-
-extern float metil_camera_height_default;
+#define metil_camera_height_default 16.0f
 
 struct metil_camera {
   enum metil_camera_mode mode;
@@ -21,6 +19,7 @@ struct metil_camera {
   float ratio_aspect;
   float ratio_aspect_view;
 
+  float height_default;
   float height;
 
   struct clic3_vector2_float field_of_view;
@@ -29,6 +28,8 @@ struct metil_camera {
 
   struct clic3_vector3_float vector_normalization;
   simd_float4x4 matrix_viewport_projection;
+
+  unsigned char initialized;
 };
 
 void metil_camera_initialize(

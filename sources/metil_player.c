@@ -6,59 +6,65 @@
 #include <metil_input/metil_cursor.h>
 #include <metil_input/metil_keycodes.h>
 #include <metil_input/metil_input_map.h>
+#include <metil_player/metil_player_defaults.h>
 
 #include <math.h>
 
-float metil_player_speed_movement_default = __metil_player_speed_movement_default;
-float metil_player_speed_rotation_default = __metil_player_speed_rotation_default;
-
-float metil_player_deadzone_stick_default = __metil_player_deadzone_stick_default;
-
-struct clic3_vector3_float metil_player_size_default = {
-  .x = __metil_player_size_default_x,
-  .y = __metil_player_size_default_y,
-  .z = __metil_player_size_default_z
-};
-
 void metil_player_initialize(
-  struct metil_player* player
+  struct metil_player* metil_player
 ) {
-  player->position.x = 0.0f;
-  player->position.y = 0.0f;
-  player->position.z = 0.0f;
+  if (
+    metil_player->defaults.initialized == 0
+  ) {
+    metil_player_defaults_initialize(
+      &metil_player->defaults
+    );
+  }
 
-  player->rotation.x = 0.0f;
-  player->rotation.y = 0.0f;
-  player->rotation.z = 0.0f;
+  metil_player->position.x = 0.0f;
+  metil_player->position.y = 0.0f;
+  metil_player->position.z = 0.0f;
 
-  player->size.x = metil_player_size_default.x;
-  player->size.y = metil_player_size_default.y;
-  player->size.z = metil_player_size_default.z;
+  metil_player->rotation.x = 0.0f;
+  metil_player->rotation.y = 0.0f;
+  metil_player->rotation.z = 0.0f;
 
-  player->speed_movement = metil_player_speed_movement_default;
-  player->speed_rotation = metil_player_speed_rotation_default;
+  metil_player->size.x = metil_player->defaults.size.x;
+  metil_player->size.y = metil_player->defaults.size.y;
+  metil_player->size.z = metil_player->defaults.size.z;
 
-  player->velocity.x = 0.0f;
-  player->velocity.y = 0.0f;
-  player->velocity.z = 0.0f;
+  metil_player->deadzone_stick = metil_player->defaults.deadzone_stick;
 
-  player->poll_input = metil_player_poll_input;
-  player->poll = metil_player_poll;
-  player->destroy = metil_player_destroy;
+  metil_player->speed_movement = metil_player->defaults.speed_movement;
+  metil_player->speed_rotation = metil_player->defaults.speed_rotation;
 
-  player->data = (void*)0;
+  metil_player->velocity.x = 0.0f;
+  metil_player->velocity.y = 0.0f;
+  metil_player->velocity.z = 0.0f;
+
+  metil_player->poll_input = metil_player_poll_input;
+  metil_player->poll = metil_player_poll;
+  metil_player->destroy = metil_player_destroy;
+
+  metil_player->data = (void*)0;
 }
 
 void metil_player_poll_input(
-  struct metil_player* player,
+  struct metil_player* metil_player,
   unsigned long int time,
   unsigned long int time_delta
 ) {
-  float speed_original = player->speed_movement;
-  float speed_delta = (float) time_delta / 1000.0f;
+  float speed_original = (
+    metil_player->speed_movement
+  );
 
-  player->speed_movement = (
-    player->speed_movement *
+  float speed_delta = (
+    (float) time_delta /
+    1000.0f
+  );
+
+  metil_player->speed_movement = (
+    metil_player->speed_movement *
     speed_delta
   );
 
@@ -67,8 +73,8 @@ void metil_player_poll_input(
     metil_controller_state.l2 >= 0.1f &&
     metil_controller_state.l3 == 0.0f
   ) {
-    player->speed_movement = (
-      player->speed_movement *
+    metil_player->speed_movement = (
+      metil_player->speed_movement *
       (metil_controller_state.l2 + 1.0f)
     );
   } else if (
@@ -76,8 +82,8 @@ void metil_player_poll_input(
     metil_controller_state.l2 < 0.1f &&
     metil_controller_state.l3 >= 0.1f
   ) {
-    player->speed_movement = (
-      player->speed_movement / (
+    metil_player->speed_movement = (
+      metil_player->speed_movement / (
         metil_controller_state.l3 + 1.0f
       )
     );
@@ -98,8 +104,8 @@ void metil_player_poll_input(
       ] == 0
     )
   ) {
-    player->speed_movement = (
-      player->speed_movement / 2.0f
+    metil_player->speed_movement = (
+      metil_player->speed_movement / 2.0f
     );
   } else if (
     (
@@ -118,8 +124,8 @@ void metil_player_poll_input(
       ] == 1
     )
   ) {
-    player->speed_movement = (
-      player->speed_movement * 2.0f
+    metil_player->speed_movement = (
+      metil_player->speed_movement * 2.0f
     );
   }
 
@@ -142,17 +148,17 @@ void metil_player_poll_input(
   if (
     metil_input_cursor.locked == 1
   ) {
-    player->rotation.y = (
-      player->rotation.y - (
+    metil_player->rotation.y = (
+      metil_player->rotation.y - (
         metil_input_cursor.delta.x / 50.0f *
-        player->speed_rotation
+        metil_player->speed_rotation
       )
     );
 
-    player->rotation.x = (
-      player->rotation.x - (
+    metil_player->rotation.x = (
+      metil_player->rotation.x - (
         metil_input_cursor.delta.y / 50.0f *
-        player->speed_rotation
+        metil_player->speed_rotation
       )
     );
 
@@ -162,48 +168,48 @@ void metil_player_poll_input(
 
   if (metil_controller_state.available == 1) {
     if (
-      metil_controller_state.right_stick.x >= metil_player_deadzone_stick_default ||
-      metil_controller_state.right_stick.x <= -metil_player_deadzone_stick_default
+      metil_controller_state.right_stick.x >= metil_player->deadzone_stick ||
+      metil_controller_state.right_stick.x <= -metil_player->deadzone_stick
     ) {
-      player->rotation.y = (
-        player->rotation.y - (
+      metil_player->rotation.y = (
+        metil_player->rotation.y - (
           metil_controller_state.right_stick.x *
-          player->speed_rotation
+          metil_player->speed_rotation
         )
       );
     }
 
     if (
-      metil_controller_state.right_stick.y >= metil_player_deadzone_stick_default ||
-      metil_controller_state.right_stick.y <= -metil_player_deadzone_stick_default
+      metil_controller_state.right_stick.y >= metil_player->deadzone_stick ||
+      metil_controller_state.right_stick.y <= -metil_player->deadzone_stick
     ) {
-      player->rotation.x = (
-        player->rotation.x + (
+      metil_player->rotation.x = (
+        metil_player->rotation.x + (
           metil_controller_state.right_stick.y *
-          player->speed_rotation
+          metil_player->speed_rotation
         )
       );
     }
   }
 
   if (
-    player->rotation.x > M_PI / 2.0f
+    metil_player->rotation.x > M_PI / 2.0f
   ) {
-    player->rotation.x = M_PI / 2.0f;
+    metil_player->rotation.x = M_PI / 2.0f;
   } else if (
-    player->rotation.x < -M_PI / 2.0f
+    metil_player->rotation.x < -M_PI / 2.0f
   ) {
-    player->rotation.x = -M_PI / 2.0f;
+    metil_player->rotation.x = -M_PI / 2.0f;
   }
 
-  player->rotation.y = fmod(
-    player->rotation.y, (
+  metil_player->rotation.y = fmod(
+    metil_player->rotation.y, (
       M_PI * 2.0f
     )
   );
 
   float ratio_axis = -(
-    player->rotation.y / (
+    metil_player->rotation.y / (
       M_PI *
       2.0f
     )
@@ -406,52 +412,56 @@ void metil_player_poll_input(
       metil_controller_state.available == 1 &&
       metil_controller_state.cross >= 0.1f
     )) &&
-    player->velocity.y == 0.0f
+    metil_player->velocity.y == 0.0f
   ) {
-    player->velocity.y = (
+    metil_player->velocity.y = (
       speed_original /
       1.25f
     );
   }
 
-  player->position.x = (
-    player->position.x + (
+  metil_player->position.x = (
+    metil_player->position.x + (
       movement.x *
-      player->speed_movement
+      metil_player->speed_movement
     )
   );
 
-  player->position.y = (
-    player->position.y + (
+  metil_player->position.y = (
+    metil_player->position.y + (
       movement.y *
-      player->speed_movement
+      metil_player->speed_movement
     ) + (
-      player->velocity.y *
+      metil_player->velocity.y *
       speed_delta
     )
   );
 
-  player->position.z = (
-    player->position.z + (
+  metil_player->position.z = (
+    metil_player->position.z + (
       movement.z *
-      player->speed_movement
+      metil_player->speed_movement
     )
   );
 
-  if (player->position.y > 0.0f) {
-    player->velocity.y = (
-      player->velocity.y - (
+  if (
+    metil_player->position.y > 0.0f
+  ) {
+    metil_player->velocity.y = (
+      metil_player->velocity.y - (
         speed_original
       ) * speed_delta * 5.0f
     );
   }
 
-  if (player->position.y < 0.0f) {
-    player->position.y = 0.0f;
-    player->velocity.y = 0.0f;
+  if (
+    metil_player->position.y < 0.0f
+  ) {
+    metil_player->position.y = 0.0f;
+    metil_player->velocity.y = 0.0f;
   }
 
-  player->speed_movement = speed_original;
+  metil_player->speed_movement = speed_original;
 }
 
 void metil_player_poll_input_null(

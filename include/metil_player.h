@@ -3,7 +3,7 @@
 
 #include <clic3_vector.h>
 
-#include <metil_rendering/metil_camera/metil_camera.h>
+#include <metil_player/metil_player_defaults.h>
 
 struct metil_player;
 
@@ -12,22 +12,14 @@ typedef void (*metil_player_poll_input_function)(
   unsigned long int,
   unsigned long int
 );
-typedef void (*metil_player_poll_function)(struct metil_player*);
-typedef void (*metil_player_destroy_function)(struct metil_player*);
 
-#define __metil_player_speed_movement_default 16.5f
-#define __metil_player_speed_rotation_default 0.2f
-#define __metil_player_deadzone_stick_default 0.01f
+typedef void (*metil_player_poll_function)(
+  struct metil_player*
+);
 
-extern float metil_player_speed_movement_default;
-extern float metil_player_speed_rotation_default;
-extern float metil_player_deadzone_stick_default;
-
-#define __metil_player_size_default_x 0.36f
-#define __metil_player_size_default_y __metil_camera_height_default
-#define __metil_player_size_default_z 0.3f
-
-extern struct clic3_vector3_float metil_player_size_default;
+typedef void (*metil_player_destroy_function)(
+  struct metil_player*
+);
 
 struct metil_player {
   struct clic3_vector3_float position;
@@ -35,12 +27,16 @@ struct metil_player {
   struct clic3_vector3_float size;
   struct clic3_vector3_float velocity;
 
+  float deadzone_stick;
+
   float speed_movement;
   float speed_rotation;
 
   metil_player_poll_input_function poll_input;
   metil_player_poll_function poll;
   metil_player_destroy_function destroy;
+
+  struct metil_player_defaults defaults;
 
   void* data;
 };
