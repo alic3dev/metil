@@ -109,7 +109,7 @@ frameworks=Metal MetalKit GameController CoreAudio CoreGraphics CoreText
 
 cc=clang
 c_flags_includes=-I${directory_include} -I${directory_cer0_include} -I${directory_clic3_include} -I${directory_interrupt_handler_include} -I${directory_metil_include}
-c_flags_platform=-target ${target_platform} -isysroot ${directory_macos_sdk}
+c_flags_platform=-target ${target_platform} -isysroot ${directory_sdk}
 
 c_flags_objc_debug=-O0 -g -v
 c_flags_debug=${c_flags_objc_debug} -da -Q
