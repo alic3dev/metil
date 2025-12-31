@@ -1,5 +1,6 @@
 #include <metil_scenes/metil_scene_controller.h>
 
+#include <metil.h>
 #include <metil_scenes/metil_scene.h>
 
 #include <stdlib.h>
@@ -44,6 +45,7 @@ void metil_scene_controller_initialize() {
 }
 
 void metil_scene_controller_scene_change(
+  struct metil* metil,
   int scene_id
 ) {
   for (
@@ -54,6 +56,7 @@ void metil_scene_controller_scene_change(
     metil_scene_controller.on_scene_change[
       index_on_scene_change
     ](
+      metil,
       scene_id,
       metil_scene_controller.on_scene_change_data[
         index_on_scene_change
@@ -69,6 +72,7 @@ void metil_scene_controller_scene_change(
     metil_scene_controller.after_scene_change[
       index_after_scene_change
     ](
+      metil,
       scene_id,
       metil_scene_controller.after_scene_change_data[
         index_after_scene_change
@@ -135,8 +139,11 @@ void metil_scene_controller_after_scene_change_add(
   ] = after_scene_change_data;
 }
 
-void metil_scene_controller_destroy() {
+void metil_scene_controller_destroy(
+  struct metil* metil
+) {
   metil_scene_destroy(
+    metil,
     &metil_scene_controller.scene
   );
 

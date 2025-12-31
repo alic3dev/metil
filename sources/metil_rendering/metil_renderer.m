@@ -666,11 +666,13 @@ void* metil_renderer_on_initialize_data = (void*)0;
   unsigned long int time = metil_time_milliseconds_get();
 
   metil_scene_poll_input(
+    self->metil,
     &metil_scene_controller.scene,
     time
   );
 
   metil_scene_poll(
+    self->metil,
     &metil_scene_controller.scene,
     time
   );
@@ -1383,18 +1385,29 @@ void* metil_renderer_thread_poll_object(
 }
 
 void metil_renderer_after_scene_change(
-  int _,
-  void* _Nonnull reference
+  struct metil* metil,
+  int id_scene,
+  void* reference
 ) {
-  metil_renderer* renderer = (metil_renderer*) reference;
+  metil_renderer* renderer = (
+    reference
+  );
 
-  [renderer after_scene_change];
+  [
+    renderer
+    after_scene_change
+  ];
 }
 
 void metil_renderer_on_termination(
-  void* _Nonnull reference
+  void* reference
 ) {
-  metil_renderer* renderer = (metil_renderer*) reference;
+  metil_renderer* renderer = (
+    reference
+  );
 
-  [renderer destroy];
+  [
+    renderer
+    destroy
+  ];
 }

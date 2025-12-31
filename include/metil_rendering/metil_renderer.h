@@ -147,6 +147,7 @@ void* _Nullable metil_renderer_thread_poll_object(
 );
 
 void metil_renderer_after_scene_change(
+  struct metil* _Nonnull,
   int,
   void* _Nonnull
 );

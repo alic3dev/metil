@@ -298,9 +298,11 @@ void example_3d_scene_initialize(
 }
 
 void example_3d_scene_poll(
+  struct metil* metil,
   struct metil_scene* scene
 ) {
   metil_scene_poll_default(
+    metil,
     scene
   );
 

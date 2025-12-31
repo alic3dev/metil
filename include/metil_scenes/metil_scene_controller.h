@@ -1,10 +1,19 @@
 #ifndef __metil_scenes_metil_scene_controller_h
 #define __metil_scenes_metil_scene_controller_h
 
+#include <metil.h>
 #include <metil_scenes/metil_scene.h>
 
-typedef void (*metil_scene_controller_on_scene_change)(int, void*);
-typedef void (*metil_scene_controller_after_scene_change)(int, void*);
+typedef void (*metil_scene_controller_on_scene_change)(
+  struct metil*,
+  int,
+  void*
+);
+typedef void (*metil_scene_controller_after_scene_change)(
+  struct metil*,
+  int,
+  void*
+);
 
 struct metil_scene_controller {
   struct metil_scene scene;
@@ -23,7 +32,8 @@ extern struct metil_scene_controller metil_scene_controller;
 void metil_scene_controller_initialize();
 
 void metil_scene_controller_scene_change(
-  int scene_id
+  struct metil*,
+  int
 );
 
 void metil_scene_controller_on_scene_change_add(
@@ -36,6 +46,8 @@ void metil_scene_controller_after_scene_change_add(
   void*
 );
 
-void metil_scene_controller_destroy();
+void metil_scene_controller_destroy(
+  struct metil*
+);
 
 #endif

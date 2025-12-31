@@ -197,6 +197,7 @@ void metil_scene_destroy_default(
   );
 
   scene->player.destroy(
+    metil,
     &scene->player
   );
 

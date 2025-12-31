@@ -96,9 +96,13 @@ void example_2d_scene_initialize(
 }
 
 void example_2d_scene_poll(
+  struct metil* metil,
   struct metil_scene* scene
 ) {
-  metil_scene_poll_default(scene);
+  metil_scene_poll_default(
+    metil,
+    scene
+  );
 
   float brightness_minimum = 0.25f;
 

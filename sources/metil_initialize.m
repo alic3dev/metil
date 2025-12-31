@@ -108,38 +108,8 @@ int metil_initialize_with_data(
 
   metil_termination_on_function_add(
     &metil.termination,
-    metil_scene_controller_destroy,
-    (void*)0
-  );
-
-  metil_termination_on_function_add(
-    &metil.termination,
-    interrupt_handler_destroy,
-    (void*)0
-  );
-
-  metil_termination_on_function_add(
-    &metil.termination,
-    metil_paths_destroy,
-    (void*)0
-  );
-
-  metil_termination_on_function_add(
-    &metil.termination,
-    metil_audio_destroy,
-    (void*)0
-  );
-
-  metil_termination_on_function_add(
-    &metil.termination,
-    metil_text_destroy,
-    (void*)0
-  );
-
-  metil_termination_on_function_add(
-    &metil.termination,
-    metil_configuration_destroy,
-    (void*)0
+    metil_destroy,
+    &metil
   );
 
   interrupt_handler_interrupt_function_add_with_data(

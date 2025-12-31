@@ -9,16 +9,19 @@
 struct metil_player;
 
 typedef void (*metil_player_poll_input_function)(
+  struct metil*,
   struct metil_player*,
   unsigned long int,
   unsigned long int
 );
 
 typedef void (*metil_player_poll_function)(
+  struct metil*,
   struct metil_player*
 );
 
 typedef void (*metil_player_destroy_function)(
+  struct metil*,
   struct metil_player*
 );
 

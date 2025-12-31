@@ -15,4 +15,8 @@ struct metil {
   struct metil_system_information system_information;
 };
 
+void metil_destroy(
+  void* _Nonnull
+);
+
 #endif
