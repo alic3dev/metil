@@ -17,7 +17,7 @@ void metil_audio_initialize(
   struct metil* metil,
   struct metil_audio_data* metil_audio_data
 ) {
-  metil_io_proc_initialize(
+  metil_audio_data_initialize(
     metil_audio_data
   );
 
@@ -45,7 +45,7 @@ void metil_audio_destroy(
     );
   }
 
-  metil_audio_io_proc_destroy(
+  metil_audio_data_destroy(
     metil_audio_data
   );
 }

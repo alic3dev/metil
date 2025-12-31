@@ -5,6 +5,7 @@
 #include <metil.h>
 #include <metil_audio/metil_audio_data.h>
 #include <metil_audio/metil_audio_io_proc.h>
+#include <metil_audio/metil_audio_io_proc_data.h>
 
 #include <CoreAudio/CoreAudio.h>
 
@@ -60,11 +61,22 @@ OSStatus metil_audio_output_io_proc(
     return 0;
   }
 
+  struct metil_audio_io_proc_data metil_audio_io_proc_data = {
+    .metil = metil,
+    .data = (void*) 0
+  };
+
   for (
     unsigned char index_io_proc = 0;
     index_io_proc < metil->audio.length_io_procs;
     ++index_io_proc
   ) {
+    metil_audio_io_proc_data.data = (
+      metil->audio.data_io_procs[
+        index_io_proc
+      ]
+    );
+
     OSStatus status_io_proc = metil->audio.io_procs[
       index_io_proc
     ](
@@ -74,9 +86,7 @@ OSStatus metil_audio_output_io_proc(
       time_stamp_audio_in,
       list_buffer_audio_out,
       time_stamp_audio_out,
-      metil->audio.data_io_procs[
-        index_io_proc
-      ]
+      &metil_audio_io_proc_data
     );
 
     if (
