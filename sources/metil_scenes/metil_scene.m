@@ -89,6 +89,7 @@ void metil_scene_renderables_set_length(
 }
 
 void metil_scene_poll_input(
+  struct metil* metil,
   struct metil_scene* scene,
   unsigned long int time
 ) {
@@ -102,11 +103,13 @@ void metil_scene_poll_input(
   );
 
   scene->poll_input(
+    metil,
     scene
   );
 }
 
 void metil_scene_poll(
+  struct metil* metil,
   struct metil_scene* scene,
   unsigned long int time
 ) {
@@ -118,22 +121,27 @@ void metil_scene_poll(
   );
 
   scene->poll(
+    metil,
     scene
   );
 }
 
 void metil_scene_destroy(
+  struct metil* metil,
   struct metil_scene* scene
 ) {
   scene->destroy(
+    metil,
     scene
   );
 }
 
 void metil_scene_poll_input_default(
+  struct metil* metil,
   struct metil_scene* scene
 ) {
   scene->player.poll_input(
+    metil,
     &scene->player,
     scene->time_input,
     scene->time_input_delta
@@ -141,14 +149,17 @@ void metil_scene_poll_input_default(
 }
 
 void metil_scene_poll_default(
+  struct metil* metil,
   struct metil_scene* scene
 ) {
   scene->player.poll(
+    metil,
     &scene->player
   );
 }
 
 void metil_scene_destroy_default(
+  struct metil* metil,
   struct metil_scene* scene
 ) {
   for (
@@ -165,16 +176,25 @@ void metil_scene_destroy_default(
     );
   }
 
-  free(scene->renderables);
+  free(
+    scene->renderables
+  );
 
   for (
     unsigned int index_texture = 0;
     index_texture < scene->length_textures;
     ++index_texture
   ) {
-    [scene->textures[index_texture] release];
+    [
+      scene->textures[
+        index_texture
+      ]
+      release
+    ];
   }
-  free(scene->textures);
+  free(
+    scene->textures
+  );
 
   scene->player.destroy(
     &scene->player
@@ -183,6 +203,8 @@ void metil_scene_destroy_default(
   if (
     scene->data != (void*)0
   ) {
-    free(scene->data);
+    free(
+      scene->data
+    );
   }
 }

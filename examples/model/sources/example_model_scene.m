@@ -2,7 +2,6 @@
 
 #include <example_model_pipeline_index.h>
 
-#include <metil_application/metil_renderer_size.h>
 #include <metil_mesh/metil_mesh.h>
 #include <metil_mesh/metil_mesh_box.h>
 #include <metil_model/metil_model.h>
@@ -410,9 +409,11 @@ void example_model_scene_initialize(
 */
 
 void example_model_scene_poll(
+  struct metil* metil,
   struct metil_scene* scene
 ) {
   metil_scene_poll_default(
+    metil,
     scene
   );
 
@@ -644,6 +645,7 @@ void example_model_scene_poll(
 }
 
 void example_model_scene_destroy(
+  struct metil* metil,
   struct metil_scene* scene
 ) {
   struct metil_model* metil_model = (
@@ -655,6 +657,7 @@ void example_model_scene_destroy(
   metil_model->data = 0;
 
   metil_scene_destroy_default(
+    metil,
     scene
   );
 }

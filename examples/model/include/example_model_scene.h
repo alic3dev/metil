@@ -5,16 +5,18 @@
 #include <metil_scenes/metil_scene.h>
 
 void example_model_scene_initialize(
-  struct metil*,
-  struct metil_scene*
+  struct metil* _Nonnull,
+  struct metil_scene* _Nonnull
 );
 
 void example_model_scene_poll(
-  struct metil_scene*
+  struct metil* _Nonnull,
+  struct metil_scene* _Nonnull
 );
 
 void example_model_scene_destroy(
-  struct metil_scene*
+  struct metil* _Nonnull,
+  struct metil_scene* _Nonnull
 );
 
 #endif

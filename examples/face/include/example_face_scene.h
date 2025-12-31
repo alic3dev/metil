@@ -10,10 +10,12 @@ void example_face_scene_initialize(
 );
 
 void example_face_scene_poll(
+  struct metil* _Nonnull,
   struct metil_scene* _Nonnull
 );
 
 void example_face_scene_destroy(
+  struct metil* _Nonnull,
   struct metil_scene* _Nonnull
 );
 

@@ -4,7 +4,6 @@
 #include <metil_application/metil_application_delegate.h>
 #include <metil_application/metil_application.h>
 #include <metil_application/metil_nsresponder.h>
-#include <metil_application/metil_renderer_size.h>
 #include <metil_application/metil_view_controller.h>
 #include <metil_application/metil_view.h>
 #include <metil_application/metil_window.h>

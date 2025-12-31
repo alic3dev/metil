@@ -3,6 +3,7 @@
 
 #include <clic3_vector.h>
 
+#include <metil.h>
 #include <metil_player/metil_player_defaults.h>
 
 struct metil_player;
@@ -46,22 +47,26 @@ void metil_player_initialize(
 );
 
 void metil_player_poll_input(
+  struct metil*,
   struct metil_player*,
   unsigned long int,
   unsigned long int
 );
 
 void metil_player_poll_input_null(
+  struct metil*,
   struct metil_player*,
   unsigned long int,
   unsigned long int
 );
 
 void metil_player_poll(
+  struct metil*,
   struct metil_player*
 );
 
 void metil_player_destroy(
+  struct metil*,
   struct metil_player*
 );
 

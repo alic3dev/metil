@@ -1,6 +1,5 @@
 #include <metil_rendering/metil_renderer.h>
 
-#include <metil_application/metil_renderer_size.h>
 #include <metil_audio/metil_audio.h>
 #include <metil_audio/metil_audio_data.h>
 #include <metil_configuration/metil_configuration.h>
@@ -67,7 +66,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
   [self initialize_null];
 
   self->length_threads = (
-    metil_system_information.cores_cpu *
+    self->metil->system_information.cores_cpu *
     metil_count_max_frames
   );
 
@@ -427,14 +426,14 @@ void* metil_renderer_on_initialize_data = (void*)0;
     1920x1203 is fine
     1920x1202 causes slow down
   */
-  metil_renderer_size.x = size.width;
-  metil_renderer_size.y = size.height;
+  self->metil->renderer_interface.size.x = size.width;
+  self->metil->renderer_interface.size.y = size.height;
 
   metil_camera_ratio_aspect_set(
     &self->metil->rendering_properties.camera,
     16 / 9,
-    metil_renderer_size.x,
-    metil_renderer_size.y
+    self->metil->renderer_interface.size.x,
+    self->metil->renderer_interface.size.y
   );
 
   self->matrix_projection_static.columns[0][0] = (
@@ -753,16 +752,16 @@ void* metil_renderer_on_initialize_data = (void*)0;
   unsigned char _index_data_buffer_frame = self->index_data_buffer_frame;
   unsigned int length_segment_objects = (
     metil_scene_controller.scene.length_renderables /
-    metil_system_information.cores_cpu
+    self->metil->system_information.cores_cpu
   );
 
   for (
     unsigned int index_core_cpu = 0;
-    index_core_cpu < metil_system_information.cores_cpu;
+    index_core_cpu < self->metil->system_information.cores_cpu;
     ++index_core_cpu
   ) {
     unsigned int index_thread = (
-      metil_system_information.cores_cpu *
+      self->metil->system_information.cores_cpu *
       _index_data_buffer_frame +
       index_core_cpu 
     );
@@ -794,7 +793,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
     self->threads_data[
       index_thread
     ].length_renderables = (
-      index_core_cpu < metil_system_information.cores_cpu - 1
+      index_core_cpu < self->metil->system_information.cores_cpu - 1
       ? length_segment_objects
       : (metil_scene_controller.scene.length_renderables) - (
         length_segment_objects * index_core_cpu
@@ -836,11 +835,11 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   for (
     unsigned int index_core_cpu = 0;
-    index_core_cpu < metil_system_information.cores_cpu;
+    index_core_cpu < self->metil->system_information.cores_cpu;
     ++index_core_cpu
   ) {
     unsigned int index_thread = (
-      metil_system_information.cores_cpu *
+      self->metil->system_information.cores_cpu *
       _index_data_buffer_frame +
       index_core_cpu 
     );

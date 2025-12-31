@@ -4,7 +4,6 @@
 #include <example_face_renderer_data_object.h>
 
 #include <metil.h>
-#include <metil_application/metil_renderer_size.h>
 #include <metil_mesh/metil_mesh.h>
 #include <metil_input/metil_cursor.h>
 #include <metil_object.h>
@@ -534,9 +533,11 @@ void example_face_scene_initialize(
 }
 
 void example_face_scene_poll(
+  struct metil* metil,
   struct metil_scene* scene
 ) {
   metil_scene_poll_default(
+    metil,
     scene
   );
 
@@ -564,22 +565,22 @@ void example_face_scene_poll(
     .x = (
       (
         metil_input_cursor.position_window.x /
-        metil_renderer_size.x *
+        metil->renderer_interface.size.x *
         2.0f
       ) - 1.0f
     ),
     .y = (
       (
         metil_input_cursor.position_window.y /
-        metil_renderer_size.y *
+        metil->renderer_interface.size.y *
         2.0f
       ) - 1.0f
     )
   };
 
   float aspect_ratio = (
-    metil_renderer_size.y /
-    metil_renderer_size.x
+    metil->renderer_interface.size.y /
+    metil->renderer_interface.size.x
   );
 
   for (
@@ -660,6 +661,7 @@ void example_face_scene_poll(
 }
 
 void example_face_scene_destroy(
+  struct metil* metil,
   struct metil_scene* scene
 ) {
   struct metil_object* object_points = (
@@ -673,6 +675,7 @@ void example_face_scene_destroy(
   object_points->indices = (void*) 0;
 
   metil_scene_destroy_default(
+    metil,
     scene
   );
 }

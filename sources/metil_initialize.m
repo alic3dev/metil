@@ -60,7 +60,9 @@ int metil_initialize_with_data(
     metil.rendering_properties
   );
 
-  metil_system_information_initialize();
+  metil_system_information_initialize(
+    &metil.system_information
+  );
 
   metil_renderer_on_initialize = metil_renderer_on_initialize_function;
   metil_renderer_on_initialize_data = metil_renderer_on_initialize_function_data;

@@ -2,6 +2,7 @@
 
 #include <clic3_vector.h>
 
+#include <metil.h>
 #include <metil_input/metil_controller_state.h>
 #include <metil_input/metil_cursor.h>
 #include <metil_input/metil_keycodes.h>
@@ -50,6 +51,7 @@ void metil_player_initialize(
 }
 
 void metil_player_poll_input(
+  struct metil* metil,
   struct metil_player* metil_player,
   unsigned long int time,
   unsigned long int time_delta
@@ -465,15 +467,18 @@ void metil_player_poll_input(
 }
 
 void metil_player_poll_input_null(
+  struct metil* metil,
   struct metil_player* player,
   unsigned long int time,
   unsigned long int time_delta
 ) {}
 
 void metil_player_poll(
+  struct metil* metil,
   struct metil_player* player
 ) {}
 
 void metil_player_destroy(
+  struct metil* metil,
   struct metil_player* player
 ) {}

@@ -10,6 +10,7 @@ void example_3d_scene_initialize(
 );
 
 void example_3d_scene_poll(
+  struct metil* _Nonnull,
   struct metil_scene* _Nonnull
 );
 

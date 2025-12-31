@@ -1,15 +1,27 @@
 #ifndef __metil_scenes_metil_scene_h
 #define __metil_scenes_metil_scene_h
 
+#include <metil.h>
 #include <metil_player/metil_player.h>
 #include <metil_rendering/metil_renderable.h>
 #include <metil_rendering/metil_renderer_interface.h>
 
 struct metil_scene;
 
-typedef void (*metil_function_scene_poll)(struct metil_scene* _Nonnull);
-typedef void (*metil_function_scene_poll_input)(struct metil_scene* _Nonnull);
-typedef void (*metil_function_scene_destroy)(struct metil_scene* _Nonnull);
+typedef void (*metil_function_scene_poll)(
+  struct metil* _Nonnull,
+  struct metil_scene* _Nonnull
+);
+
+typedef void (*metil_function_scene_poll_input)(
+  struct metil* _Nonnull,
+  struct metil_scene* _Nonnull
+);
+
+typedef void (*metil_function_scene_destroy)(
+  struct metil* _Nonnull,
+  struct metil_scene* _Nonnull
+);
 
 struct metil_scene_rendering_properties {
   float brightness;
@@ -66,28 +78,34 @@ void metil_scene_renderables_set_length(
 );
 
 void metil_scene_poll_input(
+  struct metil* _Nonnull,
   struct metil_scene* _Nonnull,
   unsigned long int
 );
 
 void metil_scene_poll(
+  struct metil* _Nonnull,
   struct metil_scene* _Nonnull,
   unsigned long int
 );
 
 void metil_scene_destroy(
+  struct metil* _Nonnull,
   struct metil_scene* _Nonnull
 );
 
 void metil_scene_poll_input_default(
+  struct metil* _Nonnull,
   struct metil_scene* _Nonnull
 );
 
 void metil_scene_poll_default(
+  struct metil* _Nonnull,
   struct metil_scene* _Nonnull
 );
 
 void metil_scene_destroy_default(
+  struct metil* _Nonnull,
   struct metil_scene* _Nonnull
 );
 

@@ -10,8 +10,12 @@
 
 struct metil_renderer_interface {
   _Nonnull id<MTLDevice> metal_device;
+  
   metil_renderer* _Nonnull renderer;
+  
   struct metil_rendering_properties* _Nonnull rendering_properties;
+
+  struct clic3_vector2_float size;
 };
 
 #endif
