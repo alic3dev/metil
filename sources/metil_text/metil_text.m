@@ -11,52 +11,6 @@
 #include <Metal/MTLTexture.h>
 #include <Metal/MTLTypes.h>
 
-CTFontRef metil_font_reference_monospace = (void*)0;
-CGColorSpaceRef metil_font_color_space = (void*)0;
-
-struct metil_text_render_parameters metil_text_render_parameters_default = {
-  .font = (void*)0,
-  .letter_spacing = 2,
-  .padding = {
-    .x = 5,
-    .y = 15
-  },
-  .scale = 0.001f
-};
-
-void metil_text_initialize(
-  struct metil_configuration* metil_configuration
-) {
-  CFStringRef name_family_font_monospace = CFSTR(
-    "monospace"
-  );
-
-  metil_font_reference_monospace = CTFontCreateWithName(
-    name_family_font_monospace,
-    48.0,
-    (void*)0
-  );
-
-  metil_text_render_parameters_default.font = (
-    metil_font_reference_monospace
-  );
-
-  CFRelease(
-    name_family_font_monospace
-  );
-
-  metil_font_color_space = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
-
-  if (
-    metil_font_color_space == (void*)0
-  ) {
-    metil_debug_log_error(
-      metil_configuration->debug_log_level,
-      "couldn't create color space\n"
-    );
-  }
-}
-
 CGGlyph* metil_text_glyphs_encode(
   char* characters,
   unsigned int length_characters,
@@ -209,13 +163,26 @@ struct metil_text_image* metil_text_render(
     text_image->data[index_pixel + 3] = value;
   }
 
+  CGColorSpaceRef color_space = CGColorSpaceCreateWithName(
+    kCGColorSpaceSRGB
+  );
+
+  if (
+    color_space == (void*)0
+  ) {
+    metil_debug_log_error(
+      metil_configuration->debug_log_level,
+      "couldn't create color space\n"
+    );
+  }
+
   CGContextRef context_bitmap = CGBitmapContextCreate(
     text_image->data,
     text_image->size.x,
     text_image->size.y,
     8,
     4 * (text_image->size.x),
-    metil_font_color_space,
+    color_space,
     0x0 | kCGImageAlphaNoneSkipFirst
   );
 
@@ -240,6 +207,10 @@ struct metil_text_image* metil_text_render(
 
   CGContextRelease(
     context_bitmap
+  );
+
+  CGColorSpaceRelease(
+    color_space
   );
 
   free(glyphs);
@@ -348,12 +319,10 @@ void metil_text_image_destroy(
   );
 }
 
-void metil_text_destroy() {
-  CGColorSpaceRelease(
-    metil_font_color_space
-  );
-
+void metil_text_destroy(
+  struct metil_text_render_parameters* metil_text_render_parameters
+) {
   CFRelease(
-    metil_font_reference_monospace
+    metil_text_render_parameters->font
   );
 }

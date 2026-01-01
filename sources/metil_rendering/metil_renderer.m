@@ -115,7 +115,8 @@
   metil_text_characters_initialize(
     &self->metil->text_characters_default,
     self->metil->renderer_interface.metal_device,
-    &self->metil->configuration
+    &self->metil->configuration,
+    &self->metil->text_defaults.render_parameters
   );
 
   metil_scene_controller_after_scene_change_add(

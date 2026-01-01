@@ -10,8 +10,6 @@
 #include <CoreText/CoreText.h>
 #include <Metal/MTLDevice.h>
 
-extern CTFontRef _Nonnull metil_font_reference_monospace;
-
 struct metil_text_image {
   unsigned char* _Nonnull data;
   struct clic3_vector2_unsigned_int size;
@@ -23,12 +21,6 @@ struct metil_text_render_parameters {
   struct clic3_vector2_unsigned_short_int padding;
   float scale;
 };
-
-extern struct metil_text_render_parameters metil_text_render_parameters_default;
-
-void metil_text_initialize(
-  struct metil_configuration* _Nonnull
-);
 
 CGGlyph* _Nullable metil_text_glyphs_encode(
   char* _Nonnull,
@@ -61,6 +53,8 @@ void metil_text_image_destroy(
   struct metil_text_image* _Nonnull
 );
 
-void metil_text_destroy();
+void metil_text_destroy(
+  struct metil_text_render_parameters* _Nonnull
+);
 
 #endif

@@ -15,6 +15,7 @@
 #include <metil_termination/metil_termination.h>
 #include <metil_termination/metil_terminate_on_signal.h>
 #include <metil_text/metil_text.h>
+#include <metil_text/metil_text_defaults.h>
 #include <metil_utilities/metil_time.h>
 
 #include <interrupt_handler.h>
@@ -128,7 +129,8 @@ int metil_initialize_with_data(
     &metil.audio
   );
 
-  metil_text_initialize(
+  metil_text_defaults_initialize(
+    &metil.text_defaults,
     &metil.configuration
   );
 

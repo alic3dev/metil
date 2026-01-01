@@ -11,7 +11,8 @@
 void metil_text_characters_initialize(
   struct metil_text_characters* metil_text_characters_default,
   id<MTLDevice> metal_device,
-  struct metil_configuration* metil_configuration
+  struct metil_configuration* metil_configuration,
+  struct metil_text_render_parameters* metil_text_render_parameters
 ) {
   metil_text_characters_default->length_characters = (
     metil_text_characters_length_default
@@ -39,8 +40,8 @@ void metil_text_characters_initialize(
 
   char character_array[2] = { 0, '\0' };
 
-  struct metil_text_render_parameters metil_text_render_parameters = {
-    .font = metil_text_render_parameters_default.font,
+  struct metil_text_render_parameters text_render_parameters = {
+    .font = metil_text_render_parameters->font,
     .letter_spacing = 0,
     .padding = {
       .x = 5,
@@ -77,7 +78,7 @@ void metil_text_characters_initialize(
         index_character
       ],
       character_array,
-      &metil_text_render_parameters,
+      &text_render_parameters,
       metil_configuration
     );
 

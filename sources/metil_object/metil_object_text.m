@@ -12,7 +12,7 @@ void metil_object_text_initialize(
   char* metil_object_text_char_array
 ) {
   metil_object->index_pipeline_render = (
-    metil->object_text_index_pipeline_render_default
+    metil->text_defaults.object_text_index_pipeline_render
   );
 
   id<MTLTexture> metil_object_text_texture = (
@@ -20,7 +20,7 @@ void metil_object_text_initialize(
       metil->renderer_interface.metal_device,
       &metil_object->mesh,
       metil_object_text_char_array,
-      &metil_text_render_parameters_default,
+      &metil->text_defaults.render_parameters,
       &metil->configuration
     )
   );

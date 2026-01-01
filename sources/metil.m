@@ -11,7 +11,7 @@
 void metil_structure_initialize(
   struct metil* metil
 ) {
-  metil->object_text_index_pipeline_render_default = (
+  metil->text_defaults.object_text_index_pipeline_render = (
     0
   );
 
@@ -51,7 +51,9 @@ void metil_destroy(
     &metil->configuration
   );
   
-  metil_text_destroy();
+  metil_text_destroy(
+    &metil->text_defaults.render_parameters
+  );
 
   metil_configuration_destroy(
     &metil->configuration
