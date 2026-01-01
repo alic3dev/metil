@@ -45,6 +45,6 @@ void example_model_renderer_on_initialize(
 
   example_model_scene_initialize(
     metil,
-    &metil_scene_controller.scene
+    &((struct metil_scene_controller*) metil->scene_controller)->scene
   );
 }

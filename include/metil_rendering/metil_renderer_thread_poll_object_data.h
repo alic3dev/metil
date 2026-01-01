@@ -1,9 +1,11 @@
 #ifndef __metil_rendering_metil_renderer_thread_poll_object_data_h
 #define __metil_rendering_metil_renderer_thread_poll_object_data_h
 
+#include <metil.h>
 #include <metil_rendering/metil_camera/metil_camera.h>
 
 struct metil_renderer_thread_poll_object_data {
+  struct metil* _Nonnull metil;
   struct metil_renderable* _Nonnull renderables;
   unsigned int length_renderables;
   matrix_float3x4* _Nonnull matrix_static_projection;

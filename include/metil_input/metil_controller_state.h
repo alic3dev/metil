@@ -1,6 +1,8 @@
 #ifndef __metil_input_metil_controller_state_h
 #define __metil_input_metil_controller_state_h
 
+#include <metil_input/metil_controller.h>
+
 #include <clic3_vector.h>
 
 struct metil_controller_state {
@@ -31,8 +33,13 @@ struct metil_controller_state {
   unsigned char available;
 };
 
-extern struct metil_controller_state metil_controller_state;
+void metil_controller_state_initialize(
+  struct metil_controller_state* _Nonnull
+);
 
-void metil_controller_state_poll();
+void metil_controller_state_poll(
+  struct metil_controller* _Nonnull,
+  struct metil_controller_state* _Nonnull
+);
 
 #endif

@@ -2,14 +2,14 @@
 #define __metil_paths_metil_paths_h
 
 struct metil_paths {
-  char* directory_root;
-  char* directory_home;
+  char* _Nonnull directory_root;
+  char* _Nonnull directory_home;
 
-  char* directory_configuration;
-  char* directory_resources;
-  char* directory_textures;
+  char* _Nonnull directory_configuration;
+  char* _Nonnull directory_resources;
+  char* _Nonnull directory_textures;
 
-  char* file_configuration;
+  char* _Nonnull file_configuration;
 
   unsigned int length_directory_root;
   unsigned int length_directory_home;
@@ -21,26 +21,36 @@ struct metil_paths {
   unsigned int length_file_configuration;
 };
 
-extern struct metil_paths metil_paths;
-
 void metil_paths_initialize(
-  char*,
-  char*
+  struct metil_paths* _Nonnull,
+  char* _Nonnull,
+  char* _Nonnull
 );
 
 void metil_paths_directory_root_set(
-  char*
+  struct metil_paths* _Nonnull,
+  char* _Nonnull
 );
 
-void metil_paths_directory_home_set();
+void metil_paths_directory_home_set(
+  struct metil_paths* _Nonnull
+);
 
 void metil_paths_configuration_set(
-  char*
+  struct metil_paths* _Nonnull,
+  char* _Nonnull
 );
 
-void metil_paths_directory_resources_set();
-void metil_paths_directory_textures_set();
+void metil_paths_directory_resources_set(
+  struct metil_paths* _Nonnull
+);
 
-void metil_paths_destroy();
+void metil_paths_directory_textures_set(
+  struct metil_paths* _Nonnull
+);
+
+void metil_paths_destroy(
+  struct metil_paths* _Nonnull
+);
 
 #endif

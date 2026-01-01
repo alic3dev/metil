@@ -5,10 +5,16 @@
 #include <GameController/GCDualSenseGamepad.h>
 
 struct metil_controller {
-  GCController* controller;
-  GCDualSenseGamepad* profile;
+  GCController* _Nullable controller;
+  GCDualSenseGamepad* _Nullable profile;
 };
 
-extern struct metil_controller metil_controller;
+void metil_controller_initialize(
+  struct metil_controller* _Nonnull
+);
+
+void metil_controller_poll(
+  struct metil_controller* _Nonnull
+);
 
 #endif

@@ -40,9 +40,9 @@
   if (
     event.keyCode < metil_input_map_keydown_length
   ) {
-    metil_input_map_keydown[
+    self->metil->input.keydown_map[
       event.keyCode
-    ] = metil_input_map_keydown[
+    ] = self->metil->input.keydown_map[
       event.keyCode
     ] == 1 ? 0 : 1;
   }
@@ -54,7 +54,7 @@
   if (
     event.keyCode < metil_input_map_keydown_length
   ) {
-    metil_input_map_keydown[
+    self->metil->input.keydown_map[
       code_key
     ] = 1;
   }
@@ -64,41 +64,41 @@
   if (
     event.keyCode < metil_input_map_keydown_length
   ) {
-    metil_input_map_keydown[
+    self->metil->input.keydown_map[
       event.keyCode
     ] = 0;
   }
 
   if (
     event.keyCode == metil_keycode_esc &&
-    metil_input_cursor.lockable == 1
+    self->metil->input.cursor.lockable == 1
   ) {
-    metil_input_cursor.locked = 0;
+    self->metil->input.cursor.locked = 0;
 
     [NSCursor unhide];
   }
 }
 
 - (void) mouseDown: (NSEvent*) event {
-  metil_input_cursor.down = 1;
+  self->metil->input.cursor.down = 1;
 
-  metil_input_cursor.position_down_screen.x = NSEvent.mouseLocation.x;
-  metil_input_cursor.position_down_screen.y = NSEvent.mouseLocation.y;
+  self->metil->input.cursor.position_down_screen.x = NSEvent.mouseLocation.x;
+  self->metil->input.cursor.position_down_screen.y = NSEvent.mouseLocation.y;
 
-  metil_input_cursor.position_down_window.x = event.locationInWindow.x;
-  metil_input_cursor.position_down_window.y = event.locationInWindow.y;
+  self->metil->input.cursor.position_down_window.x = event.locationInWindow.x;
+  self->metil->input.cursor.position_down_window.y = event.locationInWindow.y;
 
-  metil_input_cursor.delta_down.x = event.deltaX;
-  metil_input_cursor.delta_down.y = event.deltaY;
+  self->metil->input.cursor.delta_down.x = event.deltaX;
+  self->metil->input.cursor.delta_down.y = event.deltaY;
 
   if (
-    metil_input_cursor.lockable == 1 &&
-    metil_input_cursor.locked != 1
+    self->metil->input.cursor.lockable == 1 &&
+    self->metil->input.cursor.locked != 1
   ) {
-    metil_input_cursor.locked = 1;
+    self->metil->input.cursor.locked = 1;
 
-    metil_input_cursor.delta.x = 0;
-    metil_input_cursor.delta.y = 0;
+    self->metil->input.cursor.delta.x = 0;
+    self->metil->input.cursor.delta.y = 0;
 
     moved_after_lock = 0;
 
@@ -109,7 +109,7 @@
 }
 
 - (void) mouseDragged: (NSEvent*) event {
-  metil_input_cursor.dragging = 1;
+  self->metil->input.cursor.dragging = 1;
 
   [self process_mouse_movement_event: event];
 }
@@ -119,31 +119,31 @@
 }
 
 - (void) mouseUp: (NSEvent*) event {
-  metil_input_cursor.down = 0;
-  metil_input_cursor.dragging = 0;
+  self->metil->input.cursor.down = 0;
+  self->metil->input.cursor.dragging = 0;
 }
 
 - (void) process_mouse_movement_event: (NSEvent*) event {
-  metil_input_cursor.position_screen.x = NSEvent.mouseLocation.x;
-  metil_input_cursor.position_screen.y = NSEvent.mouseLocation.y;
+  self->metil->input.cursor.position_screen.x = NSEvent.mouseLocation.x;
+  self->metil->input.cursor.position_screen.y = NSEvent.mouseLocation.y;
 
-  metil_input_cursor.position_window.x = event.locationInWindow.x;
-  metil_input_cursor.position_window.y = event.locationInWindow.y;
+  self->metil->input.cursor.position_window.x = event.locationInWindow.x;
+  self->metil->input.cursor.position_window.y = event.locationInWindow.y;
 
   if (
-    metil_input_cursor.lockable == 1 &&
-    metil_input_cursor.locked == 1
+    self->metil->input.cursor.lockable == 1 &&
+    self->metil->input.cursor.locked == 1
   ) {
     if (
       moved_after_lock == 2
     ) {
-      metil_input_cursor.delta.x = (
-        metil_input_cursor.delta.x +
+      self->metil->input.cursor.delta.x = (
+        self->metil->input.cursor.delta.x +
         event.deltaX
       );
 
-      metil_input_cursor.delta.y = (
-        metil_input_cursor.delta.y +
+      self->metil->input.cursor.delta.y = (
+        self->metil->input.cursor.delta.y +
         event.deltaY
       );
     } else {
@@ -155,6 +155,10 @@
 
     [self center_mouse];
   }
+}
+
+- (void) metil_set: (struct metil*) _metil {
+  self->metil = _metil;
 }
 
 @end

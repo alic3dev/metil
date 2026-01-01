@@ -48,8 +48,8 @@ void metil_scene_initialize_with_renderables(
   scene->player.rotation.y = 0.0f;
   scene->player.rotation.z = 0.0f;
 
-  metil_input_cursor.delta.x = 0.0f;
-  metil_input_cursor.delta.y = 0.0f;
+  metil->input.cursor.delta.x = 0.0f;
+  metil->input.cursor.delta.y = 0.0f;
 
   scene->poll = metil_scene_poll_default;
   scene->poll_input = metil_scene_poll_input_default;
@@ -67,9 +67,6 @@ void metil_scene_initialize_with_renderables(
   scene->time_input_previous = 0;
 
   scene->loading = 0;
-
-  metil->rendering_properties.brightness = 1.0f;
-  metil->rendering_properties.brightness_text = 1.0f;
 
   scene->data = (void*)0;
 }
@@ -166,6 +163,7 @@ void metil_scene_destroy_default(
     ++index_renderable
   ) {
     metil_renderable_destroy(
+      metil,
       &(
         scene->renderables[
           index_renderable

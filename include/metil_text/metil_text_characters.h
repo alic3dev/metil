@@ -3,6 +3,7 @@
 
 #include <metil_configuration/metil_configuration.h>
 #include <metil_mesh/metil_mesh.h>
+#include <metil_text/metil_text.h>
 
 #include <Metal/MTLBuffer.h>
 #include <Metal/MTLDevice.h>
@@ -19,13 +20,15 @@ struct metil_text_characters {
   _Nonnull id<MTLTexture>* _Nonnull textures;
 };
 
-extern struct metil_text_characters metil_text_characters_default;
-
 void metil_text_characters_initialize(
+  struct metil_text_characters* _Nonnull,
   _Nonnull id<MTLDevice>,
-  struct metil_configuration* _Nonnull
+  struct metil_configuration* _Nonnull,
+  struct metil_text_render_parameters* _Nonnull
 );
 
-void metil_text_characters_destroy();
+void metil_text_characters_destroy(
+  void* _Nonnull
+);
 
 #endif

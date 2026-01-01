@@ -332,6 +332,7 @@ void example_model_scene_initialize(
   }
 
   metil_model_buffers_initialize(
+    metil,
     metil_model,
     metil->renderer_interface.metal_device
   );

@@ -8,6 +8,26 @@
 
 #include <interrupt_handler.h>
 
+void metil_structure_initialize(
+  struct metil* metil
+) {
+  metil->text_defaults.object_text_index_pipeline_render = (
+    0
+  );
+
+  metil->scene_controller = malloc(
+    sizeof(struct metil_scene_controller)
+  );
+
+  metil->data = (
+    (void*) 0
+  );
+
+  metil->destroy = (
+    (void*) 0
+  );
+}
+
 void metil_destroy(
   void* metil_pointer
 ) {
@@ -16,21 +36,38 @@ void metil_destroy(
   );
 
   metil_scene_controller_destroy(
-    metil
+    metil,
+    metil->scene_controller
   );
 
   interrupt_handler_destroy();
   
-  metil_paths_destroy();
+  metil_paths_destroy(
+    &metil->paths
+  );
   
   metil_audio_destroy(
     &metil->audio,
     &metil->configuration
   );
   
-  metil_text_destroy();
+  metil_text_destroy(
+    &metil->text_defaults.render_parameters
+  );
 
   metil_configuration_destroy(
     &metil->configuration
+  );
+
+  if (
+    metil->destroy != (void*) 0
+  ) {
+    metil->destroy(
+      metil
+    );
+  }
+
+  free(
+    metil->scene_controller
   );
 }

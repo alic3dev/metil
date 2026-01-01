@@ -6,8 +6,6 @@
 
 #include <Metal/MTLDevice.h>
 
-extern unsigned char metil_object_text_index_pipeline_render_default;
-
 void metil_object_text_initialize(
   struct metil* _Nonnull,
   struct metil_object* _Nonnull,

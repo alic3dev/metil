@@ -25,7 +25,9 @@ void example_face_renderer_on_initialize(
   struct metil* metil,
   void* data
 ) {
-  metil_input_cursor_lockable_unset();
+  metil_cursor_lockable_unset(
+    &metil->input.cursor
+  );
 
   metil_library_initialize(
     &metil->library,
@@ -48,6 +50,6 @@ void example_face_renderer_on_initialize(
 
   example_face_scene_initialize(
     metil,
-    &metil_scene_controller.scene
+    &((struct metil_scene_controller*) metil->scene_controller)->scene
   );
 }

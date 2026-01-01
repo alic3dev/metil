@@ -4,6 +4,7 @@
 #include <metil_configuration/metil_configuration_audio.h>
 #include <metil_configuration/metil_configuration_rendering_properties.h>
 #include <metil_debug/metil_debug_log_level.h>
+#include <metil_paths/metil_paths.h>
 
 struct metil_configuration {
   struct metil_configuration_audio audio;
@@ -16,7 +17,8 @@ void metil_configuration_initialize(
 );
 
 unsigned char metil_configuration_load(
-  struct metil_configuration* _Nonnull
+  struct metil_configuration* _Nonnull,
+  struct metil_paths* _Nonnull
 );
 
 int metil_configuration_value_int_parse(

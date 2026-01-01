@@ -15,6 +15,7 @@
 #include <metil_termination/metil_termination.h>
 #include <metil_termination/metil_terminate_on_signal.h>
 #include <metil_text/metil_text.h>
+#include <metil_text/metil_text_defaults.h>
 #include <metil_utilities/metil_time.h>
 
 #include <interrupt_handler.h>
@@ -57,14 +58,19 @@ int metil_initialize_with_data(
 ) {
   static struct metil metil;
 
+  metil_structure_initialize(
+    &metil
+  );
+
   metil.renderer_interface.rendering_properties = &(
     metil.rendering_properties
   );
 
-  metil_renderer_on_initialize = metil_renderer_on_initialize_function;
-  metil_renderer_on_initialize_data = metil_renderer_on_initialize_function_data;
+  metil.renderer_on_initialize = metil_renderer_on_initialize_function;
+  metil.renderer_on_initialize_data = metil_renderer_on_initialize_function_data;
 
   metil_paths_initialize(
+    &metil.paths,
     (char*) parameters[0],
     name
   );
@@ -76,14 +82,17 @@ int metil_initialize_with_data(
   #else
   unsigned char status_configuration_load = (
     metil_configuration_load(
-      &metil.configuration
+      &metil.configuration,
+      &metil.paths
     )
   );
 
   if (
     status_configuration_load != 0
   ) {
-    metil_paths_destroy();
+    metil_paths_destroy(
+      &metil.paths
+    );
     #if target_os_ios
     exit(
       status_configuration_load
@@ -106,10 +115,13 @@ int metil_initialize_with_data(
 
   interrupt_handler_initialize();
   
-  metil_input_initialize();
+  metil_input_initialize(
+    &metil.input
+  );
   
   metil_scene_controller_initialize(
-    &metil
+    &metil,
+    metil.scene_controller
   );
 
   metil_audio_initialize(
@@ -117,7 +129,8 @@ int metil_initialize_with_data(
     &metil.audio
   );
 
-  metil_text_initialize(
+  metil_text_defaults_initialize(
+    &metil.text_defaults,
     &metil.configuration
   );
 
