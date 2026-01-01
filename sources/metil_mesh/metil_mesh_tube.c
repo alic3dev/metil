@@ -16,6 +16,10 @@ void metil_mesh_tube_initialize(
     metil_mesh
   );
 
+  metil_mesh->size.x = size.x;
+  metil_mesh->size.y = size.y;
+  metil_mesh->size.z = size.z;
+
   struct clic3_vector3_float size_half = {
     .x = (
       size.x /
