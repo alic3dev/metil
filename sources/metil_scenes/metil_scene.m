@@ -166,6 +166,7 @@ void metil_scene_destroy_default(
     ++index_renderable
   ) {
     metil_renderable_destroy(
+      metil,
       &(
         scene->renderables[
           index_renderable

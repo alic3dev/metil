@@ -91,6 +91,12 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
     self->threads_data[
       index_thread
+    ].metil = (
+      self->metil
+    );
+
+    self->threads_data[
+      index_thread
     ].matrix_static_projection = (
       &self->matrix_projection_static
     );
@@ -115,6 +121,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
   );
 
   metil_scene_controller_after_scene_change_add(
+    self->metil->scene_controller,
     metil_renderer_after_scene_change,
     self
   );
@@ -665,13 +672,13 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   metil_scene_poll_input(
     self->metil,
-    &metil_scene_controller.scene,
+    &((struct metil_scene_controller*) self->metil->scene_controller)->scene,
     time
   );
 
   metil_scene_poll(
     self->metil,
-    &metil_scene_controller.scene,
+    &((struct metil_scene_controller*) self->metil->scene_controller)->scene,
     time
   );
 
@@ -681,13 +688,13 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   data_frame->frame = _frame;
 
-  data_frame->rotation_camera.x = metil_scene_controller.scene.player.rotation.x;
-  data_frame->rotation_camera.y = metil_scene_controller.scene.player.rotation.y;
-  data_frame->rotation_camera.z = metil_scene_controller.scene.player.rotation.z;
+  data_frame->rotation_camera.x = ((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.x;
+  data_frame->rotation_camera.y = ((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.y;
+  data_frame->rotation_camera.z = ((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.z;
 
-  data_frame->position_player.x = metil_scene_controller.scene.player.position.x;
-  data_frame->position_player.y = metil_scene_controller.scene.player.position.y;
-  data_frame->position_player.z = metil_scene_controller.scene.player.position.z;
+  data_frame->position_player.x = ((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.position.x;
+  data_frame->position_player.y = ((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.position.y;
+  data_frame->position_player.z = ((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.position.z;
 
   data_frame->brightness = (
     self->metil->rendering_properties.brightness *
@@ -701,8 +708,8 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   matrix_float4x4 matrix_player_rotation_x = (matrix_float4x4) {{
     { 1.0f, 0.0f, 0.0f, 0.0f },
-    { 0.0f, cos(metil_scene_controller.scene.player.rotation.x), -sin(metil_scene_controller.scene.player.rotation.x), 0.0f },
-    { 0.0f, sin(metil_scene_controller.scene.player.rotation.x), cos(metil_scene_controller.scene.player.rotation.x), 0.0f },
+    { 0.0f, cos(((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.x), -sin(((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.x), 0.0f },
+    { 0.0f, sin(((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.x), cos(((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.x), 0.0f },
     { 0.0f, 0.0f, 0.0f, 1.0f }
   }};
 
@@ -715,7 +722,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
       self->metil->rendering_properties.camera.height * (
         1.0f - (
           (
-            -metil_scene_controller.scene.player.rotation.x
+            -((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.x
           ) / (
             M_PI / 2.0f
           )
@@ -733,9 +740,9 @@ void* metil_renderer_on_initialize_data = (void*)0;
   }
 
   matrix_float4x4 matrix_player_rotation_y = (matrix_float4x4) {{
-    { cos(metil_scene_controller.scene.player.rotation.y), 0.0f, sin(metil_scene_controller.scene.player.rotation.y), 0.0f },
+    { cos(((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.y), 0.0f, sin(((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.y), 0.0f },
     { 0.0f, 1.0f, 0.0f, 0.0f },
-    { sin(metil_scene_controller.scene.player.rotation.y), 0.0f, -cos(metil_scene_controller.scene.player.rotation.y), 0.0f },
+    { sin(((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.y), 0.0f, -cos(((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.y), 0.0f },
     { 0.0f, 0.0f, 0.0f, 1.0f }
   }};
 
@@ -751,7 +758,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   unsigned char _index_data_buffer_frame = self->index_data_buffer_frame;
   unsigned int length_segment_objects = (
-    metil_scene_controller.scene.length_renderables /
+    ((struct metil_scene_controller*) self->metil->scene_controller)->scene.length_renderables /
     self->metil->system_information.cores_cpu
   );
 
@@ -786,7 +793,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
     self->threads_data[
       index_thread
     ].renderables = (
-      metil_scene_controller.scene.renderables +
+      ((struct metil_scene_controller*) self->metil->scene_controller)->scene.renderables +
       offset_index_object
     );
 
@@ -795,7 +802,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
     ].length_renderables = (
       index_core_cpu < self->metil->system_information.cores_cpu - 1
       ? length_segment_objects
-      : (metil_scene_controller.scene.length_renderables) - (
+      : (((struct metil_scene_controller*) self->metil->scene_controller)->scene.length_renderables) - (
         length_segment_objects * index_core_cpu
       )
     );
@@ -949,6 +956,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
     self->objects_fps_display[
       index_object_fps_display
     ].poll(
+      self->metil,
       &self->objects_fps_display[
         index_object_fps_display
       ],
@@ -1058,11 +1066,11 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   for (
     unsigned int index_renderable = 0;
-    index_renderable < metil_scene_controller.scene.length_renderables;
+    index_renderable < ((struct metil_scene_controller*) self->metil->scene_controller)->scene.length_renderables;
     ++index_renderable
   ) {
     renderable = &(
-      metil_scene_controller.scene.renderables[
+      ((struct metil_scene_controller*) self->metil->scene_controller)->scene.renderables[
         index_renderable
       ]
     );
@@ -1306,6 +1314,7 @@ void metil_renderer_poll_object(
       );
 
       object->poll(
+        metil_renderer_thread_poll_object_data->metil,
         object,
         metil_renderer_thread_poll_object_data->matrix_static_projection,
         metil_renderer_thread_poll_object_data->matrix_object_projection,
@@ -1323,6 +1332,7 @@ void metil_renderer_poll_object(
       );
 
       metil_model->poll(
+        metil_renderer_thread_poll_object_data->metil,
         metil_model,
         metil_renderer_thread_poll_object_data->matrix_static_projection,
         metil_renderer_thread_poll_object_data->matrix_object_projection,

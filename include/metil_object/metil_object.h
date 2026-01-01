@@ -1,6 +1,7 @@
 #ifndef __metil_object_metil_object_h
 #define __metil_object_metil_object_h
 
+#include <metil.h>
 #include <metil_mesh/metil_mesh.h>
 #include <metil_object/metil_object_buffer.h>
 #include <metil_positioning.h>
@@ -17,6 +18,7 @@
 struct metil_object;
 
 typedef void (*metil_object_poll_function)(
+  struct metil* _Nonnull,
   struct metil_object* _Nonnull,
   matrix_float3x4* _Nonnull,
   matrix_float4x4* _Nonnull,
@@ -25,6 +27,7 @@ typedef void (*metil_object_poll_function)(
 );
 
 typedef void (*metil_object_destroy_function)(
+  struct metil* _Nonnull,
   struct metil_object* _Nonnull
 );
 
@@ -90,6 +93,7 @@ void metil_object_texture_add(
 );
 
 void metil_object_poll(
+  struct metil* _Nonnull,
   struct metil_object* _Nonnull,
   matrix_float3x4* _Nonnull,
   matrix_float4x4* _Nonnull,
@@ -98,10 +102,12 @@ void metil_object_poll(
 );
 
 void metil_object_destroy(
+  struct metil* _Nonnull,
   struct metil_object* _Nonnull
 );
 
 void metil_object_destroy_with_textures(
+  struct metil* _Nonnull,
   struct metil_object* _Nonnull
 );
 

@@ -113,7 +113,8 @@ int metil_initialize_with_data(
   metil_input_initialize();
   
   metil_scene_controller_initialize(
-    &metil
+    &metil,
+    metil.scene_controller
   );
 
   metil_audio_initialize(

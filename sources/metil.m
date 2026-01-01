@@ -11,6 +11,10 @@
 void metil_structure_initialize(
   struct metil* metil
 ) {
+  metil->scene_controller = malloc(
+    sizeof(struct metil_scene_controller)
+  );
+
   metil->data = (
     (void*) 0
   );
@@ -28,7 +32,8 @@ void metil_destroy(
   );
 
   metil_scene_controller_destroy(
-    metil
+    metil,
+    metil->scene_controller
   );
 
   interrupt_handler_destroy();
@@ -53,4 +58,8 @@ void metil_destroy(
       metil
     );
   }
+
+  free(
+    metil->scene_controller
+  );
 }

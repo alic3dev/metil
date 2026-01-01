@@ -136,6 +136,7 @@ void metil_renderable_initialize_at_index(
 }
 
 void metil_renderable_destroy(
+  struct metil* metil,
   struct metil_renderable* renderable
 ) {
   switch (
@@ -143,6 +144,7 @@ void metil_renderable_destroy(
   ) {
     case metil_renderable_type_group: {
       metil_group_destroy(
+        metil,
         renderable->renderable
       );
       break;
@@ -153,6 +155,7 @@ void metil_renderable_destroy(
       );
 
       metil_object->destroy(
+        metil,
         metil_object
       );
       break;
@@ -166,6 +169,7 @@ void metil_renderable_destroy(
       );
 
       metil_model->destroy(
+        metil,
         metil_model
       );
       break;

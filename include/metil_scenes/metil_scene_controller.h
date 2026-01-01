@@ -5,51 +5,55 @@
 #include <metil_scenes/metil_scene.h>
 
 typedef void (*metil_scene_controller_on_scene_change)(
-  struct metil*,
+  struct metil* _Nonnull,
   int,
-  void*
+  void* _Nullable
 );
+
 typedef void (*metil_scene_controller_after_scene_change)(
-  struct metil*,
+  struct metil* _Nonnull,
   int,
-  void*
+  void* _Nullable
 );
 
 struct metil_scene_controller {
   struct metil_scene scene;
 
   unsigned char length_on_scene_change;
-  metil_scene_controller_on_scene_change* on_scene_change;
-  void** on_scene_change_data;
+  metil_scene_controller_on_scene_change _Nonnull * _Nonnull on_scene_change;
+  void* _Nonnull * _Nullable on_scene_change_data;
 
   unsigned char length_after_scene_change;
-  metil_scene_controller_after_scene_change* after_scene_change;
-  void** after_scene_change_data;
+  metil_scene_controller_after_scene_change _Nonnull * _Nonnull after_scene_change;
+  void* _Nonnull * _Nullable after_scene_change_data;
 };
 
-extern struct metil_scene_controller metil_scene_controller;
-
 void metil_scene_controller_initialize(
-  struct metil*
+  struct metil* _Nonnull,
+  struct metil_scene_controller* _Nonnull
 );
 
 void metil_scene_controller_scene_change(
-  struct metil*,
+  struct metil* _Nonnull,
+  struct metil_scene_controller* _Nonnull,
   int
 );
 
 void metil_scene_controller_on_scene_change_add(
-  metil_scene_controller_on_scene_change,
-  void*
+  struct metil_scene_controller* _Nonnull,
+  metil_scene_controller_on_scene_change _Nonnull,
+  void* _Nullable
 );
 
 void metil_scene_controller_after_scene_change_add(
-  metil_scene_controller_after_scene_change,
-  void*
+  struct metil_scene_controller* _Nonnull,
+  metil_scene_controller_after_scene_change _Nonnull,
+  void* _Nullable
 );
 
 void metil_scene_controller_destroy(
-  struct metil*
+  struct metil* _Nonnull,
+  struct metil_scene_controller* _Nonnull
 );
 
 #endif

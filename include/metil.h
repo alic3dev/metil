@@ -6,6 +6,7 @@
 #include <metil_library.h>
 #include <metil_rendering/metil_renderer_interface.h>
 #include <metil_rendering/metil_rendering_properties.h>
+
 #include <metil_system_information.h>
 #include <metil_termination/metil_termination.h>
 
@@ -19,6 +20,7 @@ struct metil {
   struct metil_library library;
   struct metil_renderer_interface renderer_interface;
   struct metil_rendering_properties rendering_properties;
+  void* _Nonnull scene_controller;
   struct metil_system_information system_information;
   struct metil_termination termination;
 

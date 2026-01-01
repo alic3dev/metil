@@ -1,6 +1,8 @@
 #ifndef __metil_rendering_metil_renderable_h
 #define __metil_rendering_metil_renderable_h
 
+#include <metil.h>
+
 enum metil_renderable_type {
   metil_renderable_type_group = 0,
   metil_renderable_type_object = 1,
@@ -48,6 +50,7 @@ void metil_renderable_initialize_at_index(
 );
 
 void metil_renderable_destroy(
+  struct metil* _Nonnull,
   struct metil_renderable* _Nonnull
 );
 

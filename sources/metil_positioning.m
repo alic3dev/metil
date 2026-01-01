@@ -17,6 +17,7 @@ void metil_positioning_view_model_matrix_projection_set(
   matrix_float4x4* matrix_player_projection,
   struct clic3_vector3_float* position,
   struct clic3_vector3_float* rotation,
+  struct clic3_vector3_float* position_player,
   struct metil_camera* metil_camera
 ) {
   metil_positioning_view_model_matrix_projection_with_offsets_set(
@@ -27,6 +28,7 @@ void metil_positioning_view_model_matrix_projection_set(
     matrix_player_projection,
     position,
     rotation,
+    position_player,
     (void*) 0,
     (void*) 0,
     metil_camera
@@ -41,6 +43,7 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
   matrix_float4x4* matrix_player_projection,
   struct clic3_vector3_float* position,
   struct clic3_vector3_float* rotation,
+  struct clic3_vector3_float* position_player,
   struct clic3_vector3_float* position_offset,
   struct clic3_vector3_float* rotation_offset,
   struct metil_camera* metil_camera
@@ -125,26 +128,26 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
     ) {
       position_translated.x = (
         position_offset->x -
-        metil_scene_controller.scene.player.position.x
+        position_player->x
       );
 
       position_translated.y = (
         position_offset->y -
-        metil_scene_controller.scene.player.position.y -
+        position_player->y -
         metil_camera->height
       );
 
       position_translated.z = (
         position_offset->z -
-        metil_scene_controller.scene.player.position.z
+        position_player->z
       );
     } else {
-      position_translated.x = -metil_scene_controller.scene.player.position.x;
+      position_translated.x = -position_player->x;
       position_translated.y = (
-        -metil_scene_controller.scene.player.position.y -
+        -position_player->y -
         metil_camera->height
       );
-      position_translated.z = -metil_scene_controller.scene.player.position.z;
+      position_translated.z = -position_player->z;
     }
 
     matrix_float4x4* matrix_projection = (void*) 0;

@@ -22,6 +22,7 @@ void metil_positioning_view_model_matrix_projection_set(
   matrix_float4x4* _Nonnull,
   struct clic3_vector3_float* _Nonnull,
   struct clic3_vector3_float* _Nonnull,
+  struct clic3_vector3_float* _Nonnull,
   struct metil_camera* _Nonnull
 );
 
@@ -31,6 +32,7 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
   matrix_float3x4* _Nonnull,
   matrix_float4x4* _Nonnull,
   matrix_float4x4* _Nonnull,
+  struct clic3_vector3_float* _Nonnull,
   struct clic3_vector3_float* _Nonnull,
   struct clic3_vector3_float* _Nonnull,
   struct clic3_vector3_float* _Nullable,

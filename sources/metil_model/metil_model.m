@@ -5,6 +5,7 @@
 #include <metil_positioning.h>
 #include <metil_rendering/metil_renderer_data_model_object.h>
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
+#include <metil_scenes/metil_scene_controller.h>
 
 void metil_model_initialize(
   struct metil_model* metil_model
@@ -196,6 +197,7 @@ void metil_model_vertex_joint_attach(
 }
 
 void metil_model_buffers_initialize(
+  struct metil* metil,
   struct metil_model* metil_model,
   id<MTLDevice> metal_device
 ) {
@@ -249,6 +251,7 @@ void metil_model_buffers_initialize(
   buffer_joints_contents_joint->z = 0.0f;
 
   metil_model_buffer_joints_poll(
+    metil,
     metil_model
   );
 
@@ -310,6 +313,7 @@ void metil_model_texture_add(
 ) {}
 
 void metil_model_poll(
+  struct metil* metil,
   struct metil_model* metil_model,
   matrix_float3x4* matrix_projection_static,
   matrix_float4x4* matrix_object_projection,
@@ -317,6 +321,7 @@ void metil_model_poll(
   struct metil_camera* metil_camera
 ) {
   metil_model_buffer_joints_poll(
+    metil,
     metil_model
   );
 
@@ -345,12 +350,14 @@ void metil_model_poll(
       matrix_player_projection,
       &metil_object->position,
       &metil_object->rotation,
+      &((struct metil_scene_controller*) metil->scene_controller)->scene.player.position,
       &metil_model->position,
       &metil_model->rotation,
       metil_camera
     );
 
     metil_object->poll(
+      metil,
       metil_object,
       matrix_projection_static,
       matrix_object_projection,
@@ -361,6 +368,7 @@ void metil_model_poll(
 }
 
 void metil_model_buffer_joints_poll(
+  struct metil* metil,
   struct metil_model* metil_model
 ) {
   struct clic3_vector3_float* buffer_joints_contents_joint;
@@ -453,6 +461,7 @@ void metil_model_buffer_joints_poll(
 }
 
 void metil_model_object_poll(
+  struct metil* metil,
   struct metil_object* metil_object,
   matrix_float3x4* matrix_projection_static,
   matrix_float4x4* matrix_object_projection,
@@ -483,6 +492,7 @@ void metil_model_object_poll(
 }
 
 void metil_model_destroy(
+  struct metil* metil,
   struct metil_model* metil_model
 ) {
   [
@@ -508,6 +518,7 @@ void metil_model_destroy(
     );
 
     metil_object->destroy(
+      metil,
       metil_object
     );
   }
@@ -546,6 +557,7 @@ void metil_model_destroy(
 }
 
 void metil_model_destroy_with_textures(
+  struct metil* metil,
   struct metil_model* metil_model
 ) {
   for (
@@ -559,6 +571,7 @@ void metil_model_destroy_with_textures(
   }
 
   metil_model_destroy(
+    metil,
     metil_model
   );
 }
