@@ -1,6 +1,7 @@
 #include <example_fog.h>
 
 #include <example_fog_scene.h>
+#include <example_fog_pipeline_index.h>
 
 #include <metil.h>
 #include <metil_initialize.h>
@@ -23,7 +24,6 @@ void example_fog_renderer_on_initialize(
   struct metil* metil,
   void* data
 ) {
-  // metil->rendering_properties.camera.distance_view.far = 100.0f;
 
   metil_library_initialize(
     &metil->library,
@@ -31,6 +31,18 @@ void example_fog_renderer_on_initialize(
     @"fog_object_fragment",
     @"fog_object_vertex"
   );
+
+  example_face_pipeline_index_fog = [
+    metil->renderer_interface.renderer
+    pipeline_add: [
+      metil->library.library
+      newFunctionWithName: @"fog_fragment"
+    ]
+    function_vertex: [
+      metil->library.library
+      newFunctionWithName: @"fog_vertex"
+    ]
+  ];
 
   example_fog_scene_initialize(
     metil,

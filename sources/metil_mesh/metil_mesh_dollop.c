@@ -16,6 +16,10 @@ void metil_mesh_dollop_initialize(
     metil_mesh
   );
 
+  metil_mesh->size.x = size.x;
+  metil_mesh->size.y = size.y;
+  metil_mesh->size.z = size.z;
+
   struct clic3_vector3_float size_half = {
     .x = (
       size.x /
@@ -150,25 +154,20 @@ void metil_mesh_dollop_initialize(
     );
 
     if (
-      segments.y % 2 == 0
+      index_segment_y <= segment_y_half
     ) {
-      if (
-        index_segment_y <= segment_y_half
-      ) {
-        percentage_radius = (
-          (float) index_segment_y /
-          segment_y_half
-        );
-      } else {
-        percentage_radius = (
-          (
-            segments.y -
-            (float) index_segment_y
-          ) /
-          segment_y_half
-        );
-      }
+      percentage_radius = (
+        (float) index_segment_y /
+        segment_y_half
+      );
     } else {
+      percentage_radius = (
+        (
+          segments.y -
+          (float) index_segment_y
+        ) /
+        segment_y_half
+      );
     }
 
     percentage_radius = (
