@@ -704,12 +704,10 @@ void* metil_renderer_on_initialize_data = (void*)0;
   data_frame->position_player.z = ((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.position.z;
 
   data_frame->brightness = (
-    self->metil->rendering_properties.brightness *
     self->metil->rendering_properties.brightness
   );
 
   data_frame->brightness_text = (
-    self->metil->rendering_properties.brightness_text *
     self->metil->rendering_properties.brightness_text
   );
 

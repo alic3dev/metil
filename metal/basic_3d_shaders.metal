@@ -33,9 +33,9 @@ struct data_vertex {
   );
 
   data_vertex.color = float4(
-    data_object->color.x,
-    data_object->color.y,
-    data_object->color.z,
+    data_object->color.x * data_frame->brightness,
+    data_object->color.y * data_frame->brightness,
+    data_object->color.z * data_frame->brightness,
     data_object->color.w
   );
 
