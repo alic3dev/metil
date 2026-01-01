@@ -1,3 +1,5 @@
+#include <example_fog_values.h>
+
 #include <metil_rendering/metil_renderer_data_frame.h>
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
@@ -6,6 +8,7 @@ struct data_vertex {
   float4 position [[position]];
   float4 color;
   float brightness;
+  float distance;
 };
 
 [[vertex]] struct data_vertex fog_object_vertex(
@@ -37,21 +40,21 @@ struct data_vertex {
     metal::fmod(
       data_object->color.x * (float) (
         id_vertex +
-        1
+        4234.23842398
       ),
       1.0f
     ),
     metal::fmod(
       data_object->color.y * (float) (
         id_vertex +
-        2
+        1489.8924489
       ),
       1.0f
     ),
     metal::fmod(
       data_object->color.z * (float) (
         id_vertex +
-        3
+        1.3892810472
       ),
       1.0f
     ),
@@ -63,16 +66,90 @@ struct data_vertex {
     (data_object->size.z)
   );
 
+  data_vertex.distance = (
+    metal::distance(
+      float3(
+        data_frame->position_player.x,
+        data_frame->position_player.y,
+        data_frame->position_player.z
+      ),
+      float3(
+        data_object->position.x,
+        data_object->position.y,
+        data_object->position.z
+      )
+    )
+  );
+
   return data_vertex;
+}
+
+float4 fog_apply(
+  float4 color,
+  float distance
+) {
+  float distance_offset = metal::fmin(
+    metal::fmax(
+      (
+        distance -
+        fog_distance_minimum
+      ),
+      0.0f
+    ),
+    fog_distance_maximum
+  );
+
+  float distance_percentage = (
+    distance_offset /
+    fog_distance_maximum
+  );
+
+  float fog_thickness = (
+    distance_percentage *
+    fog_thickness_range +
+    fog_thickness_minimum
+  );
+
+  return float4(
+    metal::fmin(
+      (
+        color.r +
+        fog_thickness
+      ),
+      1.0f
+    ),
+    metal::fmin(
+      (
+        color.g +
+        fog_thickness
+      ),
+      1.0f
+    ),
+    metal::fmin(
+      (
+        color.b +
+        fog_thickness
+      ),
+      1.0f
+    ),
+    color.a
+  );
 }
 
 [[fragment]] float4 fog_object_fragment(
   struct data_vertex data_vertex [[stage_in]]
 ) {
-  return float4(
+  float4 color_lighted = float4(
     data_vertex.color.r * data_vertex.brightness,
     data_vertex.color.g * data_vertex.brightness,
     data_vertex.color.b * data_vertex.brightness,
     data_vertex.color.a
   );
+
+  float4 color_fogged = fog_apply(
+    color_lighted,
+    data_vertex.distance
+  );
+
+  return color_fogged;
 }
