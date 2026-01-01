@@ -42,9 +42,6 @@
 #include <limits.h>
 #include <simd/simd.h>
 
-metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
-void* metil_renderer_on_initialize_data = (void*)0;
-
 @implementation metil_renderer
 
 - (nonnull instancetype) metil_renderer_initialize:
@@ -132,10 +129,12 @@ void* metil_renderer_on_initialize_data = (void*)0;
   [self fps_display_objects_initialize];
   [self descriptor_pipeline_render_initialize];
 
-  if (metil_renderer_on_initialize != (void*)0) {
-    metil_renderer_on_initialize(
+  if (
+    self->metil->renderer_on_initialize != (void*) 0
+  ) {
+    self->metil->renderer_on_initialize(
       self->metil,
-      metil_renderer_on_initialize_data
+      self->metil->renderer_on_initialize_data
     );
   }
 

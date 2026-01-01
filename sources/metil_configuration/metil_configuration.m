@@ -222,8 +222,6 @@ unsigned char metil_configuration_load(
               buffer_parameter,
               buffer_value
             );
-            
-            printf("%f\n",rendering_brightness);
 
             if (rendering_brightness >= 0.0f) {
               metil_configuration->rendering_properties.brightness = rendering_brightness;

@@ -23,14 +23,6 @@
 
 #define metil_renderer_length_objects_fps_display 5
 
-typedef void (*metil_renderer_on_initialize_function)(
-  struct metil* _Nonnull,
-  void* _Nullable
-);
-
-extern _Nullable metil_renderer_on_initialize_function metil_renderer_on_initialize;
-extern void* _Nullable metil_renderer_on_initialize_data;
-
 #define metil_renderer_pipelines_render_index_library 0
 #define metil_renderer_pipelines_render_index_fps_display 1
 #define metil_renderer_pipelines_render_index_wireframe 2

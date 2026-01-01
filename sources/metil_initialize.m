@@ -65,8 +65,8 @@ int metil_initialize_with_data(
     metil.rendering_properties
   );
 
-  metil_renderer_on_initialize = metil_renderer_on_initialize_function;
-  metil_renderer_on_initialize_data = metil_renderer_on_initialize_function_data;
+  metil.renderer_on_initialize = metil_renderer_on_initialize_function;
+  metil.renderer_on_initialize_data = metil_renderer_on_initialize_function_data;
 
   metil_paths_initialize(
     &metil.paths,

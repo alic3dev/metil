@@ -7,8 +7,8 @@
 #include <metil_library.h>
 #include <metil_paths/metil_paths.h>
 #include <metil_rendering/metil_renderer_interface.h>
+#include <metil_rendering/metil_renderer_on_initialize.h>
 #include <metil_rendering/metil_rendering_properties.h>
-
 #include <metil_system_information.h>
 #include <metil_termination/metil_termination.h>
 
@@ -31,6 +31,9 @@ struct metil {
   void* _Nullable data;
 
   metil_destroy_function _Nullable destroy;
+
+  _Nullable metil_renderer_on_initialize_function renderer_on_initialize;
+  void* _Nullable renderer_on_initialize_data;
 };
 
 void metil_structure_initialize(
