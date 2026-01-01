@@ -11,6 +11,10 @@
 void metil_structure_initialize(
   struct metil* metil
 ) {
+  metil->object_text_index_pipeline_render_default = (
+    0
+  );
+
   metil->scene_controller = malloc(
     sizeof(struct metil_scene_controller)
   );

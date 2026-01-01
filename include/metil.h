@@ -37,6 +37,8 @@ struct metil {
 
   _Nullable metil_renderer_on_initialize_function renderer_on_initialize;
   void* _Nullable renderer_on_initialize_data;
+
+  unsigned char object_text_index_pipeline_render_default;
 };
 
 void metil_structure_initialize(

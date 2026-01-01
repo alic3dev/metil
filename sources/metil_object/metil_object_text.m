@@ -6,15 +6,13 @@
 
 #include <Metal/MTLRenderCommandEncoder.h>
 
-unsigned char metil_object_text_index_pipeline_render_default = 0;
-
 void metil_object_text_initialize(
   struct metil* metil,
   struct metil_object* metil_object,
   char* metil_object_text_char_array
 ) {
   metil_object->index_pipeline_render = (
-    metil_object_text_index_pipeline_render_default
+    metil->object_text_index_pipeline_render_default
   );
 
   id<MTLTexture> metil_object_text_texture = (
