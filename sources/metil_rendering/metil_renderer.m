@@ -666,7 +666,14 @@ void* metil_renderer_on_initialize_data = (void*)0;
 }
 
 - (void) poll: (unsigned int) _frame {
-  metil_controller_state_poll();
+  metil_controller_poll(
+    &self->metil->input.controller
+  );
+
+  metil_controller_state_poll(
+    &self->metil->input.controller,
+    &self->metil->input.controller_state
+  );
 
   unsigned long int time = metil_time_milliseconds_get();
 

@@ -3,6 +3,7 @@
 
 #include <metil_audio/metil_audio_data.h>
 #include <metil_configuration/metil_configuration.h>
+#include <metil_input/metil_input.h>
 #include <metil_library.h>
 #include <metil_rendering/metil_renderer_interface.h>
 #include <metil_rendering/metil_rendering_properties.h>
@@ -17,6 +18,7 @@ typedef void (*metil_destroy_function)(struct metil* _Nonnull);
 struct metil {
   struct metil_audio_data audio;
   struct metil_configuration configuration;
+  struct metil_input input;
   struct metil_library library;
   struct metil_renderer_interface renderer_interface;
   struct metil_rendering_properties rendering_properties;

@@ -564,14 +564,14 @@ void example_face_scene_poll(
   struct clic3_vector2_float position_relative = {
     .x = (
       (
-        metil_input_cursor.position_window.x /
+        metil_cursor.position_window.x /
         metil->renderer_interface.size.x *
         2.0f
       ) - 1.0f
     ),
     .y = (
       (
-        metil_input_cursor.position_window.y /
+        metil_cursor.position_window.y /
         metil->renderer_interface.size.y *
         2.0f
       ) - 1.0f
@@ -632,7 +632,7 @@ void example_face_scene_poll(
   }
 
   if (
-    metil_input_cursor.down == 1 &&
+    metil_cursor.down == 1 &&
     data_object->vertex_hovered != 0 &&
     data_object->vertex_held == 0
   ) {
@@ -640,7 +640,7 @@ void example_face_scene_poll(
       data_object->vertex_hovered
     );
   } else if (
-    metil_input_cursor.down != 1
+    metil_cursor.down != 1
   ) {
     data_object->vertex_held = 0;
   }

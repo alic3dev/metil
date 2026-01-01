@@ -1,6 +1,7 @@
 #ifndef __metil_menus_metil_menu_h
 #define __metil_menus_metil_menu_h
 
+#include <metil_input/metil_input.h>
 #include <metil_menus/metil_menu_item.h>
 #include <metil_utilities/metil_stopwatch.h>
 
@@ -15,7 +16,7 @@ struct metil_menu {
   unsigned char handled;
 
   unsigned char length_items;
-  struct metil_menu_item* items;
+  struct metil_menu_item* _Nonnull items;
 
   unsigned char wrap;
 
@@ -23,34 +24,35 @@ struct metil_menu {
 };
 
 void metil_menu_initialize(
-  struct metil_menu*
+  struct metil_menu* _Nonnull
 );
 
 void metil_menu_item_add(
-  struct metil_menu*,
+  struct metil_menu* _Nonnull,
   enum metil_menu_item_type,
   enum metil_menu_item_action,
-  void*
+  void* _Nullable
 );
 
 void metil_menu_poll_input(
-  struct metil_menu*
+  struct metil_menu* _Nonnull,
+  struct metil_input* _Nonnull
 );
 
 void metil_menu_select(
-  struct metil_menu*
+  struct metil_menu* _Nonnull
 );
 
 unsigned char metil_menu_next(
-  struct metil_menu*
+  struct metil_menu* _Nonnull
 );
 
 unsigned char metil_menu_previous(
-  struct metil_menu*
+  struct metil_menu* _Nonnull
 );
 
 void metil_menu_destroy(
-  struct metil_menu*
+  struct metil_menu* _Nonnull
 );
 
 #endif

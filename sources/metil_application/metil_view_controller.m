@@ -2,6 +2,7 @@
 
 #include <metil_application/metil_application.h>
 #include <metil_application/metil_view.h>
+#include <metil_application/metil_window.h>
 #include <metil_rendering/metil_renderer.h>
 
 metil_view_controller_on_view_did_load_function metil_view_controller_on_view_did_load = (void*) 0;
