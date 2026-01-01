@@ -1,9 +1,10 @@
 #include <metil_object.h>
 
-#include <metil_mesh/mesh.h>
+#include <metil_mesh/metil_mesh.h>
 #include <metil_positioning.h>
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_rendering/metil_renderer.h>
+#include <metil_scenes/metil_scene_controller.h>
 
 #include <clic3_vector.h>
 
@@ -228,6 +229,7 @@ void metil_object_texture_add(
 }
 
 void metil_object_poll(
+  struct metil* metil,
   struct metil_object* metil_object,
   matrix_float3x4* matrix_projection_static,
   matrix_float4x4* matrix_object_projection,
@@ -252,6 +254,7 @@ void metil_object_poll(
     matrix_player_projection,
     &metil_object->position,
     &metil_object->rotation,
+    &((struct metil_scene_controller*) metil->scene_controller)->scene.player.position,
     metil_camera
   );
 
@@ -261,6 +264,7 @@ void metil_object_poll(
 }
 
 void metil_object_destroy(
+  struct metil* metil,
   struct metil_object* object
 ) {
   if (
@@ -303,6 +307,7 @@ void metil_object_destroy(
 }
 
 void metil_object_destroy_with_textures(
+  struct metil* metil,
   struct metil_object* metil_object
 ) {
   for (
@@ -316,6 +321,7 @@ void metil_object_destroy_with_textures(
   }
 
   metil_object_destroy(
+    metil,
     metil_object
   );
 }

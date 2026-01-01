@@ -1,6 +1,6 @@
 #include <metil_mesh/metil_mesh_parse.h>
 
-#include <metil_mesh/mesh.h>
+#include <metil_mesh/metil_mesh.h>
 #include <metil_status.h>
 
 // struct clic3_vector3_float size;

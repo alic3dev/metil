@@ -1,30 +1,29 @@
 #include <metil_rendering/metil_renderer.h>
 
-#include <metil_application/metil_renderer_size.h>
 #include <metil_audio/metil_audio.h>
 #include <metil_audio/metil_audio_data.h>
-#include <metil_configuration/configuration.h>
+#include <metil_configuration/metil_configuration.h>
 #include <metil_group.h>
-#include <metil_input/controller_state.h>
-#include <metil_input/map.h>
-#include <metil_input/keycodes.h>
+#include <metil_input/metil_controller_state.h>
+#include <metil_input/metil_input_map.h>
+#include <metil_input/metil_keycodes.h>
 #include <metil_library.h>
-#include <metil_mesh/mesh.h>
+#include <metil_mesh/metil_mesh.h>
 #include <metil_model/metil_model.h>
 #include <metil_object.h>
 #include <metil_positioning.h>
-#include <metil_rendering/camera/camera.h>
-#include <metil_rendering/descriptors/pipeline_render.h>
+#include <metil_rendering/metil_camera/metil_camera.h>
+#include <metil_rendering/metil_descriptors/metil_pipeline_render.h>
 #include <metil_rendering/metil_renderer_data_frame.h>
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_rendering/metil_renderer_thread_poll_object_data.h>
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
-#include <metil_scenes/scene.h>
-#include <metil_scenes/scene_controller.h>
+#include <metil_scenes/metil_scene.h>
+#include <metil_scenes/metil_scene_controller.h>
 #include <metil_system_information.h>
-#include <metil_termination.h>
-#include <metil_text/text_characters.h>
-#include <metil_utilities/time.h>
+#include <metil_termination/metil_termination.h>
+#include <metil_text/metil_text_characters.h>
+#include <metil_utilities/metil_time.h>
 
 #include <clic3_char_arrays.h>
 #include <clic3_vector.h>
@@ -43,12 +42,12 @@
 #include <limits.h>
 #include <simd/simd.h>
 
-metil_renderer_on_initialize_function metil_renderer_on_initialize = (void*)0;
-void* metil_renderer_on_initialize_data = (void*)0;
-
 @implementation metil_renderer
 
-- (nonnull instancetype) initWithMetalKitView: (nonnull MTKView*) metal_kit_view {
+- (nonnull instancetype) metil_renderer_initialize:
+  (nonnull MTKView*) metal_kit_view
+  metil: (nonnull struct metil*) parameter_metil
+{
   self = [super init];
 
   if (
@@ -57,10 +56,14 @@ void* metil_renderer_on_initialize_data = (void*)0;
     return self;
   }
 
+  self->metil = (
+    parameter_metil
+  );
+
   [self initialize_null];
 
   self->length_threads = (
-    metil_system_information.cores_cpu *
+    self->metil->system_information.cores_cpu *
     metil_count_max_frames
   );
 
@@ -85,6 +88,12 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
     self->threads_data[
       index_thread
+    ].metil = (
+      self->metil
+    );
+
+    self->threads_data[
+      index_thread
     ].matrix_static_projection = (
       &self->matrix_projection_static
     );
@@ -92,20 +101,26 @@ void* metil_renderer_on_initialize_data = (void*)0;
     self->threads_data[
       index_thread
     ].camera = (
-      &self->rendering_properties.camera
+      &self->metil->rendering_properties.camera
     );
   }
 
-  self->metal_device = metal_kit_view.device;
+  self->metil->renderer_interface.renderer = self;
+  self->metil->renderer_interface.metal_device = (
+    metal_kit_view.device
+  );
 
-  [self rendering_properties_initialize];
   [self termination_functions_initialize];
 
   metil_text_characters_initialize(
-    self->metal_device
+    &self->metil->text_characters_default,
+    self->metil->renderer_interface.metal_device,
+    &self->metil->configuration,
+    &self->metil->text_defaults.render_parameters
   );
 
   metil_scene_controller_after_scene_change_add(
+    self->metil->scene_controller,
     metil_renderer_after_scene_change,
     self
   );
@@ -116,14 +131,12 @@ void* metil_renderer_on_initialize_data = (void*)0;
   [self fps_display_objects_initialize];
   [self descriptor_pipeline_render_initialize];
 
-  self->renderer_interface.renderer = self;
-  self->renderer_interface.metal_device = self->metal_device;
-  self->renderer_interface.rendering_properties = &self->rendering_properties;
-
-  if (metil_renderer_on_initialize != (void*)0) {
-    metil_renderer_on_initialize(
-      &self->renderer_interface,
-      metil_renderer_on_initialize_data
+  if (
+    self->metil->renderer_on_initialize != (void*) 0
+  ) {
+    self->metil->renderer_on_initialize(
+      self->metil,
+      self->metil->renderer_on_initialize_data
     );
   }
 
@@ -135,7 +148,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
 - (void) after_scene_change {}
 
 - (void) command_queue_initialize {
-  self->command_queue = [self->metal_device
+  self->command_queue = [self->metil->renderer_interface.metal_device
     newCommandQueue
   ];
 }
@@ -148,7 +161,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
   ) {
     data_buffer_frame[
       index_buffer
-    ] = [self->metal_device
+    ] = [self->metil->renderer_interface.metal_device
       newBufferWithLength: sizeof(struct metil_renderer_data_frame)
       options: MTLResourceStorageModeShared
     ];
@@ -203,7 +216,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
   free(self->threads);
   free(self->threads_data);
 
-  [self->metal_device release];
+  [self->metil->renderer_interface.metal_device release];
 
   for (
     unsigned char index_data_buffer_frame_release = 0;
@@ -266,34 +279,34 @@ void* metil_renderer_on_initialize_data = (void*)0;
   }
 
   metil_rendering_properties_destory(
-    &self->rendering_properties
+    &self->metil->rendering_properties
   );
 }
 
 - (void) drawInMTKView: (nonnull MTKView*) metal_kit_view {
   const unsigned int _frame = (
-    self->rendering_properties.frame++
+    self->metil->rendering_properties.frame++
   );
 
   if (_frame == 0) {
-    metil_audio_data.muted = 0;
+    self->metil->audio.muted = 0;
   }
 
   if (
-    self->rendering_properties.frame + 1 >= UINT_MAX - 1
+    self->metil->rendering_properties.frame + 1 >= UINT_MAX - 1
   ) {
-    self->rendering_properties.frame = 1;
+    self->metil->rendering_properties.frame = 1;
   }
 
-  self->rendering_properties.count_completed_frames = (
-    self->rendering_properties.count_completed_frames - 1
+  self->metil->rendering_properties.count_completed_frames = (
+    self->metil->rendering_properties.count_completed_frames - 1
   );
 
   if (
-    self->rendering_properties.count_completed_frames <= 0
+    self->metil->rendering_properties.count_completed_frames <= 0
   ) {
     pthread_mutex_lock(
-      &self->rendering_properties.mutex_frame
+      &self->metil->rendering_properties.mutex_frame
     );
   }
 
@@ -305,10 +318,10 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   MTLRenderPassDescriptor* descriptor_render_pass = metal_kit_view.currentRenderPassDescriptor;
   descriptor_render_pass.colorAttachments[0].clearColor = MTLClearColorMake(
-    self->rendering_properties.color_clear.x,
-    self->rendering_properties.color_clear.y,
-    self->rendering_properties.color_clear.z,
-    self->rendering_properties.color_clear.w
+    self->metil->rendering_properties.color_clear.x,
+    self->metil->rendering_properties.color_clear.y,
+    self->metil->rendering_properties.color_clear.z,
+    self->metil->rendering_properties.color_clear.w
   );
 
   encoder_render = [command_buffer renderCommandEncoderWithDescriptor: descriptor_render_pass];
@@ -342,11 +355,11 @@ void* metil_renderer_on_initialize_data = (void*)0;
   [self render];
 
   if (
-    self->rendering_properties.fps_display == 1 &&
+    self->metil->rendering_properties.fps_display == 1 &&
     self->pipelines_render[
       metil_renderer_pipelines_render_index_fps_display
     ] != (void*)0 &&
-    self->rendering_properties.frame > 10
+    self->metil->rendering_properties.frame > 10
   ) {
     [self render_fps_display];
   }
@@ -355,8 +368,8 @@ void* metil_renderer_on_initialize_data = (void*)0;
   self->encoder_render_encoding = 0;
 
   [command_buffer addCompletedHandler:^(id<MTLCommandBuffer> buffer) {
-    self->rendering_properties.count_completed_frames = (
-      self->rendering_properties.count_completed_frames + 1
+    self->metil->rendering_properties.count_completed_frames = (
+      self->metil->rendering_properties.count_completed_frames + 1
     );
 
     for (
@@ -364,14 +377,14 @@ void* metil_renderer_on_initialize_data = (void*)0;
       index_time_frame < metil_count_time_frames - 1;
       ++index_time_frame
     ) {
-      self->rendering_properties.time_frames[
+      self->metil->rendering_properties.time_frames[
         index_time_frame
-      ] = self->rendering_properties.time_frames[
+      ] = self->metil->rendering_properties.time_frames[
         index_time_frame + 1
       ];
     }
 
-    self->rendering_properties.time_frames[
+    self->metil->rendering_properties.time_frames[
       metil_count_time_frames - 1
     ] = metil_time_milliseconds_get() - 1759219190000;
 
@@ -384,25 +397,25 @@ void* metil_renderer_on_initialize_data = (void*)0;
     ) {
       time_difference_average = (
         time_difference_average + (float) (
-          self->rendering_properties.time_frames[
+          self->metil->rendering_properties.time_frames[
           index_time_frame + 1
-        ] - self->rendering_properties.time_frames[
+        ] - self->metil->rendering_properties.time_frames[
           index_time_frame
         ]) / (float) (metil_count_time_frames - 1)
       );
     }
 
-    self->rendering_properties.fps = (
+    self->metil->rendering_properties.fps = (
       1000.0f /
       time_difference_average
     );
 
     if (
-      self->rendering_properties.count_completed_frames == 0 ||
-      self->rendering_properties.count_completed_frames == 1
+      self->metil->rendering_properties.count_completed_frames == 0 ||
+      self->metil->rendering_properties.count_completed_frames == 1
     ) {
       pthread_mutex_unlock(
-        &self->rendering_properties.mutex_frame
+        &self->metil->rendering_properties.mutex_frame
       );
     }
   }];
@@ -419,19 +432,19 @@ void* metil_renderer_on_initialize_data = (void*)0;
     1920x1203 is fine
     1920x1202 causes slow down
   */
-  metil_renderer_size.x = size.width;
-  metil_renderer_size.y = size.height;
+  self->metil->renderer_interface.size.x = size.width;
+  self->metil->renderer_interface.size.y = size.height;
 
   metil_camera_ratio_aspect_set(
-    &self->rendering_properties.camera,
+    &self->metil->rendering_properties.camera,
     16 / 9,
-    metil_renderer_size.x,
-    metil_renderer_size.y
+    self->metil->renderer_interface.size.x,
+    self->metil->renderer_interface.size.y
   );
 
   self->matrix_projection_static.columns[0][0] = (
-    self->rendering_properties.camera.ratio_aspect /
-    self->rendering_properties.camera.ratio_aspect_view
+    self->metil->rendering_properties.camera.ratio_aspect /
+    self->metil->rendering_properties.camera.ratio_aspect_view
   );
 }
 
@@ -451,7 +464,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
       &self->objects_fps_display[
         index_object_fps_display
       ],
-      self->metal_device,
+      self->metil->renderer_interface.metal_device,
       metil_object_buffer_type_vertex
     );
 
@@ -459,7 +472,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
       &self->objects_fps_display[
         index_object_fps_display
       ],
-      self->metal_device,
+      self->metil->renderer_interface.metal_device,
       metil_object_buffer_type_vertex
     );
 
@@ -488,7 +501,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
       index_object_fps_display
     ].buffers_vertex[
       metil_object_buffer_default_index_data
-    ].buffer = [self->metal_device
+    ].buffer = [self->metil->renderer_interface.metal_device
       newBufferWithLength: sizeof(struct metil_renderer_data_object)
       options: MTLResourceStorageModeShared
     ];
@@ -510,7 +523,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
 }
 
 - (void) initialize_null {
-  self->metal_device = (void*)0;
+  self->metil->renderer_interface.metal_device = (void*)0;
 
   self->command_queue = (void*)0;
   self->depth_state = (void*)0;
@@ -574,7 +587,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   self->pipelines_render[
     self->length_pipelines_render - 1
-  ] = [self->metal_device
+  ] = [self->metil->renderer_interface.metal_device
     newRenderPipelineStateWithDescriptor: self->descriptor_pipeline_render
     error: (void*)0
   ];
@@ -621,7 +634,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
     self->pipelines_render[
       index_pipeline_render
-    ] = [self->metal_device
+    ] = [self->metil->renderer_interface.metal_device
       newRenderPipelineStateWithDescriptor: self->descriptor_pipeline_render
       error: (void*)0
     ];
@@ -632,39 +645,48 @@ void* metil_renderer_on_initialize_data = (void*)0;
 - (void) pipeline_render_library_initiliaze {
   [self
     pipeline_render_initialize: metil_renderer_pipelines_render_index_library
-    function_fragment: metil_library.function_fragment
-    function_vertex: metil_library.function_vertex
+    function_fragment: self->metil->library.function_fragment
+    function_vertex: self->metil->library.function_vertex
   ];
 }
 
 - (void) pipeline_render_wireframe_initialize {
   [self
     pipeline_render_initialize: metil_renderer_pipelines_render_index_wireframe
-    function_fragment: metil_library.function_fragment_wireframe
-    function_vertex: metil_library.function_vertex_wireframe
+    function_fragment: self->metil->library.function_fragment_wireframe
+    function_vertex: self->metil->library.function_vertex_wireframe
   ];
 }
 
 - (void) pipeline_render_fps_display_initiliaze {
   [self
     pipeline_render_initialize: metil_renderer_pipelines_render_index_fps_display
-    function_fragment: metil_library.function_fragment_fps_display
-    function_vertex: metil_library.function_vertex_fps_display
+    function_fragment: self->metil->library.function_fragment_fps_display
+    function_vertex: self->metil->library.function_vertex_fps_display
   ];
 }
 
 - (void) poll: (unsigned int) _frame {
-  metil_controller_state_poll();
+  metil_controller_poll(
+    &self->metil->input.controller
+  );
+
+  metil_controller_state_poll(
+    &self->metil->input.controller,
+    &self->metil->input.controller_state
+  );
 
   unsigned long int time = metil_time_milliseconds_get();
 
   metil_scene_poll_input(
-    &metil_scene_controller.scene,
+    self->metil,
+    &((struct metil_scene_controller*) self->metil->scene_controller)->scene,
     time
   );
 
   metil_scene_poll(
-    &metil_scene_controller.scene,
+    self->metil,
+    &((struct metil_scene_controller*) self->metil->scene_controller)->scene,
     time
   );
 
@@ -674,41 +696,39 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   data_frame->frame = _frame;
 
-  data_frame->rotation_camera.x = metil_scene_controller.scene.player.rotation.x;
-  data_frame->rotation_camera.y = metil_scene_controller.scene.player.rotation.y;
-  data_frame->rotation_camera.z = metil_scene_controller.scene.player.rotation.z;
+  data_frame->rotation_camera.x = ((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.x;
+  data_frame->rotation_camera.y = ((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.y;
+  data_frame->rotation_camera.z = ((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.z;
 
-  data_frame->position_player.x = metil_scene_controller.scene.player.position.x;
-  data_frame->position_player.y = metil_scene_controller.scene.player.position.y;
-  data_frame->position_player.z = metil_scene_controller.scene.player.position.z;
+  data_frame->position_player.x = ((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.position.x;
+  data_frame->position_player.y = ((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.position.y;
+  data_frame->position_player.z = ((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.position.z;
 
   data_frame->brightness = (
-    metil_scene_controller.scene.rendering_properties.brightness *
-    self->rendering_properties.brightness
+    self->metil->rendering_properties.brightness
   );
 
   data_frame->brightness_text = (
-    metil_scene_controller.scene.rendering_properties.brightness_text *
-    self->rendering_properties.brightness_text
+    self->metil->rendering_properties.brightness_text
   );
 
   matrix_float4x4 matrix_player_rotation_x = (matrix_float4x4) {{
     { 1.0f, 0.0f, 0.0f, 0.0f },
-    { 0.0f, cos(metil_scene_controller.scene.player.rotation.x), -sin(metil_scene_controller.scene.player.rotation.x), 0.0f },
-    { 0.0f, sin(metil_scene_controller.scene.player.rotation.x), cos(metil_scene_controller.scene.player.rotation.x), 0.0f },
+    { 0.0f, cos(((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.x), -sin(((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.x), 0.0f },
+    { 0.0f, sin(((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.x), cos(((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.x), 0.0f },
     { 0.0f, 0.0f, 0.0f, 1.0f }
   }};
 
   if (
-    self->rendering_properties.camera.mode == metil_camera_mode_third_person
+    self->metil->rendering_properties.camera.mode == metil_camera_mode_third_person
   ) {
     matrix_player_rotation_x.columns[
       3
     ].y = (
-      self->rendering_properties.camera.height * (
+      self->metil->rendering_properties.camera.height * (
         1.0f - (
           (
-            -metil_scene_controller.scene.player.rotation.x
+            -((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.x
           ) / (
             M_PI / 2.0f
           )
@@ -726,14 +746,14 @@ void* metil_renderer_on_initialize_data = (void*)0;
   }
 
   matrix_float4x4 matrix_player_rotation_y = (matrix_float4x4) {{
-    { cos(metil_scene_controller.scene.player.rotation.y), 0.0f, sin(metil_scene_controller.scene.player.rotation.y), 0.0f },
+    { cos(((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.y), 0.0f, sin(((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.y), 0.0f },
     { 0.0f, 1.0f, 0.0f, 0.0f },
-    { sin(metil_scene_controller.scene.player.rotation.y), 0.0f, -cos(metil_scene_controller.scene.player.rotation.y), 0.0f },
+    { sin(((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.y), 0.0f, -cos(((struct metil_scene_controller*) self->metil->scene_controller)->scene.player.rotation.y), 0.0f },
     { 0.0f, 0.0f, 0.0f, 1.0f }
   }};
 
   matrix_float4x4 matrix_player_projection = matrix_multiply(
-    self->rendering_properties.camera.matrix_viewport_projection,
+    self->metil->rendering_properties.camera.matrix_viewport_projection,
     matrix_player_rotation_x
   );
 
@@ -744,17 +764,17 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   unsigned char _index_data_buffer_frame = self->index_data_buffer_frame;
   unsigned int length_segment_objects = (
-    metil_scene_controller.scene.length_renderables /
-    metil_system_information.cores_cpu
+    ((struct metil_scene_controller*) self->metil->scene_controller)->scene.length_renderables /
+    self->metil->system_information.cores_cpu
   );
 
   for (
     unsigned int index_core_cpu = 0;
-    index_core_cpu < metil_system_information.cores_cpu;
+    index_core_cpu < self->metil->system_information.cores_cpu;
     ++index_core_cpu
   ) {
     unsigned int index_thread = (
-      metil_system_information.cores_cpu *
+      self->metil->system_information.cores_cpu *
       _index_data_buffer_frame +
       index_core_cpu 
     );
@@ -779,16 +799,16 @@ void* metil_renderer_on_initialize_data = (void*)0;
     self->threads_data[
       index_thread
     ].renderables = (
-      metil_scene_controller.scene.renderables +
+      ((struct metil_scene_controller*) self->metil->scene_controller)->scene.renderables +
       offset_index_object
     );
 
     self->threads_data[
       index_thread
     ].length_renderables = (
-      index_core_cpu < metil_system_information.cores_cpu - 1
+      index_core_cpu < self->metil->system_information.cores_cpu - 1
       ? length_segment_objects
-      : (metil_scene_controller.scene.length_renderables) - (
+      : (((struct metil_scene_controller*) self->metil->scene_controller)->scene.length_renderables) - (
         length_segment_objects * index_core_cpu
       )
     );
@@ -818,7 +838,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
   }
 
   if (
-    self->rendering_properties.fps_display == 1
+    self->metil->rendering_properties.fps_display == 1
   ) {
     [self
       poll_fps_display: &matrix_object_projection
@@ -828,11 +848,11 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   for (
     unsigned int index_core_cpu = 0;
-    index_core_cpu < metil_system_information.cores_cpu;
+    index_core_cpu < self->metil->system_information.cores_cpu;
     ++index_core_cpu
   ) {
     unsigned int index_thread = (
-      metil_system_information.cores_cpu *
+      self->metil->system_information.cores_cpu *
       _index_data_buffer_frame +
       index_core_cpu 
     );
@@ -855,14 +875,14 @@ void* metil_renderer_on_initialize_data = (void*)0;
   matrix_player_projection: (matrix_float4x4*) matrix_player_projection
 {
   if (
-    self->rendering_properties.frame == 0 ||
-    self->rendering_properties.frame % 10 != 0
+    self->metil->rendering_properties.frame == 0 ||
+    self->metil->rendering_properties.frame % 10 != 0
   ) {
     return;
   }
 
   char* char_array_fps = clic3_char_array_from_float(
-    self->rendering_properties.fps
+    self->metil->rendering_properties.fps
   );
 
   float position_x = 0.0f;
@@ -880,13 +900,13 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
     self->objects_fps_display[
       index_object_fps_display
-    ].mesh = metil_text_characters_default.meshes[
+    ].mesh = self->metil->text_characters_default.meshes[
       char_array_fps[index_object_fps_display]
     ];
 
     position_x = position_x + self->objects_fps_display[
       index_object_fps_display
-    ].mesh.size.x / self->rendering_properties.camera.ratio_aspect_view;
+    ].mesh.size.x / self->metil->rendering_properties.camera.ratio_aspect_view;
 
     self->objects_fps_display[
       index_object_fps_display
@@ -909,17 +929,21 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
     self->objects_fps_display[
       index_object_fps_display
-    ].indices = metil_text_characters_default.indices;
+    ].indices = (
+      self->metil->text_characters_default.indices
+    );
 
     self->objects_fps_display[
       index_object_fps_display
     ].buffers_vertex[
       metil_object_buffer_default_index_vertices
-    ].buffer = metil_text_characters_default.vertices[
-      char_array_fps[
-        index_object_fps_display
+    ].buffer = (
+      self->metil->text_characters_default.vertices[
+        char_array_fps[
+          index_object_fps_display
+        ]
       ]
-    ];
+    );
 
     self->objects_fps_display[
       index_object_fps_display
@@ -935,20 +959,23 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
     self->objects_fps_display[
       index_object_fps_display
-    ].textures[0] = metil_text_characters_default.textures[
-      char_array_fps[index_object_fps_display]
-    ];
+    ].textures[0] = (
+      self->metil->text_characters_default.textures[
+        char_array_fps[index_object_fps_display]
+      ]
+    );
 
     self->objects_fps_display[
       index_object_fps_display
     ].poll(
+      self->metil,
       &self->objects_fps_display[
         index_object_fps_display
       ],
       &self->matrix_projection_static,
       matrix_object_projection,
       matrix_player_projection,
-      &rendering_properties.camera
+      &self->metil->rendering_properties.camera
     );
   }
 
@@ -985,7 +1012,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
       );
 
       if (
-        self->rendering_properties.mode & metil_rendering_properties_mode_default
+        self->metil->rendering_properties.mode & metil_rendering_properties_mode_default
       ) {
         [self
           render_object: metil_object
@@ -993,7 +1020,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
       }
 
       if (
-        self->rendering_properties.mode & metil_rendering_properties_mode_wireframe
+        self->metil->rendering_properties.mode & metil_rendering_properties_mode_wireframe
       ) {
         [self
           render_object_wireframe: metil_object
@@ -1021,7 +1048,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
         );
 
         if (
-          self->rendering_properties.mode & metil_rendering_properties_mode_default
+          self->metil->rendering_properties.mode & metil_rendering_properties_mode_default
         ) {
           [self
             render_object: metil_object
@@ -1029,7 +1056,7 @@ void* metil_renderer_on_initialize_data = (void*)0;
         }
 
         if (
-          self->rendering_properties.mode & metil_rendering_properties_mode_wireframe
+          self->metil->rendering_properties.mode & metil_rendering_properties_mode_wireframe
         ) {
           [self
             render_object_wireframe: metil_object
@@ -1051,11 +1078,11 @@ void* metil_renderer_on_initialize_data = (void*)0;
 
   for (
     unsigned int index_renderable = 0;
-    index_renderable < metil_scene_controller.scene.length_renderables;
+    index_renderable < ((struct metil_scene_controller*) self->metil->scene_controller)->scene.length_renderables;
     ++index_renderable
   ) {
     renderable = &(
-      metil_scene_controller.scene.renderables[
+      ((struct metil_scene_controller*) self->metil->scene_controller)->scene.renderables[
         index_renderable
       ]
     );
@@ -1236,47 +1263,31 @@ void* metil_renderer_on_initialize_data = (void*)0;
   }
 }
 
-- (void) rendering_properties_initialize {
-  metil_rendering_properties_initialize(
-    &self->rendering_properties
-  );
-
-  self->rendering_properties.brightness = (
-    metil_configuration.rendering_properties.brightness
-  );
-
-  self->rendering_properties.brightness_text = (
-    metil_configuration.rendering_properties.brightness_text
-  );
-
-  self->rendering_properties.fps_display = (
-    metil_configuration.rendering_properties.fps_display
-  );
-}
-
 - (void) stencils_depth_initialize {
   MTLDepthStencilDescriptor* descriptor_stencil_depth = [[MTLDepthStencilDescriptor alloc] init];
   descriptor_stencil_depth.depthCompareFunction = MTLCompareFunctionLessEqual;
   descriptor_stencil_depth.depthWriteEnabled = 1;
-  self->depth_state = [self->metal_device
+  self->depth_state = [self->metil->renderer_interface.metal_device
     newDepthStencilStateWithDescriptor: descriptor_stencil_depth
   ];
 
   descriptor_stencil_depth.depthWriteEnabled = 0;
-  self->depth_state_writes_disabled = [self->metal_device
+  self->depth_state_writes_disabled = [self->metil->renderer_interface.metal_device
     newDepthStencilStateWithDescriptor: descriptor_stencil_depth
   ];
 }
 
 - (void) termination_functions_initialize {
   metil_termination_on_function_add(
+    &self->metil->termination,
     metil_renderer_on_termination,
     self
   );
 
   metil_termination_on_function_add(
+    &self->metil->termination,
     metil_text_characters_destroy,
-    (void*)0
+    &self->metil->text_characters_default
   );
 }
 
@@ -1315,6 +1326,7 @@ void metil_renderer_poll_object(
       );
 
       object->poll(
+        metil_renderer_thread_poll_object_data->metil,
         object,
         metil_renderer_thread_poll_object_data->matrix_static_projection,
         metil_renderer_thread_poll_object_data->matrix_object_projection,
@@ -1332,6 +1344,7 @@ void metil_renderer_poll_object(
       );
 
       metil_model->poll(
+        metil_renderer_thread_poll_object_data->metil,
         metil_model,
         metil_renderer_thread_poll_object_data->matrix_static_projection,
         metil_renderer_thread_poll_object_data->matrix_object_projection,
@@ -1374,18 +1387,29 @@ void* metil_renderer_thread_poll_object(
 }
 
 void metil_renderer_after_scene_change(
-  int _,
-  void* _Nonnull reference
+  struct metil* metil,
+  int id_scene,
+  void* reference
 ) {
-  metil_renderer* renderer = (metil_renderer*) reference;
+  metil_renderer* renderer = (
+    reference
+  );
 
-  [renderer after_scene_change];
+  [
+    renderer
+    after_scene_change
+  ];
 }
 
 void metil_renderer_on_termination(
-  void* _Nonnull reference
+  void* reference
 ) {
-  metil_renderer* renderer = (metil_renderer*) reference;
+  metil_renderer* renderer = (
+    reference
+  );
 
-  [renderer destroy];
+  [
+    renderer
+    destroy
+  ];
 }

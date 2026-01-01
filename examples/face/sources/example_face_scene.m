@@ -3,24 +3,24 @@
 #include <example_face_pipeline_index.h>
 #include <example_face_renderer_data_object.h>
 
-#include <metil_application/metil_renderer_size.h>
-#include <metil_mesh/mesh.h>
-#include <metil_input/cursor.h>
+#include <metil.h>
+#include <metil_mesh/metil_mesh.h>
+#include <metil_input/metil_cursor.h>
 #include <metil_object.h>
-#include <metil_player.h>
+#include <metil_player/metil_player.h>
 #include <metil_rendering/metil_renderable.h>
 #include <metil_rendering/metil_renderer_data_object.h>
-#include <metil_scenes/scene.h>
+#include <metil_scenes/metil_scene.h>
 
 #include <math.h>
 
 void example_face_scene_initialize(
-  struct metil_scene* scene,
-  struct metil_renderer_interface* metil_renderer_interface
+  struct metil* metil,
+  struct metil_scene* scene
 ) {
   metil_scene_initialize_with_renderables(
+    metil,
     scene,
-    metil_renderer_interface,
     2
   );
 
@@ -29,7 +29,7 @@ void example_face_scene_initialize(
 
   scene->destroy = example_face_scene_destroy;
 
-  scene->renderer_interface->rendering_properties->camera.height = 0.0f;
+  metil->rendering_properties.camera.height = 0.0f;
 
   metil_renderable_initialize_at_index(
     scene->renderables,
@@ -461,7 +461,7 @@ void example_face_scene_initialize(
 
   metil_object_buffers_initialize_with_data_size(
     object,
-    scene->renderer_interface->metal_device,
+    metil->renderer_interface.metal_device,
     sizeof(
       struct example_face_renderer_data_object
     )
@@ -506,7 +506,7 @@ void example_face_scene_initialize(
   ) {
     metil_object_buffers_add(
       object_points,
-      scene->renderer_interface->metal_device,
+      metil->renderer_interface.metal_device,
       metil_object_buffer_type_vertex
     );
 
@@ -533,9 +533,11 @@ void example_face_scene_initialize(
 }
 
 void example_face_scene_poll(
+  struct metil* metil,
   struct metil_scene* scene
 ) {
   metil_scene_poll_default(
+    metil,
     scene
   );
 
@@ -562,23 +564,23 @@ void example_face_scene_poll(
   struct clic3_vector2_float position_relative = {
     .x = (
       (
-        metil_input_cursor.position_window.x /
-        metil_renderer_size.x *
+        metil->input.cursor.position_window.x /
+        metil->renderer_interface.size.x *
         2.0f
       ) - 1.0f
     ),
     .y = (
       (
-        metil_input_cursor.position_window.y /
-        metil_renderer_size.y *
+        metil->input.cursor.position_window.y /
+        metil->renderer_interface.size.y *
         2.0f
       ) - 1.0f
     )
   };
 
   float aspect_ratio = (
-    metil_renderer_size.y /
-    metil_renderer_size.x
+    metil->renderer_interface.size.y /
+    metil->renderer_interface.size.x
   );
 
   for (
@@ -630,7 +632,7 @@ void example_face_scene_poll(
   }
 
   if (
-    metil_input_cursor.down == 1 &&
+    metil->input.cursor.down == 1 &&
     data_object->vertex_hovered != 0 &&
     data_object->vertex_held == 0
   ) {
@@ -638,7 +640,7 @@ void example_face_scene_poll(
       data_object->vertex_hovered
     );
   } else if (
-    metil_input_cursor.down != 1
+    metil->input.cursor.down != 1
   ) {
     data_object->vertex_held = 0;
   }
@@ -659,6 +661,7 @@ void example_face_scene_poll(
 }
 
 void example_face_scene_destroy(
+  struct metil* metil,
   struct metil_scene* scene
 ) {
   struct metil_object* object_points = (
@@ -672,6 +675,7 @@ void example_face_scene_destroy(
   object_points->indices = (void*) 0;
 
   metil_scene_destroy_default(
+    metil,
     scene
   );
 }

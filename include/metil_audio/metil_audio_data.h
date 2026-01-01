@@ -17,6 +17,12 @@ struct metil_audio_data {
   unsigned char muted;
 };
 
-extern struct metil_audio_data metil_audio_data;
+void metil_audio_data_initialize(
+  struct metil_audio_data*
+);
+
+void metil_audio_data_destroy(
+  struct metil_audio_data*
+);
 
 #endif

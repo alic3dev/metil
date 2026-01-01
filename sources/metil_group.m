@@ -1,5 +1,6 @@
 #include <metil_group.h>
 
+#include <metil.h>
 #include <metil_rendering/metil_renderable.h>
 
 #include <stdlib.h>
@@ -133,6 +134,7 @@ void metil_group_remove_at_index(
 }
 
 void metil_group_destroy_renderable(
+  struct metil* metil,
   struct metil_group* metil_group,
   struct metil_renderable* metil_renderable
 ) {
@@ -147,6 +149,7 @@ void metil_group_destroy_renderable(
       ] == metil_renderable
     ) {
       metil_group_destroy_renderable_at_index(
+        metil,
         metil_group,
         index_renderable
       );
@@ -157,10 +160,12 @@ void metil_group_destroy_renderable(
 }
 
 void metil_group_destroy_renderable_at_index(
+  struct metil* metil,
   struct metil_group* metil_group,
   unsigned int index_renderable_removal
 ) {
   metil_renderable_destroy(
+    metil,
     metil_group->renderables[
       index_renderable_removal
     ]
@@ -192,6 +197,7 @@ void metil_group_destroy_renderable_at_index(
 }
 
 void metil_group_destroy(
+  struct metil* metil,
   struct metil_group* metil_group
 ) {
   for (
@@ -200,6 +206,7 @@ void metil_group_destroy(
     ++index_renderable
   ) {
     metil_renderable_destroy(
+      metil,
       metil_group->renderables[
         index_renderable
       ]

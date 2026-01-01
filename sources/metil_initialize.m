@@ -1,18 +1,22 @@
 #include <metil_initialize.h>
 
+#include <metil.h>
 #include <metil_application/metil_application.h>
 #include <metil_application/metil_application_delegate.h>
 #include <metil_audio/metil_audio.h>
-#include <metil_configuration/configuration.h>
-#include <metil_input/input.h>
+#include <metil_configuration/metil_configuration.h>
+#include <metil_configuration/metil_configuration_values_set.h>
+#include <metil_input/metil_input.h>
 #include <metil_library.h>
-#include <metil_paths/paths.h>
+#include <metil_paths/metil_paths.h>
 #include <metil_rendering/metil_renderer.h>
-#include <metil_scenes/scene_controller.h>
+#include <metil_scenes/metil_scene_controller.h>
 #include <metil_system_information.h>
-#include <metil_termination.h>
-#include <metil_text/text.h>
-#include <metil_utilities/time.h>
+#include <metil_termination/metil_termination.h>
+#include <metil_termination/metil_terminate_on_signal.h>
+#include <metil_text/metil_text.h>
+#include <metil_text/metil_text_defaults.h>
+#include <metil_utilities/metil_time.h>
 
 #include <interrupt_handler.h>
 
@@ -21,15 +25,6 @@
 #else
 #include <AppKit/AppKit.h>
 #endif
-
-void metil_terminate_on_signal(int _) {
-  #if target_os_ios
-  metil_termination_terminate();
-  exit(0);
-  #else
-  [[NSApplication sharedApplication] terminate: 0];
-  #endif
-}
 
 int metil_initialize(
   int length_parameters,
@@ -61,29 +56,47 @@ int metil_initialize_with_data(
   metil_renderer_on_initialize_function metil_renderer_on_initialize_function,
   void* metil_renderer_on_initialize_function_data
 ) {
-  metil_system_information_initialize();
+  static struct metil metil;
 
-  metil_renderer_on_initialize = metil_renderer_on_initialize_function;
-  metil_renderer_on_initialize_data = metil_renderer_on_initialize_function_data;
+  metil_structure_initialize(
+    &metil
+  );
+
+  metil.renderer_interface.rendering_properties = &(
+    metil.rendering_properties
+  );
+
+  metil.renderer_on_initialize = metil_renderer_on_initialize_function;
+  metil.renderer_on_initialize_data = metil_renderer_on_initialize_function_data;
 
   metil_paths_initialize(
+    &metil.paths,
     (char*) parameters[0],
     name
   );
 
   #if target_os_ios
-  metil_configuration_initialize();
+  metil_configuration_initialize(
+    &metil.configuration
+  );
   #else
   unsigned char status_configuration_load = (
-    metil_configuration_load()
+    metil_configuration_load(
+      &metil.configuration,
+      &metil.paths
+    )
   );
 
   if (
     status_configuration_load != 0
   ) {
-    metil_paths_destroy();
+    metil_paths_destroy(
+      &metil.paths
+    );
     #if target_os_ios
-    exit(status_configuration_load);
+    exit(
+      status_configuration_load
+    );
     #else
     [[NSApplication sharedApplication] terminate: 0];
     #endif
@@ -91,55 +104,72 @@ int metil_initialize_with_data(
   }
   #endif
 
-  metil_termination_initialize();
+  metil_system_information_initialize(
+    &metil.system_information,
+    &metil.configuration
+  );
+
+  metil_termination_initialize(
+    &metil.termination
+  );
+
   interrupt_handler_initialize();
-  metil_input_initialize();
-  metil_scene_controller_initialize();
-  metil_audio_initialize();
-  metil_text_initialize();
+  
+  metil_input_initialize(
+    &metil.input
+  );
+  
+  metil_scene_controller_initialize(
+    &metil,
+    metil.scene_controller
+  );
 
-  metil_configuration_values_set();
+  metil_audio_initialize(
+    &metil,
+    &metil.audio
+  );
 
-  metil_termination_on_function_add(
-    metil_scene_controller_destroy,
-    (void*)0
+  metil_text_defaults_initialize(
+    &metil.text_defaults,
+    &metil.configuration
+  );
+
+  metil_configuration_values_set(
+    &metil,
+    &metil.configuration
+  );
+
+  metil_rendering_properties_initialize(
+    &metil.rendering_properties,
+    &metil.configuration.rendering_properties
   );
 
   metil_termination_on_function_add(
-    interrupt_handler_destroy,
-    (void*)0
+    &metil.termination,
+    metil_destroy,
+    &metil
   );
 
-  metil_termination_on_function_add(
-    metil_paths_destroy,
-    (void*)0
+  interrupt_handler_interrupt_function_add_with_data(
+    metil_terminate_on_signal,
+    &metil
   );
 
-  metil_termination_on_function_add(
-    metil_audio_destroy,
-    (void*)0
-  );
+  metil_application* application = (metil_application*) [metil_application sharedApplication];
 
-  metil_termination_on_function_add(
-    metil_text_destroy,
-    (void*)0
-  );
+  application->metil = &metil;
 
-  metil_termination_on_function_add(
-    metil_configuration_destroy,
-    (void*)0
-  );
+  #if !target_os_ios
+  application.delegate = [metil_application_delegate alloc];
+  #endif
 
-  interrupt_handler_interrupt_function_add(
-    metil_terminate_on_signal
-  );
+  metil_application_delegate* _metil_application_delegate = (metil_application_delegate*) application.delegate;
+
+  _metil_application_delegate->metil = &metil;
 
   #if target_os_ios
   return 0;
   #else
-  metil_application* application = [metil_application sharedApplication];
-  application.delegate = [metil_application_delegate alloc];
-
   return NSApplicationMain(
     length_parameters,
     parameters

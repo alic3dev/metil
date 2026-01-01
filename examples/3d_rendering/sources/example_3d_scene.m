@@ -1,26 +1,25 @@
 #include <example_3d_scene.h>
 
-#include <metil_mesh/mesh_box.h>
+#include <metil.h>
+#include <metil_mesh/metil_mesh_box.h>
 #include <metil_object.h>
-#include <metil_player.h>
+#include <metil_player/metil_player.h>
 #include <metil_rendering/metil_renderable.h>
 #include <metil_rendering/metil_renderer_data_object.h>
-#include <metil_scenes/scene.h>
+#include <metil_scenes/metil_scene.h>
 
 #include <clic3_vector.h>
-
-#include <Metal/MTLDevice.h>
 
 #include <math.h>
 #include <stdlib.h>
 
 void example_3d_scene_initialize(
-  struct metil_scene* scene,
-  struct metil_renderer_interface* metil_renderer_interface
+  struct metil* metil,
+  struct metil_scene* scene
 ) {
   metil_scene_initialize_with_renderables(
+    metil,
     scene,
-    metil_renderer_interface,
     400
   );
 
@@ -58,7 +57,7 @@ void example_3d_scene_initialize(
 
     metil_object_buffers_initialize(
       object,
-      scene->renderer_interface->metal_device
+      metil->renderer_interface.metal_device
     );
 
     object->position.x = ((float) (
@@ -276,7 +275,7 @@ void example_3d_scene_initialize(
 
     metil_object_buffers_initialize(
       object,
-      scene->renderer_interface->metal_device
+      metil->renderer_interface.metal_device
     );
 
     struct metil_renderer_data_object* data_object = (
@@ -299,9 +298,11 @@ void example_3d_scene_initialize(
 }
 
 void example_3d_scene_poll(
+  struct metil* metil,
   struct metil_scene* scene
 ) {
   metil_scene_poll_default(
+    metil,
     scene
   );
 

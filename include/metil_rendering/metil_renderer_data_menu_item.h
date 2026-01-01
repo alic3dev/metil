@@ -1,5 +1,5 @@
-#ifndef __metil_renderer_data_menu_item_h
-#define __metil_renderer_data_menu_item_h
+#ifndef __metil_rendering_metil_renderer_data_menu_item_h
+#define __metil_rendering_metil_renderer_data_menu_item_h
 
 #include <clic3_vector.h>
 

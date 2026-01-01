@@ -1,5 +1,5 @@
-#ifndef __metil_renderer_data_frame_h
-#define __metil_renderer_data_frame_h
+#ifndef __metil_rendering_metil_renderer_data_frame_h
+#define __metil_rendering_metil_renderer_data_frame_h
 
 #include <clic3_vector.h>
 

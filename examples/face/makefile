@@ -40,6 +40,8 @@ directory_interrupt_handler_include=${directory_interrupt_handler}/include
 directory_math_c=../../../math_c
 
 directory_metil_include=${directory_metil}/include
+directory_metil_plist=${directory_metil}/plist
+
 ifeq (${debug}, 1)
 directory_cer0_library=${directory_cer0}/library/macos/debug
 directory_clic3_library=${directory_clic3}/library/macos/debug
@@ -89,9 +91,11 @@ target_platform_metal=air64-apple-macos${target_metal_version}
 directory_sdk=${shell xcrun --sdk macosx${target_device_version} --show-sdk-path}
 
 file_metil_storyboard=${directory_metil_library}/metil.storyboardc
+
+file_metalar_metil_fps_display=${directory_metil_library}/metil_fps_display.metalar
 file_metalar_metil_wireframe=${directory_metil_library}/metil_wireframe.metalar
 
-file_info_plist=${directory_metil}/Info.plist
+file_info_plist=${directory_metil_plist}/Info.plist
 file_output=${directory_app_contents_macos}/${name}
 file_output_info_plist=${directory_app_contents}/Info.plist
 file_output_metal=${directory_app_contents_resources}/default.metallib
@@ -179,7 +183,7 @@ endif
 
 ${file_output_metal}: ${files_air}
 	mkdir -p "${dir ${file_output_metal}}"
-	${metallib} ${metal_flags_output} ${files_air} ${file_metalar_metil_wireframe} -o ${file_output_metal}
+	${metallib} ${metal_flags_output} ${files_air} ${file_metalar_metil_wireframe} ${file_metalar_metil_fps_display} -o ${file_output_metal}
 
 ${directory_air}/%.air: ${directory_metal}/%.metal
 	mkdir -p "${dir $@}"

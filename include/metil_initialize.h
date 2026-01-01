@@ -3,8 +3,6 @@
 
 #include <metil_rendering/metil_renderer.h>
 
-void metil_terminate_on_signal(int);
-
 int metil_initialize(
   int,
   #if target_os_ios

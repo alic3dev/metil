@@ -2,26 +2,25 @@
 
 #include <example_model_pipeline_index.h>
 
-#include <metil_application/metil_renderer_size.h>
-#include <metil_mesh/mesh.h>
-#include <metil_mesh/mesh_box.h>
+#include <metil_mesh/metil_mesh.h>
+#include <metil_mesh/metil_mesh_box.h>
 #include <metil_model/metil_model.h>
-#include <metil_input/cursor.h>
+#include <metil_input/metil_cursor.h>
 #include <metil_object.h>
-#include <metil_player.h>
+#include <metil_player/metil_player.h>
 #include <metil_rendering/metil_renderable.h>
 #include <metil_rendering/metil_renderer_data_object.h>
-#include <metil_scenes/scene.h>
+#include <metil_scenes/metil_scene.h>
 
 #include <math.h>
 
 void example_model_scene_initialize(
-  struct metil_scene* scene,
-  struct metil_renderer_interface* metil_renderer_interface
+  struct metil* metil,
+  struct metil_scene* scene
 ) {
   metil_scene_initialize_with_renderables(
+    metil,
     scene,
-    metil_renderer_interface,
     2
   );
 
@@ -333,8 +332,9 @@ void example_model_scene_initialize(
   }
 
   metil_model_buffers_initialize(
+    metil,
     metil_model,
-    scene->renderer_interface->metal_device
+    metil->renderer_interface.metal_device
   );
 
   metil_object = (
@@ -361,7 +361,7 @@ void example_model_scene_initialize(
 
   metil_object_buffers_initialize(
     metil_object,
-    scene->renderer_interface->metal_device
+    metil->renderer_interface.metal_device
   );
 
   struct metil_renderer_data_object* metil_renderer_data_object = (
@@ -410,9 +410,11 @@ void example_model_scene_initialize(
 */
 
 void example_model_scene_poll(
+  struct metil* metil,
   struct metil_scene* scene
 ) {
   metil_scene_poll_default(
+    metil,
     scene
   );
 
@@ -644,6 +646,7 @@ void example_model_scene_poll(
 }
 
 void example_model_scene_destroy(
+  struct metil* metil,
   struct metil_scene* scene
 ) {
   struct metil_model* metil_model = (
@@ -655,6 +658,7 @@ void example_model_scene_destroy(
   metil_model->data = 0;
 
   metil_scene_destroy_default(
+    metil,
     scene
   );
 }
