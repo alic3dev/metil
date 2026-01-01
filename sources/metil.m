@@ -8,6 +8,18 @@
 
 #include <interrupt_handler.h>
 
+void metil_structure_initialize(
+  struct metil* metil
+) {
+  metil->data = (
+    (void*) 0
+  );
+
+  metil->destroy = (
+    (void*) 0
+  );
+}
+
 void metil_destroy(
   void* metil_pointer
 ) {
@@ -33,4 +45,12 @@ void metil_destroy(
   metil_configuration_destroy(
     &metil->configuration
   );
+
+  if (
+    metil->destroy != (void*) 0
+  ) {
+    metil->destroy(
+      metil
+    );
+  }
 }

@@ -9,6 +9,10 @@
 #include <metil_system_information.h>
 #include <metil_termination/metil_termination.h>
 
+struct metil;
+
+typedef void (*metil_destroy_function)(struct metil* _Nonnull);
+
 struct metil {
   struct metil_audio_data audio;
   struct metil_configuration configuration;
@@ -17,7 +21,15 @@ struct metil {
   struct metil_rendering_properties rendering_properties;
   struct metil_system_information system_information;
   struct metil_termination termination;
+
+  void* _Nullable data;
+
+  metil_destroy_function _Nullable destroy;
 };
+
+void metil_structure_initialize(
+  struct metil* _Nonnull
+);
 
 void metil_destroy(
   void* _Nonnull
