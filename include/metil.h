@@ -6,6 +6,7 @@
 #include <metil_input/metil_input.h>
 #include <metil_library.h>
 #include <metil_paths/metil_paths.h>
+#include <metil_player/metil_player_defaults.h>
 #include <metil_rendering/metil_renderer_interface.h>
 #include <metil_rendering/metil_renderer_on_initialize.h>
 #include <metil_rendering/metil_rendering_properties.h>
@@ -29,6 +30,8 @@ struct metil {
   void* _Nonnull scene_controller;
   struct metil_system_information system_information;
   struct metil_termination termination;
+  
+  struct metil_player_defaults player_defaults;
   struct metil_text_characters text_characters_default;
   struct metil_text_defaults text_defaults;
 

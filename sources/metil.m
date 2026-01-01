@@ -3,6 +3,7 @@
 #include <metil_audio/metil_audio.h>
 #include <metil_configuration/metil_configuration.h>
 #include <metil_paths/metil_paths.h>
+#include <metil_player/metil_player_defaults.h>
 #include <metil_scenes/metil_scene_controller.h>
 #include <metil_text/metil_text.h>
 
@@ -13,6 +14,10 @@ void metil_structure_initialize(
 ) {
   metil->text_defaults.object_text_index_pipeline_render = (
     0
+  );
+
+  metil_player_defaults_initialize(
+    &metil->player_defaults
   );
 
   metil->scene_controller = malloc(

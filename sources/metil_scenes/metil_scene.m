@@ -25,7 +25,8 @@ void metil_scene_initialize_with_renderables(
   unsigned int length_renderables
 ) {
   metil_player_initialize(
-    &scene->player
+    &scene->player,
+    &metil->player_defaults
   );
 
   scene->length_renderables = length_renderables;

@@ -10,16 +10,9 @@
 #include <math.h>
 
 void metil_player_initialize(
-  struct metil_player* metil_player
+  struct metil_player* metil_player,
+  struct metil_player_defaults* metil_player_defaults
 ) {
-  if (
-    metil_player->defaults.initialized != 1
-  ) {
-    metil_player_defaults_initialize(
-      &metil_player->defaults
-    );
-  }
-
   metil_player->position.x = 0.0f;
   metil_player->position.y = 0.0f;
   metil_player->position.z = 0.0f;
@@ -28,14 +21,14 @@ void metil_player_initialize(
   metil_player->rotation.y = 0.0f;
   metil_player->rotation.z = 0.0f;
 
-  metil_player->size.x = metil_player->defaults.size.x;
-  metil_player->size.y = metil_player->defaults.size.y;
-  metil_player->size.z = metil_player->defaults.size.z;
+  metil_player->size.x = metil_player_defaults->size.x;
+  metil_player->size.y = metil_player_defaults->size.y;
+  metil_player->size.z = metil_player_defaults->size.z;
 
-  metil_player->deadzone_stick = metil_player->defaults.deadzone_stick;
+  metil_player->deadzone_stick = metil_player_defaults->deadzone_stick;
 
-  metil_player->speed_movement = metil_player->defaults.speed_movement;
-  metil_player->speed_rotation = metil_player->defaults.speed_rotation;
+  metil_player->speed_movement = metil_player_defaults->speed_movement;
+  metil_player->speed_rotation = metil_player_defaults->speed_rotation;
 
   metil_player->velocity.x = 0.0f;
   metil_player->velocity.y = 0.0f;

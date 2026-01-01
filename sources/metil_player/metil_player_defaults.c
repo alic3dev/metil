@@ -26,6 +26,4 @@ void metil_player_defaults_initialize(
   metil_player_defaults->size.z = (
     metil_player_defaults_size_default_z
   );
-
-  metil_player_defaults->initialized = 1;
 }
