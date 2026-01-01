@@ -113,6 +113,7 @@
   [self termination_functions_initialize];
 
   metil_text_characters_initialize(
+    &self->metil->text_characters_default,
     self->metil->renderer_interface.metal_device,
     &self->metil->configuration
   );
@@ -898,7 +899,7 @@
 
     self->objects_fps_display[
       index_object_fps_display
-    ].mesh = metil_text_characters_default.meshes[
+    ].mesh = self->metil->text_characters_default.meshes[
       char_array_fps[index_object_fps_display]
     ];
 
@@ -927,17 +928,21 @@
 
     self->objects_fps_display[
       index_object_fps_display
-    ].indices = metil_text_characters_default.indices;
+    ].indices = (
+      self->metil->text_characters_default.indices
+    );
 
     self->objects_fps_display[
       index_object_fps_display
     ].buffers_vertex[
       metil_object_buffer_default_index_vertices
-    ].buffer = metil_text_characters_default.vertices[
-      char_array_fps[
-        index_object_fps_display
+    ].buffer = (
+      self->metil->text_characters_default.vertices[
+        char_array_fps[
+          index_object_fps_display
+        ]
       ]
-    ];
+    );
 
     self->objects_fps_display[
       index_object_fps_display
@@ -953,9 +958,11 @@
 
     self->objects_fps_display[
       index_object_fps_display
-    ].textures[0] = metil_text_characters_default.textures[
-      char_array_fps[index_object_fps_display]
-    ];
+    ].textures[0] = (
+      self->metil->text_characters_default.textures[
+        char_array_fps[index_object_fps_display]
+      ]
+    );
 
     self->objects_fps_display[
       index_object_fps_display
@@ -1279,7 +1286,7 @@
   metil_termination_on_function_add(
     &self->metil->termination,
     metil_text_characters_destroy,
-    (void*)0
+    &self->metil->text_characters_default
   );
 }
 

@@ -19,13 +19,14 @@ struct metil_text_characters {
   _Nonnull id<MTLTexture>* _Nonnull textures;
 };
 
-extern struct metil_text_characters metil_text_characters_default;
-
 void metil_text_characters_initialize(
+  struct metil_text_characters* _Nonnull,
   _Nonnull id<MTLDevice>,
   struct metil_configuration* _Nonnull
 );
 
-void metil_text_characters_destroy();
+void metil_text_characters_destroy(
+  void* _Nonnull
+);
 
 #endif

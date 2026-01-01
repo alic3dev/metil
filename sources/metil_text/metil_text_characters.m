@@ -8,31 +8,33 @@
 #include <Metal/MTLDevice.h>
 #include <Metal/MTLTexture.h>
 
-struct metil_text_characters metil_text_characters_default = {
-  .length_characters = metil_text_characters_length_default,
-  .meshes = (void*)0,
-  .indices = (void*)0,
-  .vertices = (void*)0,
-  .textures = (void*)0
-};
-
 void metil_text_characters_initialize(
+  struct metil_text_characters* metil_text_characters_default,
   id<MTLDevice> metal_device,
   struct metil_configuration* metil_configuration
 ) {
-  metil_text_characters_default.meshes = malloc(
+  metil_text_characters_default->length_characters = (
+    metil_text_characters_length_default
+  );
+
+  metil_text_characters_default->meshes = (void*) 0;
+  metil_text_characters_default->indices = (void*) 0;
+  metil_text_characters_default->vertices = (void*) 0;
+  metil_text_characters_default->textures = (void*) 0;
+
+  metil_text_characters_default->meshes = malloc(
     sizeof(struct metil_mesh) *
-    metil_text_characters_default.length_characters
+    metil_text_characters_default->length_characters
   );
 
-  metil_text_characters_default.vertices = malloc(
+  metil_text_characters_default->vertices = malloc(
     sizeof(id<MTLTexture>) *
-    metil_text_characters_default.length_characters
+    metil_text_characters_default->length_characters
   );
 
-  metil_text_characters_default.textures = malloc(
+  metil_text_characters_default->textures = malloc(
     sizeof(id<MTLTexture>) *
-    metil_text_characters_default.length_characters
+    metil_text_characters_default->length_characters
   );
 
   char character_array[2] = { 0, '\0' };
@@ -49,7 +51,7 @@ void metil_text_characters_initialize(
 
   for (
     unsigned char index_character = 0;
-    index_character < metil_text_characters_default.length_characters;
+    index_character < metil_text_characters_default->length_characters;
     ++index_character
   ) {
     if (
@@ -67,11 +69,11 @@ void metil_text_characters_initialize(
       character_array[0] = index_character;
     }
 
-    metil_text_characters_default.textures[
+    metil_text_characters_default->textures[
       index_character
     ] = metil_text_mesh_with_texture_initialize(
       metal_device,
-      &metil_text_characters_default.meshes[
+      &metil_text_characters_default->meshes[
         index_character
       ],
       character_array,
@@ -79,45 +81,59 @@ void metil_text_characters_initialize(
       metil_configuration
     );
 
-    metil_text_characters_default.vertices[
+    metil_text_characters_default->vertices[
       index_character
     ] = [metal_device
-      newBufferWithBytes: metil_text_characters_default.meshes[index_character].vertices
+      newBufferWithBytes: metil_text_characters_default->meshes[index_character].vertices
       length: (
-        metil_text_characters_default.meshes[index_character].length_vertices *
+        metil_text_characters_default->meshes[index_character].length_vertices *
         sizeof(struct clic3_vector4_float)
       )
       options: MTLResourceStorageModeShared
     ];
   }
 
-  metil_text_characters_default.indices = [metal_device
-    newBufferWithBytes: metil_text_characters_default.meshes[0].indices
+  metil_text_characters_default->indices = [metal_device
+    newBufferWithBytes: metil_text_characters_default->meshes[0].indices
     length: (
       sizeof(unsigned int) *
-      metil_text_characters_default.meshes[0].length_indices
+      metil_text_characters_default->meshes[0].length_indices
     )
     options: MTLResourceStorageModeShared
   ];
 }
 
-void metil_text_characters_destroy() {
+void metil_text_characters_destroy(
+  void* data
+) {
+  struct metil_text_characters* metil_text_characters_default = (
+    data
+  );
+
   for (
     unsigned char index_character = 0;
-    index_character < metil_text_characters_default.length_characters;
+    index_character < metil_text_characters_default->length_characters;
     ++index_character
   ) {
     metil_mesh_destroy(
-      &metil_text_characters_default.meshes[index_character]
+      &metil_text_characters_default->meshes[index_character]
     );
 
-    [metil_text_characters_default.vertices[index_character] release];
-    [metil_text_characters_default.textures[index_character] release];
+    [metil_text_characters_default->vertices[index_character] release];
+    [metil_text_characters_default->textures[index_character] release];
   }
 
-  [metil_text_characters_default.indices release];
+  [metil_text_characters_default->indices release];
 
-  free(metil_text_characters_default.meshes);
-  free(metil_text_characters_default.vertices);
-  free(metil_text_characters_default.textures);
+  free(
+    metil_text_characters_default->meshes
+  );
+
+  free(
+    metil_text_characters_default->vertices
+  );
+
+  free(
+    metil_text_characters_default->textures
+  );
 }

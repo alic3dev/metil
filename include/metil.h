@@ -11,6 +11,7 @@
 #include <metil_rendering/metil_rendering_properties.h>
 #include <metil_system_information.h>
 #include <metil_termination/metil_termination.h>
+#include <metil_text/metil_text_characters.h>
 
 struct metil;
 
@@ -27,6 +28,8 @@ struct metil {
   void* _Nonnull scene_controller;
   struct metil_system_information system_information;
   struct metil_termination termination;
+
+  struct metil_text_characters text_characters_default;
 
   void* _Nullable data;
 
