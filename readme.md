@@ -48,6 +48,7 @@ other versions and standards may or may not work: see [`make`:flags](#makeflags)
 - - `library/Info_ios.plist`: sets the storyboard name to use and additional required properties for ios
 - `%.storyboardc`
 - - `library/metil.storyboardc`: default storyboard
+- - `library/metil_ios.storyboardc`: default storyboard for ios
 
 #### dynamic libraries
 
