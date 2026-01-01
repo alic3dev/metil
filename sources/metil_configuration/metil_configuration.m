@@ -29,7 +29,8 @@ void metil_configuration_initialize(
 }
 
 unsigned char metil_configuration_load(
-  struct metil_configuration* metil_configuration
+  struct metil_configuration* metil_configuration,
+  struct metil_paths* metil_paths
 ) {
   metil_configuration_initialize(
     metil_configuration
@@ -38,7 +39,7 @@ unsigned char metil_configuration_load(
   unsigned char status_configuration_load = 0;
 
   FILE* file_configuration = fopen(
-    metil_paths.file_configuration,
+    metil_paths->file_configuration,
     "a+"
   );
 
@@ -221,6 +222,8 @@ unsigned char metil_configuration_load(
               buffer_parameter,
               buffer_value
             );
+            
+            printf("%f\n",rendering_brightness);
 
             if (rendering_brightness >= 0.0f) {
               metil_configuration->rendering_properties.brightness = rendering_brightness;

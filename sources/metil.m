@@ -38,7 +38,9 @@ void metil_destroy(
 
   interrupt_handler_destroy();
   
-  metil_paths_destroy();
+  metil_paths_destroy(
+    &metil->paths
+  );
   
   metil_audio_destroy(
     &metil->audio,

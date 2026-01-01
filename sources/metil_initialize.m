@@ -69,6 +69,7 @@ int metil_initialize_with_data(
   metil_renderer_on_initialize_data = metil_renderer_on_initialize_function_data;
 
   metil_paths_initialize(
+    &metil.paths,
     (char*) parameters[0],
     name
   );
@@ -80,14 +81,17 @@ int metil_initialize_with_data(
   #else
   unsigned char status_configuration_load = (
     metil_configuration_load(
-      &metil.configuration
+      &metil.configuration,
+      &metil.paths
     )
   );
 
   if (
     status_configuration_load != 0
   ) {
-    metil_paths_destroy();
+    metil_paths_destroy(
+      &metil.paths
+    );
     #if target_os_ios
     exit(
       status_configuration_load
