@@ -217,9 +217,9 @@ void renderer_on_initialize(
 
 ## coordinates
 
-- `x` values go from left to right as -1 to 1
-- `y` values go from bottom to top as -1 to 1
-- `z` values go from front to back as -1 to 1
+- `x` values go from left to right as `-1.0f` to `1.0f`
+- `y` values go from bottom to top as `-1.0f` to `1.0f`
+- `z` values go from front to back as `-1.0f` to `1.0f`
 
 ```
      y +1.0  ^
@@ -236,6 +236,8 @@ x -1.0       |/
 ```
 
 ## rotations
+
+all rotations are in radians
 
 ### viewport
 
