@@ -721,7 +721,7 @@ io_procs should be removed using `metil_audio_io_proc_remove` when they are no l
 macos and ios require two different frameworks for audio output, macos requiring the use of `CoreAudio` and ios requiring the use of `AVFAudio`
 because of this the type definition of the io_procs is slightly different and can be conditionally set using the preprocessor macro `target_os_ios`
 
-the current channel can be obtained using a modulus operator on the index of the output buffer by the number of channels  
+the current channel can be obtained using a modulus operator on the index of the output buffer frame by the number of channels  
 a stereo configuration would have the left channel as channel `0` and the right channel as `1`
 
 every io_proc gets passed a pointer to a `metil_audio_io_proc_data` structure which contains a property for a pointer to `metil` and a parameter `data` for whatever data was passed in using `metil_audio_io_proc_add_with_data` (if `metil_audio_io_proc_add` was used instead then the `data` property is `(void*) 0`)
