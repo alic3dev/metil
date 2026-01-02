@@ -390,6 +390,250 @@ you can also create the buffers manually once you are more aware of what you are
 
 a group of renderables. useful for segmenting a section of renderables together as one group.
 
+## metil_joint
+
+`metil_joint` is a system of attached joint structures typically used through `metil_model`
+
+these joints have a position value which is then used to apply rotations/translations to any attached joints
+
+`metil_model` has functionality in place to handle most of this by default. 
+
+joints are added to a model using `metil_model_joints_add_length`  
+once all joints are added to a model then the vertex joint map should be initialized using `metil_model_vertex_joint_maps_initialize` which sets a `metal` buffer at the index of `metil_renderer_vertex_index_parameter_vertex_joint_map`  
+after the vertex joint mapping is initialized then specific joints can be attached together through `metil_joint_attach` while vertices can be attached to specific joints using `metil_model_vertex_joint_attach`
+
+when you update the rotation of `metil_joint` you can propagate any changes to attached joints using `metil_joint_propagate` (this function should be used from the topmost joint otherwise translation and rotation values will be lost)
+
+during model polling these joints and their values are set within a `metal` buffer assigned to `metil_renderer_vertex_index_parameter_joints` mapped as `([position, rotation, translation])[id_joint]` (all joint indexes within this buffer are offset by 1 as `metil_model` creates a default joint with values set to `0.0f` for vertices to use as an `unattached` state value during calculations; if a vertex is set to a joint at index `0` on a model then the vertex joint map will have a value of `1`, this is something internal to `metil_model` which if using the standard functionality isn't something to concern yourself with unless your calculations within the vertex function require the value of the index of a specified joint)
+
+vertex rendering functions then takes the buffer values from `metil_renderer_vertex_index_parameter_vertex_joint_map` and `metil_renderer_vertex_index_parameter_joints` to perform lookups to obtain the `position` `rotation` and `translation` values of any attached joints to then be applied to the `vertex` position  
+
+the following example shows how to create and attach joints within a metil model
+
+it first create 3 joints, attaches them from 0 to 1 to 2, attaches each object vertex to a specified joint based on the object index, then applies and propagates an `x` rotation of `0.1f` radians and a `y` rotation of `0.2f` radians from the first joint down to the last joint
+
+see [`examples/model`](examples/model) for further examples of how to utilize `metil_joint`
+
+#### metil_joint_vertex.m
+```obj-c
+void metil_joint_vertex_example(
+  struct metil_model* metil_model
+) {
+  metil_model_joints_add_length(
+    metil_model,
+    3
+  );
+
+  metil_model_vertex_joint_maps_initialize(
+    metil_model
+  );
+
+  for (
+    unsigned char index_joint = 1;
+    index_joint < metil_model->length_joints;
+    ++index_joint
+  ) {
+    metil_joint_attach(
+      &(
+        metil_model->joints[
+          index_joint -
+          1
+        ]
+      ),
+      &(
+        metil_model->joints[
+          index_joint
+        ]
+      )
+    );
+  }
+
+  for (
+    unsigned int index_object = 0;
+    index_object < metil_model->length_objects;
+    ++index_object
+  ) {
+    struct metil_object* metil_object = (
+      metil_model->objects[
+        index_object
+      ]
+    );
+
+    for (
+      unsigned int index_vertex = 0;
+      index_vertex < metil_object->mesh.length_vertices;
+      ++index_vertex
+    ) {
+      metil_model_vertex_joint_attach(
+        metil_model,
+        index_object,
+        index_vertex, (
+          index_object %
+          metil_model->length_joints
+        )
+      );
+    }
+  }
+
+  struct metil_joint* metil_joint = &(
+    metil_model->joints[
+      0
+    ]
+  );
+
+  metil_joint->rotation.x = (
+    metil_joint->rotation.x +
+    0.1f
+  );
+
+  metil_joint->rotation.y = (
+    metil_joint->rotation.y +
+    0.2f
+  );
+
+  metil_joint_propagate(
+    metil_joint
+  );
+}
+```
+
+#### metil_joint_vertex.metal
+
+```metal
+#include <metil_joint/metil_joint_id_offset.h>
+#include <metil_rendering/metil_renderer_data_frame.h>
+#include <metil_rendering/metil_renderer_vertex_index_parameter.h>
+#include <metil_rendering/metil_renderer_data_model_object.h>
+
+struct data_vertex {
+  float4 position [[position]];
+};
+
+[[vertex]] struct data_vertex model_vertex(
+  const device simd_float4* vertices [[
+    buffer(
+      metil_renderer_vertex_index_parameter_vertices
+    )
+  ]],
+  constant struct metil_renderer_data_frame* data_frame [[
+    buffer(
+      metil_renderer_vertex_index_parameter_data_frame
+    )
+  ]],
+  constant struct metil_renderer_data_model_object* data_object [[
+    buffer(
+      metil_renderer_vertex_index_parameter_data_object
+    )
+  ]],
+  constant unsigned int* vertex_joint_map [[
+    buffer(
+      metil_renderer_vertex_index_parameter_vertex_joint_map
+    )
+  ]],
+  constant struct clic3_vector3_float* joints [[
+    buffer(
+      metil_renderer_vertex_index_parameter_joints
+    )
+  ]],
+  unsigned int id_vertex [[vertex_id]]
+) {
+  struct data_vertex data_vertex;
+
+  unsigned int id_joint = (
+    vertex_joint_map[
+      id_vertex
+    ] *
+    metil_joint_id_offset_length
+  );
+
+  unsigned int id_joint_position = (
+    id_joint +
+    metil_joint_id_offset_position
+  );
+
+  unsigned int id_joint_rotation = (
+    id_joint +
+    metil_joint_id_offset_rotation
+  );
+
+  unsigned int id_joint_translation = (
+    id_joint +
+    metil_joint_id_offset_translation
+  );
+
+  matrix_float4x4 matrix_projection_object_with_rotation = (
+    (matrix_float4x4) {{
+      { metal::cos(joints[id_joint_rotation].y), 0.0f, -metal::sin(joints[id_joint_rotation].y), 0.0f },
+      { 0.0f, 1.0f, 0.0f, 0.0f },
+      { metal::sin(joints[id_joint_rotation].y), 0.0f, metal::cos(joints[id_joint_rotation].y), 0.0f },
+      { 0.0f, 0.0f, 0.0f, 1.0f }
+    }} *
+    (matrix_float4x4) {{
+      { 1.0f, 0.0f, 0.0f, 0.0f },
+      { 0.0f, metal::cos(joints[id_joint_rotation].x), -metal::sin(joints[id_joint_rotation].x), 0.0f },
+      { 0.0f, metal::sin(joints[id_joint_rotation].x), metal::cos(joints[id_joint_rotation].x), 0.0f },
+      { 0.0f, 0.0f, 0.0f, 1.0f }
+    }} *
+    (matrix_float4x4) {{
+      { metal::cos(joints[id_joint_rotation].z), -metal::sin(joints[id_joint_rotation].z), 0.0f, 0.0f },
+      { metal::sin(joints[id_joint_rotation].z), metal::cos(joints[id_joint_rotation].z), 0.0f, 0.0f },
+      { 0.0f, 0.0f, 1.0f, 0.0f },
+      { 0.0f, 0.0f, 0.0f, 1.0f }
+    }}
+  );
+
+  float4 position_object = {
+    data_object->position.x,
+    data_object->position.y,
+    data_object->position.z,
+    0.0f
+  };
+
+  float4 position_vertex_object_relation = (
+    vertices[id_vertex] +
+    position_object
+  );
+
+  float4 position_joint = {
+    joints[id_joint_position].x,
+    joints[id_joint_position].y,
+    joints[id_joint_position].z,
+    0.0f
+  };
+
+  float4 position_joint_translation = {
+    joints[id_joint_translation].x,
+    joints[id_joint_translation].y,
+    joints[id_joint_translation].z,
+    0.0f
+  };
+
+  float4 position_vertex_object_relation_offset_joint_origin = (
+    position_vertex_object_relation - 
+    position_joint
+  );
+
+  float4 position_vertex_object_relation_offset_joint_origin_rotated = (
+    position_vertex_object_relation_offset_joint_origin *
+    matrix_projection_object_with_rotation
+  );
+  
+  float4 position_vertex = (
+    position_vertex_object_relation_offset_joint_origin_rotated +
+    position_joint +
+    position_joint_translation -
+    position_object
+  );
+
+  data_vertex.position = (
+    data_object->view_model_matrix_projection *
+    position_vertex
+  );
+
+  return data_vertex;
+}
+```
+
 ## using multiple render pipelines
 
 multiple render pipelines are something you should be doing as soon as possible as it allows you to specify different render paths and use multiple different `metal` files during your renditions
