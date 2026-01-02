@@ -5,12 +5,12 @@ rendering_framework.utilizing(`apple::metal`)
 ## releases
 
 - [`latest`](https://github.com/alic3dev/metil/releases/latest)
+<!-- - [`metil`:version->{`1.0.0`}](https://github.com/alic3dev/add_this)::[introduction_of_ios_support] -->
 - [`metil`:version->{`0.0.0`}](https://github.com/alic3dev/metil/releases/tag/release_version-%3E%7B0.0.0%7D%3B)::[macos_only]
 
 ### development
 
 - [`core`](https://github.com/alic3dev/metil/tree/core)::[prone_to_changes:consider->{[`core`](https://github.com/alic3dev/metil/tree/core)}.as_a_development_or_nightly_build]
-- [`metil`:version->{`1.0.0`}](https://github.com/alic3dev/metil/tree/metil_1_0_0)::[introduction_of_ios_support]
 
 ## supported_platforms
 
@@ -48,6 +48,7 @@ other versions and standards may or may not work: see [`make`:flags](#makeflags)
 - - `library/Info_ios.plist`: sets the storyboard name to use and additional required properties for ios
 - `%.storyboardc`
 - - `library/metil.storyboardc`: default storyboard
+- - `library/metil_ios.storyboardc`: default storyboard for ios
 
 #### dynamic libraries
 
@@ -98,15 +99,14 @@ otherwise individual header files can be included as such
 - [macos] `metil_initialize`: must be called within your `main` function and it's value returned as the exit status code.
 - [ios] `metil_initialize`: must be called after `UIApplicationMain` and before `metil_renderer` initialization 
 - - `metil_view_controller`: `viewDidLoad` is a spot in between these two that can be tapped into using `metil_view_controller_on_view_did_load`
-- `metil_library`: must be initialized within the `metil_renderer_on_initialize_function` passed to `metil_initialize` (`metil_library_initialize` is provided to simplify this)
-- - `metil_library.library`: must be set to an instance of a `metal` library (`id<MTLLibrary>`)
-- - `metil_library.function_vertex`: must be set to an instance of a `metal` vertex function (`id<MTLFunction>`)
-- - `metil_library.function_fragment`: must be set to an instance of a `metal` fragment function (`id<MTLFunction>`)
-- - `metil_library.function_fragment_fps_display`: optional | required for usage of built in `fps_display`
-- - `metil_library.function_vertex_fps_display`: optional | required for usage of built in `fps_display`
-- - `metil_library.function_fragment_wireframe`: optional | required for usage of built in `wireframe` rendering mode
-- - `metil_library.function_vertex_wireframe`: optional | required for usage of built in `wireframe` rendering mode
-
+- `metil->library`: must be initialized (`metil_library_initialize`) within the `metil_renderer_on_initialize_function` passed to `metil_initialize`
+- - `metil->library.library`: must be set to an instance of a `metal` library (`id<MTLLibrary>`)
+- - `metil->library.function_vertex`: must be set to an instance of a `metal` vertex function (`id<MTLFunction>`)
+- - `metil->library.function_fragment`: must be set to an instance of a `metal` fragment function (`id<MTLFunction>`)
+- - `metil->library.function_fragment_fps_display`: optional | required for usage of built in `fps_display`
+- - `metil->library.function_vertex_fps_display`: optional | required for usage of built in `fps_display`
+- - `metil->library.function_fragment_wireframe`: optional | required for usage of built in `wireframe` rendering mode
+- - `metil->library.function_vertex_wireframe`: optional | required for usage of built in `wireframe` rendering mode
 
 #### macos
 
@@ -211,15 +211,266 @@ void renderer_on_initialize(
 }
 ```
 
+## `metil`
+
+`metil` is a structure found within [include/metil.h](include/metil.h) which encapsulates `metil` and its required structures into a singular self contained structure
+
+### audio
+
+`metil` stores audio data within `metil->audio`
+
+this structure contains the attached audio_device as well as any io_procs that are set along with their data values
+
+also is a place to set the volume
+
+### configuration
+
+`metil` loads configuration files from `~/.config/${name}` during `metil_initialize`
+
+- `metil->configuration`:the_configuration_structure
+
+### input
+
+`metil` polls input every render frame.  
+use `delta` time values in any functionalities which handle input for proper input handling
+
+- `metil->input`
+- - `controller_state`:state_of_the_currently_attached_controller(`metil->input.controller`)
+- - `cursor`:state_of_the_cursor
+- - `keydown_map`:a_map_of_key_values_and_whether_they_are_held_down_or_not
+
+### library
+
+- `metil-library`:a_library_structure_which_houses_metal_libraries_and_default_fragment_and_vertex_functions
+
+### paths
+
+`metil->paths` is used to store path information about various locations commonly used by `metil` for loading resources
+
+### renderer_interface
+
+`metil->renderer_interface` stores the currently used `MTLDevice`, the `metil_renderer`, and the `size` of the viewport.  
+this structure is used to interact more closely with the graphics device and the rendering pipeline
+
+### rendering_properties
+
+`metil->rendering_properties` is a more high level way to interact with the graphical pipeline  
+here you can set the rendering mode, change camera (`metil_camera`) settings, toggle fps display, set the brightness, or change the clear color!
+
+### scene_controller
+
+`metil->scene_controller` is the standard way to interact with scenes within `metil`.
+
+note that the type is set to `void*` so to use this structure directly you will need to cast it to `struct metil_scene_controller*` and treat it as a pointer to aforementioned structure
+
+```c
+struct metil_scene_controller* metil_scene_controller = (
+  metil->scene_controller
+);
+
+// get the scene
+struct metil_scene* metil_scene = &(
+    metil_scene_controller->scene
+);
+
+int identifier_scene = 1;
+
+// change the scene
+metil_scene_controller_scene_change(
+  metil,
+  metil_scene_controller,
+  identifier_scene
+);
+```
+
+### system_information
+
+`metil->system_information` stores information about the system it is running on.  
+
+currently this only contains the number of cpu cores which is then used to maximize multi-threading performance by creating threads spread evenly amongst the count of available cores.
+
+setting this value post-configuration will change the number of threads which are spawned during multi-threaded operations
+
+### termination
+
+`metil->termination` is used to store procedures to be executed during termination of `metil` which can occur through various means such as user input, programatically, or signal interruption.
+
+note that `metil` does not catch or handle any form of segmentation faults or similar, any termination or cleanup functions you have will not run if your program encounters an error
+
+the only signal caught by `metil` is `SIG_INT` (signal interruption), any other signals are not caught and whether or not termination/cleanup functions run will be dependent upon whether the signal sent to the application is one which bypasses standard application closure or not.
+
+### defaults
+
+`metil` contains structures containing default values used throughout `metil`
+
+- `metil->player_defaults`:default_values_for->{`metil_player`}
+- `metil->text_characters_default`:default_font_used_to_render_texts::monospace
+- `metil->text_defaults`:default_text_characters_used_to_render_text_with_fonts
+
+
+### data/destroy
+
+these properties on the `metil` structure aren't required but may be utilized if it's beneficial to you
+
+- `metil->data`:whatever_data_is_useful_for_you_to_store
+- `metil->destroy`:called_as_one_of_the_last_functions_during_termination
+- - this_may_be_set_to_whatever_you_like
+
+
+## renderables
+
+`metil_renderable` is the standard way to render things within `metil` and is typically used through `metil_scene->renderables`
+
+- renderable_types
+- - `metil_model`: multiple objects through one base model with `metil_joint` calculations
+- - `metil_object`: a singular object
+- - `metil_group`: a collection of renderables (useful to group renderables together in one location)
+
+### `metil_object`
+
+`metil_object`s contain a `metil_mesh` (`mesh`) which stores raw vertices and indices data as well as `size`. this mesh then gets used as the basis for `metal` gpu accesiible buffer objects set on `metil_object` through `buffers_vertex` and `indices`
+
+`buffers_fragment` is used to set buffers passed to fragment functions during rendering of the object  
+similiarly `buffers_vertex` is used to set buffers passed to vertex functions during rendering of the object  
+`textures` is used to set textures for fragment functions, the position of the `MTLTexture` within the fragment is according to its own index within the array
+
+the process of settings `metal` buffers for gpu usage is simplified through `metil_object_buffers_initialize` which will automatically set vertex and indices buffers for you according to the data within `mesh` as well as initializing a `metil_renderer_data_object` as a vertex buffer which stores information such as `view_model_matrix_projection` which is used to transform and render coordinates of vertices relative to the objects position rotation, player position, viewport sizes, etc.
+
+the standard way to render an objects position within a vertex function is 
+
+```metal
+struct data_vertex {
+  float4 position [[position]];
+};
+
+[[vertex]] struct data_vertex standard_vertex_rendering_vertex(
+  const device simd_float4* vertices [[
+    buffer(
+      metil_renderer_vertex_index_parameter_vertices
+    )
+  ]],
+  constant struct metil_renderer_data_frame* data_frame [[
+    buffer(
+      metil_renderer_vertex_index_parameter_data_frame
+    )
+  ]],
+  constant struct metil_renderer_data_object* data_object [[
+    buffer(
+      metil_renderer_vertex_index_parameter_data_object
+    )
+  ]],
+  unsigned int id_vertex [[vertex_id]]
+) {
+  struct data_vertex data_vertex;
+
+  data_vertex.position = (
+    data_object->view_model_matrix_projection *
+    vertices[
+      id_vertex
+    ]
+  );
+
+  return data_vertex;
+}
+```
+
+`view_model_matrix_projection` is set for you through the default `metil_object_poll`
+
+specialized buffer allocation can be done through usage of `metil_object_buffers_initialize_with_data_size` which allocates the same buffers mentioned above but with a specified data size passed in as the last parameter. this will allow you to use custom structures instead of just the default `metil_renderer_data_object`
+
+note that you will need to add a custom `poll` function to make sure some form of `view_model_matrix_projection` is set correctly within your custom structure in order to render vertices correctly
+
+you can also create the buffers manually once you are more aware of what you are doing and how this system works and interacts with itself
+
+### metil_model
+
+`metil_model` is a collection of objects which get translations and rotations applied to them from the `metil_model` as well as from any attached `metil_joint` structures contained within the `metil_model`.
+
+### metil_group
+
+a group of renderables. useful for segmenting a section of renderables together as one group.
+
+## using multiple render pipelines
+
+multiple render pipelines are something you should be doing as soon as possible as it allows you to specify different render paths and use multiple different `metal` files during your renditions
+
+you can create an additional render pipeline as such
+
+```obj-c
+unsigned short int pipeline_index_text = [
+  metil->renderer_interface.renderer
+  pipeline_add: [
+    metil->library.library
+    newFunctionWithName: @"text_fragment"
+  ]
+  function_vertex: [
+    metil->library.library
+    newFunctionWithName: @"text_vertex"
+  ]
+];
+
+unsigned short int pipeline_index_object = [
+  metil->renderer_interface.renderer
+  pipeline_add: [
+    metil->library.library
+    newFunctionWithName: @"object_fragment"
+  ]
+  function_vertex: [
+    metil->library.library
+    newFunctionWithName: @"object_vertex"
+  ]
+];
+```
+
+then set the pipelines for specific objects to change their default renderings
+
+```obj-c
+struct metil_object* metil_object = &(
+  metil_scene->renderables[
+    0
+  ].renderable
+);
+
+metil_object->index_pipeline_render = pipeline_index_object;
+
+metil_object = &(
+  metil_scene->renderables[
+    1
+  ].renderable
+);
+
+metil_object->index_pipeline_render = pipeline_index_text;
+```
+
+## rendering text
+
+text rendering is a bit of convoluted process which can be simplified through the usage of `metil_object_text_initialize` as such
+
+```c
+metil_object_text_initialize(
+  metil,
+  metil_object,
+  "Example text rendering::metil"
+);
+```
+
+which renders text using the default font/size (`monospace 48px`) to a texture, allocates buffers, sets textures, sets vertices/indices as a square the size of the text
+
+[`metil_text`](sources/metil_text/metil_text.m) itself can be utilized for more specific renditions of text by passing specific render properties containing font information, color spaces, sizes, and then utilizing glyph encoding and text image rendering to create textures to be stored in metal buffers for gpu access
+
+the size of text rendering does not correspond to it's displayed size of resolution but does however set the quality and scale of the text. The higher the initial `size` of text rendering the higher the quality of the font displayed, the actual size however is left up to the scaling factors of the renderer.
+
+for example you can render a font at 10px but display it as 50% of the viewport, and you can also render a font at 100px but display it as 50% of the viewport, in both cases the actual size of the display of the font is the same but the quality of render is drastically different with the `10px` font rendering in a lower quality comparatively to the `100px` font. In essence, font size is nearly equivalent to font quality rather than displayed/percieved sizes.
+
 ## units
 
 `metil` presupposes that 10 units is equivalent to 1 metre
 
 ## coordinates
 
-- `x` values go from left to right as -1 to 1
-- `y` values go from bottom to top as -1 to 1
-- `z` values go from front to back as -1 to 1
+- `x` values go from left to right as `-1.0f` to `1.0f`
+- `y` values go from bottom to top as `-1.0f` to `1.0f`
+- `z` values go from front to back as `-1.0f` to `1.0f`
 
 ```
      y +1.0  ^
@@ -236,6 +487,8 @@ x -1.0       |/
 ```
 
 ## rotations
+
+all rotations are in radians
 
 ### viewport
 
@@ -421,8 +674,23 @@ metil_rendering_properties->mode = (
 ```
 # initialization
 
+## macos
+
 0: `metil_initialize`
-1: `metil_renderer`->{`metil_renderer_on_initialize_function()`}
+1: `metil_view_controller`
+1.0 `viewDidLoad`
+2: `metil_renderer`
+2.0:`metil->renderer_on_initialize`
+
+## ios
+
+0: `UIApplicationMain`
+1: `metil_view_controller`
+1.0 `viewDidLoad`
+1.1: `metil_view_controller_on_view_did_load`
+1.2: `metil_initialize`
+2: `metil_renderer`
+2.0:`metil->renderer_on_initialize`
 
 # frame_draw (loop until termination)
 ## [may_render_up_to->{`metil_count_max_frames`}.frames_at_a_time]
@@ -536,8 +804,8 @@ these flags can be applied to any build target
 # build a debugging version of metil
 make metil debug=1
 
-# build metil for macos version 26.0 with fast modes disabled for metal
-make metil disable_metal_fast_options=1 target_macos_version=26.0
+# build metil for macos version 26.1 with fast modes disabled for metal
+make metil disable_metal_fast_options=1 target_device_version=26.1
 
 # build an ios version of metil
 make target_device=iphone
@@ -549,20 +817,31 @@ make target_device=iphone
 
 ### macos
 
-- [`alic3dev`](https://github.com/alic3dev)
-- - [`c938`](https://github.com/alic3dev/c938)
-- - [`zoe`](https://github.com/alic3dev/zoe)
+#### [`alic3dev`](https://github.com/alic3dev)
+
+| [`c938`](https://github.com/alic3dev/c938) | [`zoe`](https://github.com/alic3dev/zoe) |
+|---|---|
+| <img width="1966" height="1250" alt="c938" src="https://github.com/user-attachments/assets/99a495c2-f655-4a4b-9ece-9225deb5ccee" /> | <img width="1966" height="1250" alt="zoe" src="https://github.com/user-attachments/assets/7ec3bd2b-b281-4a0f-ab66-5d0802e62ede" /> |
+
+
 
 ### ios
 
-- [`alic3dev`](https://github.com/alic3dev)
-- - [`ff`](https://github.com/alic3dev/ff)
+#### [`alic3dev`](https://github.com/alic3dev)
+
+| [`ff`](https://github.com/alic3dev/ff) |
+|---|
+| <img width="295" height="639" alt="ff" src="https://github.com/user-attachments/assets/0e923f40-583f-4ef8-9ff9-5178fe6ebd4e" /> |
 
 ## examples
 
 | [2d_rendering](examples/2d_rendering/) | [3d_rendering](examples/3d_rendering/) | [face](examples/face/) |
 |-------|-----|---|
 | <img width="1966" height="1250" alt="metil_example_2d_rendering" src="https://github.com/user-attachments/assets/eed4ec93-5284-43a3-a5f2-2c2abff9527a" /> | <img width="1966" height="1250" alt="metil_example_3d_rendering" src="https://github.com/user-attachments/assets/6da49b26-0001-4e5c-8af4-47191ac57aa5" /> | <img width="1966" height="1250" alt="metil_example_face" src="https://github.com/user-attachments/assets/466184c5-c724-4f80-b0c7-fa34aa55e7c2" /> |
+
+| [fog](examples/fog/) | [model](examples/model/) |
+|-------|-----|
+| https://github.com/user-attachments/assets/0639ef29-43d6-4eb0-b12c-c42b1afd91ae | https://github.com/user-attachments/assets/6e3675f2-b369-4596-9d4f-ee68e24b98fe | 
 
 ## copyright|copyleft
 
