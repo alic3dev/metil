@@ -99,15 +99,14 @@ otherwise individual header files can be included as such
 - [macos] `metil_initialize`: must be called within your `main` function and it's value returned as the exit status code.
 - [ios] `metil_initialize`: must be called after `UIApplicationMain` and before `metil_renderer` initialization 
 - - `metil_view_controller`: `viewDidLoad` is a spot in between these two that can be tapped into using `metil_view_controller_on_view_did_load`
-- `metil_library`: must be initialized within the `metil_renderer_on_initialize_function` passed to `metil_initialize` (`metil_library_initialize` is provided to simplify this)
-- - `metil_library.library`: must be set to an instance of a `metal` library (`id<MTLLibrary>`)
-- - `metil_library.function_vertex`: must be set to an instance of a `metal` vertex function (`id<MTLFunction>`)
-- - `metil_library.function_fragment`: must be set to an instance of a `metal` fragment function (`id<MTLFunction>`)
-- - `metil_library.function_fragment_fps_display`: optional | required for usage of built in `fps_display`
-- - `metil_library.function_vertex_fps_display`: optional | required for usage of built in `fps_display`
-- - `metil_library.function_fragment_wireframe`: optional | required for usage of built in `wireframe` rendering mode
-- - `metil_library.function_vertex_wireframe`: optional | required for usage of built in `wireframe` rendering mode
-
+- `metil->library`: must be initialized (`metil_library_initialize`) within the `metil_renderer_on_initialize_function` passed to `metil_initialize`
+- - `metil->library.library`: must be set to an instance of a `metal` library (`id<MTLLibrary>`)
+- - `metil->library.function_vertex`: must be set to an instance of a `metal` vertex function (`id<MTLFunction>`)
+- - `metil->library.function_fragment`: must be set to an instance of a `metal` fragment function (`id<MTLFunction>`)
+- - `metil->library.function_fragment_fps_display`: optional | required for usage of built in `fps_display`
+- - `metil->library.function_vertex_fps_display`: optional | required for usage of built in `fps_display`
+- - `metil->library.function_fragment_wireframe`: optional | required for usage of built in `wireframe` rendering mode
+- - `metil->library.function_vertex_wireframe`: optional | required for usage of built in `wireframe` rendering mode
 
 #### macos
 
