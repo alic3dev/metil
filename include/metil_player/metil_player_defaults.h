@@ -17,8 +17,6 @@ struct metil_player_defaults {
   float deadzone_stick;
 
   struct clic3_vector3_float size;
-
-  unsigned char initialized;
 };
 
 void metil_player_defaults_initialize(
