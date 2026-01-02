@@ -390,6 +390,250 @@ you can also create the buffers manually once you are more aware of what you are
 
 a group of renderables. useful for segmenting a section of renderables together as one group.
 
+## metil_joint
+
+`metil_joint` is a system of attached joint structures typically used through `metil_model`
+
+these joints have a position value which is then used to apply rotations/translations to any attached joints
+
+`metil_model` has functionality in place to handle most of this by default. 
+
+joints are added to a model using `metil_model_joints_add_length`  
+once all joints are added to a model then the vertex joint map should be initialized using `metil_model_vertex_joint_maps_initialize` which sets a `metal` buffer at the index of `metil_renderer_vertex_index_parameter_vertex_joint_map`  
+after the vertex joint mapping is initialized then specific joints can be attached together through `metil_joint_attach` while vertices can be attached to specific joints using `metil_model_vertex_joint_attach`
+
+when you update the rotation of `metil_joint` you can propagate any changes to attached joints using `metil_joint_propagate` (this function should be used from the topmost joint otherwise translation and rotation values will be lost)
+
+during model polling these joints and their values are set within a `metal` buffer assigned to `metil_renderer_vertex_index_parameter_joints` mapped as `([position, rotation, translation])[id_joint]` (all joint indexes within this buffer are offset by 1 as `metil_model` creates a default joint with values set to `0.0f` for vertices to use as an `unattached` state value during calculations; if a vertex is set to a joint at index `0` on a model then the vertex joint map will have a value of `1`, this is something internal to `metil_model` which if using the standard functionality isn't something to concern yourself with unless your calculations within the vertex function require the value of the index of a specified joint)
+
+vertex rendering functions then takes the buffer values from `metil_renderer_vertex_index_parameter_vertex_joint_map` and `metil_renderer_vertex_index_parameter_joints` to perform lookups to obtain the `position` `rotation` and `translation` values of any attached joints to then be applied to the `vertex` position  
+
+the following example shows how to create and attach joints within a metil model
+
+it first create 3 joints, attaches them from 0 to 1 to 2, attaches each object vertex to a specified joint based on the object index, then applies and propagates an `x` rotation of `0.1f` radians and a `y` rotation of `0.2f` radians from the first joint down to the last joint
+
+see [`examples/model`](examples/model) for further examples of how to utilize `metil_joint`
+
+#### metil_joint_vertex.m
+```obj-c
+void metil_joint_vertex_example(
+  struct metil_model* metil_model
+) {
+  metil_model_joints_add_length(
+    metil_model,
+    3
+  );
+
+  metil_model_vertex_joint_maps_initialize(
+    metil_model
+  );
+
+  for (
+    unsigned char index_joint = 1;
+    index_joint < metil_model->length_joints;
+    ++index_joint
+  ) {
+    metil_joint_attach(
+      &(
+        metil_model->joints[
+          index_joint -
+          1
+        ]
+      ),
+      &(
+        metil_model->joints[
+          index_joint
+        ]
+      )
+    );
+  }
+
+  for (
+    unsigned int index_object = 0;
+    index_object < metil_model->length_objects;
+    ++index_object
+  ) {
+    struct metil_object* metil_object = (
+      metil_model->objects[
+        index_object
+      ]
+    );
+
+    for (
+      unsigned int index_vertex = 0;
+      index_vertex < metil_object->mesh.length_vertices;
+      ++index_vertex
+    ) {
+      metil_model_vertex_joint_attach(
+        metil_model,
+        index_object,
+        index_vertex, (
+          index_object %
+          metil_model->length_joints
+        )
+      );
+    }
+  }
+
+  struct metil_joint* metil_joint = &(
+    metil_model->joints[
+      0
+    ]
+  );
+
+  metil_joint->rotation.x = (
+    metil_joint->rotation.x +
+    0.1f
+  );
+
+  metil_joint->rotation.y = (
+    metil_joint->rotation.y +
+    0.2f
+  );
+
+  metil_joint_propagate(
+    metil_joint
+  );
+}
+```
+
+#### metil_joint_vertex.metal
+
+```metal
+#include <metil_joint/metil_joint_id_offset.h>
+#include <metil_rendering/metil_renderer_data_frame.h>
+#include <metil_rendering/metil_renderer_vertex_index_parameter.h>
+#include <metil_rendering/metil_renderer_data_model_object.h>
+
+struct data_vertex {
+  float4 position [[position]];
+};
+
+[[vertex]] struct data_vertex model_vertex(
+  const device simd_float4* vertices [[
+    buffer(
+      metil_renderer_vertex_index_parameter_vertices
+    )
+  ]],
+  constant struct metil_renderer_data_frame* data_frame [[
+    buffer(
+      metil_renderer_vertex_index_parameter_data_frame
+    )
+  ]],
+  constant struct metil_renderer_data_model_object* data_object [[
+    buffer(
+      metil_renderer_vertex_index_parameter_data_object
+    )
+  ]],
+  constant unsigned int* vertex_joint_map [[
+    buffer(
+      metil_renderer_vertex_index_parameter_vertex_joint_map
+    )
+  ]],
+  constant struct clic3_vector3_float* joints [[
+    buffer(
+      metil_renderer_vertex_index_parameter_joints
+    )
+  ]],
+  unsigned int id_vertex [[vertex_id]]
+) {
+  struct data_vertex data_vertex;
+
+  unsigned int id_joint = (
+    vertex_joint_map[
+      id_vertex
+    ] *
+    metil_joint_id_offset_length
+  );
+
+  unsigned int id_joint_position = (
+    id_joint +
+    metil_joint_id_offset_position
+  );
+
+  unsigned int id_joint_rotation = (
+    id_joint +
+    metil_joint_id_offset_rotation
+  );
+
+  unsigned int id_joint_translation = (
+    id_joint +
+    metil_joint_id_offset_translation
+  );
+
+  matrix_float4x4 matrix_projection_object_with_rotation = (
+    (matrix_float4x4) {{
+      { metal::cos(joints[id_joint_rotation].y), 0.0f, -metal::sin(joints[id_joint_rotation].y), 0.0f },
+      { 0.0f, 1.0f, 0.0f, 0.0f },
+      { metal::sin(joints[id_joint_rotation].y), 0.0f, metal::cos(joints[id_joint_rotation].y), 0.0f },
+      { 0.0f, 0.0f, 0.0f, 1.0f }
+    }} *
+    (matrix_float4x4) {{
+      { 1.0f, 0.0f, 0.0f, 0.0f },
+      { 0.0f, metal::cos(joints[id_joint_rotation].x), -metal::sin(joints[id_joint_rotation].x), 0.0f },
+      { 0.0f, metal::sin(joints[id_joint_rotation].x), metal::cos(joints[id_joint_rotation].x), 0.0f },
+      { 0.0f, 0.0f, 0.0f, 1.0f }
+    }} *
+    (matrix_float4x4) {{
+      { metal::cos(joints[id_joint_rotation].z), -metal::sin(joints[id_joint_rotation].z), 0.0f, 0.0f },
+      { metal::sin(joints[id_joint_rotation].z), metal::cos(joints[id_joint_rotation].z), 0.0f, 0.0f },
+      { 0.0f, 0.0f, 1.0f, 0.0f },
+      { 0.0f, 0.0f, 0.0f, 1.0f }
+    }}
+  );
+
+  float4 position_object = {
+    data_object->position.x,
+    data_object->position.y,
+    data_object->position.z,
+    0.0f
+  };
+
+  float4 position_vertex_object_relation = (
+    vertices[id_vertex] +
+    position_object
+  );
+
+  float4 position_joint = {
+    joints[id_joint_position].x,
+    joints[id_joint_position].y,
+    joints[id_joint_position].z,
+    0.0f
+  };
+
+  float4 position_joint_translation = {
+    joints[id_joint_translation].x,
+    joints[id_joint_translation].y,
+    joints[id_joint_translation].z,
+    0.0f
+  };
+
+  float4 position_vertex_object_relation_offset_joint_origin = (
+    position_vertex_object_relation - 
+    position_joint
+  );
+
+  float4 position_vertex_object_relation_offset_joint_origin_rotated = (
+    position_vertex_object_relation_offset_joint_origin *
+    matrix_projection_object_with_rotation
+  );
+  
+  float4 position_vertex = (
+    position_vertex_object_relation_offset_joint_origin_rotated +
+    position_joint +
+    position_joint_translation -
+    position_object
+  );
+
+  data_vertex.position = (
+    data_object->view_model_matrix_projection *
+    position_vertex
+  );
+
+  return data_vertex;
+}
+```
+
 ## using multiple render pipelines
 
 multiple render pipelines are something you should be doing as soon as possible as it allows you to specify different render paths and use multiple different `metal` files during your renditions
@@ -461,6 +705,224 @@ which renders text using the default font/size (`monospace 48px`) to a texture, 
 the size of text rendering does not correspond to it's displayed size of resolution but does however set the quality and scale of the text. The higher the initial `size` of text rendering the higher the quality of the font displayed, the actual size however is left up to the scaling factors of the renderer.
 
 for example you can render a font at 10px but display it as 50% of the viewport, and you can also render a font at 100px but display it as 50% of the viewport, in both cases the actual size of the display of the font is the same but the quality of render is drastically different with the `10px` font rendering in a lower quality comparatively to the `100px` font. In essence, font size is nearly equivalent to font quality rather than displayed/percieved sizes.
+
+## audio
+
+`metil` makes use of [`cer0`](https://github.com/alic3dev/cer0) for audio output
+
+audio io_procs can be added using `metil_audio_io_proc_add`
+
+data can be passed to io_procs using `metil_audio_io_proc_add_with_data`
+
+`metil` supports multiple io_procs and will loop through all added io_procs then set the final audio output buffer values as being the value of each individual io_proc divided by the total number of io_procs
+
+io_procs should be removed using `metil_audio_io_proc_remove` when they are no longer in use
+
+macos and ios require two different frameworks for audio output, macos requiring the use of `CoreAudio` and ios requiring the use of `AVFAudio`
+because of this the type definition of the io_procs is slightly different and can be conditionally set using the preprocessor macro `target_os_ios`
+
+the current channel can be obtained using a modulus operator on the index of the output buffer by the number of channels  
+a stereo configuration would have the left channel as channel `0` and the right channel as `1`
+
+every io_proc gets passed a pointer to a `metil_audio_io_proc_data` structure which contains a property for a pointer to `metil` and a parameter `data` for whatever data was passed in using `metil_audio_io_proc_add_with_data` (if `metil_audio_io_proc_add` was used instead then the `data` property is `(void*) 0`)
+
+```obj-c
+void io_proc_set(
+  struct metil* metil
+) {
+  metil_audio_io_proc_add(
+    &metil->audio,
+    io_proc
+  );
+}
+
+void io_proc_set_with_data(
+  struct metil* metil
+  void* data
+) {
+  metil_audio_io_proc_add_with_data(
+    &metil->audio,
+    io_proc,
+    data
+  );
+}
+
+void io_proc_remove(
+  struct metil* metil
+) {
+  metil_audio_io_proc_remove(
+    &metil->audio,
+    io_proc
+  );
+}
+
+float io_proc_frame_value_get(
+  unsigned int channel,
+  unsigned int index_frame
+) {
+  if (
+    channel == 0
+  ) {
+    return (
+      (float) (
+        index_frame %
+        1000
+      ) /
+      1000.0f
+    );
+  } else {
+    return (
+      (float) (
+        (
+          index_frame *
+          2
+        ) %
+        1000
+      ) /
+      1000.0f
+    );
+  }
+}
+
+#if target_os_ios
+int io_proc(
+  unsigned char silence,
+  const AudioTimeStamp* _Nonnull timestamp,
+  AVAudioFrameCount frame_count,
+  AudioBufferList* _Nonnull output_data,
+  void* data
+) {
+  struct metil_audio_io_proc_data* metil_audio_io_proc_data = (
+    data
+  );
+
+  struct metil* metil = (
+    metil_audio_io_proc_data->metil
+  );
+
+  // any data passed in through `metil_audio_io_proc_add_with_data`
+  struct void* io_proc_data = (
+    metil_audio_io_proc_data->data
+  );
+
+  for (
+    unsigned long int index_buffer = 0;
+    index_buffer < output_data->mNumberBuffers;
+    ++index_buffer
+  ) {
+    AudioBuffer audio_buffer_current = output_data->mBuffers[
+      index_buffer
+    ];
+
+    float* buffer_out = (
+      audio_buffer_current.mData
+    );
+
+    unsigned long int count_channel_out = (
+      audio_buffer_current.mNumberChannels
+    );
+    
+    for (
+      unsigned int index_frame = 0;
+      index_frame < frame_count;
+      ++index_frame
+    ) {
+      unsigned long int channel = (
+        index_frame %
+        count_channel_out
+      );
+
+      float value_audio = (
+        io_proc_frame_value_get(
+          channel,
+          index_frame
+        )
+      );
+
+      buffer_out[index_frame] = (
+        value_audio
+      );
+    }
+  }
+  
+  return 0;
+}
+#else
+OSStatus io_proc(
+  AudioObjectID id_audio_object,
+  const AudioTimeStamp* time_stamp_audio,
+  const AudioBufferList* list_buffer_audio_in,
+  const AudioTimeStamp* time_stamp_audio_in,
+  AudioBufferList* list_buffer_audio_out,
+  const AudioTimeStamp* time_stamp_audio_out,
+  void* data
+) {
+  struct metil_audio_io_proc_data* metil_audio_io_proc_data = (
+    data
+  );
+
+  struct metil* metil = (
+    metil_audio_io_proc_data->metil
+  );
+
+  // any data passed in through `metil_audio_io_proc_add_with_data`
+  struct void* io_proc_data = (
+    metil_audio_io_proc_data->data
+  );
+
+  for (
+    unsigned long int index_buffer = 0;
+    index_buffer < list_buffer_audio_out->mNumberBuffers;
+    ++index_buffer
+  ) {
+    AudioBuffer audio_buffer_current = (
+      list_buffer_audio_out->mBuffers[
+        index_buffer
+      ]
+    );
+
+    float* buffer_out = (
+      audio_buffer_current.mData
+    );
+
+    unsigned long int size_buffer_out = (
+      audio_buffer_current.mDataByteSize /
+      sizeof(float)
+    );
+
+    unsigned long int count_channel_out = (
+      audio_buffer_current.mNumberChannels
+    );
+    
+    for (
+      unsigned long int index_buffer_out = 0;
+      index_buffer_out < size_buffer_out;
+      ++index_buffer_out
+    ) {
+      unsigned long int channel = (
+        index_buffer_out %
+        count_channel_out
+      );
+
+      float value_audio = (
+        io_proc_frame_value_get(
+          channel,
+          index_frame
+        )
+      );
+
+      buffer_out[
+        index_buffer_out
+      ] = (
+        value_audio
+      );
+    }
+  }
+
+  return 0;
+}
+#endif
+```
 
 ## units
 
