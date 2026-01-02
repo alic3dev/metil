@@ -462,6 +462,224 @@ the size of text rendering does not correspond to it's displayed size of resolut
 
 for example you can render a font at 10px but display it as 50% of the viewport, and you can also render a font at 100px but display it as 50% of the viewport, in both cases the actual size of the display of the font is the same but the quality of render is drastically different with the `10px` font rendering in a lower quality comparatively to the `100px` font. In essence, font size is nearly equivalent to font quality rather than displayed/percieved sizes.
 
+## audio
+
+`metil` makes use of [`cer0`](https://github.com/alic3dev/cer0) for audio output
+
+audio io_procs can be added using `metil_audio_io_proc_add`
+
+data can be passed to io_procs using `metil_audio_io_proc_add_with_data`
+
+`metil` supports multiple io_procs and will loop through all added io_procs then set the final audio output buffer values as being the value of each individual io_proc divided by the total number of io_procs
+
+io_procs should be removed using `metil_audio_io_proc_remove` when they are no longer in use
+
+macos and ios require two different frameworks for audio output, macos requiring the use of `CoreAudio` and ios requiring the use of `AVFAudio`
+because of this the type definition of the io_procs is slightly different and can be conditionally set using the preprocessor macro `target_os_ios`
+
+the current channel can be obtained using a modulus operator on the index of the output buffer by the number of channels  
+a stereo configuration would have the left channel as channel `0` and the right channel as `1`
+
+every io_proc gets passed a pointer to a `metil_audio_io_proc_data` structure which contains a property for a pointer to `metil` and a parameter `data` for whatever data was passed in using `metil_audio_io_proc_add_with_data` (if `metil_audio_io_proc_add` was used instead then the `data` property is `(void*) 0`)
+
+```obj-c
+void io_proc_set(
+  struct metil* metil
+) {
+  metil_audio_io_proc_add(
+    &metil->audio,
+    io_proc
+  );
+}
+
+void io_proc_set_with_data(
+  struct metil* metil
+  void* data
+) {
+  metil_audio_io_proc_add_with_data(
+    &metil->audio,
+    io_proc,
+    data
+  );
+}
+
+void io_proc_remove(
+  struct metil* metil
+) {
+  metil_audio_io_proc_remove(
+    &metil->audio,
+    io_proc
+  );
+}
+
+float io_proc_frame_value_get(
+  unsigned int channel,
+  unsigned int index_frame
+) {
+  if (
+    channel == 0
+  ) {
+    return (
+      (float) (
+        index_frame %
+        1000
+      ) /
+      1000.0f
+    );
+  } else {
+    return (
+      (float) (
+        (
+          index_frame *
+          2
+        ) %
+        1000
+      ) /
+      1000.0f
+    );
+  }
+}
+
+#if target_os_ios
+int io_proc(
+  unsigned char silence,
+  const AudioTimeStamp* _Nonnull timestamp,
+  AVAudioFrameCount frame_count,
+  AudioBufferList* _Nonnull output_data,
+  void* data
+) {
+  struct metil_audio_io_proc_data* metil_audio_io_proc_data = (
+    data
+  );
+
+  struct metil* metil = (
+    metil_audio_io_proc_data->metil
+  );
+
+  // any data passed in through `metil_audio_io_proc_add_with_data`
+  struct void* io_proc_data = (
+    metil_audio_io_proc_data->data
+  );
+
+  for (
+    unsigned long int index_buffer = 0;
+    index_buffer < output_data->mNumberBuffers;
+    ++index_buffer
+  ) {
+    AudioBuffer audio_buffer_current = output_data->mBuffers[
+      index_buffer
+    ];
+
+    float* buffer_out = (
+      audio_buffer_current.mData
+    );
+
+    unsigned long int count_channel_out = (
+      audio_buffer_current.mNumberChannels
+    );
+    
+    for (
+      unsigned int index_frame = 0;
+      index_frame < frame_count;
+      ++index_frame
+    ) {
+      unsigned long int channel = (
+        index_frame %
+        count_channel_out
+      );
+
+      float value_audio = (
+        io_proc_frame_value_get(
+          channel,
+          index_frame
+        )
+      );
+
+      buffer_out[index_frame] = (
+        value_audio
+      );
+    }
+  }
+  
+  return 0;
+}
+#else
+OSStatus io_proc(
+  AudioObjectID id_audio_object,
+  const AudioTimeStamp* time_stamp_audio,
+  const AudioBufferList* list_buffer_audio_in,
+  const AudioTimeStamp* time_stamp_audio_in,
+  AudioBufferList* list_buffer_audio_out,
+  const AudioTimeStamp* time_stamp_audio_out,
+  void* data
+) {
+  struct metil_audio_io_proc_data* metil_audio_io_proc_data = (
+    data
+  );
+
+  struct metil* metil = (
+    metil_audio_io_proc_data->metil
+  );
+
+  // any data passed in through `metil_audio_io_proc_add_with_data`
+  struct void* io_proc_data = (
+    metil_audio_io_proc_data->data
+  );
+
+  for (
+    unsigned long int index_buffer = 0;
+    index_buffer < list_buffer_audio_out->mNumberBuffers;
+    ++index_buffer
+  ) {
+    AudioBuffer audio_buffer_current = (
+      list_buffer_audio_out->mBuffers[
+        index_buffer
+      ]
+    );
+
+    float* buffer_out = (
+      audio_buffer_current.mData
+    );
+
+    unsigned long int size_buffer_out = (
+      audio_buffer_current.mDataByteSize /
+      sizeof(float)
+    );
+
+    unsigned long int count_channel_out = (
+      audio_buffer_current.mNumberChannels
+    );
+    
+    for (
+      unsigned long int index_buffer_out = 0;
+      index_buffer_out < size_buffer_out;
+      ++index_buffer_out
+    ) {
+      unsigned long int channel = (
+        index_buffer_out %
+        count_channel_out
+      );
+
+      float value_audio = (
+        io_proc_frame_value_get(
+          channel,
+          index_frame
+        )
+      );
+
+      buffer_out[
+        index_buffer_out
+      ] = (
+        value_audio
+      );
+    }
+  }
+
+  return 0;
+}
+#endif
+```
+
 ## units
 
 `metil` presupposes that 10 units is equivalent to 1 metre
