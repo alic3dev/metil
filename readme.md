@@ -573,6 +573,10 @@ make target_device=iphone
 |-------|-----|---|
 | <img width="1966" height="1250" alt="metil_example_2d_rendering" src="https://github.com/user-attachments/assets/eed4ec93-5284-43a3-a5f2-2c2abff9527a" /> | <img width="1966" height="1250" alt="metil_example_3d_rendering" src="https://github.com/user-attachments/assets/6da49b26-0001-4e5c-8af4-47191ac57aa5" /> | <img width="1966" height="1250" alt="metil_example_face" src="https://github.com/user-attachments/assets/466184c5-c724-4f80-b0c7-fa34aa55e7c2" /> |
 
+| [fog](examples/fog/) | [model](examples/model/) |
+|-------|-----|
+| https://github.com/user-attachments/assets/0639ef29-43d6-4eb0-b12c-c42b1afd91ae | https://github.com/user-attachments/assets/6e3675f2-b369-4596-9d4f-ee68e24b98fe | 
+
 ## copyright|copyleft
 
 > ©️ [copyleft|copyright]->{alic3dev(2025)}:[all_rights_reserved|all_lefts_reserved]
