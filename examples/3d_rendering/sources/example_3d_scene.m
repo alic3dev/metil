@@ -10,7 +10,6 @@
 
 #include <clic3_vector.h>
 
-#include <math.h>
 #include <stdlib.h>
 
 void example_3d_scene_initialize(

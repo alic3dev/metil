@@ -2,8 +2,6 @@
 
 #include <metil_rendering/metil_camera/metil_camera_mode.h>
 
-#include <math.h>
-
 #include <simd/simd.h>
 
 void metil_camera_initialize(
