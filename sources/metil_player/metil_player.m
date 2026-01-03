@@ -7,8 +7,6 @@
 #include <metil_input/metil_keycodes.h>
 #include <metil_player/metil_player_defaults.h>
 
-#include <math.h>
-
 void metil_player_initialize(
   struct metil_player* metil_player,
   struct metil_player_defaults* metil_player_defaults

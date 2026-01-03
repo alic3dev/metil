@@ -3,6 +3,9 @@
 #include <example_face_pipeline_index.h>
 #include <example_face_renderer_data_object.h>
 
+#include <math_c_power.h>
+#include <math_c_square_root.h>
+
 #include <metil.h>
 #include <metil_mesh/metil_mesh.h>
 #include <metil_input/metil_cursor.h>
@@ -11,8 +14,6 @@
 #include <metil_rendering/metil_renderable.h>
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_scenes/metil_scene.h>
-
-#include <math.h>
 
 void example_face_scene_initialize(
   struct metil* metil,
@@ -595,8 +596,8 @@ void example_face_scene_poll(
     );
 
     float distance = (
-      sqrt(
-        pow(
+      math_c_square_root(
+        math_c_power_float(
           (
             (
               vertex->x *
@@ -607,7 +608,7 @@ void example_face_scene_poll(
           ),
           2.0f
         ) +
-        pow(
+        math_c_power_float(
           (
             vertex->y *
             0.8f -

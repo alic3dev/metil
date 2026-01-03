@@ -18,7 +18,6 @@
 
 #include <clic3_vector.h>
 
-#include <math.h>
 #include <stdlib.h>
 
 void example_fog_scene_initialize(

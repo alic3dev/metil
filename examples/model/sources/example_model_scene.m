@@ -12,8 +12,6 @@
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_scenes/metil_scene.h>
 
-#include <math.h>
-
 void example_model_scene_initialize(
   struct metil* metil,
   struct metil_scene* scene
