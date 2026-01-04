@@ -19,6 +19,11 @@ void metil_mesh_initialize(
   struct metil_mesh*
 );
 
+void metil_mesh_clone(
+  struct metil_mesh*,
+  struct metil_mesh*
+);
+
 void metil_mesh_destroy(
   struct metil_mesh*
 );
