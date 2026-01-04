@@ -5,31 +5,125 @@
 #include <stdlib.h>
 
 void metil_mesh_initialize(
-  struct metil_mesh* mesh
+  struct metil_mesh* metil_mesh
 ) {
-  mesh->length_indices = 0;
-  mesh->length_vertices = 0;
+  metil_mesh->length_indices = 0;
+  metil_mesh->length_vertices = 0;
 
-  mesh->size.x = 0.0f;
-  mesh->size.y = 0.0f;
-  mesh->size.z = 0.0f;
+  metil_mesh->size.x = 0.0f;
+  metil_mesh->size.y = 0.0f;
+  metil_mesh->size.z = 0.0f;
 
-  mesh->indices = malloc(
+  metil_mesh->indices = malloc(
     sizeof(unsigned int) *
-    mesh->length_indices
+    metil_mesh->length_indices
   );
 
-  mesh->vertices = malloc(
+  metil_mesh->vertices = malloc(
     sizeof(struct clic3_vector4_float) *
-    mesh->length_vertices
+    metil_mesh->length_vertices
   );
 
-  mesh->data = (void*)0;
+  metil_mesh->data = (void*)0;
+}
+
+void metil_mesh_clone(
+  struct metil_mesh* mesh_source,
+  struct metil_mesh* mesh_clone
+) {
+  mesh_clone->length_indices = (
+    mesh_source->length_indices
+  );
+
+  mesh_clone->length_vertices = (
+    mesh_source->length_vertices
+  );
+
+  mesh_clone->size.x = (
+    mesh_source->size.x
+  );
+
+  mesh_clone->size.y = (
+    mesh_source->size.y
+  );
+  
+  mesh_clone->size.z = (
+    mesh_source->size.z
+  );
+
+  mesh_clone->indices = malloc(
+    sizeof(unsigned int) *
+    mesh_clone->length_indices
+  );
+
+  mesh_clone->vertices = malloc(
+    sizeof(struct clic3_vector4_float) *
+    mesh_clone->length_vertices
+  );
+
+  for (
+    unsigned int index_index = 0;
+    index_index < mesh_clone->length_indices;
+    ++index_index
+  ) {
+    mesh_clone->indices[
+      index_index
+    ] = (
+      mesh_source->indices[
+        index_index
+      ]
+    );
+  }
+
+  for (
+    unsigned int index_vertex = 0;
+    index_vertex < mesh_clone->length_vertices;
+    ++index_vertex
+  ) {
+    mesh_clone->vertices[
+      index_vertex
+    ].x = (
+      mesh_source->vertices[
+        index_vertex
+      ].x
+    );
+
+    mesh_clone->vertices[
+      index_vertex
+    ].y = (
+      mesh_source->vertices[
+        index_vertex
+      ].y
+    );
+
+    mesh_clone->vertices[
+      index_vertex
+    ].z = (
+      mesh_source->vertices[
+        index_vertex
+      ].z
+    );
+
+    mesh_clone->vertices[
+      index_vertex
+    ].w = (
+      mesh_source->vertices[
+        index_vertex
+      ].w
+    );
+  }
+
+  mesh_clone->data = (void*) 0;
 }
 
 void metil_mesh_destroy(
-  struct metil_mesh* mesh
+  struct metil_mesh* metil_mesh
 ) {
-  free(mesh->indices);
-  free(mesh->vertices);
+  free(
+    metil_mesh->indices
+  );
+  
+  free(
+    metil_mesh->vertices
+  );
 }
