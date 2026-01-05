@@ -318,9 +318,18 @@
 
   MTLRenderPassDescriptor* descriptor_render_pass = metal_kit_view.currentRenderPassDescriptor;
   descriptor_render_pass.colorAttachments[0].clearColor = MTLClearColorMake(
-    self->metil->rendering_properties.color_clear.x,
-    self->metil->rendering_properties.color_clear.y,
-    self->metil->rendering_properties.color_clear.z,
+    (
+      self->metil->rendering_properties.color_clear.x *
+      self->metil->rendering_properties.brightness
+    ),
+    (
+      self->metil->rendering_properties.color_clear.y *
+      self->metil->rendering_properties.brightness
+    ),
+    (
+      self->metil->rendering_properties.color_clear.z *
+      self->metil->rendering_properties.brightness
+    ),
     self->metil->rendering_properties.color_clear.w
   );
 
