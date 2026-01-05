@@ -31,6 +31,8 @@ struct metil_player {
   struct clic3_vector3_float size;
   struct clic3_vector3_float velocity;
 
+  float position_y_floor;
+
   float deadzone_stick;
 
   float speed_movement;

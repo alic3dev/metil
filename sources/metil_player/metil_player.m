@@ -32,6 +32,8 @@ void metil_player_initialize(
   metil_player->velocity.y = 0.0f;
   metil_player->velocity.z = 0.0f;
 
+  metil_player->position_y_floor = 0.0f;
+
   metil_player->poll_input = metil_player_poll_input;
   metil_player->poll = metil_player_poll;
   metil_player->destroy = metil_player_destroy;
@@ -436,7 +438,7 @@ void metil_player_poll_input(
   );
 
   if (
-    metil_player->position.y > 0.0f
+    metil_player->position.y > metil_player->position_y_floor
   ) {
     metil_player->velocity.y = (
       metil_player->velocity.y - (
@@ -446,9 +448,12 @@ void metil_player_poll_input(
   }
 
   if (
-    metil_player->position.y < 0.0f
+    metil_player->position.y < metil_player->position_y_floor
   ) {
-    metil_player->position.y = 0.0f;
+    metil_player->position.y = (
+      metil_player->position_y_floor
+    );
+
     metil_player->velocity.y = 0.0f;
   }
 
