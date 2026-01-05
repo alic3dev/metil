@@ -2,44 +2,57 @@
 
 #include <metil.h>
 #include <metil_object/metil_object.h>
+#include <metil_rendering/metil_renderer_data_object.h>
+#include <metil_rendering/metil_renderer_vertex_index_parameter.h>
 #include <metil_text/metil_text.h>
 
 #include <Metal/MTLRenderCommandEncoder.h>
 
 void metil_object_text_initialize(
   struct metil* metil,
-  struct metil_object* metil_object,
+  struct metil_object* metil_object_text,
   char* metil_object_text_char_array
 ) {
-  metil_object->index_pipeline_render = (
+  metil_object_text->index_pipeline_render = (
     metil->text_defaults.object_text_index_pipeline_render
   );
 
   id<MTLTexture> metil_object_text_texture = (
     metil_text_mesh_with_texture_initialize(
       metil->renderer_interface.metal_device,
-      &metil_object->mesh,
+      &metil_object_text->mesh,
       metil_object_text_char_array,
       &metil->text_defaults.render_parameters,
       &metil->configuration
     )
   );
 
-  metil_object_buffers_initialize(
-    metil_object,
-    metil->renderer_interface.metal_device
-  );
-
-  metil_object->positioning = (
+  metil_object_text->positioning = (
     metil_positioning_static
   );
 
+  metil_object_buffers_initialize(
+    metil_object_text,
+    metil->renderer_interface.metal_device
+  );
+
+  struct metil_renderer_data_object* metil_renderer_data_object_text = (
+    metil_object_text->buffers_vertex[
+      metil_object_buffer_default_index_data
+    ].buffer.contents
+  );
+
+  metil_renderer_data_object_text->color.x = 1.0f;
+  metil_renderer_data_object_text->color.y = 1.0f;
+  metil_renderer_data_object_text->color.z = 1.0f;
+  metil_renderer_data_object_text->color.w = 1.0f;
+
   metil_object_texture_add(
-    metil_object,
+    metil_object_text,
     metil_object_text_texture
   );
 
-  metil_object->destroy = (
+  metil_object_text->destroy = (
     metil_object_destroy_with_textures
   );
 }
