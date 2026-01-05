@@ -1,6 +1,6 @@
 #include <metil_menus/metil_menu.h>
 
-#include <metil_input/metil_input.h>
+#include <metil_input/metil_controller_state/metil_controller_state_structure.h>
 #include <metil_input/metil_keycodes.h>
 #include <metil_input/metil_input_map.h>
 #include <metil_menus/metil_menu_item.h>
@@ -31,7 +31,10 @@ void metil_menu_initialize(
 
 void metil_menu_poll_input(
   struct metil_menu* menu,
-  struct metil_input* metil_input
+  struct metil_controller_state* controller_state,
+  unsigned char keydown_map[
+    metil_input_map_keydown_length
+  ]
 ) {
   if (
     menu->index_selected != -1
@@ -40,10 +43,10 @@ void metil_menu_poll_input(
   }
 
   if (
-    metil_input->keydown_map[
+    keydown_map[
       metil_keycode_space
     ] == 1 ||
-    metil_input->controller_state.cross > 0.0f
+    controller_state->cross > 0.0f
   ) {
     metil_menu_select(
       menu
@@ -65,11 +68,11 @@ void metil_menu_poll_input(
   unsigned char had_input = 0;
 
   if (
-    metil_input->keydown_map[
+    keydown_map[
       metil_keycode_up_arrow
     ] == 1 ||
-    metil_input->controller_state.directional_up > 0.0f ||
-    metil_input->controller_state.left_stick.y > 0.1f
+    controller_state->directional_up > 0.0f ||
+    controller_state->left_stick.y > 0.1f
   ) {
     had_input = 1;
 
@@ -77,11 +80,11 @@ void metil_menu_poll_input(
       menu
     );
   } else if (
-    metil_input->keydown_map[
+    keydown_map[
       metil_keycode_down_arrow
     ] == 1 ||
-    metil_input->controller_state.directional_down > 0.0f ||
-    metil_input->controller_state.left_stick.y < -0.1f
+    controller_state->directional_down > 0.0f ||
+    controller_state->left_stick.y < -0.1f
   ) {
     had_input = 1;
 
