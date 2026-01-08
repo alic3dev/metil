@@ -699,6 +699,69 @@
     time
   );
 
+  unsigned char _index_data_buffer_frame = self->index_data_buffer_frame;
+  unsigned int length_segment_objects = (
+    ((struct metil_scene_controller*) self->metil->scene_controller)->scene.length_renderables /
+    self->metil->system_information.cores_cpu
+  );
+
+  for (
+    unsigned int index_core_cpu = 0;
+    index_core_cpu < self->metil->system_information.cores_cpu;
+    ++index_core_cpu
+  ) {
+    unsigned int index_thread = (
+      self->metil->system_information.cores_cpu *
+      _index_data_buffer_frame +
+      index_core_cpu 
+    );
+
+    if (
+      self->threads[
+        index_thread
+      ] != (void*)0
+    ) {
+      pthread_join(
+        self->threads[
+          index_thread
+        ],
+        (void*)0
+      );
+    }
+
+    unsigned int offset_index_object = (
+      length_segment_objects * index_core_cpu
+    );
+
+    self->threads_data[
+      index_thread
+    ].renderables = (
+      ((struct metil_scene_controller*) self->metil->scene_controller)->scene.renderables +
+      offset_index_object
+    );
+
+    self->threads_data[
+      index_thread
+    ].length_renderables = (
+      index_core_cpu < self->metil->system_information.cores_cpu - 1
+      ? length_segment_objects
+      : (((struct metil_scene_controller*) self->metil->scene_controller)->scene.length_renderables) - (
+        length_segment_objects * index_core_cpu
+      )
+    );
+
+    pthread_create(
+      &self->threads[
+        index_thread
+      ],
+      (void*)0,
+      metil_renderer_thread_poll_object,
+      &self->threads_data[
+        index_thread
+      ]
+    );
+  }
+
   struct metil_renderer_data_frame* data_frame = (
     data_buffer_frame[self->index_data_buffer_frame]
   ).contents;
@@ -771,12 +834,6 @@
     matrix_player_rotation_y
   );
 
-  unsigned char _index_data_buffer_frame = self->index_data_buffer_frame;
-  unsigned int length_segment_objects = (
-    ((struct metil_scene_controller*) self->metil->scene_controller)->scene.length_renderables /
-    self->metil->system_information.cores_cpu
-  );
-
   for (
     unsigned int index_core_cpu = 0;
     index_core_cpu < self->metil->system_information.cores_cpu;
@@ -839,7 +896,7 @@
         index_thread
       ],
       (void*)0,
-      metil_renderer_thread_poll_object,
+      metil_renderer_thread_poll_view_projection_object,
       &self->threads_data[
         index_thread
       ]
@@ -976,15 +1033,14 @@
 
     self->objects_fps_display[
       index_object_fps_display
-    ].poll(
+    ].poll_view_projection(
       self->metil,
       &self->objects_fps_display[
         index_object_fps_display
       ],
       &self->matrix_projection_static,
       matrix_object_projection,
-      matrix_player_projection,
-      &self->metil->rendering_properties.camera
+      matrix_player_projection
     );
   }
 
@@ -1336,11 +1392,7 @@ void metil_renderer_poll_object(
 
       object->poll(
         metil_renderer_thread_poll_object_data->metil,
-        object,
-        metil_renderer_thread_poll_object_data->matrix_static_projection,
-        metil_renderer_thread_poll_object_data->matrix_object_projection,
-        metil_renderer_thread_poll_object_data->matrix_player_projection,
-        metil_renderer_thread_poll_object_data->camera
+        object
       );
       break;
     }
@@ -1354,11 +1406,71 @@ void metil_renderer_poll_object(
 
       metil_model->poll(
         metil_renderer_thread_poll_object_data->metil,
+        metil_model
+      );
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+}
+
+void metil_renderer_poll_view_projection_object(
+  struct metil_renderer_thread_poll_object_data* metil_renderer_thread_poll_object_data,
+  struct metil_renderable* metil_renderable
+) {
+  switch (
+    metil_renderable->type
+  ) {
+    case metil_renderable_type_group: {
+      struct metil_group* metil_group = (
+        metil_renderable->renderable
+      );
+
+      for (
+        unsigned int index_group_renderable = 0;
+        index_group_renderable < metil_group->length;
+        ++index_group_renderable
+      ) {
+        metil_renderer_poll_object(
+          metil_renderer_thread_poll_object_data,
+          metil_group->renderables[
+            index_group_renderable
+          ]
+        );
+      }
+
+      break;
+    }
+    case metil_renderable_type_object: {
+      struct metil_object* object = (
+        metil_renderable->renderable
+      );
+
+      object->poll_view_projection(
+        metil_renderer_thread_poll_object_data->metil,
+        object,
+        metil_renderer_thread_poll_object_data->matrix_static_projection,
+        metil_renderer_thread_poll_object_data->matrix_object_projection,
+        metil_renderer_thread_poll_object_data->matrix_player_projection
+      );
+      break;
+    }
+    case metil_renderable_type_menu: {
+      break;
+    }
+    case metil_renderable_type_model: {
+      struct metil_model* metil_model = (
+        metil_renderable->renderable
+      );
+
+      metil_model->poll_view_projection(
+        metil_renderer_thread_poll_object_data->metil,
         metil_model,
         metil_renderer_thread_poll_object_data->matrix_static_projection,
         metil_renderer_thread_poll_object_data->matrix_object_projection,
-        metil_renderer_thread_poll_object_data->matrix_player_projection,
-        metil_renderer_thread_poll_object_data->camera
+        metil_renderer_thread_poll_object_data->matrix_player_projection
       );
       break;
     }
@@ -1381,6 +1493,33 @@ void* metil_renderer_thread_poll_object(
     ++index_renderable
   ) {
     metil_renderer_poll_object(
+      metil_renderer_thread_poll_object_data,
+      &(
+        metil_renderer_thread_poll_object_data->renderables[
+          index_renderable
+        ]
+      )
+    );
+  }
+
+  return (
+    (void*) 0
+  );
+}
+
+void* metil_renderer_thread_poll_view_projection_object(
+  void* data
+) {
+  struct metil_renderer_thread_poll_object_data* metil_renderer_thread_poll_object_data = (
+    data
+  );
+
+  for (
+    unsigned int index_renderable = 0;
+    index_renderable < metil_renderer_thread_poll_object_data->length_renderables;
+    ++index_renderable
+  ) {
+    metil_renderer_poll_view_projection_object(
       metil_renderer_thread_poll_object_data,
       &(
         metil_renderer_thread_poll_object_data->renderables[
