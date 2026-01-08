@@ -6,7 +6,7 @@
 
 void metil_mesh_box_initialize(
   struct metil_mesh* metil_mesh,
-  struct clic3_vector3_float size
+  struct math_c_vector3_float size
 ) {
   metil_mesh_initialize(
     metil_mesh
@@ -16,7 +16,7 @@ void metil_mesh_box_initialize(
   metil_mesh->size.y = size.y;
   metil_mesh->size.z = size.z;
 
-  struct clic3_vector3_float size_half = {
+  struct math_c_vector3_float size_half = {
     .x = metil_mesh->size.x / 2.0f,
     .y = metil_mesh->size.y / 2.0f,
     .z = metil_mesh->size.z / 2.0f
@@ -33,7 +33,7 @@ void metil_mesh_box_initialize(
 
   metil_mesh->vertices = realloc(
     metil_mesh->vertices,
-    sizeof(struct clic3_vector4_float) *
+    sizeof(struct math_c_vector4_float) *
     metil_mesh->length_vertices
   );
 

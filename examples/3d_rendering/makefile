@@ -30,12 +30,11 @@ directory_cer0=../../../cer0
 directory_cer0_include=${directory_cer0}/include
 
 directory_clic3=../../../clic3
-directory_clic3_include=${directory_clic3}/include
 
 directory_interrupt_handler=../../../interrupt_handler
-directory_interrupt_handler_include=${directory_interrupt_handler}/include
 
 directory_math_c=../../../math_c
+directory_math_c_include=${directory_math_c}/include
 
 directory_metil_include=${directory_metil}/include
 directory_metil_plist=${directory_metil}/plist
@@ -108,7 +107,7 @@ directory_sdk=${shell xcrun --sdk macosx${target_device_version} --show-sdk-path
 frameworks=Metal MetalKit GameController CoreAudio CoreGraphics CoreText
 
 cc=clang
-c_flags_includes=-I${directory_include} -I${directory_cer0_include} -I${directory_clic3_include} -I${directory_interrupt_handler_include} -I${directory_metil_include}
+c_flags_includes=-I${directory_include} -I${directory_cer0_include} -I${directory_math_c_include} -I${directory_metil_include}
 c_flags_platform=-target ${target_platform} -isysroot ${directory_sdk}
 
 c_flags_objc_debug=-O0 -g -v

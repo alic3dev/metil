@@ -8,7 +8,7 @@
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_scenes/metil_scene.h>
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 #include <stdlib.h>
 
@@ -47,7 +47,7 @@ void example_3d_scene_initialize(
 
     metil_mesh_box_initialize(
       &object->mesh,
-      (struct clic3_vector3_float) {
+      (struct math_c_vector3_float) {
         .x = 10.0f,
         .y = 10.0f,
         .z = 10.0f
@@ -128,7 +128,7 @@ void example_3d_scene_initialize(
 
     metil_mesh->vertices = realloc(
       metil_mesh->vertices,
-      sizeof(struct clic3_vector4_float) *
+      sizeof(struct math_c_vector4_float) *
       metil_mesh->length_vertices
     );
 

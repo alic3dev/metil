@@ -209,7 +209,7 @@ void metil_model_buffers_initialize(
   metil_model->buffer_joints = [
     metal_device
     newBufferWithLength: (
-      sizeof(struct clic3_vector3_float) * (
+      sizeof(struct math_c_vector3_float) * (
         metil_model->length_joints +
         1
       ) * 3
@@ -217,9 +217,9 @@ void metil_model_buffers_initialize(
     options: MTLResourceStorageModeShared
   ];
 
-  struct clic3_vector3_float* buffer_joints_contents_joint = &(
+  struct math_c_vector3_float* buffer_joints_contents_joint = &(
     (
-      (struct clic3_vector3_float*)
+      (struct math_c_vector3_float*)
       metil_model->buffer_joints.contents
     )[0]
   );
@@ -230,7 +230,7 @@ void metil_model_buffers_initialize(
 
   buffer_joints_contents_joint = &(
     (
-      (struct clic3_vector3_float*)
+      (struct math_c_vector3_float*)
       metil_model->buffer_joints.contents
     )[1]
   );
@@ -241,7 +241,7 @@ void metil_model_buffers_initialize(
 
   buffer_joints_contents_joint = &(
     (
-      (struct clic3_vector3_float*)
+      (struct math_c_vector3_float*)
       metil_model->buffer_joints.contents
     )[2]
   );
@@ -371,7 +371,7 @@ void metil_model_buffer_joints_poll(
   struct metil* metil,
   struct metil_model* metil_model
 ) {
-  struct clic3_vector3_float* buffer_joints_contents_joint;
+  struct math_c_vector3_float* buffer_joints_contents_joint;
 
   for (
     unsigned char index_joint = 0;
@@ -394,7 +394,7 @@ void metil_model_buffer_joints_poll(
 
     buffer_joints_contents_joint = &(
       (
-        (struct clic3_vector3_float*) metil_model->buffer_joints.contents
+        (struct math_c_vector3_float*) metil_model->buffer_joints.contents
       )[
         id_buffer_joint +
         metil_joint_id_offset_position
@@ -415,7 +415,7 @@ void metil_model_buffer_joints_poll(
 
     buffer_joints_contents_joint = &(
       (
-        (struct clic3_vector3_float*) metil_model->buffer_joints.contents
+        (struct math_c_vector3_float*) metil_model->buffer_joints.contents
       )[
         id_buffer_joint +
         metil_joint_id_offset_rotation
@@ -439,7 +439,7 @@ void metil_model_buffer_joints_poll(
 
     buffer_joints_contents_joint = &(
       (
-        (struct clic3_vector3_float*) metil_model->buffer_joints.contents
+        (struct math_c_vector3_float*) metil_model->buffer_joints.contents
       )[
         id_buffer_joint +
         metil_joint_id_offset_translation

@@ -5,7 +5,7 @@
 #include <metil_rendering/metil_camera/metil_lens.h>
 #include <metil_rendering/metil_camera/metil_near_far.h>
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 #include <simd/simd.h>
 
@@ -22,11 +22,11 @@ struct metil_camera {
   float height_default;
   float height;
 
-  struct clic3_vector2_float field_of_view;
+  struct math_c_vector2_float field_of_view;
 
   struct metil_near_far distance_view;
 
-  struct clic3_vector3_float vector_normalization;
+  struct math_c_vector3_float vector_normalization;
   simd_float4x4 matrix_viewport_projection;
 
   unsigned char initialized;

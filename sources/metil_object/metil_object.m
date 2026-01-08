@@ -6,7 +6,7 @@
 #include <metil_rendering/metil_renderer.h>
 #include <metil_scenes/metil_scene_controller.h>
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 #include <Metal/MTLArgument.h>
 #include <Metal/MTLDevice.h>
@@ -105,7 +105,7 @@ void metil_object_buffers_initialize_with_data_size(
   ].buffer = [metal_device
     newBufferWithBytes: metil_object->mesh.vertices
     length: (
-      sizeof(struct clic3_vector4_float) *
+      sizeof(struct math_c_vector4_float) *
       metil_object->mesh.length_vertices
     )
     options: MTLResourceStorageModeShared

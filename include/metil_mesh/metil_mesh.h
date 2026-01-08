@@ -1,16 +1,16 @@
 #ifndef __metil_mesh_metil_mesh_h
 #define __metil_mesh_metil_mesh_h
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 struct metil_mesh {
   unsigned int length_indices;
   unsigned int length_vertices;
 
   unsigned int* indices;
-  struct clic3_vector4_float* vertices;
+  struct math_c_vector4_float* vertices;
 
-  struct clic3_vector3_float size;
+  struct math_c_vector3_float size;
 
   void* data;
 };
