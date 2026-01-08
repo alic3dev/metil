@@ -4,7 +4,7 @@
 #include <metil_configuration/metil_configuration.h>
 #include <metil_mesh/metil_mesh.h>
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 #include <CoreGraphics/CoreGraphics.h>
 #include <CoreText/CoreText.h>
@@ -12,13 +12,13 @@
 
 struct metil_text_image {
   unsigned char* _Nonnull data;
-  struct clic3_vector2_unsigned_int size;
+  struct math_c_vector2_unsigned_int size;
 };
 
 struct metil_text_render_parameters {
   CTFontRef _Nonnull font;
   unsigned short int letter_spacing;
-  struct clic3_vector2_unsigned_short_int padding;
+  struct math_c_vector2_unsigned_short_int padding;
   float scale;
 };
 

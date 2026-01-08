@@ -29,7 +29,7 @@ void metil_mesh_square_initialize(
 
   metil_mesh->vertices = realloc(
     metil_mesh->vertices,
-    sizeof(struct clic3_vector4_float) *
+    sizeof(struct math_c_vector4_float) *
     metil_mesh->length_vertices
   );
 

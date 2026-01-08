@@ -1,6 +1,6 @@
 #include <metil_mesh/metil_mesh.h>
 
-#include <clic3.h>
+#include <clic3_memory.h>
 
 #include <stdlib.h>
 
@@ -20,7 +20,7 @@ void metil_mesh_initialize(
   );
 
   metil_mesh->vertices = malloc(
-    sizeof(struct clic3_vector4_float) *
+    sizeof(struct math_c_vector4_float) *
     metil_mesh->length_vertices
   );
 
@@ -57,7 +57,7 @@ void metil_mesh_clone(
   );
 
   mesh_clone->vertices = malloc(
-    sizeof(struct clic3_vector4_float) *
+    sizeof(struct math_c_vector4_float) *
     mesh_clone->length_vertices
   );
 
@@ -119,11 +119,11 @@ void metil_mesh_clone(
 void metil_mesh_destroy(
   struct metil_mesh* metil_mesh
 ) {
-  free(
+  clic3_memory_free(
     metil_mesh->indices
   );
   
-  free(
+  clic3_memory_free(
     metil_mesh->vertices
   );
 }

@@ -15,7 +15,7 @@ struct metil_renderer_interface {
   
   struct metil_rendering_properties* _Nonnull rendering_properties;
 
-  struct clic3_vector2_float size;
+  struct math_c_vector2_float size;
 };
 
 #endif

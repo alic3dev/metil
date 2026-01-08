@@ -4,7 +4,7 @@
 #include <metil_configuration/metil_configuration_rendering_properties.h>
 #include <metil_rendering/metil_camera/metil_camera.h>
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 #include <pthread.h>
 
@@ -25,7 +25,7 @@ struct metil_rendering_properties {
   float brightness;
   float brightness_text;
 
-  struct clic3_vector4_float color_clear;
+  struct math_c_vector4_float color_clear;
 
   unsigned char fps_display;
   float fps;

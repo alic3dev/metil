@@ -1,16 +1,16 @@
 #include <metil_collision/metil_collision_uncollide/metil_collision_uncollide_circular.h>
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 #include <math_c_maximum.h>
 #include <math_c_power.h>
 #include <math_c_square_root.h>
 
 void metil_collision_uncollide_circular_xz(
-  struct clic3_vector3_float* position_collidable,
-  struct clic3_vector3_float* size_collidable,
-  struct clic3_vector3_float* position_collider,
-  struct clic3_vector3_float* size_collider
+  struct math_c_vector3_float* position_collidable,
+  struct math_c_vector3_float* size_collidable,
+  struct math_c_vector3_float* position_collider,
+  struct math_c_vector3_float* size_collider
 ) {  
   float distance_collision_minimum = (
     math_c_maximum_float(
@@ -33,11 +33,11 @@ void metil_collision_uncollide_circular_xz(
 }
 
 void metil_collision_uncollide_circular_distance_xz(
-  struct clic3_vector3_float* position_collidable,
-  struct clic3_vector3_float* position_collider,
+  struct math_c_vector3_float* position_collidable,
+  struct math_c_vector3_float* position_collider,
   float distance_collision_minimum
 ) {
-  struct clic3_vector2_float distances_collidable_collider = {
+  struct math_c_vector2_float distances_collidable_collider = {
     .x = (
       position_collidable->x -
       position_collider->x
@@ -67,7 +67,7 @@ void metil_collision_uncollide_circular_distance_xz(
     return;
   }
 
-  struct clic3_vector2_float distance_percentages_collidable_collider;
+  struct math_c_vector2_float distance_percentages_collidable_collider;
 
   if (
     distance_total_collidable_collider == 0.0f

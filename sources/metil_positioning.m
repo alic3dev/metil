@@ -4,7 +4,7 @@
 #include <metil_rendering/metil_camera/metil_camera_mode.h>
 #include <metil_scenes/metil_scene_controller.h>
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 #include <math.h>
 #include <simd/simd.h>
@@ -15,9 +15,9 @@ void metil_positioning_view_model_matrix_projection_set(
   matrix_float3x4* matrix_projection_static,
   matrix_float4x4* matrix_object_projection,
   matrix_float4x4* matrix_player_projection,
-  struct clic3_vector3_float* position,
-  struct clic3_vector3_float* rotation,
-  struct clic3_vector3_float* position_player,
+  struct math_c_vector3_float* position,
+  struct math_c_vector3_float* rotation,
+  struct math_c_vector3_float* position_player,
   struct metil_camera* metil_camera
 ) {
   metil_positioning_view_model_matrix_projection_with_offsets_set(
@@ -41,11 +41,11 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
   matrix_float3x4* matrix_projection_static,
   matrix_float4x4* matrix_object_projection,
   matrix_float4x4* matrix_player_projection,
-  struct clic3_vector3_float* position,
-  struct clic3_vector3_float* rotation,
-  struct clic3_vector3_float* position_player,
-  struct clic3_vector3_float* position_offset,
-  struct clic3_vector3_float* rotation_offset,
+  struct math_c_vector3_float* position,
+  struct math_c_vector3_float* rotation,
+  struct math_c_vector3_float* position_player,
+  struct math_c_vector3_float* position_offset,
+  struct math_c_vector3_float* rotation_offset,
   struct metil_camera* metil_camera
 ) {
   if (
@@ -121,7 +121,7 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
       }};
     }
   } else {
-    struct clic3_vector3_float position_translated;
+    struct math_c_vector3_float position_translated;
 
     if (
       position_offset != (void*) 0

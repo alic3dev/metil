@@ -69,7 +69,7 @@ void example_face_scene_initialize(
 
   metil_mesh->vertices = realloc(
     metil_mesh->vertices,
-    sizeof(struct clic3_vector4_float) *
+    sizeof(struct math_c_vector4_float) *
     metil_mesh->length_vertices
   );
 
@@ -552,7 +552,7 @@ void example_face_scene_poll(
     ].buffer.contents
   );
 
-  struct clic3_vector4_float* vertices = (
+  struct math_c_vector4_float* vertices = (
     object->buffers_vertex[
       metil_object_buffer_default_index_vertices
     ].buffer.contents
@@ -562,7 +562,7 @@ void example_face_scene_poll(
 
   float distance_closest = 10000.0f;
 
-  struct clic3_vector2_float position_relative = {
+  struct math_c_vector2_float position_relative = {
     .x = (
       (
         metil->input.cursor.position_window.x /
@@ -589,7 +589,8 @@ void example_face_scene_poll(
     index_vertex < object->mesh.length_vertices;
     ++index_vertex
   ) {
-    struct clic3_vector4_float* vertex = &(
+    printf("%i: %f\n", index_vertex, data_object->position_screen[index_vertex].x);
+    struct math_c_vector4_float* vertex = &(
       vertices[
         index_vertex
       ]
@@ -649,7 +650,7 @@ void example_face_scene_poll(
   if (
     data_object->vertex_held != 0
   ) {
-    struct clic3_vector4_float* vertex = &(
+    struct math_c_vector4_float* vertex = &(
       vertices[
         data_object->vertex_held -
         1

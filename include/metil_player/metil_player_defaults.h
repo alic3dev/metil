@@ -16,7 +16,7 @@ struct metil_player_defaults {
   float speed_rotation;
   float deadzone_stick;
 
-  struct clic3_vector3_float size;
+  struct math_c_vector3_float size;
 };
 
 void metil_player_defaults_initialize(

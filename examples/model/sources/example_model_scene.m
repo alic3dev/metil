@@ -74,7 +74,7 @@ void example_model_scene_initialize(
 
     metil_mesh_box_initialize(
       metil_mesh,
-      (struct clic3_vector3_float) {
+      (struct math_c_vector3_float) {
         .x = 5.0f,
         .y = 5.0f,
         .z = 5.0f
@@ -144,7 +144,7 @@ void example_model_scene_initialize(
 
   metil_mesh->vertices = realloc(
     metil_mesh->vertices,
-    sizeof(struct clic3_vector4_float) *
+    sizeof(struct math_c_vector4_float) *
     metil_mesh->length_vertices
   );
 
@@ -347,7 +347,7 @@ void example_model_scene_initialize(
 
   metil_mesh_box_initialize(
     metil_mesh,
-    (struct clic3_vector3_float) {
+    (struct math_c_vector3_float) {
       .x = 2.5f,
       .y = 2.5f,
       .z = 2.5f

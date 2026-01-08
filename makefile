@@ -237,7 +237,7 @@ metal_ar=xcrun -sdk macosx metal-ar
 metallib=xcrun -sdk macosx metallib
 metal_flags_common=-target ${target_platform_metal} -std=${target_metal_standard}
 
-metal_flags=${metal_flags_common} -I${directory_include} -I${directory_clic3_include} -isysroot ${directory_sdk}
+metal_flags=${metal_flags_common} -I${directory_include} -I${directory_math_c_include} -isysroot ${directory_sdk}
 
 ifneq (${disable_metal_fast_options}, 1)
 	metal_flags:=${metal_flags} -fmetal-math-mode\=fast -fmetal-math-fp32-functions\=fast

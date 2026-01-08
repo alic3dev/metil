@@ -3,7 +3,7 @@
 
 #include <metil_rendering/metil_camera/metil_camera.h>
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 #include <simd/simd.h>
 
@@ -20,9 +20,9 @@ void metil_positioning_view_model_matrix_projection_set(
   matrix_float3x4* _Nonnull,
   matrix_float4x4* _Nonnull,
   matrix_float4x4* _Nonnull,
-  struct clic3_vector3_float* _Nonnull,
-  struct clic3_vector3_float* _Nonnull,
-  struct clic3_vector3_float* _Nonnull,
+  struct math_c_vector3_float* _Nonnull,
+  struct math_c_vector3_float* _Nonnull,
+  struct math_c_vector3_float* _Nonnull,
   struct metil_camera* _Nonnull
 );
 
@@ -32,11 +32,11 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
   matrix_float3x4* _Nonnull,
   matrix_float4x4* _Nonnull,
   matrix_float4x4* _Nonnull,
-  struct clic3_vector3_float* _Nonnull,
-  struct clic3_vector3_float* _Nonnull,
-  struct clic3_vector3_float* _Nonnull,
-  struct clic3_vector3_float* _Nullable,
-  struct clic3_vector3_float* _Nullable,
+  struct math_c_vector3_float* _Nonnull,
+  struct math_c_vector3_float* _Nonnull,
+  struct math_c_vector3_float* _Nonnull,
+  struct math_c_vector3_float* _Nullable,
+  struct math_c_vector3_float* _Nullable,
   struct metil_camera* _Nonnull
 );
 
