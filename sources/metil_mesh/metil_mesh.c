@@ -20,7 +20,7 @@ void metil_mesh_initialize(
   );
 
   metil_mesh->vertices = malloc(
-    sizeof(struct clic3_vector4_float) *
+    sizeof(struct math_c_vector4_float) *
     metil_mesh->length_vertices
   );
 
@@ -57,7 +57,7 @@ void metil_mesh_clone(
   );
 
   mesh_clone->vertices = malloc(
-    sizeof(struct clic3_vector4_float) *
+    sizeof(struct math_c_vector4_float) *
     mesh_clone->length_vertices
   );
 

@@ -16,7 +16,7 @@
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_scenes/metil_scene.h>
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 #include <stdlib.h>
 
@@ -59,11 +59,11 @@ void example_fog_scene_initialize(
       case 0: {
         metil_mesh_dollop_initialize(
           &object->mesh,
-          (struct clic3_vector3_float) {
+          (struct math_c_vector3_float) {
             .x = 10.0f,
             .y = 10.0f,
             .z = 10.0f
-          }, (struct clic3_vector2_unsigned_short_int) {
+          }, (struct math_c_vector2_unsigned_short_int) {
             .x = 10,
             .y = 10
           }
@@ -73,11 +73,11 @@ void example_fog_scene_initialize(
       case 1: {
         metil_mesh_gem_initialize(
           &object->mesh,
-          (struct clic3_vector3_float) {
+          (struct math_c_vector3_float) {
             .x = 10.0f,
             .y = 10.0f,
             .z = 10.0f
-          }, (struct clic3_vector2_unsigned_short_int) {
+          }, (struct math_c_vector2_unsigned_short_int) {
             .x = 10,
             .y = 10
           }
@@ -87,11 +87,11 @@ void example_fog_scene_initialize(
       case 2: {
         metil_mesh_mushroom_initialize(
           &object->mesh,
-          (struct clic3_vector3_float) {
+          (struct math_c_vector3_float) {
             .x = 10.0f,
             .y = 10.0f,
             .z = 10.0f
-          }, (struct clic3_vector2_unsigned_short_int) {
+          }, (struct math_c_vector2_unsigned_short_int) {
             .x = 10,
             .y = 10
           }
@@ -101,11 +101,11 @@ void example_fog_scene_initialize(
       case 3: {
         metil_mesh_shuttle_initialize(
           &object->mesh,
-          (struct clic3_vector3_float) {
+          (struct math_c_vector3_float) {
             .x = 10.0f,
             .y = 10.0f,
             .z = 10.0f
-          }, (struct clic3_vector2_unsigned_short_int) {
+          }, (struct math_c_vector2_unsigned_short_int) {
             .x = 10,
             .y = 10
           }
@@ -115,11 +115,11 @@ void example_fog_scene_initialize(
       case 4: {
         metil_mesh_tube_initialize(
           &object->mesh,
-          (struct clic3_vector3_float) {
+          (struct math_c_vector3_float) {
             .x = 10.0f,
             .y = 10.0f,
             .z = 10.0f
-          }, (struct clic3_vector2_unsigned_short_int) {
+          }, (struct math_c_vector2_unsigned_short_int) {
             .x = 10,
             .y = 10
           }
@@ -130,7 +130,7 @@ void example_fog_scene_initialize(
         metil_mesh_ball_initialize(
           &object->mesh,
           2.0f * ((index_renderable * 3) % 10),
-          (struct clic3_vector2_unsigned_short_int) {
+          (struct math_c_vector2_unsigned_short_int) {
             .x = 10 + (
               index_renderable % 2
             ),
@@ -212,7 +212,7 @@ void example_fog_scene_initialize(
   metil_mesh_ball_initialize(
     &object->mesh,
     fog_distance_maximum,
-    (struct clic3_vector2_unsigned_short_int) {
+    (struct math_c_vector2_unsigned_short_int) {
       .x = 100,
       .y = 100
     }

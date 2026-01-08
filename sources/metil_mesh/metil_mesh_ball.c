@@ -2,7 +2,7 @@
 
 #include <metil_mesh/metil_mesh.h>
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 #include <math.h>
 #include <stdio.h>
@@ -11,7 +11,7 @@
 void metil_mesh_ball_initialize(
   struct metil_mesh* metil_mesh,
   float size,
-  struct clic3_vector2_unsigned_short_int segments
+  struct math_c_vector2_unsigned_short_int segments
 ) {
   metil_mesh_initialize(
     metil_mesh
@@ -52,7 +52,7 @@ void metil_mesh_ball_initialize(
 
   metil_mesh->vertices = realloc(
     metil_mesh->vertices,
-    sizeof(struct clic3_vector4_float) *
+    sizeof(struct math_c_vector4_float) *
     metil_mesh->length_vertices
   );
 
@@ -181,7 +181,7 @@ void metil_mesh_ball_initialize(
       )
     );
 
-    struct clic3_vector2_float angle = {
+    struct math_c_vector2_float angle = {
       .x = (
         0.0f
       ),

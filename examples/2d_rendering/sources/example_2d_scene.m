@@ -9,7 +9,7 @@
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_scenes/metil_scene.h>
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 #include <stdlib.h>
 
@@ -119,7 +119,7 @@ void example_2d_scene_poll(
       metil_object_buffer_default_index_data
     ].buffer.contents;
 
-    struct clic3_vector3_unsigned_int time_offset = {
+    struct math_c_vector3_unsigned_int time_offset = {
       .x = scene->time + (index_renderable + 2) * 20,
       .y = scene->time + (index_renderable + 3) * 30,
       .z = scene->time + (index_renderable + 1) * 10

@@ -1,7 +1,7 @@
 #ifndef __metil_input_metil_cursor_h
 #define __metil_input_metil_cursor_h
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 struct metil_cursor {
   unsigned char clicked;
@@ -10,13 +10,13 @@ struct metil_cursor {
   unsigned char lockable;
   unsigned char locked;
 
-  struct clic3_vector2_float delta;
-  struct clic3_vector2_float position_screen;
-  struct clic3_vector2_float position_window;
+  struct math_c_vector2_float delta;
+  struct math_c_vector2_float position_screen;
+  struct math_c_vector2_float position_window;
 
-  struct clic3_vector2_float delta_down;
-  struct clic3_vector2_float position_down_screen;
-  struct clic3_vector2_float position_down_window;
+  struct math_c_vector2_float delta_down;
+  struct math_c_vector2_float position_down_screen;
+  struct math_c_vector2_float position_down_window;
 };
 
 void metil_cursor_initialize(

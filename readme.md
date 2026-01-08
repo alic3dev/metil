@@ -530,7 +530,7 @@ struct data_vertex {
       metil_renderer_vertex_index_parameter_vertex_joint_map
     )
   ]],
-  constant struct clic3_vector3_float* joints [[
+  constant struct math_c_vector3_float* joints [[
     buffer(
       metil_renderer_vertex_index_parameter_joints
     )

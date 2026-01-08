@@ -7,7 +7,7 @@
 #include <metil_positioning.h>
 #include <metil_rendering/metil_camera/metil_camera.h>
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 #include <Metal/MTLBuffer.h>
 #include <Metal/MTLDevice.h>
@@ -45,8 +45,8 @@ struct metil_model {
   _Nonnull id<MTLTexture>* _Nonnull textures;
   unsigned char length_textures;
 
-  struct clic3_vector3_float position;
-  struct clic3_vector3_float rotation;
+  struct math_c_vector3_float position;
+  struct math_c_vector3_float rotation;
 
   unsigned char visible;
 

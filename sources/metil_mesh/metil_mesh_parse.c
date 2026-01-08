@@ -3,10 +3,10 @@
 #include <metil_mesh/metil_mesh.h>
 #include <metil_status.h>
 
-// struct clic3_vector3_float size;
+// struct math_c_vector3_float size;
 
 // unsigned int* indices;
-// struct clic3_vector4_float* vertices;
+// struct math_c_vector4_float* vertices;
 
 // void* data;
 

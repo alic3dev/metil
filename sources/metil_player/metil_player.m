@@ -1,6 +1,6 @@
 #include <metil_player/metil_player.h>
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 #include <metil.h>
 #include <metil_input/metil_input.h>
@@ -122,18 +122,18 @@ void metil_player_poll_input(
     );
   }
 
-  struct clic3_vector3_float movement = {
+  struct math_c_vector3_float movement = {
     .x = 0.0f,
     .y = 0.0f,
     .z = 0.0f
   };
 
-  struct clic3_vector2_float ratio_movement = {
+  struct math_c_vector2_float ratio_movement = {
     .x = 0.0f,
     .y = 0.0f
   };
 
-  struct clic3_vector2_float ratio_movement_strafe = {
+  struct math_c_vector2_float ratio_movement_strafe = {
     .x = 0.0f,
     .y = 0.0f
   };
@@ -304,7 +304,7 @@ void metil_player_poll_input(
       (metil->input.controller_state.left_stick.x * ratio_movement_strafe.y)
     );
   } else {
-    struct clic3_vector2_float direction_arrows = {
+    struct math_c_vector2_float direction_arrows = {
       .x = (
         (
           metil->input.keydown_map[
