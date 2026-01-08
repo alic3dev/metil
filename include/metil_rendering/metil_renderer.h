@@ -130,7 +130,16 @@ void metil_renderer_poll_object(
   struct metil_renderable* _Nonnull
 );
 
+void metil_renderer_poll_view_projection_object(
+  struct metil_renderer_thread_poll_object_data* _Nonnull,
+  struct metil_renderable* _Nonnull
+);
+
 void* _Nullable metil_renderer_thread_poll_object(
+  void* _Nonnull
+);
+
+void* _Nullable metil_renderer_thread_poll_view_projection_object(
   void* _Nonnull
 );
 
