@@ -4,12 +4,7 @@
 #include <metil_player/metil_player.h>
 
 #include <math_c_vector.h>
-#include <math_c_vector_scale.h>
 #include <math_c_vector_uncollide.h>
-
-#include <math_c_maximum.h>
-#include <math_c_power.h>
-#include <math_c_square_root.h>
 
 unsigned char metil_collision_object_uncollide_circular_xz(
   struct math_c_vector3_float* position_collidable,
