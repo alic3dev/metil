@@ -2,15 +2,15 @@
 
 #include <metil_mesh/metil_mesh.h>
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 #include <math.h>
 #include <stdlib.h>
 
 void metil_mesh_shuttle_initialize(
   struct metil_mesh* metil_mesh,
-  struct clic3_vector3_float size,
-  struct clic3_vector2_unsigned_short_int segments
+  struct math_c_vector3_float size,
+  struct math_c_vector2_unsigned_short_int segments
 ) {
   metil_mesh_initialize(
     metil_mesh
@@ -20,7 +20,7 @@ void metil_mesh_shuttle_initialize(
   metil_mesh->size.y = size.y;
   metil_mesh->size.z = size.z;
 
-  struct clic3_vector3_float size_half = {
+  struct math_c_vector3_float size_half = {
     .x = (
       size.x /
       2.0f
@@ -61,7 +61,7 @@ void metil_mesh_shuttle_initialize(
 
   metil_mesh->vertices = realloc(
     metil_mesh->vertices,
-    sizeof(struct clic3_vector4_float) *
+    sizeof(struct math_c_vector4_float) *
     metil_mesh->length_vertices
   );
 

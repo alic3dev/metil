@@ -3,7 +3,7 @@
 
 #include <metil_input/metil_controller.h>
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 struct metil_controller_state {
   float l1;
@@ -17,8 +17,8 @@ struct metil_controller_state {
   float create;
   float options;
 
-  struct clic3_vector2_float left_stick;
-  struct clic3_vector2_float right_stick;
+  struct math_c_vector2_float left_stick;
+  struct math_c_vector2_float right_stick;
 
   float directional_down;
   float directional_right;

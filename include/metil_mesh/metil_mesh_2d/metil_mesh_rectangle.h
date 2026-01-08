@@ -3,11 +3,11 @@
 
 #include <metil_mesh/metil_mesh.h>
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 void metil_mesh_rectangle_initialize(
   struct metil_mesh*,
-  struct clic3_vector2_float
+  struct math_c_vector2_float
 );
 
 #endif

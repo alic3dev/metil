@@ -30,8 +30,40 @@ struct data_vertex {
 
   data_vertex.position = (
     data_object->view_model_matrix_projection *
-    vertices[id_vertex]
+    vertices[
+      id_vertex
+    ]
   );
+
+/*
+  float4 normalized = metal::normalize(
+    data_vertex.position
+  );
+
+  data_object->position_screen[
+    id_vertex
+  ].x = (
+    normalized.x
+  );
+
+  data_object->position_screen[
+    id_vertex
+  ].y = (
+    data_vertex.position.y
+  );
+
+  data_object->position_screen[
+    id_vertex
+  ].z = (
+    data_vertex.position.z
+  );
+
+  data_object->position_screen[
+    id_vertex
+  ].w = (
+    data_vertex.position.w
+  );
+*/
 
   float brightness = 1.0f - ((
     vertices[id_vertex].z +

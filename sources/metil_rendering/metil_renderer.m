@@ -26,7 +26,7 @@
 #include <metil_utilities/metil_time.h>
 
 #include <clic3_char_arrays.h>
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 #include <Metal/MTLBuffer.h>
 #include <Metal/MTLCommandBuffer.h>

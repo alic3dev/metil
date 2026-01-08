@@ -2,7 +2,7 @@
 
 #include <metil_text/metil_text.h>
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 #include <Metal/MTLBuffer.h>
 #include <Metal/MTLDevice.h>
@@ -88,7 +88,7 @@ void metil_text_characters_initialize(
       newBufferWithBytes: metil_text_characters_default->meshes[index_character].vertices
       length: (
         metil_text_characters_default->meshes[index_character].length_vertices *
-        sizeof(struct clic3_vector4_float)
+        sizeof(struct math_c_vector4_float)
       )
       options: MTLResourceStorageModeShared
     ];

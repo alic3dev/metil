@@ -1,7 +1,7 @@
 #ifndef __metil_player_metil_player_h
 #define __metil_player_metil_player_h
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 #include <metil.h>
 #include <metil_player/metil_player_defaults.h>
@@ -26,10 +26,10 @@ typedef void (*metil_player_destroy_function)(
 );
 
 struct metil_player {
-  struct clic3_vector3_float position;
-  struct clic3_vector3_float rotation;
-  struct clic3_vector3_float size;
-  struct clic3_vector3_float velocity;
+  struct math_c_vector3_float position;
+  struct math_c_vector3_float rotation;
+  struct math_c_vector3_float size;
+  struct math_c_vector3_float velocity;
 
   float position_y_floor;
 

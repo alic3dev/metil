@@ -1,13 +1,13 @@
 #ifndef __metil_rendering_metil_renderer_data_frame_h
 #define __metil_rendering_metil_renderer_data_frame_h
 
-#include <clic3_vector.h>
+#include <math_c_vector.h>
 
 struct metil_renderer_data_frame {
   unsigned int frame;
 
-  struct clic3_vector3_float rotation_camera;
-  struct clic3_vector3_float position_player;
+  struct math_c_vector3_float rotation_camera;
+  struct math_c_vector3_float position_player;
 
   float brightness;
   float brightness_text;
