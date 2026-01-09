@@ -3,11 +3,14 @@
 
 #include <metil_configuration/metil_configuration_rendering_properties_defaults.h>
 
+#include <math_c_vector.h>
+
 struct metil_configuration_rendering_properties {
   float brightness;
   float brightness_text;
 
   unsigned char fps_display;
+  struct math_c_vector4_float color_fps_display;
 
   struct metil_configuration_rendering_properties_defaults defaults;
 };

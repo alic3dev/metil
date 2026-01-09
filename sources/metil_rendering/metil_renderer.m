@@ -894,7 +894,9 @@
     self->metil->rendering_properties.fps
   );
 
-  float position_x = 0.0f;
+  float position_x = (
+    0.0f
+  );
 
   for (
     signed char index_object_fps_display = metil_renderer_length_objects_fps_display - 1;
@@ -910,18 +912,31 @@
     self->objects_fps_display[
       index_object_fps_display
     ].mesh = self->metil->text_characters_default.meshes[
-      char_array_fps[index_object_fps_display]
+      char_array_fps[
+        index_object_fps_display
+      ]
     ];
 
-    position_x = position_x + self->objects_fps_display[
-      index_object_fps_display
-    ].mesh.size.x / self->metil->rendering_properties.camera.ratio_aspect_view;
+    position_x = (
+      position_x +
+      self->objects_fps_display[
+        index_object_fps_display
+      ].mesh.size.x /
+      self->metil->rendering_properties.camera.ratio_aspect_view
+    );
 
     self->objects_fps_display[
       index_object_fps_display
-    ].position.x = 1.0f - position_x;
+    ].position.x = (
+      1.0f -
+      position_x
+    );
 
-    if (char_array_fps[index_object_fps_display] == '.') {
+    if (
+      char_array_fps[
+        index_object_fps_display
+      ] == '.'
+    ) {
       self->objects_fps_display[
         index_object_fps_display
       ].position.x = self->objects_fps_display[
@@ -956,18 +971,6 @@
 
     self->objects_fps_display[
       index_object_fps_display
-    ].buffers_vertex[
-      metil_object_buffer_default_index_vertices
-    ].offset = 0;
-
-    self->objects_fps_display[
-      index_object_fps_display
-    ].buffers_vertex[
-      metil_object_buffer_default_index_vertices
-    ].index = metil_object_buffer_default_index_data;
-
-    self->objects_fps_display[
-      index_object_fps_display
     ].textures[0] = (
       self->metil->text_characters_default.textures[
         char_array_fps[index_object_fps_display]
@@ -988,7 +991,9 @@
     );
   }
 
-  free(char_array_fps);
+  free(
+    char_array_fps
+  );
 }
 
 - (void) render_renderable:
@@ -1108,6 +1113,30 @@
     index_object_fps_display < metil_renderer_length_objects_fps_display;
     ++index_object_fps_display
   ) {
+    struct metil_renderer_data_object* metil_renderer_data_object = (
+      self->objects_fps_display[
+        index_object_fps_display
+      ].buffers_vertex[
+        metil_object_buffer_default_index_data
+      ].buffer.contents
+    );
+
+    metil_renderer_data_object->color.x = (
+      self->metil->rendering_properties.color_fps_display.x
+    );
+
+    metil_renderer_data_object->color.y = (
+      self->metil->rendering_properties.color_fps_display.y
+    );
+
+    metil_renderer_data_object->color.z = (
+      self->metil->rendering_properties.color_fps_display.z
+    );
+
+    metil_renderer_data_object->color.w = (
+      self->metil->rendering_properties.color_fps_display.w
+    );
+
     [self
       render_object: &self->objects_fps_display[
         index_object_fps_display
