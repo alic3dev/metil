@@ -8,7 +8,8 @@
 void metil_mesh_tube_initialize(
   struct metil_mesh*,
   struct math_c_vector3_float,
-  struct math_c_vector2_unsigned_short_int
+  struct math_c_vector2_unsigned_short_int,
+  unsigned char
 );
 
 #endif

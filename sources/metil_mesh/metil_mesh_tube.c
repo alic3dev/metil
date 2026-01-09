@@ -10,7 +10,8 @@
 void metil_mesh_tube_initialize(
   struct metil_mesh* metil_mesh,
   struct math_c_vector3_float size,
-  struct math_c_vector2_unsigned_short_int segments
+  struct math_c_vector2_unsigned_short_int segments,
+  unsigned char direction
 ) {
   metil_mesh_initialize(
     metil_mesh
@@ -114,55 +115,53 @@ void metil_mesh_tube_initialize(
     );
   }
 
-  unsigned char direction;
-
   float increment_y;
 
-  if (
-    metil_mesh->size.x > metil_mesh->size.y &&
-    metil_mesh->size.x >= metil_mesh->size.z
+  switch (
+    direction
   ) {
-    increment_y = (
-      size.x / (
-        segments.y -
-        1
-      )
-    );
+    case 0: {
+      increment_y = (
+        size.y / (
+          segments.y -
+          1
+        )
+      );
 
-    metil_mesh->vertices[0].x = -size_half.x;
-    metil_mesh->vertices[0].y = 0.0f;
-    metil_mesh->vertices[0].z = 0.0f;
+      metil_mesh->vertices[0].x = 0.0f;
+      metil_mesh->vertices[0].y = -size_half.y;
+      metil_mesh->vertices[0].z = 0.0f;
 
-    direction = 1;
-  } else if (
-    metil_mesh->size.z > metil_mesh->size.y &&
-    metil_mesh->size.z >= metil_mesh->size.x
-  ) {
-    increment_y = (
-      size.z / (
-        segments.y -
-        1
-      )
-    );
+      break;
+    }
+    case 1: {
+      increment_y = (
+        size.x / (
+          segments.y -
+          1
+        )
+      );
 
-    metil_mesh->vertices[0].x = 0.0f;
-    metil_mesh->vertices[0].y = 0.0f;
-    metil_mesh->vertices[0].z = -size_half.z;
+      metil_mesh->vertices[0].x = -size_half.x;
+      metil_mesh->vertices[0].y = 0.0f;
+      metil_mesh->vertices[0].z = 0.0f;
 
-    direction = 2;
-  } else {
-    increment_y = (
-      size.y / (
-        segments.y -
-        1
-      )
-    );
+      break;
+    }
+    case 2: {
+      increment_y = (
+        size.z / (
+          segments.y -
+          1
+        )
+      );
 
-    metil_mesh->vertices[0].x = 0.0f;
-    metil_mesh->vertices[0].y = -size_half.y;
-    metil_mesh->vertices[0].z = 0.0f;
-    
-    direction = 0;
+      metil_mesh->vertices[0].x = 0.0f;
+      metil_mesh->vertices[0].y = 0.0f;
+      metil_mesh->vertices[0].z = -size_half.z;
+
+      break;
+    }
   }
 
   metil_mesh->vertices[0].w = 1.0f;
