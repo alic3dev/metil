@@ -8,6 +8,10 @@ rendering_framework.utilizing(`apple::metal`)
 - [`metil`:version->{`1.0.0`}](https://github.com/alic3dev/metil/releases/tag/release_version-%3E%7B1.0.0%7D%3B)::[introduction_of_ios_support]
 - [`metil`:version->{`0.0.0`}](https://github.com/alic3dev/metil/releases/tag/release_version-%3E%7B0.0.0%7D%3B)::[macos_only]
 
+### versioning
+
+the current version being worked on is version `2.0.0`
+
 ### development
 
 - [`core`](https://github.com/alic3dev/metil/tree/core)::[prone_to_changes:consider->{[`core`](https://github.com/alic3dev/metil/tree/core)}.as_a_development_or_nightly_build]
