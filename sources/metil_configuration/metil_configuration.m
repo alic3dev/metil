@@ -162,11 +162,15 @@ unsigned char metil_configuration_load(
 
         int index_parameter = clic3_char_arrays_within(
           buffer_parameter,
-          4,
+          8,
           "audio:volume",
           "rendering_properties:brightness",
           "rendering_properties:brightness_text",
-          "rendering_properties:fps_display"
+          "rendering_properties:fps_display",
+          "rendering_properties:color_fps_display_r",
+          "rendering_properties:color_fps_display_g",
+          "rendering_properties:color_fps_display_b",
+          "rendering_properties:color_fps_display_a"
         );
 
         if (
@@ -257,6 +261,86 @@ unsigned char metil_configuration_load(
               fps_display != -1
             ) {
               metil_configuration->rendering_properties.fps_display = fps_display;
+            } else {
+              status_configuration_load = 1;
+            }
+
+            break;
+          }
+          case 4: {
+            float color_fps_display_r = metil_configuration_value_float_parse(
+              metil_configuration,
+              buffer_parameter,
+              buffer_value
+            );
+
+            if (
+              color_fps_display_r >= 0.0f &&
+              color_fps_display_r <= 1.0f
+            ) {
+              metil_configuration->rendering_properties.color_fps_display.x = (
+                color_fps_display_r
+              );
+            } else {
+              status_configuration_load = 1;
+            }
+            
+            break;
+          }
+          case 5: {
+            float color_fps_display_g = metil_configuration_value_float_parse(
+              metil_configuration,
+              buffer_parameter,
+              buffer_value
+            );
+
+            if (
+              color_fps_display_g >= 0.0f &&
+              color_fps_display_g <= 1.0f
+            ) {
+              metil_configuration->rendering_properties.color_fps_display.y = (
+                color_fps_display_g
+              );
+            } else {
+              status_configuration_load = 1;
+            }
+
+            break;
+          }
+          case 6: {
+            float color_fps_display_b = metil_configuration_value_float_parse(
+              metil_configuration,
+              buffer_parameter,
+              buffer_value
+            );
+
+            if (
+              color_fps_display_b >= 0.0f &&
+              color_fps_display_b <= 1.0f
+            ) {
+              metil_configuration->rendering_properties.color_fps_display.z = (
+                color_fps_display_b
+              );
+            } else {
+              status_configuration_load = 1;
+            }
+
+            break;
+          }
+          case 7: {
+            float color_fps_display_a = metil_configuration_value_float_parse(
+              metil_configuration,
+              buffer_parameter,
+              buffer_value
+            );
+
+            if (
+              color_fps_display_a >= 0.0f &&
+              color_fps_display_a <= 1.0f
+            ) {
+              metil_configuration->rendering_properties.color_fps_display.w = (
+                color_fps_display_a
+              );
             } else {
               status_configuration_load = 1;
             }

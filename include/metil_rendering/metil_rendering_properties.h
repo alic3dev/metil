@@ -28,6 +28,7 @@ struct metil_rendering_properties {
   struct math_c_vector4_float color_clear;
 
   unsigned char fps_display;
+  struct math_c_vector4_float color_fps_display;
   float fps;
 
   unsigned char mode;

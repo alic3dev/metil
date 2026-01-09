@@ -7,7 +7,7 @@
 struct data_vertex {
   float4 position [[position]];
   float2 position_texture;
-  float3 color;
+  float4 color;
 };
 
 [[vertex]] struct data_vertex metil_fps_display_vertex(
@@ -47,10 +47,11 @@ struct data_vertex {
     vertices[id_vertex]
   );
 
-  data_vertex.color = float3(
-    1.0f,
-    1.0f,
-    1.0f
+  data_vertex.color = float4(
+    data_object->color.x,
+    data_object->color.y,
+    data_object->color.z,
+    data_object->color.w
   );
 
   return data_vertex;
@@ -76,6 +77,6 @@ struct data_vertex {
     color_texture[0] * data_vertex.color.r,
     color_texture[1] * data_vertex.color.g,
     color_texture[2] * data_vertex.color.b,
-    color_texture[3]
+    color_texture[3] * data_vertex.color.a
   );
 }

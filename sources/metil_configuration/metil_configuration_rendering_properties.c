@@ -22,4 +22,20 @@ void metil_configuration_rendering_properties_initialize(
   metil_configuration_rendering_properties->fps_display = (
     metil_configuration_rendering_properties->defaults.fps_display
   );
+
+  metil_configuration_rendering_properties->color_fps_display.x = (
+    metil_configuration_rendering_properties->defaults.color_fps_display.x
+  );
+
+  metil_configuration_rendering_properties->color_fps_display.y = (
+    metil_configuration_rendering_properties->defaults.color_fps_display.y
+  );
+
+  metil_configuration_rendering_properties->color_fps_display.z = (
+    metil_configuration_rendering_properties->defaults.color_fps_display.z
+  );
+
+  metil_configuration_rendering_properties->color_fps_display.w = (
+    metil_configuration_rendering_properties->defaults.color_fps_display.w
+  );
 }
