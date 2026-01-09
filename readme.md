@@ -229,6 +229,45 @@ also is a place to set the volume
 
 - `metil->configuration`:the_configuration_structure
 
+#### key_value_pairs
+
+by default these are the configuration keys and values that `metil` parses for
+
+- `audio:volume`: floating point value greater than or equal to `0.0f`
+- `rendering_properties:brightness`: floating point value greater than or equal to `0.0f`
+- `rendering_properties:brightness_text`: floating point value greater than or equal to `0.0f`
+- `rendering_properties:fps_display`: integer value (`0`: disable fps display, `1`: enable fps display)
+- `rendering_properties:color_fps_display_r`: floating point value greater than or equal to `0.0f` and less than or equal to `1.0f`
+- `rendering_properties:color_fps_display_g`: floating point value greater than or equal to `0.0f` and less than or equal to `1.0f`
+- `rendering_properties:color_fps_display_b`: floating point value greater than or equal to `0.0f` and less than or equal to `1.0f`
+- `rendering_properties:color_fps_display_a`: floating point value greater than or equal to `0.0f` and less than or equal to `1.0f`
+
+#### key_value_pair_format
+
+each configuration key_value pair must be on it's own line
+
+the start of the line must be the configuration name (ex. `rendering_properties:brightness`) followed by `->` with the `value` contained within `{` `value` `};`
+
+for example: `configuration_key_name->{configuration_value};`
+
+##### key_value_pair_types
+
+- `float`ing point types can be decimal representations or not, if they have a decimal they can end in `f` or not
+- `int`eger types cannot have decimals
+
+##### example_configuration_file
+
+```
+audio:volume->{0.01f};
+rendering_properties:brightness->{1.0f};
+rendering_properties:brightness_text->{1.0f};
+rendering_properties:fps_display->{1};
+rendering_properties:color_fps_display_r->{0.923f};
+rendering_properties:color_fps_display_g->{0.843f};
+rendering_properties:color_fps_display_b->{0.114f};
+rendering_properties:color_fps_display_a->{1.0f};
+```
+
 ### input
 
 `metil` polls input every render frame.  
