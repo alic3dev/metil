@@ -5,7 +5,7 @@ rendering_framework.utilizing(`apple::metal`)
 ## releases
 
 - [`latest`](https://github.com/alic3dev/metil/releases/latest)
-<!-- - [`metil`:version->{`1.0.0`}](https://github.com/alic3dev/add_this)::[introduction_of_ios_support] -->
+- [`metil`:version->{`1.0.0`}](https://github.com/alic3dev/metil/releases/tag/release_version-%3E%7B1.0.0%7D%3B)::[introduction_of_ios_support]
 - [`metil`:version->{`0.0.0`}](https://github.com/alic3dev/metil/releases/tag/release_version-%3E%7B0.0.0%7D%3B)::[macos_only]
 
 ### development
