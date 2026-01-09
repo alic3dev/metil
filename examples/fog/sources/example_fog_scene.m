@@ -122,7 +122,8 @@ void example_fog_scene_initialize(
           }, (struct math_c_vector2_unsigned_short_int) {
             .x = 10,
             .y = 10
-          }
+          },
+          0
         );
         break;
       }

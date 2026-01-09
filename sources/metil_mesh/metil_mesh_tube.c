@@ -10,7 +10,8 @@
 void metil_mesh_tube_initialize(
   struct metil_mesh* metil_mesh,
   struct math_c_vector3_float size,
-  struct math_c_vector2_unsigned_short_int segments
+  struct math_c_vector2_unsigned_short_int segments,
+  unsigned char direction
 ) {
   metil_mesh_initialize(
     metil_mesh
@@ -65,18 +66,6 @@ void metil_mesh_tube_initialize(
     metil_mesh->length_vertices
   );
 
-  metil_mesh->vertices[0].x = 0.0f;
-  metil_mesh->vertices[0].y = -size_half.y;
-  metil_mesh->vertices[0].z = 0.0f;
-  metil_mesh->vertices[0].w = 1.0f;
-
-  float increment_y = (
-    size.y / (
-      segments.y -
-      1
-    )
-  );
-
   unsigned int index_index = (
     0
   );
@@ -126,6 +115,57 @@ void metil_mesh_tube_initialize(
     );
   }
 
+  float increment_y;
+
+  switch (
+    direction
+  ) {
+    case 0: {
+      increment_y = (
+        size.y / (
+          segments.y -
+          1
+        )
+      );
+
+      metil_mesh->vertices[0].x = 0.0f;
+      metil_mesh->vertices[0].y = -size_half.y;
+      metil_mesh->vertices[0].z = 0.0f;
+
+      break;
+    }
+    case 1: {
+      increment_y = (
+        size.x / (
+          segments.y -
+          1
+        )
+      );
+
+      metil_mesh->vertices[0].x = -size_half.x;
+      metil_mesh->vertices[0].y = 0.0f;
+      metil_mesh->vertices[0].z = 0.0f;
+
+      break;
+    }
+    case 2: {
+      increment_y = (
+        size.z / (
+          segments.y -
+          1
+        )
+      );
+
+      metil_mesh->vertices[0].x = 0.0f;
+      metil_mesh->vertices[0].y = 0.0f;
+      metil_mesh->vertices[0].z = -size_half.z;
+
+      break;
+    }
+  }
+
+  metil_mesh->vertices[0].w = 1.0f;
+
   for (
     unsigned int index_segment_y = 0;
     index_segment_y < segments.y;
@@ -136,12 +176,42 @@ void metil_mesh_tube_initialize(
       segments.x
     );
 
-    float position_y = (
-      increment_y * (
-        index_segment_y
-      ) -
-      size_half.y
-    );
+    float position_y;
+
+    switch (
+      direction
+    ) {
+      case 0: {
+        position_y = (
+          increment_y * (
+            index_segment_y
+          ) -
+          size_half.y
+        );
+
+        break;
+      }
+      case 1: {
+        position_y = (
+          increment_y * (
+            index_segment_y
+          ) -
+          size_half.x
+        );
+
+        break;
+      }
+      case 2: {
+        position_y = (
+          increment_y * (
+            index_segment_y
+          ) -
+          size_half.z
+        );
+
+        break;
+      }
+    }
 
     for (
       unsigned int index_segment_x = 0;
@@ -160,25 +230,79 @@ void metil_mesh_tube_initialize(
         M_PI * 2.0f
       );
 
-      metil_mesh->vertices[
-        index_vertex
-      ].x = (
-        sin(angle) *
-        size_half.x
-      );
+      switch (
+        direction
+      ) {
+        case 0: {
+          metil_mesh->vertices[
+            index_vertex
+          ].x = (
+            sin(angle) *
+            size_half.x
+          );
 
-      metil_mesh->vertices[
-        index_vertex
-      ].y = (
-        position_y
-      );
+          metil_mesh->vertices[
+            index_vertex
+          ].y = (
+            position_y
+          );
 
-      metil_mesh->vertices[
-        index_vertex
-      ].z = (
-        cos(angle) *
-        size_half.z
-      );
+          metil_mesh->vertices[
+            index_vertex
+          ].z = (
+            cos(angle) *
+            size_half.z
+          );
+
+          break;
+        }
+        case 1: {
+          metil_mesh->vertices[
+            index_vertex
+          ].y = (
+            sin(angle) *
+            size_half.y
+          );
+
+          metil_mesh->vertices[
+            index_vertex
+          ].x = (
+            position_y
+          );
+
+          metil_mesh->vertices[
+            index_vertex
+          ].z = (
+            cos(angle) *
+            size_half.z
+          );
+
+          break;
+        }
+        case 2: {
+          metil_mesh->vertices[
+            index_vertex
+          ].y = (
+            sin(angle) *
+            size_half.y
+          );
+
+          metil_mesh->vertices[
+            index_vertex
+          ].z = (
+            position_y
+          );
+
+          metil_mesh->vertices[
+            index_vertex
+          ].x = (
+            cos(angle) *
+            size_half.x
+          );
+
+          break;
+        }
+      }
 
       metil_mesh->vertices[
         index_vertex
@@ -320,17 +444,52 @@ void metil_mesh_tube_initialize(
     1
   );
 
-  metil_mesh->vertices[
-    index_vertex_last
-  ].x = 0.0f;
+  switch (
+    direction
+  ) {
+    case 0: {
+      metil_mesh->vertices[
+        index_vertex_last
+      ].x = 0.0f;
 
-  metil_mesh->vertices[
-    index_vertex_last
-  ].y = size_half.y;
+      metil_mesh->vertices[
+        index_vertex_last
+      ].y = size_half.y;
 
-  metil_mesh->vertices[
-    index_vertex_last
-  ].z = 0.0f;
+      metil_mesh->vertices[
+        index_vertex_last
+      ].z = 0.0f;
+      break;
+    }
+    case 1: {
+      metil_mesh->vertices[
+        index_vertex_last
+      ].x = size_half.x;
+
+      metil_mesh->vertices[
+        index_vertex_last
+      ].y = 0.0f;
+
+      metil_mesh->vertices[
+        index_vertex_last
+      ].z = 0.0f;
+      break;
+    }
+    case 2: {
+      metil_mesh->vertices[
+        index_vertex_last
+      ].x = 0.0f;
+
+      metil_mesh->vertices[
+        index_vertex_last
+      ].y = 0.0f;
+
+      metil_mesh->vertices[
+        index_vertex_last
+      ].z = size_half.z;
+      break;
+    }
+  }
 
   metil_mesh->vertices[
     index_vertex_last
