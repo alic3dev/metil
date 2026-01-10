@@ -7,6 +7,8 @@
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
 #include <metil_scenes/metil_scene_controller.h>
 
+#include <clic3_memory.h>
+
 void metil_model_initialize(
   struct metil_model* metil_model
 ) {
@@ -523,7 +525,7 @@ void metil_model_destroy(
     );
   }
 
-  free(
+  clic3_memory_free(
     metil_model->objects
   );
 
@@ -539,19 +541,15 @@ void metil_model_destroy(
     );
   }
 
-  free(
+  clic3_memory_free(
     metil_model->joints
   );
 
-  if (
-    metil_model->data != (void*) 0
-  ) {
-    free(
-      metil_model->data
-    );
-  }
+  clic3_memory_free(
+    metil_model->data
+  );
 
-  free(
+  clic3_memory_free(
     metil_model->textures
   );
 }
