@@ -21,8 +21,6 @@ version_target_interrupt_handler=0
 version_target_math_c=0
 version_target_metil=1
 
-directory_metil=../..
-
 directory_include=include
 directory_objects_c=${directory_objects}/c
 directory_objects_objc=${directory_objects}/objc
@@ -40,7 +38,9 @@ directory_interrupt_handler_include=${directory_interrupt_handler}/include
 directory_math_c=../../../math_c
 directory_math_c_include=${directory_math_c}/include
 
+directory_metil=../..
 directory_metil_include=${directory_metil}/include
+directory_metil_library=${directory_metil}/library/macos
 directory_metil_plist=${directory_metil}/plist
 
 ifeq (${debug}, 1)
@@ -48,7 +48,7 @@ directory_cer0_library=${directory_cer0}/library/macos/debug
 directory_clic3_library=${directory_clic3}/library/macos/debug
 directory_interrupt_handler_library=${directory_interrupt_handler}/library/macos/debug
 directory_math_c_library=${directory_math_c}/library/macos/debug
-directory_metil_library=${directory_metil}/library_debug
+directory_metil_library:=${directory_metil_library}/debug
 
 file_cer0_library=${directory_cer0_library}/cer0_debug.${version_target_cer0}.dylib
 file_clic3_library=${directory_clic3_library}/clic3_debug.${version_target_clic3}.dylib
@@ -60,7 +60,7 @@ directory_cer0_library=${directory_cer0}/library/macos/release
 directory_clic3_library=${directory_clic3}/library/macos/release
 directory_interrupt_handler_library=${directory_interrupt_handler}/library/macos/release
 directory_math_c_library=${directory_math_c}/library/macos/release
-directory_metil_library=${directory_metil}/library
+directory_metil_library:=${directory_metil_library}/release
 
 file_cer0_library=${directory_cer0_library}/cer0.${version_target_cer0}.dylib
 file_clic3_library=${directory_clic3_library}/clic3.${version_target_clic3}.dylib
