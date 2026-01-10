@@ -266,4 +266,39 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
       );
     }
   }
+
+  if (
+    positioning == metil_positioning_absolute ||
+    positioning == metil_positioning_static
+  ) {
+    *view_model_matrix_projection = matrix_multiply(
+      *view_model_matrix_projection,
+      (matrix_float4x4) {{
+        { cos(rotation->y), 0.0f, -sin(rotation->y), 0.0f },
+        { 0.0f, 1.0f, 0.0f, 0.0f },
+        { sin(rotation->y), 0.0f, cos(rotation->y), 0.0f },
+        { 0.0f, 0.0f, 0.0f, 1.0f }
+      }}
+    );
+
+    *view_model_matrix_projection = matrix_multiply(
+      *view_model_matrix_projection,
+      (matrix_float4x4) {{
+        { 1.0f, 0.0f, 0.0f, 0.0f },
+        { 0.0f, cos(rotation->x), -sin(rotation->x), 0.0f },
+        { 0.0f, sin(rotation->x), cos(rotation->x), 0.0f },
+        { 0.0f, 0.0f, 0.0f, 1.0f }
+      }}
+    );
+
+    *view_model_matrix_projection = matrix_multiply(
+      *view_model_matrix_projection,
+      (matrix_float4x4) {{
+        { cos(rotation->z), -sin(rotation->z), 0.0f, 0.0f },
+        { sin(rotation->z), cos(rotation->z), 0.0f, 0.0f },
+        { 0.0f, 0.0f, 1.0f, 0.0f },
+        { 0.0f, 0.0f, 0.0f, 1.0f }
+      }}
+    );
+  }
 }

@@ -15,4 +15,10 @@ struct metil_renderer_data_object {
   unsigned int noise;
 };
 
+#ifndef __METAL_VERSION__
+void metil_renderer_data_object_initialize(
+  struct metil_renderer_data_object*
+);
+#endif
+
 #endif
