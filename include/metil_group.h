@@ -12,6 +12,8 @@ typedef void (*metil_group_renderable_function)(
 struct metil_group {
   unsigned int length;
   struct metil_renderable* _Nonnull * _Nonnull renderables;
+
+  unsigned char visible;
 };
 
 void metil_group_initialize(

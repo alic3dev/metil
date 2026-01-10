@@ -1007,17 +1007,22 @@
         metil_renderable->renderable
       );
 
-      for (
-        unsigned int index_group_renderable = 0;
-        index_group_renderable < metil_group->length;
-        ++index_group_renderable
+      if (
+        metil_group->visible != 0
       ) {
-        [self
-          render_renderable: metil_group->renderables[
-            index_group_renderable
-          ]
-        ];
+        for (
+          unsigned int index_group_renderable = 0;
+          index_group_renderable < metil_group->length;
+          ++index_group_renderable
+        ) {
+          [self
+            render_renderable: metil_group->renderables[
+              index_group_renderable
+            ]
+          ];
+        }
       }
+      
       break;
     }
     case metil_renderable_type_object: {

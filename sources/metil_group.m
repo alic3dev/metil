@@ -13,6 +13,10 @@ void metil_group_initialize(
     sizeof(struct metil_renderable*) *
     metil_group->length
   );
+
+  metil_group->visible = (
+    1
+  );
 }
 
 void metil_group_add_length_with_renderable_function(
