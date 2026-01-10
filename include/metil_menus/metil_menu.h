@@ -1,7 +1,6 @@
 #ifndef __metil_menus_metil_menu_h
 #define __metil_menus_metil_menu_h
 
-#include <metil_input/metil_input.h>
 #include <metil_menus/metil_menu_item.h>
 #include <metil_utilities/metil_stopwatch.h>
 
