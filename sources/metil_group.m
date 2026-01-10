@@ -15,24 +15,71 @@ void metil_group_initialize(
   );
 }
 
+void metil_group_add_length_with_renderable_function(
+  struct metil_group* metil_group,
+  unsigned int length,
+  enum metil_renderable_type metil_renderable_type,
+  metil_group_renderable_function metil_group_renderable_function
+) {
+  metil_group->length = (
+    metil_group->length +
+    length
+  );
+
+  metil_group->renderables = realloc(
+    metil_group->renderables,
+    sizeof(struct metil_renderable*) *
+    metil_group->length
+  );
+
+  for (
+    unsigned int index_group_renderable = (
+      metil_group->length -
+      length
+    );
+    index_group_renderable < metil_group->length;
+    ++index_group_renderable
+  ) {
+    metil_group->renderables[
+      index_group_renderable
+    ] = (
+      malloc(
+        sizeof(
+          struct metil_renderable
+        )
+      )
+    );
+
+    metil_group_renderable_function(
+      metil_group->renderables[
+        index_group_renderable
+      ],
+      metil_renderable_type
+    );
+  }
+}
+
 void metil_group_allocate(
   struct metil_group* metil_group,
   enum metil_renderable_type metil_renderable_type
 ) {
-  static struct metil_renderable* metil_renderable;
-
-  metil_renderable = malloc(
-    sizeof(struct metil_renderable)
-  );
-
-  metil_renderable_allocate(
-    metil_renderable,
+  metil_group_allocate_length(
+    metil_group,
+    1,
     metil_renderable_type
   );
+}
 
-  metil_group_add(
+void metil_group_allocate_length(
+  struct metil_group* metil_group,
+  unsigned int length,
+  enum metil_renderable_type metil_renderable_type
+) {
+  metil_group_add_length_with_renderable_function(
     metil_group,
-    metil_renderable
+    length,
+    metil_renderable_type,
+    metil_renderable_allocate
   );
 }
 
@@ -40,20 +87,23 @@ void metil_group_add_initialize(
   struct metil_group* metil_group,
   enum metil_renderable_type metil_renderable_type
 ) {
-  static struct metil_renderable* metil_renderable;
-
-  metil_renderable = malloc(
-    sizeof(struct metil_renderable)
-  );
-
-  metil_renderable_initialize(
-    metil_renderable,
+  metil_group_add_length_initialize(
+    metil_group,
+    1,
     metil_renderable_type
   );
+}
 
-  metil_group_add(
+void metil_group_add_length_initialize(
+  struct metil_group* metil_group,
+  unsigned int length,
+  enum metil_renderable_type metil_renderable_type
+) {
+  metil_group_add_length_with_renderable_function(
     metil_group,
-    metil_renderable
+    length,
+    metil_renderable_type,
+    metil_renderable_initialize
   );
 }
 

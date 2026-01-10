@@ -4,6 +4,11 @@
 #include <metil.h>
 #include <metil_rendering/metil_renderable.h>
 
+typedef void (*metil_group_renderable_function)(
+  struct metil_renderable* _Nonnull,
+  enum metil_renderable_type
+);
+
 struct metil_group {
   unsigned int length;
   struct metil_renderable* _Nonnull * _Nonnull renderables;
@@ -13,13 +18,32 @@ void metil_group_initialize(
   struct metil_group* _Nonnull
 );
 
+void metil_group_add_length_with_renderable_function(
+  struct metil_group* _Nonnull,
+  unsigned int,
+  enum metil_renderable_type,
+  metil_group_renderable_function _Nonnull
+);
+
 void metil_group_allocate(
   struct metil_group* _Nonnull,
   enum metil_renderable_type
 );
 
+void metil_group_allocate_length(
+  struct metil_group* _Nonnull,
+  unsigned int,
+  enum metil_renderable_type
+);
+
 void metil_group_add_initialize(
   struct metil_group* _Nonnull,
+  enum metil_renderable_type
+);
+
+void metil_group_add_length_initialize(
+  struct metil_group* _Nonnull,
+  unsigned int,
   enum metil_renderable_type
 );
 
