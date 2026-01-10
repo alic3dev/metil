@@ -15,6 +15,18 @@ void metil_menu_poll_input(
     return;
   }
 
+  unsigned long int delta = (
+    metil_stopwatch_elapsed(
+      &menu->stopwatch_input
+    )
+  );
+
+  if (
+    delta < metil_milliseconds_menu_input_delay
+  ) {
+    return;
+  }
+
   if (
     metil_input->keydown_map[
       metil_keycode_space
@@ -25,18 +37,6 @@ void metil_menu_poll_input(
       menu
     );
 
-    return;
-  }
-
-  unsigned long int delta = (
-    metil_stopwatch_elapsed(
-      &menu->stopwatch_input
-    )
-  );
-
-  if (
-    delta < metil_milliseconds_menu_input_delay
-  ) {
     return;
   }
 
