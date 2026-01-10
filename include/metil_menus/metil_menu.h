@@ -1,7 +1,6 @@
 #ifndef __metil_menus_metil_menu_h
 #define __metil_menus_metil_menu_h
 
-#include <metil_input/metil_input.h>
 #include <metil_menus/metil_menu_item.h>
 #include <metil_utilities/metil_stopwatch.h>
 
@@ -32,11 +31,6 @@ void metil_menu_item_add(
   enum metil_menu_item_type,
   enum metil_menu_item_action,
   void* _Nullable
-);
-
-void metil_menu_poll_input(
-  struct metil_menu* _Nonnull,
-  struct metil_input* _Nonnull
 );
 
 void metil_menu_select(
