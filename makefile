@@ -10,30 +10,32 @@ ifndef target_device
 	target_device=mac
 endif
 
+directory_objects_base=objects
+directory_library_base=library
+
+
 ifeq (${target_device},mac)
 directory_examples=examples
-directory_objects_base=objects
-directory_library=library
-
 target_os=macos
 endif
 
 ifeq (${target_device},iphone)
 directory_examples=examples_ios
-directory_objects_base=objects_ios
 directory_library=library_ios
 
 target_os=ios
 endif
 
-directory_library_debug=${directory_library}_debug
-
-directory_objects=${directory_objects_base}/release
+directory_library=${directory_library_base}/${target_os}
+directory_objects:=${directory_objects_base}/${target_os}
 
 ifeq (${debug}, 1)
-	name:=${name}_debug
-	directory_objects=${directory_objects_base}/debug
-	directory_library:=${directory_library_debug}
+name:=${name}_debug
+directory_objects:=${directory_objects}/debug
+directory_library:=${directory_library}/debug
+else
+directory_objects:=${directory_objects}/release
+directory_library:=${directory_library}/release
 endif
 
 directory_include=include
@@ -346,7 +348,6 @@ clean_objects:
 	-rm -r ${directory_objects_base} 2> /dev/null
 
 clean_library:
-	-rm -r ${directory_library} 2> /dev/null
-	-rm -r ${directory_library_debug} 2> /dev/null
+	-rm -r ${directory_library_base} 2> /dev/null
 
 .always:

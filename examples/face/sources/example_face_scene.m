@@ -589,7 +589,6 @@ void example_face_scene_poll(
     index_vertex < object->mesh.length_vertices;
     ++index_vertex
   ) {
-    printf("%i: %f\n", index_vertex, data_object->position_screen[index_vertex].x);
     struct math_c_vector4_float* vertex = &(
       vertices[
         index_vertex
