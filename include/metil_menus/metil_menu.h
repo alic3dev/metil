@@ -34,11 +34,6 @@ void metil_menu_item_add(
   void* _Nullable
 );
 
-void metil_menu_poll_input(
-  struct metil_menu* _Nonnull,
-  struct metil_input* _Nonnull
-);
-
 void metil_menu_select(
   struct metil_menu* _Nonnull
 );
