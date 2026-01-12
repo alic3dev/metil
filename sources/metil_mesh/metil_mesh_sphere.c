@@ -6,12 +6,12 @@
 
 void metil_mesh_sphere_initialize(
   struct metil_mesh* metil_mesh,
-  float size,
+  float diameter,
   struct math_c_vector2_unsigned_short_int segments
 ) {
   metil_mesh_ball_initialize(
     metil_mesh,
-    size,
+    diameter,
     segments
   );
 }

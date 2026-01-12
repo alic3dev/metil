@@ -10,19 +10,27 @@
 
 void metil_mesh_ball_initialize(
   struct metil_mesh* metil_mesh,
-  float size,
+  float diameter,
   struct math_c_vector2_unsigned_short_int segments
 ) {
   metil_mesh_initialize(
     metil_mesh
   );
 
-  metil_mesh->size.x = size;
-  metil_mesh->size.y = size;
-  metil_mesh->size.z = size;
+  metil_mesh->size.x = (
+    diameter
+  );
 
-  float size_half = (
-    size /
+  metil_mesh->size.y = (
+    diameter
+  );
+
+  metil_mesh->size.z = (
+    diameter
+  );
+
+  float radius = (
+    diameter /
     2.0f
   );
 
@@ -57,7 +65,7 @@ void metil_mesh_ball_initialize(
   );
 
   metil_mesh->vertices[0].x = 0.0f;
-  metil_mesh->vertices[0].y = size_half;
+  metil_mesh->vertices[0].y = radius;
   metil_mesh->vertices[0].z = 0.0f;
   metil_mesh->vertices[0].w = 1.0f;
 
@@ -210,11 +218,11 @@ void metil_mesh_ball_initialize(
         2.0f
       );
 
-      float radius = (
+      float radius_segment = (
         sin(
           angle.y
         ) *
-        size_half
+        radius
       );
 
       unsigned int index_vertex = (
@@ -227,21 +235,21 @@ void metil_mesh_ball_initialize(
         index_vertex
       ].x = (
         cos(angle.x) *
-        radius
+        radius_segment
       );
 
       metil_mesh->vertices[
         index_vertex
       ].y = (
         cos(angle.y) *
-        size_half
+        radius
       );
 
       metil_mesh->vertices[
         index_vertex
       ].z = (
         sin(angle.x) *
-        radius
+        radius_segment
       );
 
       metil_mesh->vertices[
@@ -390,7 +398,7 @@ void metil_mesh_ball_initialize(
 
   metil_mesh->vertices[
     index_vertex_last
-  ].y = -size_half;
+  ].y = -radius;
 
   metil_mesh->vertices[
     index_vertex_last
