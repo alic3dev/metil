@@ -94,7 +94,9 @@ directory_sdk=${shell xcrun --sdk macosx${target_device_version} --show-sdk-path
 file_metil_storyboard=${directory_metil_library}/metil.storyboardc
 
 file_metalar_metil_fps_display=${directory_metil_library}/metil_fps_display.metalar
+file_metalar_metil_=${directory_metil_library}/metil_wireframe.metalar
 file_metalar_metil_wireframe=${directory_metil_library}/metil_wireframe.metalar
+file_metalar_metil_metal_model_object=${directory_metil_library}/metil_metal_model_object.metalar
 
 file_info_plist=${directory_metil_plist}/Info.plist
 file_output=${directory_app_contents_macos}/${name}
@@ -184,7 +186,7 @@ endif
 
 ${file_output_metal}: ${files_air}
 	mkdir -p "${dir ${file_output_metal}}"
-	${metallib} ${metal_flags_output} ${files_air} ${file_metalar_metil_wireframe} ${file_metalar_metil_fps_display} -o ${file_output_metal}
+	${metallib} ${metal_flags_output} ${files_air} ${file_metalar_metil_wireframe} ${file_metalar_metil_fps_display} ${file_metalar_metil_metal_model_object} -o ${file_output_metal}
 
 ${directory_air}/%.air: ${directory_metal}/%.metal
 	mkdir -p "${dir $@}"
