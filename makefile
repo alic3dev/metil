@@ -138,8 +138,6 @@ target_platform_metal=air64-apple-ios${target_metal_version}
 directory_sdk=${shell xcrun --sdk iphoneos${target_device_version} --show-sdk-path}
 endif
 
-file_air_fps_display=${directory_air}/metil_fps_display.air
-file_air_wireframe=${directory_air}/metil_wireframe.air
 file_info_plist=${directory_plist}/Info.plist
 
 file_library_object=${directory_library}/${name}.o
@@ -155,11 +153,7 @@ file_library_dynamic_major=${directory_library}/${name_library_dynamic_major}
 file_library_static=${directory_library}/${name}.a
 
 file_metalar_metil_all=${directory_metalar}/metil_all.metalar
-file_metalar_metil_fps_display=${directory_metalar}/metil_fps_display.metalar
-file_metalar_metil_wireframe=${directory_metalar}/metil_wireframe.metalar
 file_output_metalar_metil_all=${directory_library}/metil_all.metalar
-file_output_metalar_metil_fps_display=${directory_library}/metil_fps_display.metalar
-file_output_metalar_metil_wireframe=${directory_library}/metil_wireframe.metalar
 
 ifeq (${target_device},iphone)
 file_output_info_plist=${directory_library}/Info_ios.plist
@@ -176,6 +170,8 @@ files_objects_objc=${patsubst ${directory_sources}/%.m,${directory_objects_objc}
 
 files_metal=${wildcard ${directory_metal}/*.metal}
 files_air=${patsubst ${directory_metal}/%.metal,${directory_air}/%.air,${files_metal}}
+files_metalar=${patsubst ${directory_air}/%.air,${directory_metalar}/%.metalar,${files_air}}
+files_output_metalar=${patsubst ${directory_metalar}/%.metalar,${directory_library}/%.metalar,${files_metalar}}
 
 files_storyboards=${wildcard ${directory_storyboards}/*.storyboard}
 
@@ -247,7 +243,7 @@ endif
 
 metal_flags_output=
 
-${name}: ${file_library_dylib} ${file_library_dynamic} ${file_library_object} ${file_library_static} ${file_output_metal} ${file_output_metalar_metil_all} ${file_output_metalar_metil_fps_display} ${file_output_metalar_metil_wireframe} ${files_storyboards_compiled} ${file_output_info_plist}
+${name}: ${file_library_dylib} ${file_library_dynamic} ${file_library_object} ${file_library_static} ${file_output_metal} ${file_output_metalar_metil_all} ${files_metalar} ${files_output_metalar} ${files_storyboards_compiled} ${file_output_info_plist}
 
 all: ${name} examples
 
@@ -301,15 +297,10 @@ ${file_metalar_metil_all}: ${files_air}
 	if [[ -f ${file_metalar_metil_all} ]]; then rm ${file_metalar_metil_all}; fi
 	${metal_ar} -rc ${file_metalar_metil_all} ${files_air}
 
-${file_metalar_metil_fps_display}: ${file_air_fps_display}
+${directory_metalar}/%.metalar: ${directory_air}/%.air
 	mkdir -p ${directory_metalar}
-	if [[ -f ${file_metalar_metil_fps_display} ]]; then rm ${file_metalar_metil_fps_display}; fi
-	${metal_ar} -rc ${file_metalar_metil_fps_display} ${file_air_fps_display}
-
-${file_metalar_metil_wireframe}: ${file_air_wireframe}
-	mkdir -p ${directory_metalar}
-	if [[ -f ${file_metalar_metil_wireframe} ]]; then rm ${file_metalar_metil_wireframe}; fi
-	${metal_ar} -rc ${file_metalar_metil_wireframe} ${file_air_wireframe}
+	if [[ -f "$@" ]]; then rm "$@"; fi
+	${metal_ar} -rc "$@" "$<"
 
 ${directory_air}/%.air: ${directory_metal}/%.metal
 	mkdir -p ${directory_air}
