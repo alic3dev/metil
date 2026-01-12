@@ -234,21 +234,7 @@ void metil_mesh_ball_initialize(
         index_vertex
       ].y = (
         cos(angle.y) *
-        size_half 
-      //   + (
-      //     cos(
-      //   (float) (
-          
-      //     1
-      //   ) /
-      //   (float) (
-      //     segments.y +
-      //     2
-      //   ) *
-      //   M_PI *
-      //   2.0f
-      // ) * size_half
-      //   )
+        size_half
       );
 
       metil_mesh->vertices[
@@ -316,9 +302,6 @@ void metil_mesh_ball_initialize(
         index_vertex +
         segments.x
       );
-
-
-      ////
 
       index_index = (
         index_index +
