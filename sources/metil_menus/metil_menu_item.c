@@ -53,7 +53,6 @@ void metil_menu_item_initialize(
     metil_menu_item_type
   );
 }
-#include <stdio.h>
 
 unsigned char metil_menu_item_scroll_next(
   struct metil_menu_item* metil_menu_item_scroll
