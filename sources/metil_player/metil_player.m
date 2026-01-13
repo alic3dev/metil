@@ -309,14 +309,22 @@ void metil_player_poll_input(
         (
           metil->input.keydown_map[
             metil_keycode_right_arrow
-          ] || metil->input.keydown_map[
+          ] ||
+          metil->input.keydown_map[
             metil_keycode_d
+          ] ||
+          metil->input.keydown_map[
+            metil_keycode_single_quote
           ]
         ) - (
           metil->input.keydown_map[
             metil_keycode_left_arrow
-          ] || metil->input.keydown_map[
+          ] ||
+          metil->input.keydown_map[
             metil_keycode_a
+          ] ||
+          metil->input.keydown_map[
+            metil_keycode_l
           ]
         )
       ),
@@ -324,8 +332,12 @@ void metil_player_poll_input(
         (
           metil->input.keydown_map[
             metil_keycode_up_arrow
-          ] || metil->input.keydown_map[
+          ] ||
+          metil->input.keydown_map[
             metil_keycode_w
+          ] ||
+          metil->input.keydown_map[
+            metil_keycode_p
           ]
         ) - (
           metil->input.keydown_map[
@@ -333,6 +345,9 @@ void metil_player_poll_input(
           ] ||
           metil->input.keydown_map[
             metil_keycode_s
+          ] ||
+          metil->input.keydown_map[
+            metil_keycode_semi_colon
           ]
         )
       )
@@ -367,44 +382,54 @@ void metil_player_poll_input(
       metil_keycode_q
     ] == 1 ||
     metil->input.keydown_map[
+      metil_keycode_opening_square_bracket
+    ] ||
+    metil->input.keydown_map[
       metil_keycode_e
     ] == 1 ||
     metil->input.keydown_map[
-      metil_keycode_period
-    ] == 1 ||
-    metil->input.keydown_map[
-      metil_keycode_slash
+      metil_keycode_o
     ] == 1
   ) {
     movement.y = (
-      -metil->input.keydown_map[
-        metil_keycode_q
-      ] +
-      metil->input.keydown_map[
-        metil_keycode_e
-      ] +
-      -metil->input.keydown_map[
-        metil_keycode_period
-      ] +
-      metil->input.keydown_map[
-        metil_keycode_slash
-      ]
+      -(
+        metil->input.keydown_map[
+          metil_keycode_q
+        ] ||
+        metil->input.keydown_map[
+          metil_keycode_opening_square_bracket
+        ] == 1 
+      ) +
+      (
+        metil->input.keydown_map[
+          metil_keycode_e
+        ] ||
+        metil->input.keydown_map[
+          metil_keycode_o
+        ] == 1
+      )
     );
 
-    if (movement.y > 1.0f) {
+    if (
+      movement.y > 1.0f
+    ) {
       movement.y = 1.0f;
-    } else if (movement.y < -1.0f) {
+    } else if (
+      movement.y < -1.0f
+    ) {
       movement.y = -1.0f;
     }
   }
 
   if (
-    (metil->input.keydown_map[
-      metil_keycode_space
-    ] == 1 ||(
-      metil->input.controller_state.available == 1 &&
-      metil->input.controller_state.cross >= 0.1f
-    )) &&
+    (
+      metil->input.keydown_map[
+        metil_keycode_space
+      ] == 1 ||(
+        metil->input.controller_state.available == 1 &&
+        metil->input.controller_state.cross >= 0.1f
+      )
+    ) &&
     metil_player->velocity.y == 0.0f
   ) {
     metil_player->velocity.y = (
