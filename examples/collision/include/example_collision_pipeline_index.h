@@ -1,0 +1,10 @@
+#ifndef __example_collision_pipeline_index_h
+#define __example_collision_pipeline_index_h
+
+extern unsigned short int example_collision_pipeline_index_floor;
+extern unsigned short int example_collision_pipeline_index_turret_barrel;
+extern unsigned short int example_collision_pipeline_index_turret_sight;
+extern unsigned short int example_collision_pipeline_index_projectile;
+extern unsigned short int example_collision_pipeline_index_combatant;
+
+#endif
