@@ -7,6 +7,8 @@
 
 #include <simd/simd.h>
 
+#define turret_rotation_speed 0.24285f
+
 enum model_turret_index_object {
   model_turret_index_object_leg_one = 0,
   model_turret_index_object_leg_two = 1,

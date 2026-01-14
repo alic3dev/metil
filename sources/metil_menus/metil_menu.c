@@ -61,7 +61,11 @@ void metil_menu_select(
   struct metil_menu* menu
 ) {
   if (
-    menu->length_items == 0
+    menu->length_items == 0 ||
+    menu->index_current > menu->length_items ||
+    menu->items[
+      menu->index_current
+    ].action != metil_menu_item_action_select
   ) {
     return;
   }
@@ -118,9 +122,21 @@ unsigned char metil_menu_previous(
 }
 
 void metil_menu_destroy(
-  struct metil_menu* menu
+  struct metil_menu* metil_menu
 ) {
+  for (
+    unsigned char index_metil_menu_item = 0;
+    index_metil_menu_item < metil_menu->length_items;
+    ++index_metil_menu_item
+  ) {
+    metil_menu_item_destroy(
+      &metil_menu->items[
+        index_metil_menu_item
+      ]
+    );
+  }
+
   clic3_memory_free(
-    menu->items
+    metil_menu->items
   );
 }

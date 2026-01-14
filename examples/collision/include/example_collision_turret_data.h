@@ -4,7 +4,7 @@
 #include <metil_group.h>
 
 struct turret_data {
-  struct metil_group* group_combatants;
+  struct metil_group* group_targets;
 }
 
 #endif

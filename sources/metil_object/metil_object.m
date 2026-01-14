@@ -6,6 +6,8 @@
 #include <metil_rendering/metil_renderer.h>
 #include <metil_scenes/metil_scene_controller.h>
 
+#include <clic3_memory.h>
+
 #include <math_c_vector.h>
 
 #include <Metal/MTLArgument.h>
@@ -21,17 +23,23 @@ void metil_object_initialize(
   metil_object->length_buffers_fragment = 0;
   metil_object->length_buffers_vertex = 0;  
 
-  metil_object->buffers_fragment = malloc(
-    sizeof(struct metil_object_buffer) *
-    metil_object->length_buffers_fragment
+  metil_object->buffers_fragment = (
+    malloc(
+      sizeof(struct metil_object_buffer) *
+      metil_object->length_buffers_fragment
+    )
   );
 
-  metil_object->buffers_vertex = malloc(
-    sizeof(struct metil_object_buffer) *
-    metil_object->length_buffers_vertex
+  metil_object->buffers_vertex = (
+    malloc(
+      sizeof(struct metil_object_buffer) *
+      metil_object->length_buffers_vertex
+    )
   );
 
-  metil_object->indices = (void*)0;
+  metil_object->indices = (
+    (void*) 0
+  );
 
   metil_object->type_primitive = MTLPrimitiveTypeTriangle;
   metil_object->type_index = MTLIndexTypeUInt32;
@@ -58,6 +66,10 @@ void metil_object_initialize(
 
   metil_object->poll = metil_object_poll;
   metil_object->destroy = metil_object_destroy;
+
+  metil_object->data = (
+    (void*) 0
+  );
 }
 
 void metil_object_indices_initialize(
@@ -128,6 +140,16 @@ void metil_object_buffers_initialize(
     metil_object,
     metal_device,
     sizeof(struct metil_renderer_data_object)
+  );
+
+  struct metil_renderer_data_object* metil_renderer_data_object = (
+    metil_object->buffers_vertex[
+      metil_object_buffer_default_index_data
+    ].buffer.contents
+  );
+
+  metil_renderer_data_object_initialize(
+    metil_renderer_data_object
   );
 }
 
@@ -289,16 +311,20 @@ void metil_object_destroy(
     [object->buffers_vertex[index_buffer_vertex].buffer release];
   }
 
-  free(
+  clic3_memory_free(
     object->buffers_fragment
   );
 
-  free(
+  clic3_memory_free(
     object->buffers_vertex
   );
 
-  free(
+  clic3_memory_free(
     object->textures
+  );
+
+  clic3_memory_free(
+    object->data
   );
 
   metil_mesh_destroy(
