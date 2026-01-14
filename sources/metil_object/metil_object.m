@@ -129,6 +129,16 @@ void metil_object_buffers_initialize(
     metal_device,
     sizeof(struct metil_renderer_data_object)
   );
+
+  struct metil_renderer_data_object* metil_renderer_data_object = (
+    metil_object->buffers_vertex[
+      metil_object_buffer_default_index_data
+    ].buffer.contents
+  );
+
+  metil_renderer_data_object_initialize(
+    metil_renderer_data_object
+  );
 }
 
 void metil_object_buffers_add(
