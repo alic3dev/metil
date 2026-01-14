@@ -59,6 +59,8 @@ struct metil_object {
 
   metil_object_poll_function _Nonnull poll;
   metil_object_destroy_function _Nonnull destroy;
+
+  void* _Nullable data;
 };
 
 void metil_object_initialize(

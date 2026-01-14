@@ -6,6 +6,8 @@
 #include <metil_rendering/metil_renderable.h>
 #include <metil_utilities/metil_time.h>
 
+#include <clic3_memory.h>
+
 #include <stdlib.h>
 
 void metil_scene_initialize(
@@ -173,7 +175,7 @@ void metil_scene_destroy_default(
     );
   }
 
-  free(
+  clic3_memory_free(
     scene->renderables
   );
 
@@ -189,7 +191,8 @@ void metil_scene_destroy_default(
       release
     ];
   }
-  free(
+
+  clic3_memory_free(
     scene->textures
   );
 
@@ -198,11 +201,7 @@ void metil_scene_destroy_default(
     &scene->player
   );
 
-  if (
-    scene->data != (void*)0
-  ) {
-    free(
-      scene->data
-    );
-  }
+  clic3_memory_free(
+    scene->data
+  );
 }

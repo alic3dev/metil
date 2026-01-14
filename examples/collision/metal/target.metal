@@ -8,7 +8,7 @@ struct data_vertex {
   float4 color;
 };
 
-[[vertex]] struct data_vertex combatant_vertex(
+[[vertex]] struct data_vertex target_vertex(
   const device simd_float4* vertices [[
     buffer(
       metil_renderer_vertex_index_parameter_vertices
@@ -48,7 +48,7 @@ struct data_vertex {
   return data_vertex;
 }
 
-[[fragment]] float4 combatant_fragment(
+[[fragment]] float4 target_fragment(
   struct data_vertex data_vertex [[stage_in]]
 ) {
   return data_vertex.color;

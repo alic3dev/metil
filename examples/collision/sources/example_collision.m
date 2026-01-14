@@ -69,15 +69,15 @@ void example_collision_renderer_on_initialize(
     ]
   ];
 
-  example_collision_pipeline_index_combatant = [
+  example_collision_pipeline_index_target = [
     metil->renderer_interface.renderer
     pipeline_add: [
       metil->library.library
-      newFunctionWithName: @"combatant_fragment"
+      newFunctionWithName: @"target_fragment"
     ]
     function_vertex: [
       metil->library.library
-      newFunctionWithName: @"combatant_vertex"
+      newFunctionWithName: @"target_vertex"
     ]
   ];
 

@@ -30,19 +30,22 @@ struct data_vertex {
 
   data_vertex.position = (
     data_object->view_model_matrix_projection *
-    vertices[id_vertex]
-  );
-
-  float offset = (
-    (float) id_vertex /
-    10.0f
+    vertices[
+      id_vertex
+    ]
   );
 
   data_vertex.color = float4(
-    metal::fmod(data_object->color.x + offset, 1.0f),
-    metal::fmod(data_object->color.y + offset, 1.0f),
-    1.0f,
-    1.0f
+    id_vertex > 50,
+    0.0f,
+    0.0f,
+    (
+      1.0f -
+      (
+        (float) id_vertex /
+        101.0f
+      )
+    )
   );
 
   return data_vertex;

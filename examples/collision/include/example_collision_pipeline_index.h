@@ -5,6 +5,6 @@ extern unsigned short int example_collision_pipeline_index_floor;
 extern unsigned short int example_collision_pipeline_index_turret_barrel;
 extern unsigned short int example_collision_pipeline_index_turret_sight;
 extern unsigned short int example_collision_pipeline_index_projectile;
-extern unsigned short int example_collision_pipeline_index_combatant;
+extern unsigned short int example_collision_pipeline_index_target;
 
 #endif
