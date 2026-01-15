@@ -3,7 +3,7 @@
 
 #include <Metal/MTLTexture.h>
 
-void metil_texture_brightness(
+void metil_texture_brightness_linear(
   id<MTLTexture>,
   float
 );

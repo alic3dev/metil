@@ -4,13 +4,15 @@
 #include <metil_image/metil_image_type.h>
 #include <metil_image/metil_image_type_bridge.h>
 
+#include <clic3_memory.h>
+
 #include <Metal/MTLTexture.h>
 
 #include <stdlib.h>
 
 void metil_texture_image_get_from_region_with_offsets(
   id<MTLTexture> texture,
-  unsigned char** pixel_bytes,
+  void** pixel_bytes,
   unsigned int* length_pixel_bytes,
   unsigned int* length_pixel_bytes_row,
   MTLRegion* mtl_region,
@@ -22,7 +24,7 @@ void metil_texture_image_get_from_region_with_offsets(
   );
 
   if (
-    length_pixel_bytes_row != (void*) 0
+    length_pixel_bytes_row != 0
   ) {
     *length_pixel_bytes_row = (
       value_length_pixel_bytes_row   
@@ -34,28 +36,10 @@ void metil_texture_image_get_from_region_with_offsets(
     mtl_region->size.height
   );
 
-  if (
-    *pixel_bytes == (void*) 0
-  ) {
-    *pixel_bytes = (
-      malloc(
-        sizeof(
-          unsigned char
-        ) *
-        *length_pixel_bytes
-      )
-    );
-  } else {
-    *pixel_bytes = (
-      realloc(
-        *pixel_bytes,
-        sizeof(
-          unsigned char
-        ) *
-        *length_pixel_bytes
-      )
-    );
-  }
+  clic3_memory_allocate(
+    pixel_bytes,
+    *length_pixel_bytes
+  );
 
   [
     texture
@@ -68,7 +52,7 @@ void metil_texture_image_get_from_region_with_offsets(
 
 void metil_texture_image_get_from_region(
   id<MTLTexture> texture,
-  unsigned char** pixel_bytes,
+  void** pixel_bytes,
   unsigned int* length_pixel_bytes,
   unsigned int* length_pixel_bytes_row,
   MTLRegion* mtl_region
@@ -97,7 +81,7 @@ void metil_texture_image_get_from_region(
 
 void metil_texture_image_get(
   id<MTLTexture> texture,
-  unsigned char** pixel_bytes,
+  void** pixel_bytes,
   unsigned int* length_pixel_bytes,
   unsigned int* length_pixel_bytes_row
 ) {
