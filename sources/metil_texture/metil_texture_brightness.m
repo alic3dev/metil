@@ -4,6 +4,7 @@
 #include <metil_image/metil_image_offsets.h>
 #include <metil_image/metil_image_type.h>
 #include <metil_image/metil_image_type_bridge.h>
+#include <metil_texture/metil_texture_image.h>
 
 #include <Metal/MTLTexture.h>
 
@@ -13,31 +14,6 @@ void metil_texture_brightness(
   id<MTLTexture> texture,
   float brightness
 ) {
-  MTLRegion region = {
-    {
-      .x = (
-        0x00
-      ),
-      .y = (
-        0x00
-      ),
-      .z = (
-        0x00
-      )
-    },
-    {
-      .width = (
-        texture.width
-      ),
-      .height = (
-        texture.height
-      ),
-      .depth = (
-        0x01
-      )
-    }
-  };
-
   enum metil_image_type metil_image_type = (
     metil_image_type_bridge_mtl_pixel_format(
       texture.pixelFormat
@@ -54,32 +30,24 @@ void metil_texture_brightness(
     (void*) 0
   );
 
-  unsigned int length_pixel_bytes_row = (
-    texture.width *
-    metil_image_offsets->bytes
+  unsigned int length_pixel_bytes_row;
+  unsigned int length_pixel_bytes;
+
+  MTLRegion mtl_region;
+
+  metil_texture_image_region_get(
+    texture,
+    &mtl_region
   );
 
-  unsigned int length_pixel_bytes = (
-    length_pixel_bytes_row *
-    texture.height
+  metil_texture_image_get_from_region_with_offsets(
+    texture,
+    &pixel_bytes,
+    &length_pixel_bytes,
+    &length_pixel_bytes_row,
+    &mtl_region,
+    metil_image_offsets
   );
-
-  pixel_bytes = (
-    malloc(
-      sizeof(
-        unsigned char
-      ) *
-      length_pixel_bytes
-    )
-  );
-
-  [
-    texture
-    getBytes: pixel_bytes
-    bytesPerRow: length_pixel_bytes_row
-    fromRegion: region
-    mipmapLevel: 0x00
-  ];
 
   metil_image_brightness_linear_with_offsets(
     pixel_bytes,
@@ -91,7 +59,7 @@ void metil_texture_brightness(
 
   [
     texture
-    replaceRegion: region
+    replaceRegion: mtl_region
     mipmapLevel: 0x00
     withBytes: pixel_bytes
     bytesPerRow: length_pixel_bytes_row
