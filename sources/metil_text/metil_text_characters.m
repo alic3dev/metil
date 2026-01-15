@@ -102,10 +102,18 @@ void metil_text_characters_initialize(
     metil_text_characters_default->vertices[
       index_character
     ] = [metal_device
-      newBufferWithBytes: metil_text_characters_default->meshes[index_character].vertices
+      newBufferWithBytes: (
+        metil_text_characters_default->meshes[
+          index_character
+        ].vertices
+      )
       length: (
-        metil_text_characters_default->meshes[index_character].length_vertices *
-        sizeof(struct math_c_vector4_float)
+        metil_text_characters_default->meshes[
+          index_character
+        ].length_vertices *
+        sizeof(
+          struct math_c_vector4_float
+        )
       )
       options: MTLResourceStorageModeShared
     ];
@@ -114,7 +122,9 @@ void metil_text_characters_initialize(
   metil_text_characters_default->indices = [metal_device
     newBufferWithBytes: metil_text_characters_default->meshes[0].indices
     length: (
-      sizeof(unsigned int) *
+      sizeof(
+        unsigned int
+      ) *
       metil_text_characters_default->meshes[0].length_indices
     )
     options: MTLResourceStorageModeShared

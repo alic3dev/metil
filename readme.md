@@ -930,7 +930,9 @@ OSStatus io_proc(
 
     unsigned long int size_buffer_out = (
       audio_buffer_current.mDataByteSize /
-      sizeof(float)
+      sizeof(
+        float
+      )
     );
 
     unsigned long int count_channel_out = (

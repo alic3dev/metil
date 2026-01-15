@@ -438,22 +438,12 @@ id<MTLTexture> metil_texture_concrete_secondary_generate(
 
   clic3_memory_allocate(
     &pixel_bytes,
-    (
-      sizeof(
-        unsigned char
-      ) *
-      length_bytes_texture
-    )
+    length_bytes_texture
   );
 
   clic3_memory_allocate(
     &pixel_bytes_secondary,
-    (
-      sizeof(
-        unsigned char
-      ) *
-      length_bytes_texture
-    )
+    length_bytes_texture
   );
 
   for (unsigned int index_x = 0; index_x < texture_descriptor.width; ++index_x) { for (unsigned int index_y = 0; index_y < texture_descriptor.height; ++index_y) { 

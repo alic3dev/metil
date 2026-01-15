@@ -268,7 +268,9 @@ void metil_group_destroy_renderable_at_index(
   clic3_memory_allocate(
     &metil_group->renderables,
     (
-      sizeof(struct metil_renderable*) *
+      sizeof(
+        struct metil_renderable*
+      ) *
       metil_group->length
     ) 
   );

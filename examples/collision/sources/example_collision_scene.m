@@ -583,9 +583,6 @@ void example_collision_scene_initialize(
 
   clic3_memory_allocate(
     &pixel_bytes,
-    sizeof(
-      unsigned char
-    ) *
     length_bytes_texture
   );
 

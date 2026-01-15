@@ -250,10 +250,13 @@ void metil_model_buffers_initialize(
   metil_model->buffer_joints = [
     metal_device
     newBufferWithLength: (
-      sizeof(struct math_c_vector3_float) * (
+      sizeof(
+        struct math_c_vector3_float
+      ) * (
         metil_model->length_joints +
         1
-      ) * 3
+      ) *
+      3
     )
     options: MTLResourceStorageModeShared
   ];
@@ -310,7 +313,9 @@ void metil_model_buffers_initialize(
     metil_object_buffers_initialize_with_data_size(
       metil_object,
       metal_device,
-      sizeof(struct metil_renderer_data_model_object)
+      sizeof(
+        struct metil_renderer_data_model_object
+      )
     );
 
     metil_object_buffers_add(
@@ -334,7 +339,9 @@ void metil_model_buffers_initialize(
         ]
       )
       length: (
-        sizeof(unsigned int) *
+        sizeof(
+          unsigned int
+        ) *
         metil_object->mesh.length_vertices
       )
       options: MTLResourceStorageModePrivate

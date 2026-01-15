@@ -174,7 +174,11 @@
     data_buffer_frame[
       index_buffer
     ] = [self->metil->renderer_interface.metal_device
-      newBufferWithLength: sizeof(struct metil_renderer_data_frame)
+      newBufferWithLength: (
+        sizeof(
+          struct metil_renderer_data_frame
+        )
+      )
       options: MTLResourceStorageModeShared
     ];
   }

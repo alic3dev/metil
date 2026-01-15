@@ -151,7 +151,9 @@ void example_model_scene_initialize(
   clic3_memory_allocate(
     &metil_mesh->vertices,
     (
-      sizeof(struct math_c_vector4_float) *
+      sizeof(
+        struct math_c_vector4_float
+      ) *
       metil_mesh->length_vertices
     )
   );
