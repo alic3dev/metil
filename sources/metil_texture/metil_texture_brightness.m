@@ -81,10 +81,11 @@ void metil_texture_brightness(
     mipmapLevel: 0x00
   ];
 
-  metil_image_brightness_linear(
+  metil_image_brightness_linear_with_offsets(
     pixel_bytes,
     length_pixel_bytes,
     metil_image_type,
+    metil_image_offsets,
     brightness
   );
 
