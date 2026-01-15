@@ -1,13 +1,11 @@
 #include <metil_image/metil_image_brightness.h>
 
+#include <metil_image/metil_image.h>
 #include <metil_image/metil_image_offsets.h>
 #include <metil_image/metil_image_type.h>
 
-void metil_image_brightness_linear_with_offsets(
-  unsigned char* metil_image_data,
-  unsigned int metil_image_data_length,
-  enum metil_image_type metil_image_type,
-  const struct metil_image_offsets* metil_image_offsets,
+void metil_image_brightness_linear(
+  struct metil_image* metil_image,
   float brightness
 ) {
   if (
@@ -16,17 +14,21 @@ void metil_image_brightness_linear_with_offsets(
     brightness = 0.0f;
   }
 
+  unsigned char* metil_image_data = (
+    metil_image->data
+  );
+
   for (
     unsigned int index_metil_image_data = 0;
-    index_metil_image_data < metil_image_data_length;
+    index_metil_image_data < metil_image->length;
     ++index_metil_image_data
   ) {
     if (
       (
         index_metil_image_data %
-        metil_image_offsets->bytes
+        metil_image->offsets->bytes
       ) == (
-        metil_image_offsets->a
+        metil_image->offsets->a
       )
     ) {
       continue;
@@ -53,25 +55,4 @@ void metil_image_brightness_linear_with_offsets(
       adjusted_value
     );
   }
-}
-
-void metil_image_brightness_linear(
-  unsigned char* metil_image_data,
-  unsigned int metil_image_data_length,
-  enum metil_image_type metil_image_type,
-  float brightness
-) {
-  const struct metil_image_offsets* metil_image_offsets = (
-    metil_image_offsets_get_by_type(
-      metil_image_type
-    )
-  );
-
-  metil_image_brightness_linear_with_offsets(
-    metil_image_data,
-    metil_image_data_length,
-    metil_image_type,
-    metil_image_offsets,
-    brightness
-  );
 }

@@ -1,5 +1,7 @@
 #include <metil_texture/metil_texture_concrete.h>
 
+#include <clic3_memory.h>
+
 #include <math_c_vector.h>
 
 #include <Metal/MTLDevice.h>
@@ -32,6 +34,7 @@ id<MTLTexture> metil_texture_concrete_generate(
   );
 
   static id<MTLTexture> texture;
+
   texture = [
     metal_device
     newTextureWithDescriptor: texture_descriptor
@@ -52,22 +55,17 @@ id<MTLTexture> metil_texture_concrete_generate(
     texture_descriptor.height
   );
 
-  unsigned char* pixel_bytes = (
-    malloc(
-      sizeof(
-        unsigned char
-      ) *
-      length_bytes_texture
-    )
+  unsigned char* pixel_bytes = 0;
+  unsigned char* pixel_bytes_secondary = 0;
+
+  clic3_memory_allocate(
+    &pixel_bytes,
+    length_bytes_texture
   );
 
-  unsigned char* pixel_bytes_secondary = (
-    malloc(
-      sizeof(
-        unsigned char
-      ) *
-      length_bytes_texture
-    )
+  clic3_memory_allocate(
+    &pixel_bytes_secondary,
+    length_bytes_texture
   );
 
   for (unsigned int index_x = 0; index_x < texture_descriptor.width; ++index_x) { for (unsigned int index_y = 0; index_y < texture_descriptor.height; ++index_y) { 
@@ -78,7 +76,6 @@ id<MTLTexture> metil_texture_concrete_generate(
     pixel_bytes[index_pixel + 2] = 0x7f + ((seed[(r) % length_seed] + 0) % 0x1b);
     pixel_bytes[index_pixel + 3] = 0xff;
   }}
-
 
   for (unsigned int index_x = 0; index_x < texture_descriptor.width; index_x += 2) { for (unsigned int index_y = 0; index_y < texture_descriptor.height; index_y += 2) {
     unsigned int index_pixel = index_x * 4 + index_y * texture_descriptor.width * 4;
