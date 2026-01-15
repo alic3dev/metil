@@ -3,7 +3,7 @@
 #include <metil.h>
 #include <metil_scenes/metil_scene.h>
 
-#include <stdlib.h>
+#include <clic3_memory.h>
 
 struct metil_scene metil_scene_empty;
 
@@ -16,11 +16,11 @@ void metil_scene_controller_initialize(
   );
 
   metil_scene_controller->on_scene_change = (
-    (void*) 0
+    0
   );
 
   metil_scene_controller->on_scene_change_data = (
-    (void*) 0
+    0
   );
 
   metil_scene_controller->length_after_scene_change = (
@@ -28,11 +28,11 @@ void metil_scene_controller_initialize(
   );
 
   metil_scene_controller->after_scene_change = (
-    (void*) 0
+    0
   );
   
   metil_scene_controller->after_scene_change_data = (
-    (void*) 0
+    0
   );
 
   metil_scene_initialize(
@@ -40,24 +40,44 @@ void metil_scene_controller_initialize(
     &metil_scene_controller->scene
   );
 
-  metil_scene_controller->on_scene_change = malloc(
-    sizeof(metil_scene_controller_on_scene_change) *
-    metil_scene_controller->length_on_scene_change
+  clic3_memory_allocate(
+    &metil_scene_controller->on_scene_change,
+    (
+      sizeof(
+        metil_scene_controller_on_scene_change
+      ) *
+      metil_scene_controller->length_on_scene_change
+    )
   );
 
-  metil_scene_controller->on_scene_change_data = malloc(
-    sizeof(void*) *
-    metil_scene_controller->length_on_scene_change
+  clic3_memory_allocate(
+    &metil_scene_controller->on_scene_change_data,
+    (
+      sizeof(
+        void*
+      ) *
+      metil_scene_controller->length_on_scene_change
+    )
   );
 
-  metil_scene_controller->after_scene_change = malloc(
-    sizeof(metil_scene_controller_on_scene_change) *
-    metil_scene_controller->length_on_scene_change
+  clic3_memory_allocate(
+    &metil_scene_controller->after_scene_change,
+    (
+      sizeof(
+        metil_scene_controller_on_scene_change
+      ) *
+      metil_scene_controller->length_on_scene_change
+    )
   );
 
-  metil_scene_controller->after_scene_change_data = malloc(
-    sizeof(void*) *
-    metil_scene_controller->length_on_scene_change
+  clic3_memory_allocate(
+    &metil_scene_controller->after_scene_change_data,
+    (
+      sizeof(
+        void*
+      ) *
+      metil_scene_controller->length_on_scene_change
+    )
   );
 }
 
@@ -108,16 +128,24 @@ void metil_scene_controller_on_scene_change_add(
     metil_scene_controller->length_on_scene_change + 1
   );
 
-  metil_scene_controller->on_scene_change = realloc(
-    metil_scene_controller->on_scene_change,
-    sizeof(metil_scene_controller_on_scene_change) *
-    metil_scene_controller->length_on_scene_change
+  clic3_memory_allocate(
+    &metil_scene_controller->on_scene_change,
+    (
+      sizeof(
+        metil_scene_controller_on_scene_change
+      ) *
+      metil_scene_controller->length_on_scene_change
+    )
   );
 
-  metil_scene_controller->on_scene_change_data = realloc(
-    metil_scene_controller->on_scene_change_data,
-    sizeof(void*) *
-    metil_scene_controller->length_on_scene_change
+  clic3_memory_allocate(
+    &metil_scene_controller->on_scene_change_data,
+    (
+      sizeof(
+        void*
+      ) *
+      metil_scene_controller->length_on_scene_change
+    )
   );
 
   metil_scene_controller->on_scene_change[
@@ -138,16 +166,24 @@ void metil_scene_controller_after_scene_change_add(
     metil_scene_controller->length_after_scene_change + 1
   );
 
-  metil_scene_controller->after_scene_change = realloc(
-    metil_scene_controller->after_scene_change,
-    sizeof(metil_scene_controller_after_scene_change) *
-    metil_scene_controller->length_after_scene_change
+  clic3_memory_allocate(
+    &metil_scene_controller->after_scene_change,
+    (
+      sizeof(
+        metil_scene_controller_after_scene_change
+      ) *
+      metil_scene_controller->length_after_scene_change
+    )
   );
 
-  metil_scene_controller->after_scene_change_data = realloc(
-    metil_scene_controller->after_scene_change_data,
-    sizeof(void*) *
-    metil_scene_controller->length_after_scene_change
+  clic3_memory_allocate(
+    &metil_scene_controller->after_scene_change_data,
+    (
+      sizeof(
+        void*
+      ) *
+      metil_scene_controller->length_after_scene_change
+    )
   );
 
   metil_scene_controller->after_scene_change[
@@ -168,19 +204,19 @@ void metil_scene_controller_destroy(
     &metil_scene_controller->scene
   );
 
-  free(
+  clic3_memory_free(
     metil_scene_controller->after_scene_change
   );
 
-  free(
+  clic3_memory_free(
     metil_scene_controller->after_scene_change_data
   );
 
-  free(
+  clic3_memory_free(
     metil_scene_controller->on_scene_change
   );
 
-  free(
+  clic3_memory_free(
     metil_scene_controller->on_scene_change_data
   );
 }

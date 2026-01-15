@@ -2,23 +2,29 @@
 
 #include <metil_audio/metil_audio_data.h>
 
-#include <stdlib.h>
+#include <clic3_memory.h>
 
 void metil_io_proc_initialize(
   struct metil_audio_data* metil_audio_data
 ) {
   metil_audio_data->length_io_procs = 0;
 
-  metil_audio_data->io_procs = malloc(
+  clic3_memory_allocate(
+    &metil_audio_data->io_procs,
     sizeof(
       metil_audio_io_proc
     ) *
     metil_audio_data->length_io_procs
   );
 
-  metil_audio_data->data_io_procs = malloc(
-    sizeof(void*) *
-    metil_audio_data->length_io_procs
+  clic3_memory_allocate(
+    &metil_audio_data->data_io_procs,
+    (
+      sizeof(
+        void*
+      ) *
+      metil_audio_data->length_io_procs
+    )
   );
 }
 
@@ -30,20 +36,28 @@ void metil_audio_io_proc_add(
     metil_audio_data->length_io_procs + 1
   );
 
-  metil_audio_data->io_procs = realloc(
-    metil_audio_data->io_procs,
-    sizeof(metil_audio_io_proc) *
-    metil_audio_data->length_io_procs
+  clic3_memory_allocate(
+    &metil_audio_data->io_procs,
+    (
+      sizeof(
+        metil_audio_io_proc
+      ) *
+      metil_audio_data->length_io_procs
+    )
   );
 
   metil_audio_data->io_procs[
     metil_audio_data->length_io_procs - 1
   ] = io_proc;
 
-  metil_audio_data->data_io_procs = realloc(
-    metil_audio_data->data_io_procs,
-    sizeof(void*) *
-    metil_audio_data->length_io_procs
+  clic3_memory_allocate(
+    &metil_audio_data->data_io_procs,
+    (
+      sizeof(
+        void*
+      ) *
+      metil_audio_data->length_io_procs
+    )
   );
 
   metil_audio_data->data_io_procs[
@@ -60,10 +74,14 @@ void metil_audio_io_proc_add_with_data(
     metil_audio_data->length_io_procs + 1
   );
 
-  metil_audio_data->io_procs = realloc(
-    metil_audio_data->io_procs,
-    sizeof(metil_audio_io_proc) *
-    metil_audio_data->length_io_procs
+  clic3_memory_allocate(
+    &metil_audio_data->io_procs,
+    (
+      sizeof(
+        metil_audio_io_proc
+      ) *
+      metil_audio_data->length_io_procs
+    )
   );
 
   metil_audio_data->io_procs[
@@ -74,10 +92,14 @@ void metil_audio_io_proc_add_with_data(
     metil_audio_data->length_io_procs - 1
   ] = io_proc;
 
-  metil_audio_data->data_io_procs = realloc(
-    metil_audio_data->data_io_procs,
-    sizeof(void*) *
-    metil_audio_data->length_io_procs
+  clic3_memory_allocate(
+    &metil_audio_data->data_io_procs,
+    (
+      sizeof(
+        void*
+      ) *
+      metil_audio_data->length_io_procs
+    )
   );
 
   metil_audio_data->data_io_procs[
@@ -134,16 +156,24 @@ unsigned char metil_audio_io_proc_remove(
     metil_audio_data->length_io_procs - 1
   );
 
-  metil_audio_data->io_procs = realloc(
-    metil_audio_data->io_procs,
-    sizeof(metil_audio_io_proc) *
-    metil_audio_data->length_io_procs
+  clic3_memory_allocate(
+    &metil_audio_data->io_procs,
+    (
+      sizeof(
+        metil_audio_io_proc
+      ) *
+      metil_audio_data->length_io_procs
+    )
   );
 
-  metil_audio_data->data_io_procs = realloc(
-    metil_audio_data->data_io_procs,
-    sizeof(void*) *
-    metil_audio_data->length_io_procs
+  clic3_memory_allocate(
+    &metil_audio_data->data_io_procs,
+    (
+      sizeof(
+        void*
+      ) *
+      metil_audio_data->length_io_procs
+    )
   );
 
   return 0;
@@ -152,11 +182,11 @@ unsigned char metil_audio_io_proc_remove(
 void metil_audio_io_proc_destroy(
   struct metil_audio_data* metil_audio_data
 ) {
-  free(
+  clic3_memory_free(
     metil_audio_data->io_procs
   );
 
-  free(
+  clic3_memory_free(
     metil_audio_data->data_io_procs
   );
 

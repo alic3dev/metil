@@ -1,20 +1,30 @@
 #include <metil_termination/metil_termination.h>
 
-#include <stdlib.h>
+#include <clic3_memory.h>
 
 void metil_termination_initialize(
   struct metil_termination* metil_termination
 ) {
   metil_termination->length_on_functions = 0;
 
-  metil_termination->on_functions = malloc(
-    sizeof(metil_termination_on_function) *
-    metil_termination->length_on_functions
+  clic3_memory_allocate(
+    &metil_termination->on_functions,
+    (
+      sizeof(
+        metil_termination_on_function
+      ) *
+      metil_termination->length_on_functions
+    )
   );
 
-  metil_termination->on_functions_data = malloc(
-    sizeof(void*) *
-    metil_termination->length_on_functions
+  clic3_memory_allocate(
+    &metil_termination->on_functions_data,
+    (
+      sizeof(
+        void*
+      ) *
+      metil_termination->length_on_functions
+    )
   );
 }
 
@@ -28,10 +38,14 @@ void metil_termination_on_function_add(
     1
   );
 
-  metil_termination->on_functions = realloc(
-    metil_termination->on_functions,
-    sizeof(metil_termination_on_function) *
-    metil_termination->length_on_functions
+  clic3_memory_allocate(
+    &metil_termination->on_functions,
+    (
+      sizeof(
+        metil_termination_on_function
+      ) *
+      metil_termination->length_on_functions
+    )
   );
 
   metil_termination->on_functions[
@@ -39,10 +53,14 @@ void metil_termination_on_function_add(
     1
   ] = on;
 
-  metil_termination->on_functions_data = realloc(
-    metil_termination->on_functions_data,
-    sizeof(void*) *
-    metil_termination->length_on_functions
+  clic3_memory_allocate(
+    &metil_termination->on_functions_data,
+    (
+      sizeof(
+        void*
+      ) *
+      metil_termination->length_on_functions
+    )
   );
 
   metil_termination->on_functions_data[
@@ -90,16 +108,24 @@ void metil_termination_on_function_remove(
         ];
       }
 
-      metil_termination->on_functions = realloc(
-        metil_termination->on_functions,
-        sizeof(metil_termination_on_function) *
-        metil_termination->length_on_functions
+      clic3_memory_allocate(
+        &metil_termination->on_functions,
+        (
+          sizeof(
+            metil_termination_on_function
+          ) *
+          metil_termination->length_on_functions
+        )
       );
 
-      metil_termination->on_functions_data = realloc(
-        metil_termination->on_functions_data,
-        sizeof(void*) *
-        metil_termination->length_on_functions
+      clic3_memory_allocate(
+        &metil_termination->on_functions_data,
+        (
+          sizeof(
+            void*
+          ) *
+          metil_termination->length_on_functions
+        )
       );
 
       index_termination_on = (
@@ -131,11 +157,11 @@ void metil_termination_terminate(
     );
   }
 
-  free(
+  clic3_memory_free(
     metil_termination->on_functions
   );
 
-  free(
+  clic3_memory_free(
     metil_termination->on_functions_data
   );
 }

@@ -4,6 +4,9 @@
 #include <metil_mesh/metil_mesh_text.h>
 
 #include <clic3_char_arrays.h>
+#include <clic3_memory.h>
+
+#include <math_c_maximum.h>
 
 #include <CoreGraphics/CoreGraphics.h>
 #include <CoreText/CoreText.h>
@@ -19,9 +22,14 @@ CGGlyph* metil_text_glyphs_encode(
 ) {
   static CGGlyph* glyphs;
 
-  glyphs = malloc(
-    sizeof(CGGlyph) *
-    length_characters
+  clic3_memory_allocate(
+    &glyphs,
+    (
+      sizeof(
+        CGGlyph
+      ) *
+      length_characters
+    )
   );
 
   UInt16 characters_unicode[length_characters];
@@ -61,15 +69,26 @@ CGGlyph* metil_text_glyphs_encode(
       message_debug_log_error_with_newline
     );
 
-    free(message_debug_log_error);
-    free(message_debug_log_error_with_newline);
+    clic3_memory_free(
+      message_debug_log_error
+    );
 
-    free(glyphs);
+    clic3_memory_free(
+      message_debug_log_error_with_newline
+    );
 
-    return (void*)0;
+    clic3_memory_free(
+      glyphs
+    );
+
+    return (
+      0
+    );
   }
 
-  return glyphs;
+  return (
+    glyphs
+  );
 }
 
 struct metil_text_image* metil_text_render(
@@ -106,9 +125,13 @@ struct metil_text_image* metil_text_render(
 
   CGPoint positions_glyphs[length_characters];
 
-  static struct metil_text_image* text_image;
-  text_image = malloc(
-    sizeof(struct metil_text_image)
+  static struct metil_text_image* text_image = 0;
+
+  clic3_memory_allocate(
+    &text_image,
+    sizeof(
+      struct metil_text_image
+    )
   );
 
   text_image->size.x = metil_text_render_parameters->padding.x;
@@ -119,8 +142,17 @@ struct metil_text_image* metil_text_render(
     index_glyph < length_characters;
     ++index_glyph
   ) {
-    positions_glyphs[index_glyph].x = text_image->size.x;
-    positions_glyphs[index_glyph].y = metil_text_render_parameters->padding.y;
+    positions_glyphs[
+      index_glyph
+    ].x = (
+      text_image->size.x
+    );
+
+    positions_glyphs[
+      index_glyph
+    ].y = (
+      metil_text_render_parameters->padding.y
+    );
 
     text_image->size.x = (
       text_image->size.x +
@@ -130,11 +162,13 @@ struct metil_text_image* metil_text_render(
       metil_text_render_parameters->letter_spacing
     );
 
-    text_image->size.y = fmax(
-      text_image->size.y,
-      bounding_box_glyphs[
-        index_glyph
-      ].size.height
+    text_image->size.y = (
+      math_c_maximum_float(
+        text_image->size.y,
+        bounding_box_glyphs[
+          index_glyph
+        ].size.height
+      )
     );
   }
 
@@ -145,9 +179,16 @@ struct metil_text_image* metil_text_render(
     4 * (text_image->size.x) * (text_image->size.y)
   );
 
-  text_image->data = malloc(
-    sizeof(unsigned char) *
-    length_text_image_data
+  text_image->data = 0;
+
+  clic3_memory_allocate(
+    &text_image->data,
+    (
+      sizeof(
+        unsigned char
+      ) *
+      length_text_image_data
+    )
   );
 
   for (
@@ -168,7 +209,7 @@ struct metil_text_image* metil_text_render(
   );
 
   if (
-    color_space == (void*)0
+    color_space == 0
   ) {
     metil_debug_log_error(
       metil_configuration->debug_log_level,
@@ -187,14 +228,14 @@ struct metil_text_image* metil_text_render(
   );
 
   if (
-    context_bitmap == (void*)0
+    context_bitmap == 0
   ) {
     metil_debug_log_error(
       metil_configuration->debug_log_level,
       "failed_to_create->{CGBitmapContext}\n"
     );
 
-    return (void*)0;
+    return 0;
   }
 
   CTFontDrawGlyphs(
@@ -213,7 +254,9 @@ struct metil_text_image* metil_text_render(
     color_space
   );
 
-  free(glyphs);
+  clic3_memory_free(
+    glyphs
+  );
 
   for (
     unsigned int index_pixel = 0;
@@ -277,14 +320,14 @@ id<MTLTexture> metil_text_mesh_with_texture_initialize(
   );
 
   if (
-    text_image == (void*)0
+    text_image == 0
   ) {
     metil_debug_log_error(
       metil_configuration->debug_log_level,
       "failed_to_render_text_image\n"
     );
 
-    return (void*)0;
+    return 0;
   }
 
   metil_mesh_text_initialize(
@@ -310,11 +353,11 @@ id<MTLTexture> metil_text_mesh_with_texture_initialize(
 void metil_text_image_destroy(
   struct metil_text_image* text_image
 ) {
-  free(
+  clic3_memory_free(
     text_image->data
   );
   
-  free(
+  clic3_memory_free(
     text_image
   );
 }

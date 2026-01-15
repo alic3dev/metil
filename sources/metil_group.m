@@ -3,15 +3,20 @@
 #include <metil.h>
 #include <metil_rendering/metil_renderable.h>
 
-#include <stdlib.h>
+#include <clic3_memory.h>
 
 void metil_group_initialize(
   struct metil_group* metil_group
 ) {
   metil_group->length = 0;
-  metil_group->renderables = malloc(
-    sizeof(struct metil_renderable*) *
-    metil_group->length
+  clic3_memory_allocate(
+    &metil_group->renderables,
+    (
+      sizeof(
+        struct metil_renderable*
+      ) *
+      metil_group->length
+    )
   );
 
   metil_group->visible = (
@@ -44,13 +49,13 @@ void metil_group_add_length_with_renderable_function(
     index_group_renderable < metil_group->length;
     ++index_group_renderable
   ) {
-    metil_group->renderables[
-      index_group_renderable
-    ] = (
-      malloc(
-        sizeof(
-          struct metil_renderable
-        )
+
+    clic3_memory_allocate(
+      &metil_group->renderables[
+        index_group_renderable
+      ],
+      sizeof(
+        struct metil_renderable
       )
     );
 
@@ -266,14 +271,14 @@ void metil_group_destroy(
       ]
     );
 
-    free(
+    clic3_memory_free(
       metil_group->renderables[
         index_renderable
       ]
     );
   }
 
-  free(
+  clic3_memory_free(
     metil_group->renderables
   );
 }
