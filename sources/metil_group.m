@@ -134,10 +134,14 @@ void metil_group_add(
     1
   );
 
-  metil_group->renderables = realloc(
+  clic3_memory_allocate(
     metil_group->renderables,
-    sizeof(struct metil_renderable*) *
-    metil_group->length
+    (
+      sizeof(
+        struct metil_renderable*
+      ) *
+      metil_group->length
+    )
   );
 
   metil_group->renderables[
@@ -194,10 +198,14 @@ void metil_group_remove_at_index(
     1
   );
 
-  metil_group->renderables = realloc(
-    metil_group->renderables,
-    sizeof(struct metil_renderable*) *
-    metil_group->length
+  clic3_memory_allocate(
+    &metil_group->renderables,
+    (
+      sizeof(
+        struct metil_renderable*
+      ) *
+      metil_group->length
+    )
   );
 }
 
@@ -257,10 +265,12 @@ void metil_group_destroy_renderable_at_index(
     1
   );
 
-  metil_group->renderables = realloc(
-    metil_group->renderables,
-    sizeof(struct metil_renderable*) *
-    metil_group->length
+  clic3_memory_allocate(
+    &metil_group->renderables,
+    (
+      sizeof(struct metil_renderable*) *
+      metil_group->length
+    ) 
   );
 }
 

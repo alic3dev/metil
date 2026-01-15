@@ -2,9 +2,9 @@
 
 #include <metil_mesh/metil_mesh.h>
 
-#include <math_c_vector.h>
+#include <clic3_memory.h>
 
-#include <stdlib.h>
+#include <math_c_vector.h>
 
 void metil_mesh_text_initialize(
   struct metil_mesh* mesh,
@@ -26,16 +26,24 @@ void metil_mesh_text_initialize(
     6
   );
 
-  mesh->vertices = realloc(
-    mesh->vertices,
-    sizeof(struct math_c_vector4_float) *
-    mesh->length_vertices
+  clic3_memory_allocate(
+    &mesh->vertices,
+    (
+      sizeof(
+        struct math_c_vector4_float
+      ) *
+      mesh->length_vertices
+    )
   );
 
-  mesh->indices = realloc(
-    mesh->indices,
-    sizeof(unsigned int) *
-    mesh->length_indices
+  clic3_memory_allocate(
+    &mesh->indices,
+    (
+      sizeof(
+        unsigned int
+      ) *
+      mesh->length_indices
+    )
   );
 
   float width_half = width / 2.0f * scale;
