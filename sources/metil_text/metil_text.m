@@ -185,12 +185,7 @@ struct metil_text_image* metil_text_render(
 
   clic3_memory_allocate(
     &text_image->data,
-    (
-      sizeof(
-        unsigned char
-      ) *
-      length_text_image_data
-    )
+    length_text_image_data
   );
 
   for (

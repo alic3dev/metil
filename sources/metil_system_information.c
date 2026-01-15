@@ -10,16 +10,22 @@ void metil_system_information_initialize(
   struct metil_configuration* metil_configuration
 ) {
   unsigned int count_cores_cpu;
-  unsigned long length_count_cores_cpu = sizeof(unsigned int);
+  unsigned long length_count_cores_cpu = (
+    sizeof(
+      unsigned int
+    )
+  );
   
   metil_system_information->cores_cpu = 1;
 
-  int status_core_count = sysctlbyname(
-    "hw.ncpu",
-    &count_cores_cpu,
-    &length_count_cores_cpu,
-    0,
-    0
+  int status_core_count = (
+    sysctlbyname(
+      "hw.ncpu",
+      &count_cores_cpu,
+      &length_count_cores_cpu,
+      0,
+      0
+    )
   );
 
   if (
