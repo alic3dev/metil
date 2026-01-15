@@ -412,6 +412,7 @@ id<MTLTexture> metil_texture_concrete_secondary_generate(
   );
 
   static id<MTLTexture> texture;
+
   texture = [
     metal_device
     newTextureWithDescriptor: texture_descriptor

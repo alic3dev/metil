@@ -38,7 +38,7 @@ void metil_group_add_length_with_renderable_function(
   );
 
   clic3_memory_allocate(
-    metil_group->renderables,
+    &metil_group->renderables,
     (
       sizeof(
         struct metil_renderable*

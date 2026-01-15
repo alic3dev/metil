@@ -25,7 +25,7 @@ void metil_renderable_allocate_object(
   renderable->renderable = 0;
 
   clic3_memory_allocate(
-    renderable->renderable,
+    &renderable->renderable,
     sizeof(
       struct metil_object
     )
@@ -38,7 +38,7 @@ void metil_renderable_allocate_model(
   renderable->renderable = 0;
 
   clic3_memory_allocate(
-    renderable->renderable,
+    &renderable->renderable,
     sizeof(
       struct metil_model
     )
