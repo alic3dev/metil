@@ -20,5 +20,4 @@ id<MTLTexture> _Nonnull metil_texture_concrete_secondary_generate(
   id<MTLDevice> _Nonnull
 );
 
-
 #endif
