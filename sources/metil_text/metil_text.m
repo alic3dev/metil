@@ -20,7 +20,7 @@ CGGlyph* metil_text_glyphs_encode(
   CTFontRef font,
   struct metil_configuration* metil_configuration
 ) {
-  static CGGlyph* glyphs;
+  static CGGlyph* glyphs = 0;
 
   clic3_memory_allocate(
     &glyphs,

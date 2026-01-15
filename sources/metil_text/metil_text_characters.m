@@ -20,10 +20,10 @@ void metil_text_characters_initialize(
     metil_text_characters_length_default
   );
 
-  metil_text_characters_default->meshes = (void*) 0;
-  metil_text_characters_default->indices = (void*) 0;
-  metil_text_characters_default->vertices = (void*) 0;
-  metil_text_characters_default->textures = (void*) 0;
+  metil_text_characters_default->meshes = 0;
+  metil_text_characters_default->indices = 0;
+  metil_text_characters_default->vertices = 0;
+  metil_text_characters_default->textures = 0;
 
   clic3_memory_allocate(
     &metil_text_characters_default->meshes,

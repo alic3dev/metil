@@ -12,6 +12,7 @@ void metil_menu_initialize(
 ) {
   menu->index_current = 0;
 
+  menu->items = 0;
   menu->length_items = 0;
 
   clic3_memory_allocate(

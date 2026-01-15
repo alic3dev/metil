@@ -29,10 +29,10 @@ void metil_scene_initialize_with_renderables(
     &metil->player_defaults
   );
 
+  scene->renderables = 0;
   scene->length_renderables = (
     length_renderables
   );
-  scene->renderables = 0;
 
   clic3_memory_allocate(
     &scene->renderables,

@@ -5,6 +5,8 @@
 void metil_termination_initialize(
   struct metil_termination* metil_termination
 ) {
+  metil_termination->on_functions = 0;
+  metil_termination->on_functions_data = 0;
   metil_termination->length_on_functions = 0;
 
   clic3_memory_allocate(

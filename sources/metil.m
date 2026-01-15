@@ -22,6 +22,8 @@ void metil_structure_initialize(
     &metil->player_defaults
   );
 
+  metil->scene_controller = 0;
+  
   clic3_memory_allocate(
     &metil->scene_controller,
     sizeof(

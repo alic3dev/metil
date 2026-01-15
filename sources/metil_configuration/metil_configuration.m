@@ -60,7 +60,7 @@ unsigned char metil_configuration_load(
     return status_configuration_load;
   }
 
-  char* buffer;
+  char* buffer = 0;
   unsigned int length_buffer = 0;
 
   clic3_memory_allocate(
@@ -72,10 +72,20 @@ unsigned char metil_configuration_load(
     feof(file_configuration) == 0 &&
     status_configuration_load == 0
   ) {
-    char c = getc(file_configuration);
+    char c = (
+      getc(
+        file_configuration
+      )
+    );
 
     if (
-      length_buffer + 1 >= UINT_MAX - 1
+      (
+        length_buffer +
+        1
+      ) >= (
+        UINT_MAX -
+        1
+      )
     ) {
       metil_debug_log_error(
         metil_configuration->debug_log_level,
@@ -91,7 +101,9 @@ unsigned char metil_configuration_load(
       c == EOF ||
       c == '\n'
     ) {
-      if (length_buffer != 0) {
+      if (
+        length_buffer != 0
+      ) {
         unsigned int index_pointer = 0;
 
         for (
@@ -127,7 +139,7 @@ unsigned char metil_configuration_load(
           break;
         }
 
-        char* buffer_parameter;
+        char* buffer_parameter = 0;
         unsigned int length_buffer_parameter = (
           index_pointer
         );
@@ -146,9 +158,11 @@ unsigned char metil_configuration_load(
           length_buffer_parameter
         );
 
-        buffer_parameter[length_buffer_parameter] = '\0';
+        buffer_parameter[
+          length_buffer_parameter
+        ] = '\0';
 
-        char* buffer_value;
+        char* buffer_value = 0;
         unsigned int length_buffer_value = (
           (length_buffer - 2) -
           (index_pointer + 3)

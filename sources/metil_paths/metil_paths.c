@@ -75,12 +75,7 @@ void metil_paths_directory_root_set(
 
     clic3_memory_allocate(
       &metil_paths->directory_root,
-      (
-        sizeof(
-          char
-        ) *
-        metil_paths->length_directory_root
-      )
+      metil_paths->length_directory_root
     );
 
     metil_paths->directory_root[0] = '.';
@@ -91,12 +86,7 @@ void metil_paths_directory_root_set(
 
     clic3_memory_allocate(
       &metil_paths->directory_root,
-      (
-        sizeof(
-          char
-        ) *
-        metil_paths->length_directory_root
-      )
+      metil_paths->length_directory_root
     );
 
     clic3_bytes_copy(

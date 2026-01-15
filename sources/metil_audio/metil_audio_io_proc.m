@@ -9,6 +9,9 @@ void metil_io_proc_initialize(
 ) {
   metil_audio_data->length_io_procs = 0;
 
+  metil_audio_data->io_procs = 0;
+  metil_audio_data->data_io_procs = 0;
+
   clic3_memory_allocate(
     &metil_audio_data->io_procs,
     sizeof(

@@ -579,7 +579,7 @@ void example_collision_scene_initialize(
     texture_descriptor.height
   );
 
-  unsigned char* pixel_bytes;
+  unsigned char* pixel_bytes = 0;
 
   clic3_memory_allocate(
     &pixel_bytes,
