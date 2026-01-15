@@ -16,13 +16,21 @@ void metil_texture_image_get_from_region_with_offsets(
   MTLRegion* mtl_region,
   const struct metil_image_offsets* metil_image_offsets
 ) {
-  *length_pixel_bytes_row = (
+  unsigned int value_length_pixel_bytes_row = (
     mtl_region->size.width *
     metil_image_offsets->bytes
   );
 
+  if (
+    length_pixel_bytes_row != (void*) 0
+  ) {
+    *length_pixel_bytes_row = (
+      value_length_pixel_bytes_row   
+    );
+  }
+
   *length_pixel_bytes = (
-    *length_pixel_bytes_row *
+    value_length_pixel_bytes_row *
     mtl_region->size.height
   );
 
@@ -52,7 +60,7 @@ void metil_texture_image_get_from_region_with_offsets(
   [
     texture
     getBytes: *pixel_bytes
-    bytesPerRow: *length_pixel_bytes_row
+    bytesPerRow: value_length_pixel_bytes_row
     fromRegion: *mtl_region
     mipmapLevel: 0x00
   ];
