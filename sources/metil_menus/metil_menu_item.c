@@ -2,8 +2,6 @@
 
 #include <clic3_memory.h>
 
-#include <stdlib.h>
-
 void metil_menu_item_initialize(
   struct metil_menu_item* metil_menu_item,
   enum metil_menu_item_type metil_menu_item_type,
