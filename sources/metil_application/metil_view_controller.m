@@ -5,7 +5,7 @@
 #include <metil_application/metil_window.h>
 #include <metil_rendering/metil_renderer.h>
 
-metil_view_controller_on_view_did_load_function metil_view_controller_on_view_did_load = (void*) 0;
+metil_view_controller_on_view_did_load_function metil_view_controller_on_view_did_load = 0;
 
 @implementation metil_view_controller {
   metil_view* view;
@@ -16,7 +16,7 @@ metil_view_controller_on_view_did_load_function metil_view_controller_on_view_di
   [super viewDidLoad];
 
   if (
-    metil_view_controller_on_view_did_load != (void*) 0
+    metil_view_controller_on_view_did_load != 0
   ) {
     metil_view_controller_on_view_did_load();
   }

@@ -41,7 +41,7 @@ int metil_initialize(
     parameters,
     name,
     metil_renderer_on_initialize_function,
-    (void*)0
+    0
   );
 }
 

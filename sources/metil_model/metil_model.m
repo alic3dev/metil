@@ -555,7 +555,7 @@ void metil_model_destroy(
     metil_object->buffers_vertex[
       metil_object_buffer_default_index_joints
     ].buffer = (
-      (void*) 0
+      0
     );
 
     metil_object->destroy(

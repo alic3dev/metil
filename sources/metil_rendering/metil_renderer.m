@@ -53,7 +53,7 @@
   self = [super init];
 
   if (
-    self == (void*)0
+    self == 0
   ) {
     return self;
   }
@@ -144,7 +144,7 @@
   [self descriptor_pipeline_render_initialize];
 
   if (
-    self->metil->renderer_on_initialize != (void*) 0
+    self->metil->renderer_on_initialize != 0
   ) {
     self->metil->renderer_on_initialize(
       self->metil,
@@ -813,9 +813,9 @@
   if (
     self->pipelines_render[
       index_pipeline_render
-    ] == (void*) 0 &&
-    function_fragment != (void*)0 &&
-    function_vertex != (void*)0
+    ] == 0 &&
+    function_fragment != 0 &&
+    function_vertex != 0
   ) {
     self->descriptor_pipeline_render.fragmentFunction = function_fragment;
     self->descriptor_pipeline_render.vertexFunction = function_vertex;
@@ -824,7 +824,7 @@
       index_pipeline_render
     ] = [self->metil->renderer_interface.metal_device
       newRenderPipelineStateWithDescriptor: self->descriptor_pipeline_render
-      error: (void*)0
+      error: 0
     ];
   }
 }

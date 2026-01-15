@@ -5,17 +5,17 @@
 void metil_library_pre_initialize(
   struct metil_library* metil_library
 ) {
-  metil_library->library = (void*) 0;
-  metil_library->function_fragment = (void*) 0;
-  metil_library->function_vertex = (void*) 0;
+  metil_library->library = 0;
+  metil_library->function_fragment = 0;
+  metil_library->function_vertex = 0;
 
-  metil_library->library_fps_display = (void*) 0;
-  metil_library->function_fragment_fps_display = (void*) 0;
-  metil_library->function_vertex_fps_display = (void*) 0;
+  metil_library->library_fps_display = 0;
+  metil_library->function_fragment_fps_display = 0;
+  metil_library->function_vertex_fps_display = 0;
 
-  metil_library->library_wireframe = (void*) 0;
-  metil_library->function_fragment_wireframe = (void*) 0;
-  metil_library->function_vertex_wireframe = (void*) 0;
+  metil_library->library_wireframe = 0;
+  metil_library->function_fragment_wireframe = 0;
+  metil_library->function_vertex_wireframe = 0;
 }
 
 void metil_library_initialize(
@@ -25,7 +25,7 @@ void metil_library_initialize(
   NSString* name_function_vertex
 ) {
   if (
-    metil_library->library == (void*)0
+    metil_library->library == 0
   ) {
     metil_library->library = [metal_device newDefaultLibrary];
   }
@@ -59,11 +59,11 @@ void metil_library_fps_display_initialize(
   id<MTLLibrary> library_fps_display
 ) {
   if (
-    library_fps_display != (void*)0
+    library_fps_display != 0
   ) {
     metil_library->library_fps_display = library_fps_display;
   } else if (
-    metil_library->library != (void*)0
+    metil_library->library != 0
   ) {
     metil_library->library_fps_display = (
       metil_library->library
@@ -89,11 +89,11 @@ void metil_library_wireframe_initialize(
   id<MTLLibrary> library_wireframe
 ) {
   if (
-    library_wireframe != (void*)0
+    library_wireframe != 0
   ) {
     metil_library->library_wireframe = library_wireframe;
   } else if (
-    metil_library->library != (void*)0
+    metil_library->library != 0
   ) {
     metil_library->library_wireframe = (
       metil_library->library

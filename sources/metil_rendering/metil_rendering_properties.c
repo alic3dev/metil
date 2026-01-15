@@ -16,7 +16,7 @@ void metil_rendering_properties_initialize(
 
   pthread_mutex_init(
     &metil_rendering_properties->mutex_frame,
-    (void*)0
+    0
   );
 
   metil_rendering_properties->count_completed_frames = (

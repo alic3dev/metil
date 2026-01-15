@@ -10,7 +10,7 @@ void metil_text_defaults_initialize(
   metil_text_defaults->object_text_index_pipeline_render = 0;
 
   metil_text_defaults->render_parameters.font = (
-    (void*) 0
+    0
   );
 
   metil_text_defaults->render_parameters.letter_spacing = 2;
@@ -27,7 +27,7 @@ void metil_text_defaults_initialize(
   metil_text_defaults->render_parameters.font = CTFontCreateWithName(
     name_family_font_monospace,
     48.0,
-    (void*) 0
+    0
   );
 
   CFRelease(

@@ -29,8 +29,8 @@ void metil_positioning_view_model_matrix_projection_set(
     position,
     rotation,
     position_player,
-    (void*) 0,
-    (void*) 0,
+    0,
+    0,
     metil_camera
   );
 }
@@ -52,7 +52,7 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
     positioning == metil_positioning_absolute
   ) {
     if (
-      position_offset != (void*) 0
+      position_offset != 0
     ) {
       *view_model_matrix_projection = (matrix_float4x4) {{
         { 1.0f, 0.0f, 0.0f, 0.0f },
@@ -88,7 +88,7 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
     positioning == metil_positioning_static
   ) {
     if (
-      position_offset != (void*) 0
+      position_offset != 0
     ) {
       *view_model_matrix_projection = (matrix_float4x4) {{
         matrix_projection_static->columns[0],
@@ -124,7 +124,7 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
     struct math_c_vector3_float position_translated;
 
     if (
-      position_offset != (void*) 0
+      position_offset != 0
     ) {
       position_translated.x = (
         position_offset->x -
@@ -150,7 +150,7 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
       position_translated.z = -position_player->z;
     }
 
-    matrix_float4x4* matrix_projection = (void*) 0;
+    matrix_float4x4* matrix_projection = 0;
 
     if (
       positioning == metil_positioning_player
@@ -213,7 +213,7 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
     }};
 
     if (
-      rotation_offset != (void*)0
+      rotation_offset != 0
     ) {
       matrix_projection_object_offset_with_rotation = matrix_multiply(
         matrix_projection_object_offset_with_rotation,

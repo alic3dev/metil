@@ -683,7 +683,7 @@ void example_face_scene_destroy(
 
   object_points->length_buffers_vertex = 0;
 
-  object_points->indices = (void*) 0;
+  object_points->indices = 0;
 
   metil_scene_destroy_default(
     metil,

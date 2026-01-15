@@ -65,7 +65,7 @@ void metil_audio_io_proc_add(
 
   metil_audio_data->data_io_procs[
     metil_audio_data->length_io_procs - 1
-  ] = (void*)0;
+  ] = 0;
 }
 
 void metil_audio_io_proc_add_with_data(

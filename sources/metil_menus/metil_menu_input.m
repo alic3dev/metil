@@ -36,7 +36,7 @@ void metil_menu_poll_input(
   );
   
   struct metil_menu_item* metil_menu_item = (
-    (void*) 0
+    0
   );
 
   if (
