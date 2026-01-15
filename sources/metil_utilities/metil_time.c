@@ -7,7 +7,7 @@ unsigned long int metil_time_milliseconds_get() {
 
   gettimeofday(
     &timeval,
-    (void*)0
+    0
   );
 
   return (

@@ -17,6 +17,8 @@
 #include <metil_scenes/metil_scene.h>
 #include <metil_utilities/metil_stopwatch.h>
 
+#include <clic3_memory.h>
+
 #include <math_c_absolute.h>
 #include <math_c_vector.h>
 #include <math_c_vector_distance.h>
@@ -33,11 +35,10 @@ void example_collision_scene_initialize(
     scene_example_collision_length_renderables
   );
 
-  scene->data = (
-    malloc(
-      sizeof(
-        struct metil_stopwatch
-      )
+  clic3_memory_allocate(
+    &scene->data,
+    sizeof(
+      struct metil_stopwatch
     )
   );
 
@@ -112,16 +113,16 @@ void example_collision_scene_initialize(
     2.0f
   );
 
-  metil_mesh_floor->indices = realloc(
-    metil_mesh_floor->indices,
+  clic3_memory_allocate(
+    &metil_mesh_floor->indices,
     sizeof(
       unsigned int
     ) *
     metil_mesh_floor->length_indices
   );
 
-  metil_mesh_floor->vertices = realloc(
-    metil_mesh_floor->vertices,
+  clic3_memory_allocate(
+    &metil_mesh_floor->vertices,
     sizeof(
       struct math_c_vector4_float
     ) *
@@ -539,9 +540,9 @@ void example_collision_scene_initialize(
 
   scene->length_textures = 2;
 
-  scene->textures = (
-    realloc(
-      scene->textures,
+  clic3_memory_allocate(
+    &scene->textures,
+    (
       sizeof(
         id<MTLTexture>
       ) *
@@ -578,13 +579,14 @@ void example_collision_scene_initialize(
     texture_descriptor.height
   );
 
-  unsigned char* pixel_bytes = (
-    malloc(
-      sizeof(
-        unsigned char
-      ) *
-      length_bytes_texture
-    )
+  unsigned char* pixel_bytes = 0;
+
+  clic3_memory_allocate(
+    &pixel_bytes,
+    sizeof(
+      unsigned char
+    ) *
+    length_bytes_texture
   );
 
   for (
@@ -765,7 +767,7 @@ void example_collision_scene_initialize(
     release
   ];
 
-  free(
+  clic3_memory_free(
     pixel_bytes
   );
 
@@ -843,13 +845,12 @@ void scene_example_collision_populate_targets(
 
     float distance = 100.0f;
 
-    metil_object_target->data = (
-      malloc(
-        sizeof(
-          float
-        ) *
-        2
-      )
+    clic3_memory_allocate(
+      &metil_object_target->data,
+      sizeof(
+        float
+      ) *
+      2
     );
 
     ((float*) metil_object_target->data)[0] = (
@@ -988,8 +989,9 @@ void example_collision_scene_poll(
         2.0f
       );
 
-      metil_object_projectile->data = (
-        malloc(
+      clic3_memory_allocate(
+        &metil_object_projectile->data,
+        (
           sizeof(
             float
           ) *

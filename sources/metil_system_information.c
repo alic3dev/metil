@@ -18,7 +18,7 @@ void metil_system_information_initialize(
     "hw.ncpu",
     &count_cores_cpu,
     &length_count_cores_cpu,
-    (void*)0,
+    0,
     0
   );
 

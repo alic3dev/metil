@@ -371,11 +371,11 @@ id<MTLTexture> metil_texture_concrete_generate(
     release
   ];
 
-  free(
+  clic3_memory_free(
     pixel_bytes
   );
 
-  free(
+  clic3_memory_free(
     pixel_bytes_secondary
   );
 
@@ -412,6 +412,7 @@ id<MTLTexture> metil_texture_concrete_secondary_generate(
   );
 
   static id<MTLTexture> texture;
+
   texture = [
     metal_device
     newTextureWithDescriptor: texture_descriptor
@@ -432,8 +433,12 @@ id<MTLTexture> metil_texture_concrete_secondary_generate(
     texture_descriptor.height
   );
 
-  unsigned char* pixel_bytes = (
-    malloc(
+  unsigned char* pixel_bytes = 0;
+  unsigned char* pixel_bytes_secondary = 0;
+
+  clic3_memory_allocate(
+    &pixel_bytes,
+    (
       sizeof(
         unsigned char
       ) *
@@ -441,8 +446,9 @@ id<MTLTexture> metil_texture_concrete_secondary_generate(
     )
   );
 
-  unsigned char* pixel_bytes_secondary = (
-    malloc(
+  clic3_memory_allocate(
+    &pixel_bytes_secondary,
+    (
       sizeof(
         unsigned char
       ) *
@@ -614,11 +620,11 @@ id<MTLTexture> metil_texture_concrete_secondary_generate(
     release
   ];
 
-  free(
+  clic3_memory_free(
     pixel_bytes
   );
 
-  free(
+  clic3_memory_free(
     pixel_bytes_secondary
   );
 

@@ -2,39 +2,44 @@
 
 #include <clic3_memory.h>
 
-#include <stdlib.h>
-
 void metil_mesh_initialize(
   struct metil_mesh* metil_mesh
 ) {
+  metil_mesh->indices = 0;
   metil_mesh->length_indices = 0;
+
+  metil_mesh->vertices = 0;
   metil_mesh->length_vertices = 0;
 
   metil_mesh->size.x = 0.0f;
   metil_mesh->size.y = 0.0f;
   metil_mesh->size.z = 0.0f;
 
-  metil_mesh->indices = malloc(
-    sizeof(unsigned int) *
-    metil_mesh->length_indices
+  clic3_memory_allocate(
+    &metil_mesh->indices,
+    0
   );
 
-  metil_mesh->vertices = malloc(
-    sizeof(struct math_c_vector4_float) *
-    metil_mesh->length_vertices
+  clic3_memory_allocate(
+    &metil_mesh->vertices,
+    0
   );
 
-  metil_mesh->data = (void*)0;
+  metil_mesh->data = (
+    0
+  );
 }
 
 void metil_mesh_clone(
   struct metil_mesh* mesh_source,
   struct metil_mesh* mesh_clone
 ) {
+  mesh_clone->indices = 0;
   mesh_clone->length_indices = (
     mesh_source->length_indices
   );
 
+  mesh_clone->vertices = 0;
   mesh_clone->length_vertices = (
     mesh_source->length_vertices
   );
@@ -51,14 +56,24 @@ void metil_mesh_clone(
     mesh_source->size.z
   );
 
-  mesh_clone->indices = malloc(
-    sizeof(unsigned int) *
-    mesh_clone->length_indices
+  clic3_memory_allocate(
+    &mesh_clone->indices,
+    (
+      sizeof(
+        unsigned int
+      ) *
+      mesh_clone->length_indices
+    )
   );
 
-  mesh_clone->vertices = malloc(
-    sizeof(struct math_c_vector4_float) *
-    mesh_clone->length_vertices
+  clic3_memory_allocate(
+    &mesh_clone->vertices,
+    (
+      sizeof(
+        struct math_c_vector4_float
+      ) *
+      mesh_clone->length_vertices
+    )
   );
 
   for (
@@ -113,7 +128,7 @@ void metil_mesh_clone(
     );
   }
 
-  mesh_clone->data = (void*) 0;
+  mesh_clone->data = 0;
 }
 
 void metil_mesh_destroy(

@@ -5,7 +5,6 @@
 
 #include <clic3_memory.h>
 
-#include <stdlib.h>
 #include <sys/time.h>
 
 void metil_menu_initialize(
@@ -13,12 +12,17 @@ void metil_menu_initialize(
 ) {
   menu->index_current = 0;
 
+  menu->items = 0;
   menu->length_items = 0;
-  menu->items = malloc(
-    sizeof(
-      struct metil_menu_item
-    ) *
-    menu->length_items
+
+  clic3_memory_allocate(
+    &menu->items,
+    (
+      sizeof(
+        struct metil_menu_item
+      ) *
+      menu->length_items
+    )
   );
 
   menu->index_selected = -1;
@@ -41,10 +45,14 @@ void metil_menu_item_add(
     menu->length_items + 1
   );
 
-  menu->items = realloc(
-    menu->items,
-    sizeof(struct metil_menu_item) *
-    menu->length_items
+  clic3_memory_allocate(
+    &menu->items,
+    (
+      sizeof(
+        struct metil_menu_item
+      ) *
+      menu->length_items
+    )
   );
 
   metil_menu_item_initialize(

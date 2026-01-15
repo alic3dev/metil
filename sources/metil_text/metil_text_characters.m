@@ -2,6 +2,8 @@
 
 #include <metil_text/metil_text.h>
 
+#include <clic3_memory.h>
+
 #include <math_c_vector.h>
 
 #include <Metal/MTLBuffer.h>
@@ -18,24 +20,39 @@ void metil_text_characters_initialize(
     metil_text_characters_length_default
   );
 
-  metil_text_characters_default->meshes = (void*) 0;
-  metil_text_characters_default->indices = (void*) 0;
-  metil_text_characters_default->vertices = (void*) 0;
-  metil_text_characters_default->textures = (void*) 0;
+  metil_text_characters_default->meshes = 0;
+  metil_text_characters_default->indices = 0;
+  metil_text_characters_default->vertices = 0;
+  metil_text_characters_default->textures = 0;
 
-  metil_text_characters_default->meshes = malloc(
-    sizeof(struct metil_mesh) *
-    metil_text_characters_default->length_characters
+  clic3_memory_allocate(
+    &metil_text_characters_default->meshes,
+    (
+      sizeof(
+        struct metil_mesh
+      ) *
+      metil_text_characters_default->length_characters
+    )
   );
 
-  metil_text_characters_default->vertices = malloc(
-    sizeof(id<MTLTexture>) *
-    metil_text_characters_default->length_characters
+  clic3_memory_allocate(
+    &metil_text_characters_default->vertices,
+    (
+      sizeof(
+        id<MTLTexture>
+      ) *
+      metil_text_characters_default->length_characters
+    )
   );
 
-  metil_text_characters_default->textures = malloc(
-    sizeof(id<MTLTexture>) *
-    metil_text_characters_default->length_characters
+  clic3_memory_allocate(
+    &metil_text_characters_default->textures,
+    (
+      sizeof(
+        id<MTLTexture>
+      ) *
+      metil_text_characters_default->length_characters
+    )
   );
 
   char character_array[2] = { 0, '\0' };
@@ -126,15 +143,15 @@ void metil_text_characters_destroy(
 
   [metil_text_characters_default->indices release];
 
-  free(
+  clic3_memory_free(
     metil_text_characters_default->meshes
   );
 
-  free(
+  clic3_memory_free(
     metil_text_characters_default->vertices
   );
 
-  free(
+  clic3_memory_free(
     metil_text_characters_default->textures
   );
 }

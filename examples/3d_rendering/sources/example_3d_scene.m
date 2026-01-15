@@ -8,9 +8,9 @@
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_scenes/metil_scene.h>
 
-#include <math_c_vector.h>
+#include <clic3_memory.h>
 
-#include <stdlib.h>
+#include <math_c_vector.h>
 
 void example_3d_scene_initialize(
   struct metil* metil,
@@ -25,7 +25,7 @@ void example_3d_scene_initialize(
   scene->poll = example_3d_scene_poll;
 
   struct metil_object* object = (
-    (void*)0
+    0
   );
 
   for (
@@ -120,16 +120,24 @@ void example_3d_scene_initialize(
     metil_mesh->length_vertices = 400;
     metil_mesh->length_indices = 404;
 
-    metil_mesh->indices = realloc(
-      metil_mesh->indices,
-      sizeof(unsigned int) *
-      metil_mesh->length_indices
+    clic3_memory_allocate(
+      &metil_mesh->indices,
+      (
+        sizeof(
+          unsigned int
+        ) *
+        metil_mesh->length_indices
+      )
     );
 
-    metil_mesh->vertices = realloc(
-      metil_mesh->vertices,
-      sizeof(struct math_c_vector4_float) *
-      metil_mesh->length_vertices
+    clic3_memory_allocate(
+      &metil_mesh->vertices,
+      (
+        sizeof(
+          struct math_c_vector4_float
+        ) *
+        metil_mesh->length_vertices
+      )
     );
 
     float size_segment = (

@@ -63,7 +63,7 @@ OSStatus metil_audio_output_io_proc(
 
   struct metil_audio_io_proc_data metil_audio_io_proc_data = {
     .metil = metil,
-    .data = (void*) 0
+    .data = 0
   };
 
   for (

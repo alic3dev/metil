@@ -13,25 +13,44 @@ void metil_model_initialize(
   struct metil_model* metil_model
 ) {
   metil_model->length_objects = 0;
-  metil_model->objects = malloc(
-    sizeof(struct metil_object) *
-    metil_model->length_objects
+  metil_model->objects = 0;
+
+  clic3_memory_allocate(
+    &metil_model->objects,
+    (
+      sizeof(
+        struct metil_object
+      ) *
+      metil_model->length_objects
+    )
   );
 
-  metil_model->vertex_joint_maps = (
-    (void*) 0
-  );
+  metil_model->vertex_joint_maps = 0;
 
+  metil_model->joints = 0;
   metil_model->length_joints = 0;
-  metil_model->joints = malloc(
-    sizeof(struct metil_joint) *
-    metil_model->length_joints
+
+  clic3_memory_allocate(
+    &metil_model->joints,
+    (
+      sizeof(
+        struct metil_joint
+      ) *
+      metil_model->length_joints
+    )
   );
   
   metil_model->length_textures = 0;
-  metil_model->textures = malloc(
-    sizeof(id<MTLTexture>) *
-    metil_model->length_textures
+  metil_model->textures = 0;
+
+  clic3_memory_allocate(
+    &metil_model->textures,
+    (
+      sizeof(
+        id<MTLTexture>
+      ) *
+      metil_model->length_textures
+    )
   );
 
   metil_model->position.x = 0.0f;
@@ -49,9 +68,7 @@ void metil_model_initialize(
   metil_model->destroy = metil_model_destroy;
   metil_model->poll = metil_model_poll;
 
-  metil_model->data = (
-    (void*) 0
-  );
+  metil_model->data = 0;
 }
 
 void metil_model_objects_add(
@@ -72,10 +89,14 @@ void metil_model_objects_add_length(
     length
   );
 
-  metil_model->objects = realloc(
-    metil_model->objects,
-    sizeof(struct metil_object) *
-    metil_model->length_objects
+  clic3_memory_allocate(
+    &metil_model->objects,
+    (
+      sizeof(
+        struct metil_object
+      ) *
+      metil_model->length_objects
+    )
   );
 
   for (
@@ -118,10 +139,14 @@ void metil_model_joints_add_length(
     length_metil_joints
   );
 
-  metil_model->joints = realloc(
-    metil_model->joints,
-    sizeof(struct metil_joint) *
-    metil_model->length_joints
+  clic3_memory_allocate(
+    &metil_model->joints,
+    (
+      sizeof(
+        struct metil_joint
+      ) *
+      metil_model->length_joints
+    )
   );
 
   for (
@@ -143,9 +168,14 @@ void metil_model_joints_add_length(
 void metil_model_vertex_joint_maps_initialize(
   struct metil_model* metil_model
 ) {
-  metil_model->vertex_joint_maps = malloc(
-    sizeof(unsigned int*) *
-    metil_model->length_objects
+  clic3_memory_allocate(
+    &metil_model->vertex_joint_maps,
+    (
+      sizeof(
+        unsigned int*
+      ) *
+      metil_model->length_objects
+    )
   );
 
   for (
@@ -161,9 +191,18 @@ void metil_model_vertex_joint_maps_initialize(
 
     metil_model->vertex_joint_maps[
       index_vertex_joint_map
-    ] = malloc(
-      sizeof(unsigned int) *
-      length_vertex_joint_map
+    ] = 0;
+
+    clic3_memory_allocate(
+      &metil_model->vertex_joint_maps[
+        index_vertex_joint_map
+      ],
+      (
+        sizeof(
+          unsigned int
+        ) *
+        length_vertex_joint_map
+      )
     );
 
     for (
@@ -516,7 +555,7 @@ void metil_model_destroy(
     metil_object->buffers_vertex[
       metil_object_buffer_default_index_joints
     ].buffer = (
-      (void*) 0
+      0
     );
 
     metil_object->destroy(

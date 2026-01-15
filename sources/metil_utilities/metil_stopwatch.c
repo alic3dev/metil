@@ -8,7 +8,7 @@ void metil_stopwatch_start(
 ) {
   gettimeofday(
     &metil_stopwatch->timeval,
-    (void*) 0
+    0
   );
 }
 

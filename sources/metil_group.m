@@ -3,15 +3,22 @@
 #include <metil.h>
 #include <metil_rendering/metil_renderable.h>
 
-#include <stdlib.h>
+#include <clic3_memory.h>
 
 void metil_group_initialize(
   struct metil_group* metil_group
 ) {
+  metil_group->renderables = 0;
   metil_group->length = 0;
-  metil_group->renderables = malloc(
-    sizeof(struct metil_renderable*) *
-    metil_group->length
+
+  clic3_memory_allocate(
+    &metil_group->renderables,
+    (
+      sizeof(
+        struct metil_renderable*
+      ) *
+      metil_group->length
+    )
   );
 
   metil_group->visible = (
@@ -30,10 +37,14 @@ void metil_group_add_length_with_renderable_function(
     length
   );
 
-  metil_group->renderables = realloc(
-    metil_group->renderables,
-    sizeof(struct metil_renderable*) *
-    metil_group->length
+  clic3_memory_allocate(
+    &metil_group->renderables,
+    (
+      sizeof(
+        struct metil_renderable*
+      ) *
+      metil_group->length
+    )
   );
 
   for (
@@ -46,11 +57,14 @@ void metil_group_add_length_with_renderable_function(
   ) {
     metil_group->renderables[
       index_group_renderable
-    ] = (
-      malloc(
-        sizeof(
-          struct metil_renderable
-        )
+    ] = 0;
+
+    clic3_memory_allocate(
+      &metil_group->renderables[
+        index_group_renderable
+      ],
+      sizeof(
+        struct metil_renderable
       )
     );
 
@@ -120,10 +134,14 @@ void metil_group_add(
     1
   );
 
-  metil_group->renderables = realloc(
+  clic3_memory_allocate(
     metil_group->renderables,
-    sizeof(struct metil_renderable*) *
-    metil_group->length
+    (
+      sizeof(
+        struct metil_renderable*
+      ) *
+      metil_group->length
+    )
   );
 
   metil_group->renderables[
@@ -180,10 +198,14 @@ void metil_group_remove_at_index(
     1
   );
 
-  metil_group->renderables = realloc(
-    metil_group->renderables,
-    sizeof(struct metil_renderable*) *
-    metil_group->length
+  clic3_memory_allocate(
+    &metil_group->renderables,
+    (
+      sizeof(
+        struct metil_renderable*
+      ) *
+      metil_group->length
+    )
   );
 }
 
@@ -243,10 +265,12 @@ void metil_group_destroy_renderable_at_index(
     1
   );
 
-  metil_group->renderables = realloc(
-    metil_group->renderables,
-    sizeof(struct metil_renderable*) *
-    metil_group->length
+  clic3_memory_allocate(
+    &metil_group->renderables,
+    (
+      sizeof(struct metil_renderable*) *
+      metil_group->length
+    ) 
   );
 }
 
@@ -266,14 +290,14 @@ void metil_group_destroy(
       ]
     );
 
-    free(
+    clic3_memory_free(
       metil_group->renderables[
         index_renderable
       ]
     );
   }
 
-  free(
+  clic3_memory_free(
     metil_group->renderables
   );
 }

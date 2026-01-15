@@ -2,7 +2,7 @@
 
 #include <metil_mesh/metil_mesh.h>
 
-#include <stdlib.h>
+#include <clic3_memory.h>
 
 void metil_mesh_box_initialize(
   struct metil_mesh* metil_mesh,
@@ -25,16 +25,24 @@ void metil_mesh_box_initialize(
   metil_mesh->length_vertices = 8;
   metil_mesh->length_indices = 36;
 
-  metil_mesh->indices = realloc(
-    metil_mesh->indices,
-    sizeof(unsigned int) *
-    metil_mesh->length_indices
+  clic3_memory_allocate(
+    &metil_mesh->indices,
+    (
+      sizeof(
+        unsigned int
+      ) *
+      metil_mesh->length_indices
+    )
   );
 
-  metil_mesh->vertices = realloc(
-    metil_mesh->vertices,
-    sizeof(struct math_c_vector4_float) *
-    metil_mesh->length_vertices
+  clic3_memory_allocate(
+    &metil_mesh->vertices,
+    (
+      sizeof(
+        struct math_c_vector4_float
+      ) *
+      metil_mesh->length_vertices
+    )
   );
 
   metil_mesh->vertices[0].x = -size_half.x;

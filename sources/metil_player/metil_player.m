@@ -38,7 +38,7 @@ void metil_player_initialize(
   metil_player->poll = metil_player_poll;
   metil_player->destroy = metil_player_destroy;
 
-  metil_player->data = (void*)0;
+  metil_player->data = 0;
 }
 
 void metil_player_poll_input(

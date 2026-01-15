@@ -2,8 +2,6 @@
 
 #include <clic3_memory.h>
 
-#include <stdlib.h>
-
 void metil_menu_item_initialize(
   struct metil_menu_item* metil_menu_item,
   enum metil_menu_item_type metil_menu_item_type,
@@ -17,16 +15,19 @@ void metil_menu_item_initialize(
   metil_menu_item->data = (
     data
   );
+
+  metil_menu_item->data_menu_item = (
+    0
+  );
   
   switch (
     metil_menu_item_type
   ) {
     case metil_menu_item_type_scroll: {
-      metil_menu_item->data_menu_item = (
-        malloc(
-          sizeof(
-            struct metil_menu_item_data_scroll
-          )
+      clic3_memory_allocate(
+        &metil_menu_item->data_menu_item,
+        sizeof(
+          struct metil_menu_item_data_scroll
         )
       );
 
@@ -41,10 +42,6 @@ void metil_menu_item_initialize(
       break;
     }
     default: {
-      metil_menu_item->data_menu_item = (
-        (void*) 0
-      );
-
       break;
     }
   }

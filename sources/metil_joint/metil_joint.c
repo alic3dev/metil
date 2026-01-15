@@ -1,8 +1,8 @@
 #include <metil_joint/metil_joint.h>
 
-#include <simd/simd.h>
+#include <clic3_memory.h>
 
-#include <stdlib.h>
+#include <simd/simd.h>
 
 void metil_joint_initialize(
   struct metil_joint* metil_joint
@@ -23,11 +23,12 @@ void metil_joint_initialize(
   metil_joint->translation.y = 0.0f;
   metil_joint->translation.z = 0.0f;
 
+  metil_joint->joints = 0;
   metil_joint->length_joints = 0;
 
-  metil_joint->joints = malloc(
-    sizeof(struct metil_joint*) *
-    metil_joint->length_joints
+  clic3_memory_allocate(
+    &metil_joint->joints,
+    0
   );
 }
 
@@ -40,10 +41,14 @@ void metil_joint_attach(
     1
   );
 
-  metil_joint->joints = realloc(
-    metil_joint->joints,
-    sizeof(struct metil_joint*) *
-    metil_joint->length_joints
+  clic3_memory_allocate(
+    &metil_joint->joints,
+    (
+      sizeof(
+        struct metil_joint*
+      ) *
+      metil_joint->length_joints
+    )
   );
 
   metil_joint->joints[
@@ -172,7 +177,7 @@ void metil_joint_propagate(
 void metil_joint_destroy(
   struct metil_joint* metil_joint
 ) {
-  free(
+  clic3_memory_free(
     metil_joint->joints
   );
 }

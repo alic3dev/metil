@@ -3,9 +3,7 @@
 #include <metil.h>
 #include <metil_termination/metil_termination.h>
 
-#if target_os_ios
-#include <stdlib.h>
-#else
+#if !target_os_ios
 #include <AppKit/AppKit.h>
 #endif
 

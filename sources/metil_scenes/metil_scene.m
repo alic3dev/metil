@@ -8,8 +8,6 @@
 
 #include <clic3_memory.h>
 
-#include <stdlib.h>
-
 void metil_scene_initialize(
   struct metil* metil,
   struct metil_scene* scene
@@ -31,16 +29,27 @@ void metil_scene_initialize_with_renderables(
     &metil->player_defaults
   );
 
-  scene->length_renderables = length_renderables;
-  scene->renderables = malloc(
-    sizeof(struct metil_renderable) *
-    scene->length_renderables
+  scene->renderables = 0;
+  scene->length_renderables = (
+    length_renderables
   );
 
+  clic3_memory_allocate(
+    &scene->renderables,
+    (
+      sizeof(
+        struct metil_renderable
+      ) *
+      scene->length_renderables
+    )
+  );
+
+  scene->textures = 0;
   scene->length_textures = 0;
-  scene->textures = malloc(
-    sizeof(id<MTLTexture>) *
-    scene->length_textures
+
+  clic3_memory_allocate(
+    &scene->textures,
+    0
   );
 
   scene->player.position.x = 0.0f;
@@ -58,7 +67,9 @@ void metil_scene_initialize_with_renderables(
   scene->poll_input = metil_scene_poll_input_default;
   scene->destroy = metil_scene_destroy_default;
 
-  scene->time_initial = metil_time_milliseconds_get();
+  scene->time_initial = (
+    metil_time_milliseconds_get()
+  );
 
   scene->time = 0;
   scene->time_previous = 0;
@@ -71,18 +82,25 @@ void metil_scene_initialize_with_renderables(
 
   scene->loading = 0;
 
-  scene->data = (void*)0;
+  scene->data = 0;
 }
 
 void metil_scene_renderables_set_length(
   struct metil_scene* _Nonnull scene,
   unsigned int length_renderables
 ) {
-  scene->length_renderables = length_renderables;
-  scene->renderables = realloc(
-    scene->renderables,
-    sizeof(struct metil_renderable) *
-    scene->length_renderables
+  scene->length_renderables = (
+    length_renderables
+  );
+
+  clic3_memory_allocate(
+    &scene->renderables,
+    (
+      sizeof(
+        struct metil_renderable
+      ) *
+      scene->length_renderables
+    )
   );
 }
 

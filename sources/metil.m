@@ -7,6 +7,8 @@
 #include <metil_scenes/metil_scene_controller.h>
 #include <metil_text/metil_text.h>
 
+#include <clic3_memory.h>
+
 #include <interrupt_handler.h>
 
 void metil_structure_initialize(
@@ -20,16 +22,21 @@ void metil_structure_initialize(
     &metil->player_defaults
   );
 
-  metil->scene_controller = malloc(
-    sizeof(struct metil_scene_controller)
+  metil->scene_controller = 0;
+  
+  clic3_memory_allocate(
+    &metil->scene_controller,
+    sizeof(
+      struct metil_scene_controller
+    )
   );
 
   metil->data = (
-    (void*) 0
+    0
   );
 
   metil->destroy = (
-    (void*) 0
+    0
   );
 }
 
@@ -65,14 +72,14 @@ void metil_destroy(
   );
 
   if (
-    metil->destroy != (void*) 0
+    metil->destroy != 0
   ) {
     metil->destroy(
       metil
     );
   }
 
-  free(
+  clic3_memory_free(
     metil->scene_controller
   );
 }

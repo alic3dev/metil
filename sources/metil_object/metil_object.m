@@ -15,39 +15,51 @@
 #include <Metal/MTLRenderCommandEncoder.h>
 #include <Metal/MTLResource.h>
 
-#include <stdlib.h>
-
 void metil_object_initialize(
   struct metil_object* metil_object
 ) {
   metil_object->length_buffers_fragment = 0;
-  metil_object->length_buffers_vertex = 0;  
+  metil_object->length_buffers_vertex = 0;
 
-  metil_object->buffers_fragment = (
-    malloc(
-      sizeof(struct metil_object_buffer) *
+  metil_object->buffers_fragment = 0;
+  metil_object->buffers_vertex = 0;
+
+  clic3_memory_allocate(
+    &metil_object->buffers_fragment,
+    (
+      sizeof(
+        struct metil_object_buffer
+      ) *
       metil_object->length_buffers_fragment
     )
   );
 
-  metil_object->buffers_vertex = (
-    malloc(
-      sizeof(struct metil_object_buffer) *
+  clic3_memory_allocate(
+    &metil_object->buffers_vertex,
+    (
+      sizeof(
+        struct metil_object_buffer
+      ) *
       metil_object->length_buffers_vertex
     )
   );
 
-  metil_object->indices = (
-    (void*) 0
-  );
+  metil_object->indices = 0;
 
   metil_object->type_primitive = MTLPrimitiveTypeTriangle;
   metil_object->type_index = MTLIndexTypeUInt32;
 
+  metil_object->textures = 0;
   metil_object->length_textures = 0;
-  metil_object->textures = malloc(
-    sizeof(id<MTLTexture>) *
-    metil_object->length_textures
+
+  clic3_memory_allocate(
+    &metil_object->textures,
+    (
+      sizeof(
+        id<MTLTexture>
+      ) *
+      metil_object->length_textures
+    )
   );
 
   metil_object->position.x = 0.0f;
@@ -67,9 +79,7 @@ void metil_object_initialize(
   metil_object->poll = metil_object_poll;
   metil_object->destroy = metil_object_destroy;
 
-  metil_object->data = (
-    (void*) 0
-  );
+  metil_object->data = 0;
 }
 
 void metil_object_indices_initialize(
@@ -80,7 +90,9 @@ void metil_object_indices_initialize(
     newBufferWithBytes: metil_object->mesh.indices
     length: (
       metil_object->mesh.length_indices *
-      sizeof(unsigned int)
+      sizeof(
+        unsigned int
+      )
     )
     options: MTLResourceStorageModeShared
   ];
@@ -114,10 +126,13 @@ void metil_object_buffers_initialize_with_data_size(
 
   metil_object->buffers_vertex[
     offset_buffer
-  ].buffer = [metal_device
+  ].buffer = [
+    metal_device
     newBufferWithBytes: metil_object->mesh.vertices
     length: (
-      sizeof(struct math_c_vector4_float) *
+      sizeof(
+        struct math_c_vector4_float
+      ) *
       metil_object->mesh.length_vertices
     )
     options: MTLResourceStorageModeShared
@@ -126,7 +141,8 @@ void metil_object_buffers_initialize_with_data_size(
   metil_object->buffers_vertex[
     offset_buffer +
     1
-  ].buffer = [metal_device
+  ].buffer = [
+    metal_device
     newBufferWithLength: size_data
     options: MTLResourceStorageModeShared
   ];
@@ -139,7 +155,9 @@ void metil_object_buffers_initialize(
   metil_object_buffers_initialize_with_data_size(
     metil_object,
     metal_device,
-    sizeof(struct metil_renderer_data_object)
+    sizeof(
+      struct metil_renderer_data_object
+    )
   );
 
   struct metil_renderer_data_object* metil_renderer_data_object = (
@@ -158,13 +176,8 @@ void metil_object_buffers_add(
   id<MTLDevice> metal_device,
   enum metil_object_buffer_type metil_object_buffer_type
 ) {
-  struct metil_object_buffer** buffers = (
-    (void*) 0
-  );
-
-  unsigned char* length_buffers = (
-    (void*) 0
-  );
+  struct metil_object_buffer** buffers = 0;
+  unsigned char* length_buffers = 0;
 
   switch (
     metil_object_buffer_type
@@ -203,19 +216,19 @@ void metil_object_buffers_add(
     1
   );
 
-  *buffers = realloc(
-    *buffers,
-    sizeof(
-      struct metil_object_buffer
-    ) *
-    *length_buffers
+  clic3_memory_allocate(
+    buffers,
+    (
+      sizeof(
+        struct metil_object_buffer
+      ) *
+      *length_buffers
+    )
   );
 
   (*buffers)[
     index_buffer
-  ].buffer = (
-    (void*) 0
-  );
+  ].buffer = 0;
 
   (*buffers)[
     index_buffer
@@ -239,10 +252,14 @@ void metil_object_texture_add(
     metil_object->length_textures + 1
   );
 
-  metil_object->textures = realloc(
-    metil_object->textures,
-    sizeof(id<MTLTexture>) *
-    metil_object->length_textures
+  clic3_memory_allocate(
+    &metil_object->textures,
+    (
+      sizeof(
+        id<MTLTexture>
+      ) *
+      metil_object->length_textures
+    )
   );
 
   metil_object->textures[
@@ -290,7 +307,7 @@ void metil_object_destroy(
   struct metil_object* object
 ) {
   if (
-    object->indices != (void*)0
+    object->indices != 0
   ) {
     [object->indices release];
   }
@@ -300,7 +317,12 @@ void metil_object_destroy(
     index_buffer_fragment < object->length_buffers_fragment;
     ++index_buffer_fragment
   ) {
-    [object->buffers_fragment[index_buffer_fragment].buffer release];
+    [
+      object->buffers_fragment[
+        index_buffer_fragment
+      ].buffer
+      release
+    ];
   }
 
   for (
@@ -308,7 +330,12 @@ void metil_object_destroy(
     index_buffer_vertex < object->length_buffers_vertex;
     ++index_buffer_vertex
   ) {
-    [object->buffers_vertex[index_buffer_vertex].buffer release];
+    [
+      object->buffers_vertex[
+        index_buffer_vertex
+      ].buffer
+      release
+    ];
   }
 
   clic3_memory_free(
@@ -341,9 +368,12 @@ void metil_object_destroy_with_textures(
     index_texture < metil_object->length_textures;
     ++index_texture
   ) {
-    [metil_object->textures[
-      index_texture
-    ] release];
+    [
+      metil_object->textures[
+        index_texture
+      ]
+      release
+    ];
   }
 
   metil_object_destroy(

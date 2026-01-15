@@ -4,27 +4,44 @@
 #include <metil_model/metil_model.h>
 #include <metil_object.h>
 
+#include <clic3_memory.h>
+
 void metil_renderable_allocate_group(
   struct metil_renderable* renderable
 ) {
-  renderable->renderable = malloc(
-    sizeof(struct metil_group)
+  renderable->renderable = 0;
+
+  clic3_memory_allocate(
+    &renderable->renderable,
+    sizeof(
+      struct metil_group
+    )
   );
 }
 
 void metil_renderable_allocate_object(
   struct metil_renderable* renderable
 ) {
-  renderable->renderable = malloc(
-    sizeof(struct metil_object)
+  renderable->renderable = 0;
+
+  clic3_memory_allocate(
+    &renderable->renderable,
+    sizeof(
+      struct metil_object
+    )
   );
 }
 
 void metil_renderable_allocate_model(
   struct metil_renderable* renderable
 ) {
-  renderable->renderable = malloc(
-    sizeof(struct metil_model)
+  renderable->renderable = 0;
+
+  clic3_memory_allocate(
+    &renderable->renderable,
+    sizeof(
+      struct metil_model
+    )
   );
 }
 
@@ -179,7 +196,7 @@ void metil_renderable_destroy(
     }
   }
 
-  free(
+  clic3_memory_free(
     renderable->renderable
   );
 }
