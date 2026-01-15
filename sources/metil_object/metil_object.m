@@ -35,7 +35,7 @@ void metil_object_initialize(
   );
 
   clic3_memory_allocate(
-    metil_object->buffers_vertex,
+    &metil_object->buffers_vertex,
     (
       sizeof(
         struct metil_object_buffer
@@ -228,9 +228,7 @@ void metil_object_buffers_add(
 
   (*buffers)[
     index_buffer
-  ].buffer = (
-    (void*) 0
-  );
+  ].buffer = 0;
 
   (*buffers)[
     index_buffer
