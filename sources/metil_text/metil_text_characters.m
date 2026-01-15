@@ -20,14 +20,8 @@ void metil_text_characters_initialize(
     metil_text_characters_length_default
   );
 
-  metil_text_characters_default->meshes = 0;
-  metil_text_characters_default->indices = 0;
-  metil_text_characters_default->vertices = 0;
-  metil_text_characters_default->textures = 0;
-
-  clic3_memory_allocate(
-    &metil_text_characters_default->meshes,
-    (
+  metil_text_characters_default->meshes = (
+    clic3_memory_allocate_raw(
       sizeof(
         struct metil_mesh
       ) *
@@ -35,9 +29,8 @@ void metil_text_characters_initialize(
     )
   );
 
-  clic3_memory_allocate(
-    &metil_text_characters_default->vertices,
-    (
+  metil_text_characters_default->vertices = (
+    clic3_memory_allocate_raw(
       sizeof(
         id<MTLTexture>
       ) *
@@ -45,9 +38,8 @@ void metil_text_characters_initialize(
     )
   );
 
-  clic3_memory_allocate(
-    &metil_text_characters_default->textures,
-    (
+  metil_text_characters_default->textures = (
+    clic3_memory_allocate_raw(
       sizeof(
         id<MTLTexture>
       ) *
@@ -147,21 +139,35 @@ void metil_text_characters_destroy(
       &metil_text_characters_default->meshes[index_character]
     );
 
-    [metil_text_characters_default->vertices[index_character] release];
-    [metil_text_characters_default->textures[index_character] release];
+    [
+      metil_text_characters_default->vertices[
+        index_character
+      ]
+      release
+    ];
+
+    [
+      metil_text_characters_default->textures[
+        index_character
+      ]
+      release
+    ];
   }
 
-  [metil_text_characters_default->indices release];
+  [
+    metil_text_characters_default->indices
+    release
+  ];
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     metil_text_characters_default->meshes
   );
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     metil_text_characters_default->vertices
   );
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     metil_text_characters_default->textures
   );
 }

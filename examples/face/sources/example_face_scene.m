@@ -63,7 +63,7 @@ void example_face_scene_initialize(
   metil_mesh->length_vertices = 33;
   metil_mesh->length_indices = 156;
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_mesh->indices,
     (
       sizeof(
@@ -73,7 +73,7 @@ void example_face_scene_initialize(
     )
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_mesh->vertices,
     (
       sizeof(

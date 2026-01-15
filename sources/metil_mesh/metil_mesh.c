@@ -5,24 +5,24 @@
 void metil_mesh_initialize(
   struct metil_mesh* metil_mesh
 ) {
-  metil_mesh->indices = 0;
   metil_mesh->length_indices = 0;
 
-  metil_mesh->vertices = 0;
   metil_mesh->length_vertices = 0;
 
   metil_mesh->size.x = 0.0f;
   metil_mesh->size.y = 0.0f;
   metil_mesh->size.z = 0.0f;
 
-  clic3_memory_allocate(
-    &metil_mesh->indices,
-    0
+  metil_mesh->indices = (
+    clic3_memory_allocate_raw(
+      0
+    )
   );
 
-  clic3_memory_allocate(
-    &metil_mesh->vertices,
-    0
+  metil_mesh->vertices = (
+    clic3_memory_allocate_raw(
+      0
+    )
   );
 
   metil_mesh->data = (
@@ -56,9 +56,8 @@ void metil_mesh_clone(
     mesh_source->size.z
   );
 
-  clic3_memory_allocate(
-    &mesh_clone->indices,
-    (
+  mesh_clone->indices = (
+    clic3_memory_allocate_raw(
       sizeof(
         unsigned int
       ) *
@@ -66,9 +65,8 @@ void metil_mesh_clone(
     )
   );
 
-  clic3_memory_allocate(
-    &mesh_clone->vertices,
-    (
+  mesh_clone->vertices = (
+    clic3_memory_allocate_raw(
       sizeof(
         struct math_c_vector4_float
       ) *

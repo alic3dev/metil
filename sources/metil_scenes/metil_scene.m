@@ -29,14 +29,12 @@ void metil_scene_initialize_with_renderables(
     &metil->player_defaults
   );
 
-  scene->renderables = 0;
   scene->length_renderables = (
     length_renderables
   );
 
-  clic3_memory_allocate(
-    &scene->renderables,
-    (
+  scene->renderables = (
+    clic3_memory_allocate_raw(
       sizeof(
         struct metil_renderable
       ) *
@@ -44,12 +42,12 @@ void metil_scene_initialize_with_renderables(
     )
   );
 
-  scene->textures = 0;
   scene->length_textures = 0;
 
-  clic3_memory_allocate(
-    &scene->textures,
-    0
+  scene->textures = (
+    clic3_memory_allocate_raw(
+      0
+    )
   );
 
   scene->player.position.x = 0.0f;
@@ -93,7 +91,7 @@ void metil_scene_renderables_set_length(
     length_renderables
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &scene->renderables,
     (
       sizeof(
@@ -193,7 +191,7 @@ void metil_scene_destroy_default(
     );
   }
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     scene->renderables
   );
 
@@ -210,7 +208,7 @@ void metil_scene_destroy_default(
     ];
   }
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     scene->textures
   );
 

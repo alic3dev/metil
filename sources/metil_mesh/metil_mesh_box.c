@@ -25,7 +25,7 @@ void metil_mesh_box_initialize(
   metil_mesh->length_vertices = 8;
   metil_mesh->length_indices = 36;
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_mesh->indices,
     (
       sizeof(
@@ -35,7 +35,7 @@ void metil_mesh_box_initialize(
     )
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_mesh->vertices,
     (
       sizeof(

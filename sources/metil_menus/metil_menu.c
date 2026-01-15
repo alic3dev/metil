@@ -12,16 +12,11 @@ void metil_menu_initialize(
 ) {
   menu->index_current = 0;
 
-  menu->items = 0;
   menu->length_items = 0;
 
-  clic3_memory_allocate(
-    &menu->items,
-    (
-      sizeof(
-        struct metil_menu_item
-      ) *
-      menu->length_items
+  menu->items = (
+    clic3_memory_allocate_raw(
+      0
     )
   );
 
@@ -45,7 +40,7 @@ void metil_menu_item_add(
     menu->length_items + 1
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &menu->items,
     (
       sizeof(
@@ -144,7 +139,7 @@ void metil_menu_destroy(
     );
   }
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     metil_menu->items
   );
 }

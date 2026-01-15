@@ -13,39 +13,27 @@ void metil_model_initialize(
   struct metil_model* metil_model
 ) {
   metil_model->length_objects = 0;
-  metil_model->objects = 0;
 
-  clic3_memory_allocate(
-    &metil_model->objects,
-    (
-      sizeof(
-        struct metil_object
-      ) *
-      metil_model->length_objects
+  metil_model->objects = (
+    clic3_memory_allocate_raw(
+      0
     )
   );
 
   metil_model->vertex_joint_maps = 0;
 
-  metil_model->joints = 0;
   metil_model->length_joints = 0;
 
-  clic3_memory_allocate(
-    &metil_model->joints,
-    (
-      sizeof(
-        struct metil_joint
-      ) *
-      metil_model->length_joints
+  metil_model->joints = (
+    clic3_memory_allocate_raw(
+      0
     )
   );
   
   metil_model->length_textures = 0;
-  metil_model->textures = 0;
 
-  clic3_memory_allocate(
-    &metil_model->textures,
-    (
+  metil_model->textures = (
+    clic3_memory_allocate_raw(
       sizeof(
         id<MTLTexture>
       ) *
@@ -89,7 +77,7 @@ void metil_model_objects_add_length(
     length
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_model->objects,
     (
       sizeof(
@@ -139,7 +127,7 @@ void metil_model_joints_add_length(
     length_metil_joints
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_model->joints,
     (
       sizeof(
@@ -168,9 +156,8 @@ void metil_model_joints_add_length(
 void metil_model_vertex_joint_maps_initialize(
   struct metil_model* metil_model
 ) {
-  clic3_memory_allocate(
-    &metil_model->vertex_joint_maps,
-    (
+  metil_model->vertex_joint_maps = (
+    clic3_memory_allocate_raw(
       sizeof(
         unsigned int*
       ) *
@@ -191,13 +178,8 @@ void metil_model_vertex_joint_maps_initialize(
 
     metil_model->vertex_joint_maps[
       index_vertex_joint_map
-    ] = 0;
-
-    clic3_memory_allocate(
-      &metil_model->vertex_joint_maps[
-        index_vertex_joint_map
-      ],
-      (
+    ] = (
+      clic3_memory_allocate_raw(
         sizeof(
           unsigned int
         ) *

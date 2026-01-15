@@ -54,7 +54,7 @@ void metil_mesh_gem_initialize(
     )
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_mesh->indices,
     (
       sizeof(
@@ -64,7 +64,7 @@ void metil_mesh_gem_initialize(
     )
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_mesh->vertices,
     (
       sizeof(

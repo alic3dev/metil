@@ -24,10 +24,11 @@ void metil_menu_item_initialize(
     metil_menu_item_type
   ) {
     case metil_menu_item_type_scroll: {
-      clic3_memory_allocate(
-        &metil_menu_item->data_menu_item,
-        sizeof(
-          struct metil_menu_item_data_scroll
+      metil_menu_item->data_menu_item = (
+        clic3_memory_allocate_raw(
+          sizeof(
+            struct metil_menu_item_data_scroll
+          )
         )
       );
 

@@ -21,11 +21,8 @@ CGGlyph* metil_text_glyphs_encode(
   struct metil_configuration* metil_configuration
 ) {
   static CGGlyph* glyphs;
-  glyphs = 0;
-
-  clic3_memory_allocate(
-    &glyphs,
-    (
+  glyphs = (
+    clic3_memory_allocate_raw(
       sizeof(
         CGGlyph
       ) *
@@ -33,7 +30,9 @@ CGGlyph* metil_text_glyphs_encode(
     )
   );
 
-  UInt16 characters_unicode[length_characters];
+  UInt16 characters_unicode[
+    length_characters
+  ];
 
   for (
     unsigned int index_character = 0;
@@ -47,22 +46,28 @@ CGGlyph* metil_text_glyphs_encode(
     ];
   }
 
-  unsigned char status_glyphs = CTFontGetGlyphsForCharacters(
-    font,
-    characters_unicode,
-    glyphs,
-    length_characters
+  unsigned char status_glyphs = (
+    CTFontGetGlyphsForCharacters(
+      font,
+      characters_unicode,
+      glyphs,
+      length_characters
+    )
   );
 
   if (!status_glyphs) {
-    char* message_debug_log_error = clic3_char_arrays_concatenate(
-      "failed:encode_glyphs->{",
-      characters
+    char* message_debug_log_error = (
+      clic3_char_arrays_concatenate(
+        "failed:encode_glyphs->{",
+        characters
+      )
     );
 
-    char* message_debug_log_error_with_newline = clic3_char_arrays_concatenate(
-      message_debug_log_error,
-      "}\n"
+    char* message_debug_log_error_with_newline = (
+      clic3_char_arrays_concatenate(
+        message_debug_log_error,
+        "}\n"
+      )
     );
 
     metil_debug_log_error(
@@ -70,15 +75,15 @@ CGGlyph* metil_text_glyphs_encode(
       message_debug_log_error_with_newline
     );
 
-    clic3_memory_free(
+    clic3_memory_free_raw(
       message_debug_log_error
     );
 
-    clic3_memory_free(
+    clic3_memory_free_raw(
       message_debug_log_error_with_newline
     );
 
-    clic3_memory_free(
+    clic3_memory_free_raw(
       glyphs
     );
 
@@ -101,11 +106,13 @@ struct metil_text_image* metil_text_render(
     characters
   );
 
-  CGGlyph* glyphs = metil_text_glyphs_encode(
-    characters,
-    length_characters,
-    metil_text_render_parameters->font,
-    metil_configuration
+  CGGlyph* glyphs = (
+    metil_text_glyphs_encode(
+      characters,
+      length_characters,
+      metil_text_render_parameters->font,
+      metil_configuration
+    )
   );
 
   if (
@@ -114,7 +121,9 @@ struct metil_text_image* metil_text_render(
     return 0;
   }
 
-  CGRect bounding_box_glyphs[length_characters];
+  CGRect bounding_box_glyphs[
+    length_characters
+  ];
 
   CTFontGetBoundingRectsForGlyphs(
     metil_text_render_parameters->font,
@@ -124,19 +133,24 @@ struct metil_text_image* metil_text_render(
     length_characters
   );
 
-  CGPoint positions_glyphs[length_characters];
+  CGPoint positions_glyphs[
+    length_characters
+  ];
 
   static struct metil_text_image* text_image;
-  text_image = 0;
 
-  clic3_memory_allocate(
-    &text_image,
-    sizeof(
-      struct metil_text_image
+  text_image = (
+    clic3_memory_allocate_raw(
+      sizeof(
+        struct metil_text_image
+      )
     )
   );
 
-  text_image->size.x = metil_text_render_parameters->padding.x;
+  text_image->size.x = (
+    metil_text_render_parameters->padding.x
+  );
+
   text_image->size.y = 0;
 
   for (
@@ -174,18 +188,26 @@ struct metil_text_image* metil_text_render(
     );
   }
 
-  text_image->size.x = text_image->size.x + metil_text_render_parameters->padding.x;
-  text_image->size.y = text_image->size.y + metil_text_render_parameters->padding.y;
-
-  unsigned int length_text_image_data = (
-    4 * (text_image->size.x) * (text_image->size.y)
+  text_image->size.x = (
+    text_image->size.x +
+    metil_text_render_parameters->padding.x
   );
 
-  text_image->data = 0;
+  text_image->size.y = (
+    text_image->size.y +
+    metil_text_render_parameters->padding.y
+  );
 
-  clic3_memory_allocate(
-    &text_image->data,
-    length_text_image_data
+  unsigned int length_text_image_data = (
+    4 *
+    text_image->size.x *
+    text_image->size.y
+  );
+
+  text_image->data = (
+    clic3_memory_allocate_raw(
+      length_text_image_data
+    )
   );
 
   for (
@@ -212,6 +234,20 @@ struct metil_text_image* metil_text_render(
       metil_configuration->debug_log_level,
       "couldn't create color space\n"
     );
+
+    clic3_memory_free_raw(
+      text_image->data
+    );
+
+    clic3_memory_free_raw(
+      text_image
+    );
+
+    clic3_memory_free_raw(
+      glyphs
+    );
+
+    return 0;
   }
 
   CGContextRef context_bitmap = CGBitmapContextCreate(
@@ -219,7 +255,10 @@ struct metil_text_image* metil_text_render(
     text_image->size.x,
     text_image->size.y,
     8,
-    4 * (text_image->size.x),
+    (
+      4 *
+      text_image->size.x
+    ),
     color_space,
     0x0 | kCGImageAlphaNoneSkipFirst
   );
@@ -230,6 +269,22 @@ struct metil_text_image* metil_text_render(
     metil_debug_log_error(
       metil_configuration->debug_log_level,
       "failed_to_create->{CGBitmapContext}\n"
+    );
+
+    CGColorSpaceRelease(
+      color_space
+    );
+
+    clic3_memory_free_raw(
+      text_image->data
+    );
+
+    clic3_memory_free_raw(
+      text_image
+    );
+
+    clic3_memory_free_raw(
+      glyphs
     );
 
     return 0;
@@ -251,7 +306,7 @@ struct metil_text_image* metil_text_render(
     color_space
   );
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     glyphs
   );
 
@@ -260,7 +315,9 @@ struct metil_text_image* metil_text_render(
     index_pixel < length_text_image_data;
     index_pixel = index_pixel + 4
   ) {
-    unsigned char value = text_image->data[index_pixel];
+    unsigned char value = text_image->data[
+      index_pixel
+    ];
 
     text_image->data[index_pixel + 1] = value;
     text_image->data[index_pixel + 2] = value;
@@ -350,11 +407,11 @@ id<MTLTexture> metil_text_mesh_with_texture_initialize(
 void metil_text_image_destroy(
   struct metil_text_image* text_image
 ) {
-  clic3_memory_free(
+  clic3_memory_free_raw(
     text_image->data
   );
   
-  clic3_memory_free(
+  clic3_memory_free_raw(
     text_image
   );
 }

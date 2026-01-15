@@ -73,9 +73,10 @@ void metil_paths_directory_root_set(
   ) {
     metil_paths->length_directory_root = 3;
 
-    clic3_memory_allocate(
-      &metil_paths->directory_root,
-      metil_paths->length_directory_root
+    metil_paths->directory_root = (
+      clic3_memory_allocate_raw(
+        metil_paths->length_directory_root
+      )
     );
 
     metil_paths->directory_root[0] = '.';
@@ -84,9 +85,10 @@ void metil_paths_directory_root_set(
   } else {
     metil_paths->length_directory_root = index_slash + 2;
 
-    clic3_memory_allocate(
-      &metil_paths->directory_root,
-      metil_paths->length_directory_root
+    metil_paths->directory_root = (
+      clic3_memory_allocate_raw(
+        metil_paths->length_directory_root
+      )
     );
 
     clic3_bytes_copy(
@@ -184,27 +186,27 @@ void metil_paths_directory_textures_set(
 void metil_paths_destroy(
   struct metil_paths* metil_paths
 ) {
-  clic3_memory_free(
+  clic3_memory_free_raw(
     metil_paths->directory_root
   );
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     metil_paths->directory_home
   );
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     metil_paths->directory_configuration
   );
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     metil_paths->directory_resources
   );
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     metil_paths->directory_textures
   );
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     metil_paths->file_configuration
   );
 }

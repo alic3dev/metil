@@ -23,12 +23,12 @@ void metil_joint_initialize(
   metil_joint->translation.y = 0.0f;
   metil_joint->translation.z = 0.0f;
 
-  metil_joint->joints = 0;
   metil_joint->length_joints = 0;
 
-  clic3_memory_allocate(
-    &metil_joint->joints,
-    0
+  metil_joint->joints = (
+    clic3_memory_allocate_raw(
+      0
+    )
   );
 }
 
@@ -41,7 +41,7 @@ void metil_joint_attach(
     1
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_joint->joints,
     (
       sizeof(
@@ -177,7 +177,7 @@ void metil_joint_propagate(
 void metil_joint_destroy(
   struct metil_joint* metil_joint
 ) {
-  clic3_memory_free(
+  clic3_memory_free_raw(
     metil_joint->joints
   );
 }
