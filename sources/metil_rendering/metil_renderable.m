@@ -9,12 +9,11 @@
 void metil_renderable_allocate_group(
   struct metil_renderable* renderable
 ) {
-  renderable->renderable = 0;
-
-  clic3_memory_allocate(
-    &renderable->renderable,
-    sizeof(
-      struct metil_group
+  renderable->renderable = (
+    clic3_memory_allocate_raw(
+      sizeof(
+        struct metil_group
+      )
     )
   );
 }
@@ -22,12 +21,11 @@ void metil_renderable_allocate_group(
 void metil_renderable_allocate_object(
   struct metil_renderable* renderable
 ) {
-  renderable->renderable = 0;
-
-  clic3_memory_allocate(
-    &renderable->renderable,
-    sizeof(
-      struct metil_object
+  renderable->renderable = (
+    clic3_memory_allocate_raw(
+      sizeof(
+        struct metil_object
+      )
     )
   );
 }
@@ -35,12 +33,11 @@ void metil_renderable_allocate_object(
 void metil_renderable_allocate_model(
   struct metil_renderable* renderable
 ) {
-  renderable->renderable = 0;
-
-  clic3_memory_allocate(
-    &renderable->renderable,
-    sizeof(
-      struct metil_model
+  renderable->renderable = (
+    clic3_memory_allocate_raw(
+      sizeof(
+        struct metil_model
+      )
     )
   );
 }

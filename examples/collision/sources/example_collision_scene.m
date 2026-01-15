@@ -35,10 +35,11 @@ void example_collision_scene_initialize(
     scene_example_collision_length_renderables
   );
 
-  clic3_memory_allocate(
-    &scene->data,
-    sizeof(
-      struct metil_stopwatch
+  scene->data = (
+    clic3_memory_allocate_raw(
+      sizeof(
+        struct metil_stopwatch
+      )
     )
   );
 
@@ -113,7 +114,7 @@ void example_collision_scene_initialize(
     2.0f
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_mesh_floor->indices,
     sizeof(
       unsigned int
@@ -121,7 +122,7 @@ void example_collision_scene_initialize(
     metil_mesh_floor->length_indices
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_mesh_floor->vertices,
     sizeof(
       struct math_c_vector4_float
@@ -540,7 +541,7 @@ void example_collision_scene_initialize(
 
   scene->length_textures = 2;
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &scene->textures,
     (
       sizeof(
@@ -579,11 +580,10 @@ void example_collision_scene_initialize(
     texture_descriptor.height
   );
 
-  unsigned char* pixel_bytes = 0;
-
-  clic3_memory_allocate(
-    &pixel_bytes,
-    length_bytes_texture
+  unsigned char* pixel_bytes = (
+    clic3_memory_allocate_raw(
+      length_bytes_texture
+    )
   );
 
   for (
@@ -764,7 +764,7 @@ void example_collision_scene_initialize(
     release
   ];
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     pixel_bytes
   );
 
@@ -842,12 +842,13 @@ void scene_example_collision_populate_targets(
 
     float distance = 100.0f;
 
-    clic3_memory_allocate(
-      &metil_object_target->data,
-      sizeof(
-        float
-      ) *
-      2
+    metil_object_target->data = (
+      clic3_memory_allocate_raw(
+        sizeof(
+          float
+        ) *
+        2
+      )
     );
 
     ((float*) metil_object_target->data)[0] = (
@@ -986,9 +987,8 @@ void example_collision_scene_poll(
         2.0f
       );
 
-      clic3_memory_allocate(
-        &metil_object_projectile->data,
-        (
+      metil_object_projectile->data = (
+        clic3_memory_allocate_raw(
           sizeof(
             float
           ) *

@@ -21,26 +21,15 @@ void metil_object_initialize(
   metil_object->length_buffers_fragment = 0;
   metil_object->length_buffers_vertex = 0;
 
-  metil_object->buffers_fragment = 0;
-  metil_object->buffers_vertex = 0;
-
-  clic3_memory_allocate(
-    &metil_object->buffers_fragment,
-    (
-      sizeof(
-        struct metil_object_buffer
-      ) *
-      metil_object->length_buffers_fragment
+  metil_object->buffers_fragment = (
+    clic3_memory_allocate_raw(
+      0
     )
   );
 
-  clic3_memory_allocate(
-    &metil_object->buffers_vertex,
-    (
-      sizeof(
-        struct metil_object_buffer
-      ) *
-      metil_object->length_buffers_vertex
+  metil_object->buffers_vertex = (
+    clic3_memory_allocate_raw(
+      0
     )
   );
 
@@ -49,16 +38,11 @@ void metil_object_initialize(
   metil_object->type_primitive = MTLPrimitiveTypeTriangle;
   metil_object->type_index = MTLIndexTypeUInt32;
 
-  metil_object->textures = 0;
   metil_object->length_textures = 0;
 
-  clic3_memory_allocate(
-    &metil_object->textures,
-    (
-      sizeof(
-        id<MTLTexture>
-      ) *
-      metil_object->length_textures
+  metil_object->textures = (
+    clic3_memory_allocate_raw(
+      0
     )
   );
 
@@ -216,7 +200,7 @@ void metil_object_buffers_add(
     1
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     buffers,
     (
       sizeof(
@@ -252,7 +236,7 @@ void metil_object_texture_add(
     metil_object->length_textures + 1
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_object->textures,
     (
       sizeof(

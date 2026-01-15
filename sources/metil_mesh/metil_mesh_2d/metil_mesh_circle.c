@@ -24,7 +24,7 @@ void metil_mesh_circle_initialize(
   metil_mesh->length_vertices = segments + 1;
   metil_mesh->length_indices = segments * 3;
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_mesh->indices,
     (
       sizeof(
@@ -34,7 +34,7 @@ void metil_mesh_circle_initialize(
     )
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_mesh->vertices,
     (
       sizeof(

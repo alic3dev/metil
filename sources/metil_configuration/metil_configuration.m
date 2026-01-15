@@ -60,12 +60,12 @@ unsigned char metil_configuration_load(
     return status_configuration_load;
   }
 
-  char* buffer = 0;
   unsigned int length_buffer = 0;
 
-  clic3_memory_allocate(
-    &buffer,
-    length_buffer
+  char* buffer = (
+    clic3_memory_allocate_raw(
+      length_buffer
+    )
   );
 
   while (
@@ -139,14 +139,12 @@ unsigned char metil_configuration_load(
           break;
         }
 
-        char* buffer_parameter = 0;
         unsigned int length_buffer_parameter = (
           index_pointer
         );
 
-        clic3_memory_allocate(
-          &buffer_parameter,
-          (
+        char* buffer_parameter = (
+          clic3_memory_allocate_raw(
             length_buffer_parameter +
             1
           )
@@ -162,15 +160,13 @@ unsigned char metil_configuration_load(
           length_buffer_parameter
         ] = '\0';
 
-        char* buffer_value = 0;
         unsigned int length_buffer_value = (
           (length_buffer - 2) -
           (index_pointer + 3)
         );
 
-        clic3_memory_allocate(
-          &buffer_value,
-          (
+        char* buffer_value = (
+          clic3_memory_allocate_raw(
             length_buffer_value +
             1
           )
@@ -202,14 +198,18 @@ unsigned char metil_configuration_load(
         if (
           index_parameter == -1
         ) {
-          char* message_debug_log_error_prefix = clic3_char_arrays_concatenate(
-            "unknown_configuration_parameter->{",
-            buffer_parameter
+          char* message_debug_log_error_prefix = (
+            clic3_char_arrays_concatenate(
+              "unknown_configuration_parameter->{",
+              buffer_parameter
+            )
           );
 
-          char* message_debug_log_error = clic3_char_arrays_concatenate(
-            message_debug_log_error,
-            "};\n"
+          char* message_debug_log_error = (
+            clic3_char_arrays_concatenate(
+              message_debug_log_error,
+              "};\n"
+            )
           );
 
           metil_debug_log_error(
@@ -217,11 +217,11 @@ unsigned char metil_configuration_load(
             message_debug_log_error
           );
 
-          clic3_memory_free(
+          clic3_memory_free_raw(
             message_debug_log_error_prefix
           );
 
-          clic3_memory_free(
+          clic3_memory_free_raw(
             message_debug_log_error
           );
 
@@ -390,7 +390,7 @@ unsigned char metil_configuration_load(
         length_buffer + 1
       );
 
-      clic3_memory_allocate(
+      clic3_memory_reallocate_raw(
         &buffer,
         length_buffer
       );
@@ -403,11 +403,17 @@ unsigned char metil_configuration_load(
     }
   }
 
-  clic3_memory_free(buffer);
+  clic3_memory_free_raw(
+    buffer
+  );
 
-  fclose(file_configuration);
+  fclose(
+    file_configuration
+  );
 
-  return status_configuration_load;
+  return (
+    status_configuration_load
+  );
 }
 
 int metil_configuration_value_int_parse(
@@ -497,19 +503,19 @@ void metil_configuration_debug_log_parameter_invalid(
     message_debug_log_error
   );
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     message_debug_log_error_prefix
   );
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     message_debug_log_error_split
   );
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     message_debug_log_error_value
   );
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     message_debug_log_error
   );
 }

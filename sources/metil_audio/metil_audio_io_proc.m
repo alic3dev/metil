@@ -9,24 +9,15 @@ void metil_io_proc_initialize(
 ) {
   metil_audio_data->length_io_procs = 0;
 
-  metil_audio_data->io_procs = 0;
-  metil_audio_data->data_io_procs = 0;
-
-  clic3_memory_allocate(
-    &metil_audio_data->io_procs,
-    sizeof(
-      metil_audio_io_proc
-    ) *
-    metil_audio_data->length_io_procs
+  metil_audio_data->io_procs = (
+    clic3_memory_allocate_raw(
+      0
+    )
   );
 
-  clic3_memory_allocate(
-    &metil_audio_data->data_io_procs,
-    (
-      sizeof(
-        void*
-      ) *
-      metil_audio_data->length_io_procs
+  metil_audio_data->data_io_procs = (
+    clic3_memory_allocate_raw(
+      0
     )
   );
 }
@@ -39,7 +30,7 @@ void metil_audio_io_proc_add(
     metil_audio_data->length_io_procs + 1
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_audio_data->io_procs,
     (
       sizeof(
@@ -53,7 +44,7 @@ void metil_audio_io_proc_add(
     metil_audio_data->length_io_procs - 1
   ] = io_proc;
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_audio_data->data_io_procs,
     (
       sizeof(
@@ -77,7 +68,7 @@ void metil_audio_io_proc_add_with_data(
     metil_audio_data->length_io_procs + 1
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_audio_data->io_procs,
     (
       sizeof(
@@ -95,7 +86,7 @@ void metil_audio_io_proc_add_with_data(
     metil_audio_data->length_io_procs - 1
   ] = io_proc;
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_audio_data->data_io_procs,
     (
       sizeof(
@@ -159,7 +150,7 @@ unsigned char metil_audio_io_proc_remove(
     metil_audio_data->length_io_procs - 1
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_audio_data->io_procs,
     (
       sizeof(
@@ -169,7 +160,7 @@ unsigned char metil_audio_io_proc_remove(
     )
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_audio_data->data_io_procs,
     (
       sizeof(
@@ -185,11 +176,11 @@ unsigned char metil_audio_io_proc_remove(
 void metil_audio_io_proc_destroy(
   struct metil_audio_data* metil_audio_data
 ) {
-  clic3_memory_free(
+  clic3_memory_free_raw(
     metil_audio_data->io_procs
   );
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     metil_audio_data->data_io_procs
   );
 

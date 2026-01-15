@@ -138,7 +138,7 @@ void example_model_scene_initialize(
     1
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_mesh->indices,
     (
       sizeof(
@@ -148,7 +148,7 @@ void example_model_scene_initialize(
     )
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_mesh->vertices,
     (
       sizeof(

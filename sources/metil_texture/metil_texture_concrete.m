@@ -55,17 +55,16 @@ id<MTLTexture> metil_texture_concrete_generate(
     texture_descriptor.height
   );
 
-  unsigned char* pixel_bytes = 0;
-  unsigned char* pixel_bytes_secondary = 0;
-
-  clic3_memory_allocate(
-    &pixel_bytes,
-    length_bytes_texture
+  unsigned char* pixel_bytes = (
+    clic3_memory_allocate_raw(
+      length_bytes_texture
+    )
   );
 
-  clic3_memory_allocate(
-    &pixel_bytes_secondary,
-    length_bytes_texture
+  unsigned char* pixel_bytes_secondary = (
+    clic3_memory_allocate_raw(
+      length_bytes_texture
+    )
   );
 
   for (unsigned int index_x = 0; index_x < texture_descriptor.width; ++index_x) { for (unsigned int index_y = 0; index_y < texture_descriptor.height; ++index_y) { 
@@ -371,11 +370,11 @@ id<MTLTexture> metil_texture_concrete_generate(
     release
   ];
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     pixel_bytes
   );
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     pixel_bytes_secondary
   );
 
@@ -433,17 +432,16 @@ id<MTLTexture> metil_texture_concrete_secondary_generate(
     texture_descriptor.height
   );
 
-  unsigned char* pixel_bytes = 0;
-  unsigned char* pixel_bytes_secondary = 0;
-
-  clic3_memory_allocate(
-    &pixel_bytes,
-    length_bytes_texture
+  unsigned char* pixel_bytes = (
+    clic3_memory_allocate_raw(
+      length_bytes_texture
+    )
   );
 
-  clic3_memory_allocate(
-    &pixel_bytes_secondary,
-    length_bytes_texture
+  unsigned char* pixel_bytes_secondary = (
+    clic3_memory_allocate_raw(
+      length_bytes_texture
+    )
   );
 
   for (unsigned int index_x = 0; index_x < texture_descriptor.width; ++index_x) { for (unsigned int index_y = 0; index_y < texture_descriptor.height; ++index_y) { 
@@ -610,11 +608,11 @@ id<MTLTexture> metil_texture_concrete_secondary_generate(
     release
   ];
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     pixel_bytes
   );
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     pixel_bytes_secondary
   );
 

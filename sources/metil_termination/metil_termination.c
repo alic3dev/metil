@@ -5,13 +5,10 @@
 void metil_termination_initialize(
   struct metil_termination* metil_termination
 ) {
-  metil_termination->on_functions = 0;
-  metil_termination->on_functions_data = 0;
   metil_termination->length_on_functions = 0;
 
-  clic3_memory_allocate(
-    &metil_termination->on_functions,
-    (
+  metil_termination->on_functions = (
+    clic3_memory_allocate_raw(
       sizeof(
         metil_termination_on_function
       ) *
@@ -19,9 +16,8 @@ void metil_termination_initialize(
     )
   );
 
-  clic3_memory_allocate(
-    &metil_termination->on_functions_data,
-    (
+  metil_termination->on_functions_data = (
+    clic3_memory_allocate_raw(
       sizeof(
         void*
       ) *
@@ -40,7 +36,7 @@ void metil_termination_on_function_add(
     1
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_termination->on_functions,
     (
       sizeof(
@@ -55,7 +51,7 @@ void metil_termination_on_function_add(
     1
   ] = on;
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_termination->on_functions_data,
     (
       sizeof(
@@ -110,7 +106,7 @@ void metil_termination_on_function_remove(
         ];
       }
 
-      clic3_memory_allocate(
+      clic3_memory_reallocate_raw(
         &metil_termination->on_functions,
         (
           sizeof(
@@ -120,7 +116,7 @@ void metil_termination_on_function_remove(
         )
       );
 
-      clic3_memory_allocate(
+      clic3_memory_reallocate_raw(
         &metil_termination->on_functions_data,
         (
           sizeof(
@@ -159,11 +155,11 @@ void metil_termination_terminate(
     );
   }
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     metil_termination->on_functions
   );
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     metil_termination->on_functions_data
   );
 }

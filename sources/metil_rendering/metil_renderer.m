@@ -69,9 +69,8 @@
     metil_count_max_frames
   );
 
-  clic3_memory_allocate(
-    &self->threads,
-    (
+  self->threads = (
+    clic3_memory_allocate_raw(
       sizeof(
         pthread_t*
       ) *
@@ -79,9 +78,8 @@
     )
   );
 
-  clic3_memory_allocate(
-    &self->threads_data,
-    (
+  self->threads_data = (
+    clic3_memory_allocate_raw(
       sizeof(
         struct metil_renderer_thread_poll_object_data
       ) *
@@ -236,17 +234,30 @@
     );
   }
 
-  clic3_memory_free(self->threads);
-  clic3_memory_free(self->threads_data);
+  clic3_memory_free_raw(
+    self->threads
+  );
 
-  [self->metil->renderer_interface.metal_device release];
+  clic3_memory_free_raw(
+    self->threads_data
+  );
+
+  [
+    self->metil->renderer_interface.metal_device
+    release
+  ];
 
   for (
     unsigned char index_data_buffer_frame_release = 0;
     index_data_buffer_frame_release < metil_count_max_frames;
     ++index_data_buffer_frame_release
   ) {
-    [self->data_buffer_frame[index_data_buffer_frame_release] release];
+    [
+      self->data_buffer_frame[
+        index_data_buffer_frame_release
+      ]
+      release
+    ];
   }
 
   [
@@ -299,7 +310,7 @@
     }
   }
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     self->pipelines_render
   );
 
@@ -708,9 +719,8 @@
     ] = 0;
   }
   
-  clic3_memory_allocate(
-    &self->pipelines_render,
-    (
+  self->pipelines_render = (
+    clic3_memory_allocate_raw(
       sizeof(
         id<MTLRenderPipelineState>
       ) *
@@ -751,14 +761,12 @@
     1
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &self->pipelines_render,
-    (
-      sizeof(
-        id<MTLRenderPipelineState>
-      ) *
-      self->length_pipelines_render
-    )
+    sizeof(
+      id<MTLRenderPipelineState>
+    ) *
+    self->length_pipelines_render
   );
 
   self->pipelines_render[
@@ -793,7 +801,7 @@
 
   self->length_pipelines_render = 3;
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &self->pipelines_render,
     (
       sizeof(
@@ -1207,7 +1215,7 @@
     );
   }
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     char_array_fps
   );
 }

@@ -8,16 +8,11 @@
 void metil_group_initialize(
   struct metil_group* metil_group
 ) {
-  metil_group->renderables = 0;
   metil_group->length = 0;
 
-  clic3_memory_allocate(
-    &metil_group->renderables,
-    (
-      sizeof(
-        struct metil_renderable*
-      ) *
-      metil_group->length
+  metil_group->renderables = (
+    clic3_memory_allocate_raw(
+      0
     )
   );
 
@@ -37,7 +32,7 @@ void metil_group_add_length_with_renderable_function(
     length
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_group->renderables,
     (
       sizeof(
@@ -59,12 +54,13 @@ void metil_group_add_length_with_renderable_function(
       index_group_renderable
     ] = 0;
 
-    clic3_memory_allocate(
-      &metil_group->renderables[
-        index_group_renderable
-      ],
-      sizeof(
-        struct metil_renderable
+    metil_group->renderables[
+      index_group_renderable
+    ] = (
+      clic3_memory_allocate_raw(
+        sizeof(
+          struct metil_renderable
+        )
       )
     );
 
@@ -134,7 +130,7 @@ void metil_group_add(
     1
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     metil_group->renderables,
     (
       sizeof(
@@ -198,7 +194,7 @@ void metil_group_remove_at_index(
     1
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_group->renderables,
     (
       sizeof(
@@ -265,7 +261,7 @@ void metil_group_destroy_renderable_at_index(
     1
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &metil_group->renderables,
     (
       sizeof(
@@ -292,14 +288,14 @@ void metil_group_destroy(
       ]
     );
 
-    clic3_memory_free(
+    clic3_memory_free_raw(
       metil_group->renderables[
         index_renderable
       ]
     );
   }
 
-  clic3_memory_free(
+  clic3_memory_free_raw(
     metil_group->renderables
   );
 }

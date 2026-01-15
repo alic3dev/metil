@@ -12,7 +12,9 @@ void metil_mesh_text_initialize(
   float height,
   float scale
 ) {
-  metil_mesh_initialize(mesh);
+  metil_mesh_initialize(
+    mesh
+  );
 
   mesh->size.x = width * scale;
   mesh->size.y = height * scale;
@@ -26,7 +28,7 @@ void metil_mesh_text_initialize(
     6
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &mesh->vertices,
     (
       sizeof(
@@ -36,7 +38,7 @@ void metil_mesh_text_initialize(
     )
   );
 
-  clic3_memory_allocate(
+  clic3_memory_reallocate_raw(
     &mesh->indices,
     (
       sizeof(
