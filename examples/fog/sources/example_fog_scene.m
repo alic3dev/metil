@@ -18,8 +18,6 @@
 
 #include <math_c_vector.h>
 
-#include <stdlib.h>
-
 void example_fog_scene_initialize(
   struct metil* metil,
   struct metil_scene* scene

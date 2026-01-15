@@ -8,8 +8,6 @@
 
 #include <Metal/MTLTexture.h>
 
-#include <stdlib.h>
-
 void metil_texture_image_get_from_region_with_offsets(
   id<MTLTexture> texture,
   void** pixel_bytes,

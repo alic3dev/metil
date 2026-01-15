@@ -576,8 +576,8 @@
   metil_camera_ratio_aspect_set(
     &self->metil->rendering_properties.camera,
     (
-      16.0f /
-      9.0f
+      16 /
+      9
     ),
     self->metil->renderer_interface.size.x,
     self->metil->renderer_interface.size.y

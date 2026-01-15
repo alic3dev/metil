@@ -8,7 +8,6 @@
 #include <math_c_vector.h>
 
 #include <math.h>
-#include <stdlib.h>
 
 void metil_mesh_tube_initialize(
   struct metil_mesh* metil_mesh,
