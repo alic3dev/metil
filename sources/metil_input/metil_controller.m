@@ -4,11 +4,11 @@ void metil_controller_initialize(
   struct metil_controller* metil_controller
 ) {
   metil_controller->controller = (
-    (void*) 0
+    0
   );
 
   metil_controller->profile = (
-    (void*) 0
+    0
   );
 };
 

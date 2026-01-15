@@ -46,9 +46,9 @@ void metil_controller_state_poll(
   );
 
   if (
-    metil_controller->controller == (void*)0
+    metil_controller->controller == 0
   ) {
-    metil_controller->profile = (void*)0;
+    metil_controller->profile = 0;
 
     metil_controller_state->l1 = 0.0f;
     metil_controller_state->l2 = 0.0f;

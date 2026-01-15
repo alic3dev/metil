@@ -128,7 +128,7 @@ void metil_mesh_clone(
     );
   }
 
-  mesh_clone->data = (void*) 0;
+  mesh_clone->data = 0;
 }
 
 void metil_mesh_destroy(

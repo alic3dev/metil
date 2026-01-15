@@ -45,11 +45,11 @@ void example_model_scene_initialize(
   );
 
   struct metil_object* metil_object = (
-    (void*) 0
+    0
   );
 
   struct metil_mesh* metil_mesh = (
-    (void*) 0
+    0
   );
 
   metil_model->data = 0;
@@ -559,7 +559,7 @@ void example_model_scene_poll(
   }
 
   struct metil_object* metil_object = (
-    (void*) 0
+    0
   );
 
   float shift = (

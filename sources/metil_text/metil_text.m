@@ -109,9 +109,9 @@ struct metil_text_image* metil_text_render(
   );
 
   if (
-    glyphs == (void*)0
+    glyphs == 0
   ) {
-    return (void*)0;
+    return 0;
   }
 
   CGRect bounding_box_glyphs[length_characters];
