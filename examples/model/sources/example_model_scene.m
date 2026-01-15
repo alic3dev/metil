@@ -2,6 +2,8 @@
 
 #include <example_model_pipeline_index.h>
 
+#include <clic3_memory.h>
+
 #include <metil_mesh/metil_mesh.h>
 #include <metil_mesh/metil_mesh_box.h>
 #include <metil_model/metil_model.h>
@@ -136,16 +138,22 @@ void example_model_scene_initialize(
     1
   );
 
-  metil_mesh->indices = realloc(
-    metil_mesh->indices,
-    sizeof(unsigned int) *
-    metil_mesh->length_indices
+  clic3_memory_allocate(
+    &metil_mesh->indices,
+    (
+      sizeof(
+        unsigned int
+      ) *
+      metil_mesh->length_indices
+    )
   );
 
-  metil_mesh->vertices = realloc(
-    metil_mesh->vertices,
-    sizeof(struct math_c_vector4_float) *
-    metil_mesh->length_vertices
+  clic3_memory_allocate(
+    &metil_mesh->vertices,
+    (
+      sizeof(struct math_c_vector4_float) *
+      metil_mesh->length_vertices
+    )
   );
 
   metil_object->type_primitive = MTLPrimitiveTypeLineStrip;

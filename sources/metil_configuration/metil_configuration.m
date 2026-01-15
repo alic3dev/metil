@@ -375,9 +375,14 @@ unsigned char metil_configuration_load(
           }
         }
 
-        clic3_memory_free(buffer_parameter);
-        clic3_memory_free(buffer_value);
+        clic3_memory_free(
+          buffer_parameter
+        );
 
+        clic3_memory_free(
+          buffer_value
+        );
+                      
         length_buffer = 0;
       }
     } else {
@@ -385,14 +390,16 @@ unsigned char metil_configuration_load(
         length_buffer + 1
       );
 
-      buffer = realloc(
-        buffer,
-        sizeof(char) * length_buffer
+      clic3_memory_allocate(
+        &buffer,
+        length_buffer
       );
 
       buffer[
         length_buffer - 1
-      ] = c;
+      ] = (
+        c
+      );
     }
   }
 

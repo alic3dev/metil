@@ -113,16 +113,16 @@ void example_collision_scene_initialize(
     2.0f
   );
 
-  metil_mesh_floor->indices = realloc(
-    metil_mesh_floor->indices,
+  clic3_memory_allocate(
+    &metil_mesh_floor->indices,
     sizeof(
       unsigned int
     ) *
     metil_mesh_floor->length_indices
   );
 
-  metil_mesh_floor->vertices = realloc(
-    metil_mesh_floor->vertices,
+  clic3_memory_allocate(
+    &metil_mesh_floor->vertices,
     sizeof(
       struct math_c_vector4_float
     ) *
@@ -540,9 +540,9 @@ void example_collision_scene_initialize(
 
   scene->length_textures = 2;
 
-  scene->textures = (
-    realloc(
-      scene->textures,
+  clic3_memory_allocate(
+    &scene->textures,
+    (
       sizeof(
         id<MTLTexture>
       ) *

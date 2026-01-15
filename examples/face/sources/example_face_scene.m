@@ -3,6 +3,8 @@
 #include <example_face_pipeline_index.h>
 #include <example_face_renderer_data_object.h>
 
+#include <clic3_memory.h>
+
 #include <math_c_power.h>
 #include <math_c_square_root.h>
 
@@ -61,16 +63,24 @@ void example_face_scene_initialize(
   metil_mesh->length_vertices = 33;
   metil_mesh->length_indices = 156;
 
-  metil_mesh->indices = realloc(
-    metil_mesh->indices,
-    sizeof(unsigned int) *
-    metil_mesh->length_indices
+  clic3_memory_allocate(
+    &metil_mesh->indices,
+    (
+      sizeof(
+        unsigned int
+      ) *
+      metil_mesh->length_indices
+    )
   );
 
-  metil_mesh->vertices = realloc(
-    metil_mesh->vertices,
-    sizeof(struct math_c_vector4_float) *
-    metil_mesh->length_vertices
+  clic3_memory_allocate(
+    &metil_mesh->vertices,
+    (
+      sizeof(
+        struct math_c_vector4_float
+      ) *
+      metil_mesh->length_vertices
+    )
   );
 
   metil_mesh->vertices[0].x = -0.9f;
