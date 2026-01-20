@@ -35,29 +35,29 @@ void metil_rendering_properties_initialize(
     metil_configuration_rendering_properties->brightness_text
   );
 
-  metil_rendering_properties->color_clear.x = 0.0f;
-  metil_rendering_properties->color_clear.y = 0.0f;
-  metil_rendering_properties->color_clear.z = 0.0f;
-  metil_rendering_properties->color_clear.w = 1.0f;
+  metil_rendering_properties->colour_clear.x = 0.0f;
+  metil_rendering_properties->colour_clear.y = 0.0f;
+  metil_rendering_properties->colour_clear.z = 0.0f;
+  metil_rendering_properties->colour_clear.w = 1.0f;
 
   metil_rendering_properties->fps_display = (
     metil_configuration_rendering_properties->fps_display
   );
 
-  metil_rendering_properties->color_fps_display.x = (
-    metil_configuration_rendering_properties->color_fps_display.x
+  metil_rendering_properties->colour_fps_display.x = (
+    metil_configuration_rendering_properties->colour_fps_display.x
   );
 
-  metil_rendering_properties->color_fps_display.y = (
-    metil_configuration_rendering_properties->color_fps_display.y
+  metil_rendering_properties->colour_fps_display.y = (
+    metil_configuration_rendering_properties->colour_fps_display.y
   );
 
-  metil_rendering_properties->color_fps_display.z = (
-    metil_configuration_rendering_properties->color_fps_display.z
+  metil_rendering_properties->colour_fps_display.z = (
+    metil_configuration_rendering_properties->colour_fps_display.z
   );
 
-  metil_rendering_properties->color_fps_display.w = (
-    metil_configuration_rendering_properties->color_fps_display.w
+  metil_rendering_properties->colour_fps_display.w = (
+    metil_configuration_rendering_properties->colour_fps_display.w
   );
 
   metil_rendering_properties->fps = 0.0f;

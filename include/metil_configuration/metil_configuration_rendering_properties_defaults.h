@@ -8,17 +8,17 @@
 
 #define metil_configuration_rendering_properties_default_fps_display 1
 
-#define metil_configuration_rendering_properties_default_color_fps_display_x 1.0f
-#define metil_configuration_rendering_properties_default_color_fps_display_y 1.0f
-#define metil_configuration_rendering_properties_default_color_fps_display_z 1.0f
-#define metil_configuration_rendering_properties_default_color_fps_display_w 1.0f
+#define metil_configuration_rendering_properties_default_colour_fps_display_x 1.0f
+#define metil_configuration_rendering_properties_default_colour_fps_display_y 1.0f
+#define metil_configuration_rendering_properties_default_colour_fps_display_z 1.0f
+#define metil_configuration_rendering_properties_default_colour_fps_display_w 1.0f
 
 struct metil_configuration_rendering_properties_defaults {
   float brightness;
   float brightness_text;
 
   unsigned char fps_display;
-  struct math_c_vector4_float color_fps_display;
+  struct math_c_vector4_float colour_fps_display;
 
   unsigned char initialized;
 };

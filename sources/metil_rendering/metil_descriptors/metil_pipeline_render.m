@@ -7,7 +7,7 @@ void metil_rendering_descriptors_pipeline_render_initialize(
   unsigned long count_samples,
   id<MTLFunction> function_fragment,
   id<MTLFunction> function_vertex,
-  MTLPixelFormat format_pixel_color_attachment,
+  MTLPixelFormat format_pixel_colour_attachment,
   MTLPixelFormat format_pixel_depth,
   MTLPixelFormat format_pixel_stencil
 ) {
@@ -16,7 +16,7 @@ void metil_rendering_descriptors_pipeline_render_initialize(
   descriptor_pipeline_render.fragmentFunction = function_fragment;
   descriptor_pipeline_render.vertexFunction = function_vertex;
 
-  descriptor_pipeline_render.colorAttachments[0].pixelFormat = format_pixel_color_attachment;
+  descriptor_pipeline_render.colorAttachments[0].pixelFormat = format_pixel_colour_attachment;
   descriptor_pipeline_render.colorAttachments[0].blendingEnabled = 1;
   descriptor_pipeline_render.colorAttachments[0].rgbBlendOperation = MTLBlendOperationAdd;
   descriptor_pipeline_render.colorAttachments[0].alphaBlendOperation = MTLBlendOperationAdd;

@@ -6,7 +6,7 @@
 struct data_vertex {
   float4 position [[position]];
   float point_size [[point_size]];
-  float4 color;
+  float4 colour;
 };
 
 [[vertex]] struct data_vertex face_points_vertex(
@@ -37,7 +37,7 @@ struct data_vertex {
   if (
     id_vertex + 1 == data_object->vertex_held
   ) {
-    data_vertex.color = float4(
+    data_vertex.colour = float4(
       0.0f,
       0.0f,
       1.0f,
@@ -48,7 +48,7 @@ struct data_vertex {
   } else if (
     id_vertex + 1 == data_object->vertex_hovered
   ) {
-    data_vertex.color = float4(
+    data_vertex.colour = float4(
       1.0f,
       0.0f,
       1.0f,
@@ -57,7 +57,7 @@ struct data_vertex {
 
     data_vertex.point_size = 10.0f;
   } else {
-    data_vertex.color = float4(
+    data_vertex.colour = float4(
       1.0f,
       1.0f,
       1.0f,
@@ -73,5 +73,5 @@ struct data_vertex {
 [[fragment]] float4 face_points_fragment(
   struct data_vertex data_vertex [[stage_in]]
 ) {
-  return data_vertex.color;
+  return data_vertex.colour;
 }

@@ -5,7 +5,7 @@
 struct data_vertex {
   float4 position [[position]];
   float point_size [[point_size]];
-  float4 color;
+  float4 colour;
 };
 
 [[vertex]] struct data_vertex model_item_vertex(
@@ -38,11 +38,11 @@ struct data_vertex {
     10.0f
   );
 
-  data_vertex.color = float4(
-    metal::fmod(data_object->color.x + offset, 1.0f),
-    metal::fmod(data_object->color.y + offset, 1.0f),
-    metal::fmod(data_object->color.z + offset, 1.0f),
-    data_object->color.w
+  data_vertex.colour = float4(
+    metal::fmod(data_object->colour.x + offset, 1.0f),
+    metal::fmod(data_object->colour.y + offset, 1.0f),
+    metal::fmod(data_object->colour.z + offset, 1.0f),
+    data_object->colour.w
   );
 
   return data_vertex;
@@ -51,5 +51,5 @@ struct data_vertex {
 [[fragment]] float4 model_item_fragment(
   struct data_vertex data_vertex [[stage_in]]
 ) {
-  return data_vertex.color;
+  return data_vertex.colour;
 }

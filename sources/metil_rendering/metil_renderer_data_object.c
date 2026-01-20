@@ -11,10 +11,10 @@ void metil_renderer_data_object_initialize(
   metil_renderer_data_object->size.y = 0.0f;
   metil_renderer_data_object->size.z = 0.0f;
 
-  metil_renderer_data_object->color.x = 1.0f;
-  metil_renderer_data_object->color.y = 1.0f;
-  metil_renderer_data_object->color.z = 1.0f;
-  metil_renderer_data_object->color.w = 1.0f;
+  metil_renderer_data_object->colour.x = 1.0f;
+  metil_renderer_data_object->colour.y = 1.0f;
+  metil_renderer_data_object->colour.z = 1.0f;
+  metil_renderer_data_object->colour.w = 1.0f;
 
   metil_renderer_data_object->noise = 0;
 }

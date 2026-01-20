@@ -378,19 +378,19 @@ void example_model_scene_initialize(
     ].buffer.contents
   );
 
-  metil_renderer_data_object->color.x = (
+  metil_renderer_data_object->colour.x = (
     0.0f
   );
 
-  metil_renderer_data_object->color.y = (
+  metil_renderer_data_object->colour.y = (
     1.0f / 3.0f
   );
 
-  metil_renderer_data_object->color.z = (
+  metil_renderer_data_object->colour.z = (
     2.0f / 3.0f
   );
 
-  metil_renderer_data_object->color.w = (
+  metil_renderer_data_object->colour.w = (
     1.0f
   );
   
@@ -637,18 +637,18 @@ void example_model_scene_poll(
     20.0f
   );
 
-  metil_renderer_data_object->color.x = (
-    metil_renderer_data_object->color.x +
+  metil_renderer_data_object->colour.x = (
+    metil_renderer_data_object->colour.x +
     shift
   );
 
-  metil_renderer_data_object->color.y = (
-    metil_renderer_data_object->color.y +
+  metil_renderer_data_object->colour.y = (
+    metil_renderer_data_object->colour.y +
     shift
   );
 
-  metil_renderer_data_object->color.z = (
-    metil_renderer_data_object->color.z +
+  metil_renderer_data_object->colour.z = (
+    metil_renderer_data_object->colour.z +
     shift
   );
 }

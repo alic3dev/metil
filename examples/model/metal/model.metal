@@ -6,7 +6,7 @@
 
 struct data_vertex {
   float4 position [[position]];
-  float4 color;
+  float4 colour;
 };
 
 [[vertex]] struct data_vertex model_vertex(
@@ -56,7 +56,7 @@ struct data_vertex {
     position_vertex
   );
 
-  data_vertex.color = float4(
+  data_vertex.colour = float4(
     1.0f,
     1.0f,
     1.0f,
@@ -69,5 +69,5 @@ struct data_vertex {
 [[fragment]] float4 model_fragment(
   struct data_vertex data_vertex [[stage_in]]
 ) {
-  return data_vertex.color;
+  return data_vertex.colour;
 }

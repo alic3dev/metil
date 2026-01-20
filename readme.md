@@ -241,10 +241,10 @@ by default these are the configuration keys and values that `metil` parses for
 - `rendering_properties:brightness`: floating point value greater than or equal to `0.0f`
 - `rendering_properties:brightness_text`: floating point value greater than or equal to `0.0f`
 - `rendering_properties:fps_display`: integer value (`0`: disable fps display, `1`: enable fps display)
-- `rendering_properties:color_fps_display_r`: floating point value greater than or equal to `0.0f` and less than or equal to `1.0f`
-- `rendering_properties:color_fps_display_g`: floating point value greater than or equal to `0.0f` and less than or equal to `1.0f`
-- `rendering_properties:color_fps_display_b`: floating point value greater than or equal to `0.0f` and less than or equal to `1.0f`
-- `rendering_properties:color_fps_display_a`: floating point value greater than or equal to `0.0f` and less than or equal to `1.0f`
+- `rendering_properties:colour_fps_display_r`: floating point value greater than or equal to `0.0f` and less than or equal to `1.0f`
+- `rendering_properties:colour_fps_display_g`: floating point value greater than or equal to `0.0f` and less than or equal to `1.0f`
+- `rendering_properties:colour_fps_display_b`: floating point value greater than or equal to `0.0f` and less than or equal to `1.0f`
+- `rendering_properties:colour_fps_display_a`: floating point value greater than or equal to `0.0f` and less than or equal to `1.0f`
 
 #### key_value_pair_format
 
@@ -266,10 +266,10 @@ audio:volume->{0.01f};
 rendering_properties:brightness->{1.0f};
 rendering_properties:brightness_text->{1.0f};
 rendering_properties:fps_display->{1};
-rendering_properties:color_fps_display_r->{0.923f};
-rendering_properties:color_fps_display_g->{0.843f};
-rendering_properties:color_fps_display_b->{0.114f};
-rendering_properties:color_fps_display_a->{1.0f};
+rendering_properties:colour_fps_display_r->{0.923f};
+rendering_properties:colour_fps_display_g->{0.843f};
+rendering_properties:colour_fps_display_b->{0.114f};
+rendering_properties:colour_fps_display_a->{1.0f};
 ```
 
 ### input
@@ -298,7 +298,7 @@ this structure is used to interact more closely with the graphics device and the
 ### rendering_properties
 
 `metil->rendering_properties` is a more high level way to interact with the graphical pipeline  
-here you can set the rendering mode, change camera (`metil_camera`) settings, toggle fps display, set the brightness, or change the clear color!
+here you can set the rendering mode, change camera (`metil_camera`) settings, toggle fps display, set the brightness, or change the clear colour!
 
 ### scene_controller
 
@@ -743,7 +743,7 @@ metil_object_text_initialize(
 
 which renders text using the default font/size (`monospace 48px`) to a texture, allocates buffers, sets textures, sets vertices/indices as a square the size of the text
 
-[`metil_text`](sources/metil_text/metil_text.m) itself can be utilized for more specific renditions of text by passing specific render properties containing font information, color spaces, sizes, and then utilizing glyph encoding and text image rendering to create textures to be stored in metal buffers for gpu access
+[`metil_text`](sources/metil_text/metil_text.m) itself can be utilized for more specific renditions of text by passing specific render properties containing font information, colour spaces, sizes, and then utilizing glyph encoding and text image rendering to create textures to be stored in metal buffers for gpu access
 
 the size of text rendering does not correspond to it's displayed size of resolution but does however set the quality and scale of the text. The higher the initial `size` of text rendering the higher the quality of the font displayed, the actual size however is left up to the scaling factors of the renderer.
 

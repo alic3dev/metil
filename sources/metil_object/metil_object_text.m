@@ -42,10 +42,10 @@ void metil_object_text_initialize(
     ].buffer.contents
   );
 
-  metil_renderer_data_object_text->color.x = 1.0f;
-  metil_renderer_data_object_text->color.y = 1.0f;
-  metil_renderer_data_object_text->color.z = 1.0f;
-  metil_renderer_data_object_text->color.w = 1.0f;
+  metil_renderer_data_object_text->colour.x = 1.0f;
+  metil_renderer_data_object_text->colour.y = 1.0f;
+  metil_renderer_data_object_text->colour.z = 1.0f;
+  metil_renderer_data_object_text->colour.w = 1.0f;
 
   metil_object_texture_add(
     metil_object_text,
