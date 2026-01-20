@@ -55,7 +55,10 @@ unsigned char metil_configuration_load(
       "failed_to_[open|create]->{configuration}"
     );
 
-    status_configuration_load = 1;
+    status_configuration_load = (
+      status_configuration_load +
+      1
+    );
 
     return status_configuration_load;
   }
@@ -69,8 +72,9 @@ unsigned char metil_configuration_load(
   );
 
   while (
-    feof(file_configuration) == 0 &&
-    status_configuration_load == 0
+    feof(
+      file_configuration
+    ) == 0
   ) {
     char c = (
       getc(
@@ -92,9 +96,14 @@ unsigned char metil_configuration_load(
         "configuration_file_contains_too_long_of_a_line"
       );
 
-      status_configuration_load = 1;
+      status_configuration_load = (
+        status_configuration_load +
+        1
+      );
 
-      break;
+      length_buffer = 0;
+
+      continue;
     }
 
     if (
@@ -134,7 +143,10 @@ unsigned char metil_configuration_load(
             "invalid_configuration_file"
           );
 
-          status_configuration_load = 1;
+          status_configuration_load = (
+            status_configuration_load +
+            1
+          );
 
           break;
         }
@@ -195,42 +207,44 @@ unsigned char metil_configuration_load(
           "rendering_properties:colour_fps_display_a"
         );
 
-        if (
-          index_parameter == -1
+        switch (
+          index_parameter
         ) {
-          char* message_debug_log_error_prefix = (
-            clic3_char_arrays_concatenate(
-              "unknown_configuration_parameter->{",
-              buffer_parameter
-            )
-          );
+          case -1: {
+            char* message_debug_log_error_prefix = (
+              clic3_char_arrays_concatenate(
+                "unknown_configuration_parameter->{",
+                buffer_parameter
+              )
+            );
 
-          char* message_debug_log_error = (
-            clic3_char_arrays_concatenate(
-              message_debug_log_error,
-              "};\n"
-            )
-          );
+            char* message_debug_log_error = (
+              clic3_char_arrays_concatenate(
+                message_debug_log_error_prefix,
+                "};\n"
+              )
+            );
 
-          metil_debug_log_error(
-            metil_configuration->debug_log_level,
-            message_debug_log_error
-          );
+            metil_debug_log_error(
+              metil_configuration->debug_log_level,
+              message_debug_log_error
+            );
 
-          clic3_memory_free_raw(
-            message_debug_log_error_prefix
-          );
+            clic3_memory_free_raw(
+              message_debug_log_error_prefix
+            );
 
-          clic3_memory_free_raw(
-            message_debug_log_error
-          );
+            clic3_memory_free_raw(
+              message_debug_log_error
+            );
 
-          status_configuration_load = 1;
+            status_configuration_load = (
+              status_configuration_load +
+              1
+            );
 
-          break;
-        }
-
-        switch (index_parameter) {
+            break;
+          }
           case 0: {
             float audio_volume = metil_configuration_value_float_parse(
               metil_configuration,
@@ -238,10 +252,15 @@ unsigned char metil_configuration_load(
               buffer_value
             );
 
-            if (audio_volume >= 0.0f) {
+            if (
+              audio_volume >= 0.0f
+            ) {
               metil_configuration->audio.volume = audio_volume;
             } else {
-              status_configuration_load = 1;
+              status_configuration_load = (
+                status_configuration_load +
+                1
+              );
             }
 
             break;
@@ -256,7 +275,10 @@ unsigned char metil_configuration_load(
             if (rendering_brightness >= 0.0f) {
               metil_configuration->rendering_properties.brightness = rendering_brightness;
             } else {
-              status_configuration_load = 1;
+              status_configuration_load = (
+                status_configuration_load +
+                1
+              );
             }
 
             break;
@@ -271,7 +293,10 @@ unsigned char metil_configuration_load(
             if (rendering_brightness_text >= 0.0f) {
               metil_configuration->rendering_properties.brightness_text = rendering_brightness_text;
             } else {
-              status_configuration_load = 1;
+              status_configuration_load = (
+                status_configuration_load +
+                1
+              );
             }
 
             break;
@@ -288,7 +313,10 @@ unsigned char metil_configuration_load(
             ) {
               metil_configuration->rendering_properties.fps_display = fps_display;
             } else {
-              status_configuration_load = 1;
+              status_configuration_load = (
+                status_configuration_load +
+                1
+              );
             }
 
             break;
@@ -308,7 +336,10 @@ unsigned char metil_configuration_load(
                 colour_fps_display_r
               );
             } else {
-              status_configuration_load = 1;
+              status_configuration_load = (
+                status_configuration_load +
+                1
+              );
             }
             
             break;
@@ -328,7 +359,10 @@ unsigned char metil_configuration_load(
                 colour_fps_display_g
               );
             } else {
-              status_configuration_load = 1;
+              status_configuration_load = (
+                status_configuration_load +
+                1
+              );
             }
 
             break;
@@ -348,7 +382,10 @@ unsigned char metil_configuration_load(
                 colour_fps_display_b
               );
             } else {
-              status_configuration_load = 1;
+              status_configuration_load = (
+                status_configuration_load +
+                1
+              );
             }
 
             break;
@@ -368,18 +405,21 @@ unsigned char metil_configuration_load(
                 colour_fps_display_a
               );
             } else {
-              status_configuration_load = 1;
+              status_configuration_load = (
+                status_configuration_load +
+                1
+              );
             }
 
             break;
           }
         }
 
-        clic3_memory_free(
+        clic3_memory_free_raw(
           buffer_parameter
         );
 
-        clic3_memory_free(
+        clic3_memory_free_raw(
           buffer_value
         );
                       
@@ -387,7 +427,8 @@ unsigned char metil_configuration_load(
       }
     } else {
       length_buffer = (
-        length_buffer + 1
+        length_buffer +
+        1
       );
 
       clic3_memory_reallocate_raw(
@@ -396,7 +437,8 @@ unsigned char metil_configuration_load(
       );
 
       buffer[
-        length_buffer - 1
+        length_buffer -
+        1
       ] = (
         c
       );
