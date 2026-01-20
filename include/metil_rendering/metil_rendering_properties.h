@@ -25,10 +25,10 @@ struct metil_rendering_properties {
   float brightness;
   float brightness_text;
 
-  struct math_c_vector4_float color_clear;
+  struct math_c_vector4_float colour_clear;
 
   unsigned char fps_display;
-  struct math_c_vector4_float color_fps_display;
+  struct math_c_vector4_float colour_fps_display;
   float fps;
 
   unsigned char mode;

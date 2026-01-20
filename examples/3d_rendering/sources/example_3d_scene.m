@@ -76,16 +76,16 @@ void example_3d_scene_initialize(
       ].buffer.contents
     );
 
-    data_object->color.x = (
+    data_object->colour.x = (
       (float) (index_renderable % 10) / 10.0f
     );
-    data_object->color.y = (
+    data_object->colour.y = (
       (float) ((index_renderable + 3) % 10) / 10.0f
     );
-    data_object->color.z = (
+    data_object->colour.z = (
       (float) ((index_renderable + 5) % 10) / 10.0f
     );
-    data_object->color.w = 1.0f;
+    data_object->colour.w = 1.0f;
   }
 
   for (
@@ -291,16 +291,16 @@ void example_3d_scene_initialize(
       ].buffer.contents
     );
 
-    data_object->color.x = (
+    data_object->colour.x = (
       (float) (index_renderable % 10) / 10.0f
     );
-    data_object->color.y = (
+    data_object->colour.y = (
       (float) ((index_renderable * 3) % 10) / 10.0f
     );
-    data_object->color.z = (
+    data_object->colour.z = (
       (float) ((index_renderable * 5) % 10) / 10.0f
     );
-    data_object->color.w = 1.0f;
+    data_object->colour.w = 1.0f;
   }
 }
 
@@ -313,7 +313,7 @@ void example_3d_scene_poll(
     scene
   );
 
-  float color_shift = (
+  float colour_shift = (
     scene->player.position.x +
     scene->player.position.y +
     scene->player.position.z +
@@ -356,10 +356,10 @@ void example_3d_scene_poll(
       ].buffer.contents
     );
 
-    data_object->color.x = (float) (index_renderable % 10) / 10.0f + color_shift;
-    data_object->color.y = (float) ((index_renderable * 3) % 10) / 10.0f + color_shift;
-    data_object->color.z = (float) ((index_renderable * 5) % 10) / 10.0f + color_shift;
+    data_object->colour.x = (float) (index_renderable % 10) / 10.0f + colour_shift;
+    data_object->colour.y = (float) ((index_renderable * 3) % 10) / 10.0f + colour_shift;
+    data_object->colour.z = (float) ((index_renderable * 5) % 10) / 10.0f + colour_shift;
 
-    data_object->color.w = 1.0f;
+    data_object->colour.w = 1.0f;
   }
 }

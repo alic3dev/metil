@@ -6,7 +6,7 @@
 
 struct data_vertex {
   float4 position [[position]];
-  float4 color;
+  float4 colour;
   float brightness;
 };
 
@@ -35,11 +35,11 @@ struct data_vertex {
     vertices[id_vertex]
   );
 
-  data_vertex.color = float4(
-    data_object->color.x,
-    data_object->color.y,
-    data_object->color.z,
-    data_object->color.w
+  data_vertex.colour = float4(
+    data_object->colour.x,
+    data_object->colour.y,
+    data_object->colour.z,
+    data_object->colour.w
   );
 
   data_vertex.brightness = data_frame->brightness;
@@ -51,9 +51,9 @@ struct data_vertex {
   struct data_vertex data_vertex [[stage_in]]
 ) {
   return float4(
-    data_vertex.color.r * data_vertex.brightness,
-    data_vertex.color.g * data_vertex.brightness,
-    data_vertex.color.b * data_vertex.brightness,
-    data_vertex.color.a
+    data_vertex.colour.r * data_vertex.brightness,
+    data_vertex.colour.g * data_vertex.brightness,
+    data_vertex.colour.b * data_vertex.brightness,
+    data_vertex.colour.a
   );
 }

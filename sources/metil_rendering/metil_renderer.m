@@ -401,18 +401,18 @@
   descriptor_render_pass.colorAttachments[0].clearColor = (
     MTLClearColorMake(
       (
-        self->metil->rendering_properties.color_clear.x *
+        self->metil->rendering_properties.colour_clear.x *
         self->metil->rendering_properties.brightness
       ),
       (
-        self->metil->rendering_properties.color_clear.y *
+        self->metil->rendering_properties.colour_clear.y *
         self->metil->rendering_properties.brightness
       ),
       (
-        self->metil->rendering_properties.color_clear.z *
+        self->metil->rendering_properties.colour_clear.z *
         self->metil->rendering_properties.brightness
       ),
-      self->metil->rendering_properties.color_clear.w
+      self->metil->rendering_properties.colour_clear.w
     )
   );
 
@@ -1359,20 +1359,20 @@
       ].buffer.contents
     );
 
-    metil_renderer_data_object->color.x = (
-      self->metil->rendering_properties.color_fps_display.x
+    metil_renderer_data_object->colour.x = (
+      self->metil->rendering_properties.colour_fps_display.x
     );
 
-    metil_renderer_data_object->color.y = (
-      self->metil->rendering_properties.color_fps_display.y
+    metil_renderer_data_object->colour.y = (
+      self->metil->rendering_properties.colour_fps_display.y
     );
 
-    metil_renderer_data_object->color.z = (
-      self->metil->rendering_properties.color_fps_display.z
+    metil_renderer_data_object->colour.z = (
+      self->metil->rendering_properties.colour_fps_display.z
     );
 
-    metil_renderer_data_object->color.w = (
-      self->metil->rendering_properties.color_fps_display.w
+    metil_renderer_data_object->colour.w = (
+      self->metil->rendering_properties.colour_fps_display.w
     );
 
     [

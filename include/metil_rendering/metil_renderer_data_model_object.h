@@ -13,7 +13,7 @@ struct metil_renderer_data_model_object {
   struct math_c_vector3_float position;
   struct math_c_vector3_float size;
 
-  struct math_c_vector4_float color;
+  struct math_c_vector4_float colour;
 
   unsigned int noise;
 };

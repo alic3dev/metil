@@ -223,16 +223,16 @@ struct metil_text_image* metil_text_render(
     text_image->data[index_pixel + 3] = value;
   }
 
-  CGColorSpaceRef color_space = CGColorSpaceCreateWithName(
+  CGColorSpaceRef colour_space = CGColorSpaceCreateWithName(
     kCGColorSpaceSRGB
   );
 
   if (
-    color_space == 0
+    colour_space == 0
   ) {
     metil_debug_log_error(
       metil_configuration->debug_log_level,
-      "couldn't create color space\n"
+      "couldn't create colour space\n"
     );
 
     clic3_memory_free_raw(
@@ -259,7 +259,7 @@ struct metil_text_image* metil_text_render(
       4 *
       text_image->size.x
     ),
-    color_space,
+    colour_space,
     0x0 | kCGImageAlphaNoneSkipFirst
   );
 
@@ -272,7 +272,7 @@ struct metil_text_image* metil_text_render(
     );
 
     CGColorSpaceRelease(
-      color_space
+      colour_space
     );
 
     clic3_memory_free_raw(
@@ -303,7 +303,7 @@ struct metil_text_image* metil_text_render(
   );
 
   CGColorSpaceRelease(
-    color_space
+    colour_space
   );
 
   clic3_memory_free_raw(

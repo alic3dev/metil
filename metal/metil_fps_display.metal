@@ -7,7 +7,7 @@
 struct data_vertex {
   float4 position [[position]];
   float2 position_texture;
-  float4 color;
+  float4 colour;
 };
 
 [[vertex]] struct data_vertex metil_fps_display_vertex(
@@ -47,11 +47,11 @@ struct data_vertex {
     vertices[id_vertex]
   );
 
-  data_vertex.color = float4(
-    data_object->color.x,
-    data_object->color.y,
-    data_object->color.z,
-    data_object->color.w
+  data_vertex.colour = float4(
+    data_object->colour.x,
+    data_object->colour.y,
+    data_object->colour.z,
+    data_object->colour.w
   );
 
   return data_vertex;
@@ -66,7 +66,7 @@ struct data_vertex {
     metal::mip_filter::linear
   );
 
-  float4 color_texture = float4(
+  float4 colour_texture = float4(
     texture.sample(
       sampler_texture,
       data_vertex.position_texture
@@ -74,9 +74,9 @@ struct data_vertex {
   );
 
   return float4(
-    color_texture[0] * data_vertex.color.r,
-    color_texture[1] * data_vertex.color.g,
-    color_texture[2] * data_vertex.color.b,
-    color_texture[3] * data_vertex.color.a
+    colour_texture[0] * data_vertex.colour.r,
+    colour_texture[1] * data_vertex.colour.g,
+    colour_texture[2] * data_vertex.colour.b,
+    colour_texture[3] * data_vertex.colour.a
   );
 }

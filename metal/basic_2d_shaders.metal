@@ -4,7 +4,7 @@
 
 struct data_vertex {
   float4 position [[position]];
-  float4 color;
+  float4 colour;
 };
 
 [[vertex]] struct data_vertex shader_2d_vertex(
@@ -34,11 +34,11 @@ struct data_vertex {
     ]
   );
 
-  data_vertex.color = float4(
-    data_object->color.x,
-    data_object->color.y,
-    data_object->color.z,
-    data_object->color.w
+  data_vertex.colour = float4(
+    data_object->colour.x,
+    data_object->colour.y,
+    data_object->colour.z,
+    data_object->colour.w
   );
 
   return data_vertex;
@@ -47,5 +47,5 @@ struct data_vertex {
 [[fragment]] float4 shader_2d_fragment(
   struct data_vertex data_vertex [[stage_in]]
 ) {
-  return data_vertex.color;
+  return data_vertex.colour;
 }

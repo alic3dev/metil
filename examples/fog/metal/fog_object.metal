@@ -6,7 +6,7 @@
 
 struct data_vertex {
   float4 position [[position]];
-  float4 color;
+  float4 colour;
   float brightness;
   float distance;
 };
@@ -36,29 +36,29 @@ struct data_vertex {
     vertices[id_vertex]
   );
 
-  data_vertex.color = float4(
+  data_vertex.colour = float4(
     metal::fmod(
-      data_object->color.x * (float) (
+      data_object->colour.x * (float) (
         id_vertex +
         4234.23842398
       ),
       1.0f
     ),
     metal::fmod(
-      data_object->color.y * (float) (
+      data_object->colour.y * (float) (
         id_vertex +
         1489.8924489
       ),
       1.0f
     ),
     metal::fmod(
-      data_object->color.z * (float) (
+      data_object->colour.z * (float) (
         id_vertex +
         1.3892810472
       ),
       1.0f
     ),
-    data_object->color.w
+    data_object->colour.w
   );
 
   data_vertex.brightness = (
@@ -85,7 +85,7 @@ struct data_vertex {
 }
 
 float4 fog_apply(
-  float4 color,
+  float4 colour,
   float distance
 ) {
   float distance_offset = metal::fmin(
@@ -113,43 +113,43 @@ float4 fog_apply(
   return float4(
     metal::fmin(
       (
-        color.r +
+        colour.r +
         fog_thickness
       ),
       1.0f
     ),
     metal::fmin(
       (
-        color.g +
+        colour.g +
         fog_thickness
       ),
       1.0f
     ),
     metal::fmin(
       (
-        color.b +
+        colour.b +
         fog_thickness
       ),
       1.0f
     ),
-    color.a
+    colour.a
   );
 }
 
 [[fragment]] float4 fog_object_fragment(
   struct data_vertex data_vertex [[stage_in]]
 ) {
-  float4 color_lighted = float4(
-    data_vertex.color.r * data_vertex.brightness,
-    data_vertex.color.g * data_vertex.brightness,
-    data_vertex.color.b * data_vertex.brightness,
-    data_vertex.color.a
+  float4 colour_lighted = float4(
+    data_vertex.colour.r * data_vertex.brightness,
+    data_vertex.colour.g * data_vertex.brightness,
+    data_vertex.colour.b * data_vertex.brightness,
+    data_vertex.colour.a
   );
 
-  float4 color_fogged = fog_apply(
-    color_lighted,
+  float4 colour_fogged = fog_apply(
+    colour_lighted,
     data_vertex.distance
   );
 
-  return color_fogged;
+  return colour_fogged;
 }

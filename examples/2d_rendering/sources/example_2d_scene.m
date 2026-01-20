@@ -62,22 +62,22 @@ void example_2d_scene_initialize(
       ].buffer.contents
     );
 
-    data_object->color.x = (
+    data_object->colour.x = (
       (float) index_renderable /
       (scene->length_renderables - 1)
     );
 
-    data_object->color.y = (
+    data_object->colour.y = (
       (float) ((index_renderable + 33) % scene->length_renderables) /
       (scene->length_renderables - 1)
     );
 
-    data_object->color.z = (
+    data_object->colour.z = (
       (float) ((index_renderable + 66) % scene->length_renderables) /
       (scene->length_renderables - 1)
     );
 
-    data_object->color.w = 1.0f;
+    data_object->colour.w = 1.0f;
 
     object->position.x = (
       (float) (index_renderable % 10)
@@ -123,21 +123,21 @@ void example_2d_scene_poll(
       .z = scene->time + (index_renderable + 1) * 10
     };
 
-    data_object->color.x = (
+    data_object->colour.x = (
       ((time_offset.x / 1000) % 2 == 0
         ? (float) (time_offset.x % 1000) / 1500.0f
         : (float) (1000 - (time_offset.x % 1000)) / 1500.0f
       ) +
       brightness_minimum
     );
-    data_object->color.y = (
+    data_object->colour.y = (
       ((time_offset.y / 1000) % 2 == 0
         ? (float) (time_offset.y % 1000) / 1500.0f
         : (float) (1000 - (time_offset.y % 1000)) / 1500.0f
       ) +
       brightness_minimum
     );
-    data_object->color.z = (
+    data_object->colour.z = (
       ((time_offset.z / 1000) % 2 == 0
         ? (float) (time_offset.z % 1000) / 1500.0f
         : (float) (1000 - (time_offset.z % 1000)) / 1500.0f

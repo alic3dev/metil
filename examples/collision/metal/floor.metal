@@ -5,7 +5,7 @@
 struct data_vertex {
   float4 position [[position]];
   float point_size [[point_size]];
-  float4 color;
+  float4 colour;
 };
 
 [[vertex]] struct data_vertex floor_vertex(
@@ -45,11 +45,11 @@ struct data_vertex {
     )
   );
 
-  data_vertex.color = float4(
-    data_object->color.x * multiplier,
-    data_object->color.y * multiplier,
-    data_object->color.z * multiplier,
-    data_object->color.w
+  data_vertex.colour = float4(
+    data_object->colour.x * multiplier,
+    data_object->colour.y * multiplier,
+    data_object->colour.z * multiplier,
+    data_object->colour.w
   );
 
   return data_vertex;
@@ -58,5 +58,5 @@ struct data_vertex {
 [[fragment]] float4 floor_fragment(
   struct data_vertex data_vertex [[stage_in]]
 ) {
-  return data_vertex.color;
+  return data_vertex.colour;
 }

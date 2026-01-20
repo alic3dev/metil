@@ -248,64 +248,64 @@ void model_turret_initialize(
     ].buffer.contents
   );
 
-  renderer_data_object_turret_leg_one->color.x = 0.05f;
-  renderer_data_object_turret_leg_one->color.y = 0.05f;
-  renderer_data_object_turret_leg_one->color.z = 0.05f;
-  renderer_data_object_turret_leg_one->color.w = 1.0f;
+  renderer_data_object_turret_leg_one->colour.x = 0.05f;
+  renderer_data_object_turret_leg_one->colour.y = 0.05f;
+  renderer_data_object_turret_leg_one->colour.z = 0.05f;
+  renderer_data_object_turret_leg_one->colour.w = 1.0f;
 
-  renderer_data_object_turret_leg_two->color.x = (
-    renderer_data_object_turret_leg_one->color.x
+  renderer_data_object_turret_leg_two->colour.x = (
+    renderer_data_object_turret_leg_one->colour.x
   );
-  renderer_data_object_turret_leg_two->color.y = (
-    renderer_data_object_turret_leg_one->color.y
+  renderer_data_object_turret_leg_two->colour.y = (
+    renderer_data_object_turret_leg_one->colour.y
   );
-  renderer_data_object_turret_leg_two->color.z = (
-    renderer_data_object_turret_leg_one->color.z
+  renderer_data_object_turret_leg_two->colour.z = (
+    renderer_data_object_turret_leg_one->colour.z
   );
-  renderer_data_object_turret_leg_two->color.w = (
-    renderer_data_object_turret_leg_one->color.w
-  );
-
-  renderer_data_object_turret_leg_three->color.x = (
-    renderer_data_object_turret_leg_one->color.x
-  );
-  renderer_data_object_turret_leg_three->color.y = (
-    renderer_data_object_turret_leg_one->color.y
-  );
-  renderer_data_object_turret_leg_three->color.z = (
-    renderer_data_object_turret_leg_one->color.z
-  );
-  renderer_data_object_turret_leg_three->color.w = (
-    renderer_data_object_turret_leg_one->color.w
+  renderer_data_object_turret_leg_two->colour.w = (
+    renderer_data_object_turret_leg_one->colour.w
   );
 
-  renderer_data_object_turret_leg_four->color.x = (
-    renderer_data_object_turret_leg_one->color.x
+  renderer_data_object_turret_leg_three->colour.x = (
+    renderer_data_object_turret_leg_one->colour.x
   );
-  renderer_data_object_turret_leg_four->color.y = (
-    renderer_data_object_turret_leg_one->color.y
+  renderer_data_object_turret_leg_three->colour.y = (
+    renderer_data_object_turret_leg_one->colour.y
   );
-  renderer_data_object_turret_leg_four->color.z = (
-    renderer_data_object_turret_leg_one->color.z
+  renderer_data_object_turret_leg_three->colour.z = (
+    renderer_data_object_turret_leg_one->colour.z
   );
-  renderer_data_object_turret_leg_four->color.w = (
-    renderer_data_object_turret_leg_one->color.w
+  renderer_data_object_turret_leg_three->colour.w = (
+    renderer_data_object_turret_leg_one->colour.w
   );
 
-  renderer_data_object_turret_box->color.x = 0.05f;
-  renderer_data_object_turret_box->color.y = 0.05f;
-  renderer_data_object_turret_box->color.z = 0.05f;
-  renderer_data_object_turret_box->color.w = 1.0f;
+  renderer_data_object_turret_leg_four->colour.x = (
+    renderer_data_object_turret_leg_one->colour.x
+  );
+  renderer_data_object_turret_leg_four->colour.y = (
+    renderer_data_object_turret_leg_one->colour.y
+  );
+  renderer_data_object_turret_leg_four->colour.z = (
+    renderer_data_object_turret_leg_one->colour.z
+  );
+  renderer_data_object_turret_leg_four->colour.w = (
+    renderer_data_object_turret_leg_one->colour.w
+  );
 
-  renderer_data_object_turret_barrel->color.x = 0.05f;
-  renderer_data_object_turret_barrel->color.y = 0.05f;
-  renderer_data_object_turret_barrel->color.z = 0.05f;
-  renderer_data_object_turret_barrel->color.w = 1.0f;
+  renderer_data_object_turret_box->colour.x = 0.05f;
+  renderer_data_object_turret_box->colour.y = 0.05f;
+  renderer_data_object_turret_box->colour.z = 0.05f;
+  renderer_data_object_turret_box->colour.w = 1.0f;
 
-  renderer_data_object_turret_sight->color.x = 1.0f;
-  renderer_data_object_turret_sight->color.y = 1.0f;
-  renderer_data_object_turret_sight->color.z = 1.0f;
-  renderer_data_object_turret_sight->color.w = 1.0f;
+  renderer_data_object_turret_barrel->colour.x = 0.05f;
+  renderer_data_object_turret_barrel->colour.y = 0.05f;
+  renderer_data_object_turret_barrel->colour.z = 0.05f;
+  renderer_data_object_turret_barrel->colour.w = 1.0f;
+
+  renderer_data_object_turret_sight->colour.x = 1.0f;
+  renderer_data_object_turret_sight->colour.y = 1.0f;
+  renderer_data_object_turret_sight->colour.z = 1.0f;
+  renderer_data_object_turret_sight->colour.w = 1.0f;
 
   object_turret_barrel->index_pipeline_render = (
     example_collision_pipeline_index_turret_barrel

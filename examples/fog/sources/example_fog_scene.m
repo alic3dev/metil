@@ -181,19 +181,19 @@ void example_fog_scene_initialize(
       ].buffer.contents
     );
 
-    data_object->color.x = (
+    data_object->colour.x = (
       (float) (index_renderable % 10) / 10.0f
     );
 
-    data_object->color.y = (
+    data_object->colour.y = (
       (float) ((index_renderable + 3) % 10) / 10.0f
     );
 
-    data_object->color.z = (
+    data_object->colour.z = (
       (float) ((index_renderable + 5) % 10) / 10.0f
     );
 
-    data_object->color.w = 1.0f;
+    data_object->colour.w = 1.0f;
   }
 
   metil_renderable_initialize_at_index(
@@ -228,19 +228,19 @@ void example_fog_scene_initialize(
     ].buffer.contents
   );
 
-  data_object->color.x = (
+  data_object->colour.x = (
     1.0f
   );
 
-  data_object->color.y = (
+  data_object->colour.y = (
     1.0f
   );
 
-  data_object->color.z = (
+  data_object->colour.z = (
     1.0f
   );
 
-  data_object->color.w = (
+  data_object->colour.w = (
     fog_thickness_maximum
   );
 
