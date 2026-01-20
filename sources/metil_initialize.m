@@ -6,6 +6,7 @@
 #include <metil_audio/metil_audio.h>
 #include <metil_configuration/metil_configuration.h>
 #include <metil_configuration/metil_configuration_values_set.h>
+#include <metil_debug/metil_debug_log.h>
 #include <metil_input/metil_input.h>
 #include <metil_library.h>
 #include <metil_paths/metil_paths.h>
@@ -17,6 +18,9 @@
 #include <metil_text/metil_text.h>
 #include <metil_text/metil_text_defaults.h>
 #include <metil_utilities/metil_time.h>
+
+#include <clic3_char_arrays.h>
+#include <clic3_memory.h>
 
 #include <interrupt_handler.h>
 
@@ -90,17 +94,42 @@ int metil_initialize_with_data(
   if (
     status_configuration_load != 0
   ) {
-    metil_paths_destroy(
-      &metil.paths
+    char* char_array_status_configuration_load = (
+      clic3_char_array_from_unsigned_long_int(
+        status_configuration_load
+      )
     );
-    #if target_os_ios
-    exit(
-      status_configuration_load
+
+    char* log_debug_prefix = (
+      clic3_char_arrays_concatenate(
+        "configuration_loaded_with_errors->[",
+        char_array_status_configuration_load
+      )
     );
-    #else
-    [[NSApplication sharedApplication] terminate: 0];
-    #endif
-    return status_configuration_load;
+
+    char* log_debug = (
+      clic3_char_arrays_concatenate(
+        log_debug_prefix,
+        "];\n"
+      )
+    );
+
+    metil_debug_log_error(
+      metil.configuration.debug_log_level,
+      log_debug
+    );
+
+    clic3_memory_free_raw(
+      char_array_status_configuration_load
+    );
+
+    clic3_memory_free_raw(
+      log_debug_prefix
+    );
+
+    clic3_memory_free_raw(
+      log_debug
+    );
   }
   #endif
 
