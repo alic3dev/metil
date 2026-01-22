@@ -1,5 +1,7 @@
 #include <metil_scenes/metil_scene.h>
 
+#include <metil_input/metil_controller.h>
+#include <metil_input/metil_controller_state.h>
 #include <metil_input/metil_cursor.h>
 #include <metil_object.h>
 #include <metil_player/metil_player.h>
@@ -104,39 +106,78 @@ void metil_scene_renderables_set_length(
 
 void metil_scene_poll_input(
   struct metil* metil,
-  struct metil_scene* scene,
-  unsigned long int time
+  struct metil_scene* metil_scene
 ) {
-  scene->time_elapsed = time - scene->time_initial;
-
-  scene->time_input_previous = scene->time;
-  scene->time_input = time;
-  scene->time_input_delta = scene->time_input_previous == 0 ? 0 : (
-    scene->time_input -
-    scene->time_input_previous
+  unsigned long int time = (
+    metil_time_milliseconds_get()
   );
 
-  scene->poll_input(
+  metil_scene->time_elapsed = (
+    time -
+    metil_scene->time_initial
+  );
+
+  metil_scene->time_input_previous = (
+    metil_scene->time
+  );
+
+  metil_scene->time_input = time;
+
+  metil_scene->time_input_delta = (
+    metil_scene->time_input_previous == 0
+    ? 0
+    : (
+      metil_scene->time_input -
+      metil_scene->time_input_previous
+    )
+  );
+
+  metil_controller_poll(
+    &metil->input.controller
+  );
+
+  metil_controller_state_poll(
+    &metil->input.controller,
+    &metil->input.controller_state
+  );
+
+  metil_scene->poll_input(
     metil,
-    scene
+    metil_scene
   );
 }
 
 void metil_scene_poll(
   struct metil* metil,
-  struct metil_scene* scene,
-  unsigned long int time
+  struct metil_scene* metil_scene
 ) {
-  scene->time_previous = scene->time;
-  scene->time = time;
-  scene->time_delta = scene->time_previous == 0 ? 0 : (
-    scene->time -
-    scene->time_previous
+  metil_scene_poll_input(
+    metil,
+    metil_scene
   );
 
-  scene->poll(
+  unsigned long int time = (
+    metil_time_milliseconds_get()
+  );
+
+  metil_scene->time_previous = (
+    metil_scene->time
+  );
+
+  metil_scene->time = time;
+
+  metil_scene->time_delta = (
+    metil_scene->time_previous == 0
+    ? 0
+    : (
+      metil_scene->time -
+      metil_scene->time_previous
+    )
+  );
+
+  metil_scene->poll(
     metil,
-    scene
+    metil_scene
   );
 }
 

@@ -4,9 +4,6 @@
 #include <metil_audio/metil_audio_data.h>
 #include <metil_configuration/metil_configuration.h>
 #include <metil_group.h>
-#include <metil_input/metil_controller_state.h>
-#include <metil_input/metil_input_map.h>
-#include <metil_input/metil_keycodes.h>
 #include <metil_library.h>
 #include <metil_mesh/metil_mesh.h>
 #include <metil_model/metil_model.h>
@@ -28,6 +25,8 @@
 #include <clic3_char_arrays.h>
 #include <clic3_memory.h>
 
+#include <math_c_pi.h>
+#include <math_c_sine.h>
 #include <math_c_vector.h>
 
 #include <Metal/MTLBuffer.h>
@@ -520,7 +519,7 @@
         metil_count_time_frames - 1
       ] = (
         metil_time_milliseconds_get() -
-        1759219190000
+        0x19be2bf087f
       );
 
       float time_difference_average = 0.0f;
@@ -869,7 +868,7 @@
   ];
 }
 
-- (void) poll: (unsigned int) _frame {
+- (void) poll: (unsigned int) poll_frame {
   struct metil_scene_controller* metil_scene_controller = (
     self->metil->scene_controller
   );
@@ -882,36 +881,21 @@
     metil_scene->player
   );
 
-  metil_controller_poll(
-    &self->metil->input.controller
-  );
-
-  metil_controller_state_poll(
-    &self->metil->input.controller,
-    &self->metil->input.controller_state
-  );
-
-  unsigned long int time = metil_time_milliseconds_get();
-
-  metil_scene_poll_input(
-    self->metil,
-    &metil_scene_controller->scene,
-    time
-  );
-
   metil_scene_poll(
     self->metil,
-    &metil_scene_controller->scene,
-    time
+    metil_scene
   );
 
   struct metil_renderer_data_frame* data_frame = (
     data_buffer_frame[
       self->index_data_buffer_frame
-    ]
-  ).contents;
+    ].contents
+  );
 
-  data_frame->frame = _frame;
+  data_frame->frame = poll_frame;
+
+  data_frame->time = metil_scene->time;
+  data_frame->time_delta = metil_scene->time_delta;
 
   data_frame->rotation_camera.x = metil_player->rotation.x;
   data_frame->rotation_camera.y = metil_player->rotation.y;
@@ -931,8 +915,8 @@
 
   matrix_float4x4 matrix_player_rotation_x = (matrix_float4x4) {{
     { 1.0f, 0.0f, 0.0f, 0.0f },
-    { 0.0f, cos(metil_player->rotation.x), -sin(metil_player->rotation.x), 0.0f },
-    { 0.0f, sin(metil_player->rotation.x), cos(metil_player->rotation.x), 0.0f },
+    { 0.0f, math_c_cosine(metil_player->rotation.x, math_c_pi), -math_c_sine(metil_player->rotation.x, math_c_pi), 0.0f },
+    { 0.0f, math_c_sine(metil_player->rotation.x, math_c_pi), math_c_cosine(metil_player->rotation.x, math_c_pi), 0.0f },
     { 0.0f, 0.0f, 0.0f, 1.0f }
   }};
 
@@ -963,9 +947,9 @@
   }
 
   matrix_float4x4 matrix_player_rotation_y = (matrix_float4x4) {{
-    { cos(metil_player->rotation.y), 0.0f, sin(metil_player->rotation.y), 0.0f },
+    { math_c_cosine(metil_player->rotation.y, math_c_pi), 0.0f, math_c_sine(metil_player->rotation.y, math_c_pi), 0.0f },
     { 0.0f, 1.0f, 0.0f, 0.0f },
-    { sin(metil_player->rotation.y), 0.0f, -cos(metil_player->rotation.y), 0.0f },
+    { math_c_sine(metil_player->rotation.y, math_c_pi), 0.0f, -math_c_cosine(metil_player->rotation.y, math_c_pi), 0.0f },
     { 0.0f, 0.0f, 0.0f, 1.0f }
   }};
 

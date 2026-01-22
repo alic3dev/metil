@@ -606,20 +606,20 @@ struct data_vertex {
 
   matrix_float4x4 matrix_projection_object_with_rotation = (
     (matrix_float4x4) {{
-      { metal::cos(joints[id_joint_rotation].y), 0.0f, -metal::sin(joints[id_joint_rotation].y), 0.0f },
+      { math_c_cosine(joints[id_joint_rotation].y, math_c_pi), 0.0f, -math_c_sine(joints[id_joint_rotation].y, math_c_pi), 0.0f },
       { 0.0f, 1.0f, 0.0f, 0.0f },
-      { metal::sin(joints[id_joint_rotation].y), 0.0f, metal::cos(joints[id_joint_rotation].y), 0.0f },
+      { math_c_sine(joints[id_joint_rotation].y, math_c_pi), 0.0f, math_c_cosine(joints[id_joint_rotation].y, math_c_pi), 0.0f },
       { 0.0f, 0.0f, 0.0f, 1.0f }
     }} *
     (matrix_float4x4) {{
       { 1.0f, 0.0f, 0.0f, 0.0f },
-      { 0.0f, metal::cos(joints[id_joint_rotation].x), -metal::sin(joints[id_joint_rotation].x), 0.0f },
-      { 0.0f, metal::sin(joints[id_joint_rotation].x), metal::cos(joints[id_joint_rotation].x), 0.0f },
+      { 0.0f, math_c_cosine(joints[id_joint_rotation].x, math_c_pi), -math_c_sine(joints[id_joint_rotation].x, math_c_pi), 0.0f },
+      { 0.0f, math_c_sine(joints[id_joint_rotation].x, math_c_pi), math_c_cosine(joints[id_joint_rotation].x, math_c_pi), 0.0f },
       { 0.0f, 0.0f, 0.0f, 1.0f }
     }} *
     (matrix_float4x4) {{
-      { metal::cos(joints[id_joint_rotation].z), -metal::sin(joints[id_joint_rotation].z), 0.0f, 0.0f },
-      { metal::sin(joints[id_joint_rotation].z), metal::cos(joints[id_joint_rotation].z), 0.0f, 0.0f },
+      { math_c_cosine(joints[id_joint_rotation].z, math_c_pi), -math_c_sine(joints[id_joint_rotation].z, math_c_pi), 0.0f, 0.0f },
+      { math_c_sine(joints[id_joint_rotation].z, math_c_pi), math_c_cosine(joints[id_joint_rotation].z, math_c_pi), 0.0f, 0.0f },
       { 0.0f, 0.0f, 1.0f, 0.0f },
       { 0.0f, 0.0f, 0.0f, 1.0f }
     }}

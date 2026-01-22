@@ -4,9 +4,9 @@
 
 #include <clic3_memory.h>
 
+#include <math_c_pi.h>
+#include <math_c_sine.h>
 #include <math_c_vector.h>
-
-#include <math.h>
 
 void metil_mesh_dollop_initialize(
   struct metil_mesh* metil_mesh,
@@ -180,10 +180,10 @@ void metil_mesh_dollop_initialize(
     }
 
     percentage_radius = (
-      sin(
+      math_c_sine(
         percentage_radius *
-        M_PI /
-        2.0f
+        math_c_pi_half,
+        math_c_pi
       )
     );
 
@@ -212,13 +212,16 @@ void metil_mesh_dollop_initialize(
       float angle = (
         (float) index_segment_x /
         (float) segments.x *
-        M_PI * 2.0f
+        math_c_pi_doubled
       );
 
       metil_mesh->vertices[
         index_vertex
       ].x = (
-        sin(angle) *
+        math_c_sine(
+          angle,
+          math_c_pi
+        ) *
         radius.x
       );
 
@@ -231,7 +234,10 @@ void metil_mesh_dollop_initialize(
       metil_mesh->vertices[
         index_vertex
       ].z = (
-        cos(angle) *
+        math_c_cosine(
+          angle,
+          math_c_pi
+        ) *
         radius.y
       );
 

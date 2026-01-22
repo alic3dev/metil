@@ -5,9 +5,9 @@
 
 #include <clic3_memory.h>
 
+#include <math_c_pi.h>
+#include <math_c_sine.h>
 #include <math_c_vector.h>
-
-#include <math.h>
 
 void metil_mesh_tube_initialize(
   struct metil_mesh* metil_mesh,
@@ -309,7 +309,7 @@ void metil_mesh_tube_initialize(
       float angle = (
         (float) index_segment_x /
         (float) segments.x *
-        M_PI * 2.0f
+        math_c_pi_doubled
       );
 
       switch (
@@ -319,7 +319,10 @@ void metil_mesh_tube_initialize(
           metil_mesh->vertices[
             index_vertex
           ].x = (
-            sin(angle) *
+            math_c_sine(
+              angle,
+              math_c_pi
+            ) *
             size_half.x
           );
 
@@ -332,7 +335,10 @@ void metil_mesh_tube_initialize(
           metil_mesh->vertices[
             index_vertex
           ].z = (
-            cos(angle) *
+            math_c_cosine(
+              angle,
+              math_c_pi
+            ) *
             size_half.z
           );
 
@@ -342,7 +348,10 @@ void metil_mesh_tube_initialize(
           metil_mesh->vertices[
             index_vertex
           ].x = (
-            cos(angle) *
+            math_c_cosine(
+              angle,
+              math_c_pi
+            ) *
             size_half.x
           );
 
@@ -355,7 +364,10 @@ void metil_mesh_tube_initialize(
           metil_mesh->vertices[
             index_vertex
           ].z = (
-            sin(angle) *
+            math_c_sine(
+              angle,
+              math_c_pi
+            ) *
             size_half.z
           );
 
@@ -365,7 +377,10 @@ void metil_mesh_tube_initialize(
           metil_mesh->vertices[
             index_vertex
           ].y = (
-            sin(angle) *
+            math_c_sine(
+              angle,
+              math_c_pi
+            ) *
             size_half.y
           );
 
@@ -378,7 +393,10 @@ void metil_mesh_tube_initialize(
           metil_mesh->vertices[
             index_vertex
           ].z = (
-            cos(angle) *
+            math_c_cosine(
+              angle,
+              math_c_pi
+            ) *
             size_half.z
           );
 
@@ -388,7 +406,10 @@ void metil_mesh_tube_initialize(
           metil_mesh->vertices[
             index_vertex
           ].y = (
-            cos(angle) *
+            math_c_cosine(
+              angle,
+              math_c_pi
+            ) *
             size_half.y
           );
 
@@ -401,7 +422,10 @@ void metil_mesh_tube_initialize(
           metil_mesh->vertices[
             index_vertex
           ].z = (
-            sin(angle) *
+            math_c_sine(
+              angle,
+              math_c_pi
+            ) *
             size_half.z
           );
 
@@ -411,7 +435,10 @@ void metil_mesh_tube_initialize(
           metil_mesh->vertices[
             index_vertex
           ].y = (
-            cos(angle) *
+            math_c_cosine(
+              angle,
+              math_c_pi
+            ) *
             size_half.y
           );
 
@@ -424,7 +451,10 @@ void metil_mesh_tube_initialize(
           metil_mesh->vertices[
             index_vertex
           ].x = (
-            sin(angle) *
+            math_c_sine(
+              angle,
+              math_c_pi
+            ) *
             size_half.x
           );
 
@@ -434,7 +464,10 @@ void metil_mesh_tube_initialize(
           metil_mesh->vertices[
             index_vertex
           ].y = (
-            sin(angle) *
+            math_c_sine(
+              angle,
+              math_c_pi
+            ) *
             size_half.y
           );
 
@@ -447,7 +480,10 @@ void metil_mesh_tube_initialize(
           metil_mesh->vertices[
             index_vertex
           ].x = (
-            cos(angle) *
+            math_c_cosine(
+              angle,
+              math_c_pi
+            ) *
             size_half.x
           );
 

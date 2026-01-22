@@ -10,6 +10,10 @@
 #include <metil_scenes/metil_scene.h>
 
 #include <math_c_vector.h>
+#include <math_c_pi.h>
+#include <math_c_sine.h>
+
+#include <clic3_memory.h>
 
 void example_2d_scene_initialize(
   struct metil* metil,
@@ -18,12 +22,18 @@ void example_2d_scene_initialize(
   metil_scene_initialize_with_renderables(
     metil,
     scene,
-    100
+    2
   );
 
   scene->player.poll_input = metil_player_poll_input_null;
 
   scene->poll = example_2d_scene_poll;
+
+  #undef M_PI
+  #define M_PI math_c_pi_calculate(1000)
+
+  printf("%.100f\n", M_PI);
+  printf("%.100f\n", math_c_pi_calculate(1000));
 
   for (
     unsigned char index_renderable = 0;
@@ -42,10 +52,50 @@ void example_2d_scene_initialize(
       ].renderable
     );
 
-    metil_mesh_square_initialize(
-      &object->mesh,
-      0.2f
+    metil_mesh_initialize(
+      &object->mesh
     );
+
+    object->mesh.length_vertices = 1000;
+    object->mesh.length_indices = 1000;
+    object->type_primitive = MTLPrimitiveTypeLineStrip;
+
+    clic3_memory_reallocate_raw(
+      &object->mesh.vertices,
+      sizeof(struct math_c_vector4_float) * object->mesh.length_vertices
+    );
+
+    clic3_memory_reallocate_raw(
+      &object->mesh.indices,
+      sizeof(unsigned int) * object->mesh.length_indices
+    );
+
+    float mult = M_PI * 4.20;
+
+    for (
+      unsigned int i = 0; i < object->mesh.length_vertices; ++i
+    ) {
+      float ssin;
+
+      ssin = ((float) i / (float) (object->mesh.length_vertices - 1)) * mult - 0.5f;
+
+      if (index_renderable == 0) {
+        ssin = math_c_tangent(
+          ssin,
+          M_PI
+        );
+      } else {
+        
+        ssin = tan(ssin);
+      }
+
+      object->mesh.vertices[i].x = (-1.0f) + (((float) i / (float) (object->mesh.length_vertices - 1)) * 2.0f);
+      object->mesh.vertices[i].y = ssin;
+      object->mesh.vertices[i].z = 0.0f;
+      object->mesh.vertices[i].w = 1.0f;
+
+      object->mesh.indices[i] = i;
+    }
 
     object->positioning = (
       metil_positioning_absolute
@@ -62,34 +112,33 @@ void example_2d_scene_initialize(
       ].buffer.contents
     );
 
-    data_object->colour.x = (
-      (float) index_renderable /
-      (scene->length_renderables - 1)
-    );
+    if (index_renderable != 0) {
+      data_object->colour.x = (
+        0.0f
+      );
 
-    data_object->colour.y = (
-      (float) ((index_renderable + 33) % scene->length_renderables) /
-      (scene->length_renderables - 1)
-    );
+      data_object->colour.y = (
+        1.0f
+      );
 
-    data_object->colour.z = (
-      (float) ((index_renderable + 66) % scene->length_renderables) /
-      (scene->length_renderables - 1)
-    );
+      data_object->colour.z = (
+        0.0f
+      );
+    }
 
     data_object->colour.w = 1.0f;
 
-    object->position.x = (
-      (float) (index_renderable % 10)
-    ) * 0.2f - 0.9f;
+    // object->position.x = (
+    //   (float) (index_renderable % 10)
+    // ) * 0.2f - 0.9f;
 
-    object->position.y = (
-      (float) (index_renderable / 10)
-    ) * 0.2f - 0.9f;
+    // object->position.y = (
+    //   (float) (index_renderable / 10)
+    // ) * 0.2f - 0.9f;
 
-    object->position.z = (
-      1.0f
-    );
+    // object->position.z = (
+    //   1.0f
+    // );
   }
 }
 
@@ -101,6 +150,8 @@ void example_2d_scene_poll(
     metil,
     scene
   );
+
+  return;
 
   float brightness_minimum = 0.25f;
 
