@@ -1,3 +1,5 @@
+#include <metil_metal/metil_fps_display.h>
+
 #include <metil_metal/metil_metal_data_vertex.h>
 
 #include <metil_rendering/metil_renderer_data_frame.h>
