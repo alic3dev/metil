@@ -1,14 +1,12 @@
+#include <metil_metal/metil_wireframe.h>
+
+#include <metil_metal/metil_metal_data_vertex.h>
+
 #include <metil_rendering/metil_renderer_data_frame.h>
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
 
-#include <metal_stdlib>
-
-struct data_vertex {
-  float4 position [[position]];
-};
-
-[[vertex]] struct data_vertex metil_wireframe_vertex(
+[[vertex]] struct data_vertex_basic metil_wireframe_vertex(
   const device simd_float4* vertices [[
     buffer(
       metil_renderer_vertex_index_parameter_vertices
@@ -26,21 +24,27 @@ struct data_vertex {
   ]],
   unsigned int id_vertex [[vertex_id]]
 ) {
-  struct data_vertex data_vertex;
+  struct data_vertex_basic data_vertex_basic;
 
-  data_vertex.position = (
+  data_vertex_basic.position = (
     data_object->view_model_matrix_projection *
-    vertices[id_vertex]
+    vertices[
+      id_vertex
+    ]
   );
 
-  return data_vertex;
+  return (
+    data_vertex_basic
+  );
 }
 
 [[fragment]] float4 metil_wireframe_fragment() {
-  return float4(
-    1.0f,
-    1.0f,
-    1.0f,
-    1.0f
+  return (
+    float4(
+      1.0f,
+      1.0f,
+      1.0f,
+      1.0f
+    )
   );
 }
