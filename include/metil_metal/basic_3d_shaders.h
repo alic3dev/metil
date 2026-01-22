@@ -11,7 +11,7 @@
   constant struct metil_renderer_data_frame*,
   constant struct metil_renderer_data_object*,
   unsigned int
-)
+);
 
 [[fragment]] float4 shader_3d_fragment(
   struct data_vertex_basic_coloured
