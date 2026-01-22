@@ -153,7 +153,10 @@ file_library_dynamic_major=${directory_library}/${name_library_dynamic_major}
 file_library_static=${directory_library}/${name}.a
 
 file_metalar_metil_all=${directory_metalar}/metil_all.metalar
+file_metalar_metil_model=${directory_metalar}/metil_metal_model.metalar
+
 file_output_metalar_metil_all=${directory_library}/metil_all.metalar
+file_output_metalar_metil_model=${directory_library}/metil_metal_model.metalar
 
 ifeq (${target_device},iphone)
 file_output_info_plist=${directory_library}/Info_ios.plist
@@ -243,7 +246,7 @@ endif
 
 metal_flags_output=
 
-${name}: ${file_library_dylib} ${file_library_dynamic} ${file_library_object} ${file_library_static} ${file_output_metal} ${file_output_metalar_metil_all} ${files_metalar} ${files_output_metalar} ${files_storyboards_compiled} ${file_output_info_plist}
+${name}: ${file_library_dylib} ${file_library_dynamic} ${file_library_object} ${file_library_static} ${file_output_metal} ${file_output_metalar_metil_all} ${file_output_metalar_metil_model} ${files_metalar} ${files_output_metalar} ${files_storyboards_compiled} ${file_output_info_plist}
 
 all: ${name} examples
 
@@ -296,6 +299,11 @@ ${file_metalar_metil_all}: ${files_air}
 	mkdir -p ${directory_metalar}
 	if [[ -f ${file_metalar_metil_all} ]]; then rm ${file_metalar_metil_all}; fi
 	${metal_ar} -rc ${file_metalar_metil_all} ${files_air}
+
+${file_metalar_metil_model}: ${directory_air}/metil_metal_joint.air ${directory_air}/metil_metal_model_object.air
+	mkdir -p ${directory_metalar}
+	if [[ -f ${file_metalar_metil_model} ]]; then rm ${file_metalar_metil_model}; fi
+	${metal_ar} -rc ${file_metalar_metil_model} ${directory_air}/metil_metal_joint.air ${directory_air}/metil_metal_model_object.air
 
 ${directory_metalar}/%.metalar: ${directory_air}/%.air
 	mkdir -p ${directory_metalar}
