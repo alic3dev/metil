@@ -75,14 +75,12 @@ void metil_scene_renderables_set_length(
 
 void metil_scene_poll_input(
   struct metil* _Nonnull,
-  struct metil_scene* _Nonnull,
-  unsigned long int
+  struct metil_scene* _Nonnull
 );
 
 void metil_scene_poll(
   struct metil* _Nonnull,
-  struct metil_scene* _Nonnull,
-  unsigned long int
+  struct metil_scene* _Nonnull
 );
 
 void metil_scene_destroy(

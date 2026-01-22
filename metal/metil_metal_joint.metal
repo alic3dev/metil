@@ -2,6 +2,8 @@
 
 #include <metil_joint/metil_joint_id_offset.h>
 
+#include <math_c_pi.h>
+#include <math_c_sine.h>
 #include <math_c_vector.h>
 
 #include <simd/simd.h>
@@ -113,36 +115,42 @@ void metil_metal_joint_matrix_projection_rotation_set(
 ) {
   math_c_vector3_float rotation_joint_sines = {
     .x = (
-      metal::sin(
-        rotation_joint->x
+      math_c_sine(
+        rotation_joint->x,
+        math_c_pi
       )
     ),
     .y = (
-      metal::sin(
-        rotation_joint->y
+      math_c_sine(
+        rotation_joint->y,
+        math_c_pi
       )
     ),
     .z = (
-      metal::sin(
-        rotation_joint->z
+      math_c_sine(
+        rotation_joint->z,
+        math_c_pi
       )
     )
   };
 
   math_c_vector3_float rotation_joint_cosines = {
     .x = (
-      metal::cos(
-        rotation_joint->x
+      math_c_cosine(
+        rotation_joint->x,
+        math_c_pi
       )
     ),
     .y = (
-      metal::cos(
-        rotation_joint->y
+      math_c_cosine(
+        rotation_joint->y,
+        math_c_pi
       )
     ),
     .z = (
-      metal::cos(
-        rotation_joint->z
+      math_c_cosine(
+        rotation_joint->z,
+        math_c_pi
       )
     )
   };

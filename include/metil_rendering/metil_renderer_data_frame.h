@@ -6,6 +6,9 @@
 struct metil_renderer_data_frame {
   unsigned int frame;
 
+  unsigned long int time;
+  unsigned long int time_delta;
+
   struct math_c_vector3_float rotation_camera;
   struct math_c_vector3_float position_player;
 

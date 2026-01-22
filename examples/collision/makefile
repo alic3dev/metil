@@ -37,6 +37,7 @@ directory_interrupt_handler_include=${directory_interrupt_handler}/include
 
 directory_math_c=../../../math_c
 directory_math_c_include=${directory_math_c}/include
+directory_math_c_metalar=${directory_math_c}/metalar/macos
 
 directory_metil=../..
 directory_metil_include=${directory_metil}/include
@@ -96,6 +97,8 @@ file_metil_storyboard=${directory_metil_library}/metil.storyboardc
 file_metalar_metil_fps_display=${directory_metil_library}/metil_fps_display.metalar
 file_metalar_metil_wireframe=${directory_metil_library}/metil_wireframe.metalar
 file_metalar_metil_metal_model=${directory_metil_library}/metil_metal_model.metalar
+
+file_math_c_metalar=${directory_math_c_metalar}/math_c_sine.metalar
 
 file_info_plist=${directory_metil_plist}/Info.plist
 file_output=${directory_app_contents_macos}/${name}
@@ -185,7 +188,7 @@ endif
 
 ${file_output_metal}: ${files_air}
 	mkdir -p "${dir ${file_output_metal}}"
-	${metallib} ${metal_flags_output} ${files_air} ${file_metalar_metil_wireframe} ${file_metalar_metil_fps_display} ${file_metalar_metil_metal_model} -o ${file_output_metal}
+	${metallib} ${metal_flags_output} ${files_air} ${file_metalar_metil_wireframe} ${file_metalar_metil_fps_display} ${file_metalar_metil_metal_model} ${file_math_c_metalar} -o ${file_output_metal}
 
 ${directory_air}/%.air: ${directory_metal}/%.metal
 	mkdir -p "${dir $@}"

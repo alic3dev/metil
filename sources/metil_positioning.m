@@ -4,9 +4,10 @@
 #include <metil_rendering/metil_camera/metil_camera_mode.h>
 #include <metil_scenes/metil_scene_controller.h>
 
+#include <math_c_pi.h>
+#include <math_c_sine.h>
 #include <math_c_vector.h>
 
-#include <math.h>
 #include <simd/simd.h>
 
 void metil_positioning_view_model_matrix_projection_set(
@@ -173,9 +174,9 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
         }
       }},
       (matrix_float4x4) {{
-        { cos(rotation->y), 0.0f, -sin(rotation->y), 0.0f },
+        { math_c_cosine(rotation->y, math_c_pi), 0.0f, -math_c_sine(rotation->y, math_c_pi), 0.0f },
         { 0.0f, 1.0f, 0.0f, 0.0f },
-        { sin(rotation->y), 0.0f, cos(rotation->y), 0.0f },
+        { math_c_sine(rotation->y, math_c_pi), 0.0f, math_c_cosine(rotation->y, math_c_pi), 0.0f },
         { 0.0f, 0.0f, 0.0f, 1.0f }
       }}
     );
@@ -184,8 +185,8 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
       matrix_projection_object_with_rotation,
       (matrix_float4x4) {{
         { 1.0f, 0.0f, 0.0f, 0.0f },
-        { 0.0f, cos(rotation->x), -sin(rotation->x), 0.0f },
-        { 0.0f, sin(rotation->x), cos(rotation->x), 0.0f },
+        { 0.0f, math_c_cosine(rotation->x, math_c_pi), -math_c_sine(rotation->x, math_c_pi), 0.0f },
+        { 0.0f, math_c_sine(rotation->x, math_c_pi), math_c_cosine(rotation->x, math_c_pi), 0.0f },
         { 0.0f, 0.0f, 0.0f, 1.0f }
       }}
     );
@@ -193,8 +194,8 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
     matrix_projection_object_with_rotation = matrix_multiply(
       matrix_projection_object_with_rotation,
       (matrix_float4x4) {{
-        { cos(rotation->z), -sin(rotation->z), 0.0f, 0.0f },
-        { sin(rotation->z), cos(rotation->z), 0.0f, 0.0f },
+        { math_c_cosine(rotation->z, math_c_pi), -math_c_sine(rotation->z, math_c_pi), 0.0f, 0.0f },
+        { math_c_sine(rotation->z, math_c_pi), math_c_cosine(rotation->z, math_c_pi), 0.0f, 0.0f },
         { 0.0f, 0.0f, 1.0f, 0.0f },
         { 0.0f, 0.0f, 0.0f, 1.0f }
       }}
@@ -218,9 +219,9 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
       matrix_projection_object_offset_with_rotation = matrix_multiply(
         matrix_projection_object_offset_with_rotation,
         (matrix_float4x4) {{
-          { cos(rotation_offset->y), 0.0f, -sin(rotation_offset->y), 0.0f },
+          { math_c_cosine(rotation_offset->y, math_c_pi), 0.0f, -math_c_sine(rotation_offset->y, math_c_pi), 0.0f },
           { 0.0f, 1.0f, 0.0f, 0.0f },
-          { sin(rotation_offset->y), 0.0f, cos(rotation_offset->y), 0.0f },
+          { math_c_sine(rotation_offset->y, math_c_pi), 0.0f, math_c_cosine(rotation_offset->y, math_c_pi), 0.0f },
           { 0.0f, 0.0f, 0.0f, 1.0f }
         }}
       );
@@ -229,8 +230,8 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
         matrix_projection_object_offset_with_rotation,
         (matrix_float4x4) {{
           { 1.0f, 0.0f, 0.0f, 0.0f },
-          { 0.0f, cos(rotation_offset->x), -sin(rotation_offset->x), 0.0f },
-          { 0.0f, sin(rotation_offset->x), cos(rotation_offset->x), 0.0f },
+          { 0.0f, math_c_cosine(rotation_offset->x, math_c_pi), -math_c_sine(rotation_offset->x, math_c_pi), 0.0f },
+          { 0.0f, math_c_sine(rotation_offset->x, math_c_pi), math_c_cosine(rotation_offset->x, math_c_pi), 0.0f },
           { 0.0f, 0.0f, 0.0f, 1.0f }
         }}
       );
@@ -238,8 +239,8 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
       matrix_projection_object_offset_with_rotation = matrix_multiply(
         matrix_projection_object_offset_with_rotation,
         (matrix_float4x4) {{
-          { cos(rotation_offset->z), -sin(rotation_offset->z), 0.0f, 0.0f },
-          { sin(rotation_offset->z), cos(rotation_offset->z), 0.0f, 0.0f },
+          { math_c_cosine(rotation_offset->z, math_c_pi), -math_c_sine(rotation_offset->z, math_c_pi), 0.0f, 0.0f },
+          { math_c_sine(rotation_offset->z, math_c_pi), math_c_cosine(rotation_offset->z, math_c_pi), 0.0f, 0.0f },
           { 0.0f, 0.0f, 1.0f, 0.0f },
           { 0.0f, 0.0f, 0.0f, 1.0f }
         }}
@@ -274,9 +275,9 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
     *view_model_matrix_projection = matrix_multiply(
       *view_model_matrix_projection,
       (matrix_float4x4) {{
-        { cos(rotation->y), 0.0f, -sin(rotation->y), 0.0f },
+        { math_c_cosine(rotation->y, math_c_pi), 0.0f, -math_c_sine(rotation->y, math_c_pi), 0.0f },
         { 0.0f, 1.0f, 0.0f, 0.0f },
-        { sin(rotation->y), 0.0f, cos(rotation->y), 0.0f },
+        { math_c_sine(rotation->y, math_c_pi), 0.0f, math_c_cosine(rotation->y, math_c_pi), 0.0f },
         { 0.0f, 0.0f, 0.0f, 1.0f }
       }}
     );
@@ -285,8 +286,8 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
       *view_model_matrix_projection,
       (matrix_float4x4) {{
         { 1.0f, 0.0f, 0.0f, 0.0f },
-        { 0.0f, cos(rotation->x), -sin(rotation->x), 0.0f },
-        { 0.0f, sin(rotation->x), cos(rotation->x), 0.0f },
+        { 0.0f, math_c_cosine(rotation->x, math_c_pi), -math_c_sine(rotation->x, math_c_pi), 0.0f },
+        { 0.0f, math_c_sine(rotation->x, math_c_pi), math_c_cosine(rotation->x, math_c_pi), 0.0f },
         { 0.0f, 0.0f, 0.0f, 1.0f }
       }}
     );
@@ -294,8 +295,8 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
     *view_model_matrix_projection = matrix_multiply(
       *view_model_matrix_projection,
       (matrix_float4x4) {{
-        { cos(rotation->z), -sin(rotation->z), 0.0f, 0.0f },
-        { sin(rotation->z), cos(rotation->z), 0.0f, 0.0f },
+        { math_c_cosine(rotation->z, math_c_pi), -math_c_sine(rotation->z, math_c_pi), 0.0f, 0.0f },
+        { math_c_sine(rotation->z, math_c_pi), math_c_cosine(rotation->z, math_c_pi), 0.0f, 0.0f },
         { 0.0f, 0.0f, 1.0f, 0.0f },
         { 0.0f, 0.0f, 0.0f, 1.0f }
       }}

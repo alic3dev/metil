@@ -2,6 +2,9 @@
 
 #include <clic3_memory.h>
 
+#include <math_c_pi.h>
+#include <math_c_sine.h>
+
 #include <simd/simd.h>
 
 void metil_joint_initialize(
@@ -91,15 +94,15 @@ void metil_joint_propagate(
     matrix_float4x4 matrix_metil_joint_propagation_selection_rotation = (
       matrix_multiply(
         (matrix_float4x4) {{
-          { cos(metil_joint_propagation_selection->rotation_applied.y), 0.0f, -sin(metil_joint_propagation_selection->rotation_applied.y), 0.0f },
+          { math_c_cosine(metil_joint_propagation_selection->rotation_applied.y, math_c_pi), 0.0f, -math_c_sine(metil_joint_propagation_selection->rotation_applied.y, math_c_pi), 0.0f },
           { 0.0f, 1.0f, 0.0f, 0.0f },
-          { sin(metil_joint_propagation_selection->rotation_applied.y), 0.0f, cos(metil_joint_propagation_selection->rotation_applied.y), 0.0f },
+          { math_c_sine(metil_joint_propagation_selection->rotation_applied.y, math_c_pi), 0.0f, math_c_cosine(metil_joint_propagation_selection->rotation_applied.y, math_c_pi), 0.0f },
           { 0.0f, 0.0f, 0.0f, 1.0f }
         }},
         (matrix_float4x4) {{
           { 1.0f, 0.0f, 0.0f, 0.0f },
-          { 0.0f, cos(metil_joint_propagation_selection->rotation_applied.x), -sin(metil_joint_propagation_selection->rotation_applied.x), 0.0f },
-          { 0.0f, sin(metil_joint_propagation_selection->rotation_applied.x), cos(metil_joint_propagation_selection->rotation_applied.x), 0.0f },
+          { 0.0f, math_c_cosine(metil_joint_propagation_selection->rotation_applied.x, math_c_pi), -math_c_sine(metil_joint_propagation_selection->rotation_applied.x, math_c_pi), 0.0f },
+          { 0.0f, math_c_sine(metil_joint_propagation_selection->rotation_applied.x, math_c_pi), math_c_cosine(metil_joint_propagation_selection->rotation_applied.x, math_c_pi), 0.0f },
           { 0.0f, 0.0f, 0.0f, 1.0f }
         }}
       )
@@ -109,8 +112,8 @@ void metil_joint_propagate(
       matrix_multiply(
         matrix_metil_joint_propagation_selection_rotation,
         (matrix_float4x4) {{
-          { cos(metil_joint_propagation_selection->rotation_applied.z), -sin(metil_joint_propagation_selection->rotation_applied.z), 0.0f, 0.0f },
-          { sin(metil_joint_propagation_selection->rotation_applied.z), cos(metil_joint_propagation_selection->rotation_applied.z), 0.0f, 0.0f },
+          { math_c_cosine(metil_joint_propagation_selection->rotation_applied.z, math_c_pi), -math_c_sine(metil_joint_propagation_selection->rotation_applied.z, math_c_pi), 0.0f, 0.0f },
+          { math_c_sine(metil_joint_propagation_selection->rotation_applied.z, math_c_pi), math_c_cosine(metil_joint_propagation_selection->rotation_applied.z, math_c_pi), 0.0f, 0.0f },
           { 0.0f, 0.0f, 1.0f, 0.0f },
           { 0.0f, 0.0f, 0.0f, 1.0f }
         }}

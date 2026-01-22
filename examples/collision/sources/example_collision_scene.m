@@ -20,10 +20,10 @@
 #include <clic3_memory.h>
 
 #include <math_c_absolute.h>
+#include <math_c_pi.h>
+#include <math_c_sine.h>
 #include <math_c_vector.h>
 #include <math_c_vector_distance.h>
-
-#include <math.h>
 
 void example_collision_scene_initialize(
   struct metil* metil,
@@ -259,8 +259,9 @@ void example_collision_scene_initialize(
     metil_mesh_floor->vertices[
       index_vertex
     ].x = (
-      cos(
-        angle
+      math_c_cosine(
+        angle,
+        math_c_pi
       ) *
       radius
     );
@@ -274,8 +275,9 @@ void example_collision_scene_initialize(
     metil_mesh_floor->vertices[
       index_vertex
     ].z = (
-      sin(
-        angle
+      math_c_sine(
+        angle,
+        math_c_pi
       ) *
       radius
     );
@@ -860,15 +862,17 @@ void scene_example_collision_populate_targets(
     );
 
     metil_object_target->position.x = (
-      sin(
-        angle
+      math_c_sine(
+        angle,
+        math_c_pi
       ) *
       distance
     );
     metil_object_target->position.y = 5.0f;
     metil_object_target->position.z = (
-      cos(
-        angle
+      math_c_cosine(
+        angle,
+        math_c_pi
       ) *
       distance
     );
@@ -1013,8 +1017,9 @@ void example_collision_scene_poll(
       );
 
       metil_object_projectile->position.x = (
-        sin(
-          angle
+        math_c_sine(
+          angle,
+          math_c_pi
         ) *
         distance
       );
@@ -1025,8 +1030,9 @@ void example_collision_scene_poll(
       );
 
       metil_object_projectile->position.z = (
-        cos(
-          angle
+        math_c_cosine(
+          angle,
+          math_c_pi
         ) *
         distance
       );
@@ -1082,15 +1088,17 @@ void example_collision_scene_poll(
     }
 
     metil_object_projectile->position.x = (
-      sin(
-        *angle
+      math_c_sine(
+        *angle,
+        math_c_pi
       ) *
       *distance
     );
 
     metil_object_projectile->position.z = (
-      cos(
-        *angle
+      math_c_cosine(
+        *angle,
+        math_c_pi
       ) *
       *distance
     );
@@ -1192,15 +1200,17 @@ void example_collision_scene_poll(
     );
 
     metil_object_target->position.x = (
-      sin(
-        *angle
+      math_c_sine(
+        *angle,
+        math_c_pi
       ) *
       *distance
     );
 
     metil_object_target->position.z = (
-      cos(
-        *angle
+      math_c_cosine(
+        *angle,
+        math_c_pi
       ) *
       *distance
     );

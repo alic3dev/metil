@@ -4,9 +4,9 @@
 
 #include <clic3_memory.h>
 
+#include <math_c_pi.h>
+#include <math_c_sine.h>
 #include <math_c_vector.h>
-
-#include <math.h>
 
 void metil_mesh_ball_initialize(
   struct metil_mesh* metil_mesh,
@@ -132,8 +132,7 @@ void metil_mesh_ball_initialize(
       segments.y +
       1
     ) *
-    M_PI *
-    2.0f
+    math_c_pi_doubled
   );
 
   for (
@@ -191,9 +190,10 @@ void metil_mesh_ball_initialize(
     );
 
     percentage_radius = (
-      sin(
+      math_c_sine(
         percentage_radius *
-        M_PI
+        math_c_pi,
+        math_c_pi
       )
     );
 
@@ -210,7 +210,7 @@ void metil_mesh_ball_initialize(
           segments.y +
           1
         ) *
-        M_PI
+        math_c_pi
       )
     };
 
@@ -222,13 +222,13 @@ void metil_mesh_ball_initialize(
       angle.x = (
         (float) index_segment_x /
         (float) segments.x *
-        M_PI *
-        2.0f
+        math_c_pi_doubled
       );
 
       float radius_segment = (
-        sin(
-          angle.y
+        math_c_sine(
+          angle.y,
+          math_c_pi
         ) *
         radius
       );
@@ -242,21 +242,30 @@ void metil_mesh_ball_initialize(
       metil_mesh->vertices[
         index_vertex
       ].x = (
-        cos(angle.x) *
+        math_c_cosine(
+          angle.x,
+          math_c_pi
+        ) *
         radius_segment
       );
 
       metil_mesh->vertices[
         index_vertex
       ].y = (
-        cos(angle.y) *
+        math_c_cosine(
+          angle.y,
+          math_c_pi
+        ) *
         radius
       );
 
       metil_mesh->vertices[
         index_vertex
       ].z = (
-        sin(angle.x) *
+        math_c_sine(
+          angle.x,
+          math_c_pi
+        ) *
         radius_segment
       );
 
