@@ -19,19 +19,43 @@
 }
 
 - (void) center_mouse {
-  CGRect rect = [self contentLayoutRect];
+  NSScreen* screen = [
+    NSScreen
+    mainScreen
+  ];
+  
+  NSRect frame_screen = [
+    screen
+    frame
+  ];
 
-  CGPoint point_mouse = {
-    .x = rect.origin.x + (
-      rect.size.width / 2.0f
+  NSRect frame_window = [
+    self
+    frame
+  ];
+
+  CGPoint point_center_window_in_screen = {
+    .x = (
+      frame_window.origin.x +
+      (
+        frame_window.size.width /
+        2.0f
+      )
     ),
-    .y = rect.origin.y + (
-      rect.size.height / 2.0f
+    .y = (
+      frame_screen.size.height -
+      (
+        frame_window.origin.y +
+        (
+          frame_window.size.height /
+          2.0f
+        )
+      )
     )
   };
 
   CGWarpMouseCursorPosition(
-    point_mouse
+    point_center_window_in_screen
   );
 }
 
@@ -90,6 +114,8 @@
 
   self->metil->input.cursor.delta_down.x = event.deltaX;
   self->metil->input.cursor.delta_down.y = event.deltaY;
+
+  [self process_mouse_movement_event: event];
 
   if (
     self->metil->input.cursor.lockable == 1 &&
