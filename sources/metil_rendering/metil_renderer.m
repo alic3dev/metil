@@ -895,6 +895,7 @@
   data_frame->frame = poll_frame;
 
   data_frame->time = metil_scene->time;
+  data_frame->time_elapsed = metil_scene->time_elapsed;
   data_frame->time_delta = metil_scene->time_delta;
 
   data_frame->rotation_camera.x = metil_player->rotation.x;
