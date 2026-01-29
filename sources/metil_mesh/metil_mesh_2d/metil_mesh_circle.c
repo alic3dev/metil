@@ -9,14 +9,17 @@
 
 void metil_mesh_circle_initialize(
   struct metil_mesh* metil_mesh,
-  float radius,
+  float diameter,
   unsigned short int segments
 ) {
   metil_mesh_initialize(
     metil_mesh
   );
 
-  float diameter = radius * 2.0f;
+  float radius = (
+    diameter /
+    2.0f
+  );
 
   metil_mesh->size.x = diameter;
   metil_mesh->size.y = diameter;
