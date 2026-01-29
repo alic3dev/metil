@@ -3,6 +3,8 @@ name=example_meshes
 directory_objects_base=objects
 directory_output_base=output
 
+directory_air=air
+directory_metal=metal
 directory_objects=${directory_objects_base}/release
 
 ifeq (${debug}, 1)
@@ -71,23 +73,6 @@ directory_app_contents=${directory_app}/Contents
 directory_app_contents_macos=${directory_app_contents}/MacOS
 directory_app_contents_resources=${directory_app_contents}/Resources
 
-file_metil_metallib=${directory_metil_library}/metil.metallib
-file_metil_storyboard=${directory_metil_library}/metil.storyboardc
-
-file_info_plist=${directory_metil_plist}/Info.plist
-file_output=${directory_app_contents_macos}/${name}
-file_output_info_plist=${directory_app_contents}/Info.plist
-file_output_metal=${directory_app_contents_resources}/default.metallib
-file_output_storyboard=${directory_app_contents_resources}/metil.storyboardc
-
-files_libraries=${file_cer0_library} ${file_clic3_library} ${file_interrupt_handler_library} ${file_metil_library} ${file_math_c_library}
-
-files_sources_c=${shell find ${directory_sources} -name "*.c"}
-files_sources_objc=${shell find ${directory_sources} -name "*.m"}
-
-files_objects_c=${patsubst ${directory_sources}/%.c,${directory_objects_c}/%.o,${files_sources_c}}
-files_objects_objc=${patsubst ${directory_sources}/%.m,${directory_objects_objc}/%.o,${files_sources_objc}}
-
 ifndef target_device_version
 target_device_version=26.1
 endif
@@ -100,10 +85,34 @@ ifndef target_metal_standard
 target_metal_standard=metal4.0
 endif
 
+
 target_platform=arm64-apple-macos${target_device_version}
 target_platform_metal=air64-apple-macos${target_metal_version}
 
 directory_sdk=${shell xcrun --sdk macosx${target_device_version} --show-sdk-path}
+
+file_metalar_metil_fps_display=${directory_metil_library}/metil_fps_display.metalar
+file_metalar_metil_wireframe=${directory_metil_library}/metil_wireframe.metalar
+
+file_metil_metallib=${directory_metil_library}/metil.metallib
+file_metil_storyboard=${directory_metil_library}/metil.storyboardc
+
+file_info_plist=${directory_metil_plist}/Info.plist
+file_output=${directory_app_contents_macos}/${name}
+file_output_info_plist=${directory_app_contents}/Info.plist
+file_output_metal=${directory_app_contents_resources}/default.metallib
+file_output_storyboard=${directory_app_contents_resources}/metil.storyboardc
+
+files_libraries=${file_cer0_library} ${file_clic3_library} ${file_interrupt_handler_library} ${file_metil_library} ${file_math_c_library}
+
+files_metal=${wildcard ${directory_metal}/*.metal}
+files_air=${patsubst ${directory_metal}/%.metal,${directory_air}/%.air,${files_metal}}
+
+files_sources_c=${shell find ${directory_sources} -name "*.c"}
+files_sources_objc=${shell find ${directory_sources} -name "*.m"}
+
+files_objects_c=${patsubst ${directory_sources}/%.c,${directory_objects_c}/%.o,${files_sources_c}}
+files_objects_objc=${patsubst ${directory_sources}/%.m,${directory_objects_objc}/%.o,${files_sources_objc}}
 
 frameworks=Metal MetalKit GameController CoreAudio CoreGraphics CoreText
 
@@ -131,6 +140,19 @@ endif
 
 strip=strip
 strip_flags=-x
+
+metal=xcrun -sdk macosx metal
+metal_ar=xcrun -sdk macosx metal-ar
+metallib=xcrun -sdk macosx metallib
+metal_flags_common=-target ${target_platform_metal} -std=${target_metal_standard}
+
+metal_flags=${metal_flags_common} -I${directory_include} -I${directory_math_c_include} -I${directory_metil_include} -isysroot ${directory_sdk}
+
+ifneq (${disable_metal_fast_options}, 1)
+	metal_flags:=${metal_flags} -fmetal-math-mode\=fast -fmetal-math-fp32-functions\=fast
+endif
+
+metal_flags_output=
 
 all: ${name}
 
@@ -161,9 +183,13 @@ else
 endif
 endif
 
-${file_output_metal}: ${file_metil_metallib}
-	mkdir -p ${directory_app_contents_resources}
-	cp ${file_metil_metallib} ${file_output_metal}
+${file_output_metal}: ${files_air}
+	mkdir -p "${dir ${file_output_metal}}"
+	${metallib} ${metal_flags_output} ${files_air} ${file_metalar_metil_wireframe} ${file_metalar_metil_fps_display} -o ${file_output_metal}
+
+${directory_air}/%.air: ${directory_metal}/%.metal
+	mkdir -p "${dir $@}"
+	${metal} ${metal_flags} -c $< -o $@
 
 ${directory_objects_c}/%.o: ${directory_sources}/%.c
 	mkdir -p "${dir $@}"
@@ -183,7 +209,15 @@ ${file_output_info_plist}: ${file_info_plist}
 
 clean_all: clean
 
-clean: clean_objects clean_output
+clean: clean_metal clean_objects clean_output
+
+clean_metal: clean_air clean_metalib
+
+clean_air:
+	-rm -r "${directory_air}" 2> /dev/null
+
+clean_metalib:
+	-rm "${file_output_metal}" 2> /dev/null
 
 clean_objects:
 	-rm -r ${directory_objects_base}

@@ -23,13 +23,11 @@ void example_meshes_renderer_on_initialize(
   struct metil* metil,
   void* data
 ) {
-  metil->rendering_properties.camera.distance_view.far = 100.0f;
-
   metil_library_initialize(
     &metil->library,
     metil->renderer_interface.metal_device,
-    @"shader_3d_fragment",
-    @"shader_3d_vertex"
+    @"shader_example_meshes_ring_fragment",
+    @"shader_example_meshes_ring_vertex"
   );
 
   example_meshes_scene_initialize(
