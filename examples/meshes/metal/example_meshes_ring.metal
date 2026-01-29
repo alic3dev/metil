@@ -33,26 +33,41 @@
     ]
   );
 
-  float brightness = (
-    (
-      id_vertex % 100
-    ) / 200.0f +
-    0.5f
-
-  );
 
   data_vertex_basic_coloured.colour = (
     float4(
       (
-        data_object->colour.x *
-        brightness
+        (
+          (
+            id_vertex %
+            3
+          ) == 0
+          ? 1.0f
+          : 0.0f
+        ) *
+        data_frame->brightness
       ),
       (
-        data_object->colour.y *
-        brightness
+        (
+          (
+            id_vertex %
+            3
+          ) == 1
+          ? 1.0f
+          : 0.0f
+        ) *
+        data_frame->brightness
       ),
       (
-        0
+        (
+          (
+            id_vertex %
+            3
+          ) == 2
+          ? 1.0f
+          : 0.0f
+        ) *
+        data_frame->brightness
       ),
       data_object->colour.w
     )
