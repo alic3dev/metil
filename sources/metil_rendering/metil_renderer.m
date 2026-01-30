@@ -11,6 +11,8 @@
 #include <metil_positioning.h>
 #include <metil_rendering/metil_camera/metil_camera.h>
 #include <metil_rendering/metil_descriptors/metil_pipeline_render.h>
+#include <metil_rendering/metil_renderable.h>
+#include <metil_rendering/metil_renderable_type.h>
 #include <metil_rendering/metil_renderer_data_frame.h>
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_rendering/metil_renderer_thread_poll_object_data.h>

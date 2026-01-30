@@ -2,13 +2,7 @@
 #define __metil_rendering_metil_renderable_h
 
 #include <metil.h>
-
-enum metil_renderable_type {
-  metil_renderable_type_group = 0,
-  metil_renderable_type_object = 1,
-  metil_renderable_type_menu = 2,
-  metil_renderable_type_model = 3
-};
+#include <metil_rendering/metil_renderable_type.h>
 
 struct metil_renderable {
   void* _Nonnull renderable;

@@ -3,6 +3,7 @@
 
 #include <metil.h>
 #include <metil_rendering/metil_renderable.h>
+#include <metil_rendering/metil_renderable_type.h>
 
 typedef void (*metil_group_renderable_function)(
   struct metil_renderable* _Nonnull,

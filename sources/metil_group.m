@@ -2,6 +2,7 @@
 
 #include <metil.h>
 #include <metil_rendering/metil_renderable.h>
+#include <metil_rendering/metil_renderable_type.h>
 
 #include <clic3_memory.h>
 
