@@ -88,7 +88,7 @@ void example_meshes_scene_initialize(
           metil_mesh,
           (struct math_c_vector2_float) {
             .x = 10.0f,
-            .y = 10.0f
+            .y = 5.0f
           }
         );
 
@@ -215,8 +215,8 @@ void example_meshes_scene_initialize(
             .z = 10.0f
           },
           (struct math_c_vector2_unsigned_short_int) {
-            .x = 100,
-            .y = 100
+            .x = 7,
+            .y = 7
           }
         );
 

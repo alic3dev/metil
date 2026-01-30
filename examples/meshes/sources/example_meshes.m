@@ -26,8 +26,8 @@ void example_meshes_renderer_on_initialize(
   metil_library_initialize(
     &metil->library,
     metil->renderer_interface.metal_device,
-    @"shader_example_meshes_ring_fragment",
-    @"shader_example_meshes_ring_vertex"
+    @"shader_example_meshes_fragment",
+    @"shader_example_meshes_vertex"
   );
 
   example_meshes_scene_initialize(

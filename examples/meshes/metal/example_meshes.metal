@@ -6,7 +6,7 @@
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
 
-[[vertex]] struct data_vertex_basic_coloured shader_example_meshes_ring_vertex(
+[[vertex]] struct data_vertex_basic_coloured shader_example_meshes_vertex(
   const device simd_float4* vertices [[
     buffer(
       metil_renderer_vertex_index_parameter_vertices
@@ -76,7 +76,7 @@
   return data_vertex_basic_coloured;
 }
 
-[[fragment]] float4 shader_example_meshes_ring_fragment(
+[[fragment]] float4 shader_example_meshes_fragment(
   struct data_vertex_basic_coloured data_vertex_basic_coloured [[stage_in]]
 ) {
   return (
