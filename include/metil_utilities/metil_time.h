@@ -13,6 +13,10 @@
 #define metil_time_seconds_to_milliseconds(x) ((x) * 1000)
 #define metil_time_seconds_to_minutes(x) ((x) / 60)
 
+#define metil_time_minute_to_microseconds(x) ((x) * 60000000)
+#define metil_time_minute_to_milliseconds(x) ((x) * 60000)
+#define metil_time_minute_to_seconds(x) ((x) * 60)
+
 unsigned long int metil_time_milliseconds_get();
 
 #endif
