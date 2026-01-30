@@ -75,12 +75,13 @@ void metil_mesh_shuttle_initialize(
   );
 
   metil_mesh->vertices[0].x = 0.0f;
-  metil_mesh->vertices[0].y = -size_half.y;
+  metil_mesh->vertices[0].y = size_half.y;
   metil_mesh->vertices[0].z = 0.0f;
   metil_mesh->vertices[0].w = 1.0f;
 
   float increment_y = (
-    size.y /
+    size.y *
+    0.6f /
     segments.y
   );
 
@@ -144,10 +145,10 @@ void metil_mesh_shuttle_initialize(
     );
 
     float position_y = (
-      increment_y * (
-        index_segment_y +
-        1
-      )
+      increment_y *
+      index_segment_y +
+      size.y *
+      0.4f
     );
 
     for (
@@ -179,8 +180,9 @@ void metil_mesh_shuttle_initialize(
 
       metil_mesh->vertices[
         index_vertex
-      ].y = (
-        position_y
+      ].y = -(
+        position_y - 
+        size_half.y
       );
 
       metil_mesh->vertices[
@@ -338,7 +340,11 @@ void metil_mesh_shuttle_initialize(
 
   metil_mesh->vertices[
     index_vertex_last
-  ].y = size_half.y;
+  ].y = -(
+    -size_half.y + 
+    size.y *
+    0.1f
+  );
 
   metil_mesh->vertices[
     index_vertex_last
@@ -367,10 +373,9 @@ void metil_mesh_shuttle_initialize(
     metil_mesh->indices[
       index_index
     ] = (
-      index_vertex_last - (
-        index_segment_x +
-        1
-      )
+      index_vertex_last -
+      segments.x +
+      index_segment_x
     );
 
     index_index = (
@@ -381,20 +386,8 @@ void metil_mesh_shuttle_initialize(
     metil_mesh->indices[
       index_index
     ] = (
-      (
-        index_vertex_last - (
-          (
-            index_segment_x +
-            1
-          ) % (
-            segments.x 
-          ) +
-          1
-        )
-      ) % (
-        segments.x +
-        1
-      )
+      index_segment_x +
+      1
     );
 
     index_index = (
