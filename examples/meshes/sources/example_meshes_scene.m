@@ -178,8 +178,8 @@ void example_meshes_scene_initialize(
             .z = 10.0f
           },
           (struct math_c_vector2_unsigned_short_int) {
-            .x = 100,
-            .y = 100
+            .x = 110,
+            .y = 110
           }
         );
 
@@ -260,7 +260,10 @@ void example_meshes_scene_initialize(
 
     float percentage = (
       (float) index_renderable / 
-      (float) metil_scene->length_renderables
+      (float) (
+        metil_scene->length_renderables -
+        1
+      )
     );
 
     metil_object->position.x = percentage * width - width / 2.0f;
