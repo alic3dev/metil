@@ -75,13 +75,21 @@ void metil_mesh_mushroom_initialize(
   );
 
   metil_mesh->vertices[0].x = 0.0f;
-  metil_mesh->vertices[0].y = -size_half.y;
+  metil_mesh->vertices[0].y = size_half.y;
   metil_mesh->vertices[0].z = 0.0f;
   metil_mesh->vertices[0].w = 1.0f;
 
+  float height_ratio_cap = (
+    0.9f
+  );
+
   float increment_y = (
-    size.y / (
-      segments.y +
+    (
+      size.y *
+      height_ratio_cap
+    ) /
+    (
+      segments.y -
       1
     )
   );
@@ -146,11 +154,18 @@ void metil_mesh_mushroom_initialize(
     );
 
     float position_y = (
-      increment_y * (
-        index_segment_y +
-        1
+      (
+        increment_y *
+        index_segment_y
       ) -
-      size_half.y
+      (
+        (
+          height_ratio_cap
+        ) *
+        size.y
+      ) + (
+        size_half.y
+      )
     );
 
     float percentage_radius = (
@@ -162,7 +177,35 @@ void metil_mesh_mushroom_initialize(
         segments.y
       ) /
       (float) segments.y
-    );    
+    );
+
+    if (
+      percentage_radius <= 0.1f
+    ) {
+      percentage_radius = (
+        0.06f
+      );
+
+      position_y = (
+        position_y -
+        size.y *
+        0.3f
+      );
+    } else if (
+      index_segment_y > segments.y / 2
+    ) {
+      percentage_radius = (
+        percentage_radius *
+        0.2f +
+        0.06f
+      );
+
+      position_y = (
+        position_y -
+        size.y *
+        0.02f
+      );
+    }
 
     struct math_c_vector2_float radius = {
       .x = (
@@ -204,7 +247,7 @@ void metil_mesh_mushroom_initialize(
 
       metil_mesh->vertices[
         index_vertex
-      ].y = (
+      ].y = -(
         position_y
       );
 
@@ -364,7 +407,7 @@ void metil_mesh_mushroom_initialize(
 
   metil_mesh->vertices[
     index_vertex_last
-  ].y = size_half.y;
+  ].y = -size_half.y;
 
   metil_mesh->vertices[
     index_vertex_last
