@@ -3,6 +3,7 @@
 #include <metil_group.h>
 #include <metil_model/metil_model.h>
 #include <metil_object.h>
+#include <metil_rendering/metil_renderable_type.h>
 
 #include <clic3_memory.h>
 
