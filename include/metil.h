@@ -5,6 +5,7 @@
 #include <metil_configuration/metil_configuration.h>
 #include <metil_input/metil_input.h>
 #include <metil_library.h>
+#include <metil_parameters.h>
 #include <metil_paths/metil_paths.h>
 #include <metil_player/metil_player_defaults.h>
 #include <metil_rendering/metil_renderer_interface.h>
@@ -24,6 +25,7 @@ struct metil {
   struct metil_configuration configuration;
   struct metil_input input;
   struct metil_library library;
+  struct metil_parameters parameters;
   struct metil_paths paths;
   struct metil_renderer_interface renderer_interface;
   struct metil_rendering_properties rendering_properties;
@@ -41,7 +43,6 @@ struct metil {
 
   _Nullable metil_renderer_on_initialize_function renderer_on_initialize;
   void* _Nullable renderer_on_initialize_data;
-
 };
 
 void metil_structure_initialize(
