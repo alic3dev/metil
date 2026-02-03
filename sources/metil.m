@@ -2,6 +2,7 @@
 
 #include <metil_audio/metil_audio.h>
 #include <metil_configuration/metil_configuration.h>
+#include <metil_parameters.h>
 #include <metil_paths/metil_paths.h>
 #include <metil_player/metil_player_defaults.h>
 #include <metil_scenes/metil_scene_controller.h>
@@ -68,6 +69,10 @@ void metil_destroy(
 
   metil_configuration_destroy(
     &metil->configuration
+  );
+
+  metil_parameters_destroy(
+    &metil->parameters
   );
 
   if (

@@ -9,6 +9,7 @@
 #include <metil_debug/metil_debug_log.h>
 #include <metil_input/metil_input.h>
 #include <metil_library.h>
+#include <metil_parameters.h>
 #include <metil_paths/metil_paths.h>
 #include <metil_rendering/metil_renderer.h>
 #include <metil_scenes/metil_scene_controller.h>
@@ -66,6 +67,12 @@ int metil_initialize_with_data(
     &metil
   );
 
+  metil_parameters_initialize(
+    &metil.parameters,
+    length_parameters,
+    parameters
+  );
+
   metil.renderer_interface.rendering_properties = &(
     metil.rendering_properties
   );
@@ -75,7 +82,10 @@ int metil_initialize_with_data(
 
   metil_paths_initialize(
     &metil.paths,
-    (char*) parameters[0],
+   (
+    (char*)
+    metil.parameters.parameters_proxied[0]
+   ),
     name
   );
 
@@ -200,8 +210,8 @@ int metil_initialize_with_data(
   return 0;
   #else
   return NSApplicationMain(
-    length_parameters,
-    parameters
+    metil.parameters.length_parameters_proxied,
+    metil.parameters.parameters_proxied
   );
   #endif
 }
