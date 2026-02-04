@@ -13,7 +13,11 @@ void metil_text_defaults_initialize(
     0
   );
 
-  metil_text_defaults->render_parameters.letter_spacing = 2;
+  metil_text_defaults->render_parameters.letter_width = (
+    metil_text_letter_spacing_style_default
+  );
+
+  metil_text_defaults->render_parameters.letter_spacing = 4;
     
   metil_text_defaults->render_parameters.padding.x = 5;
   metil_text_defaults->render_parameters.padding.y = 15;
@@ -21,7 +25,7 @@ void metil_text_defaults_initialize(
   metil_text_defaults->render_parameters.scale = 0.001f;
 
   CFStringRef name_family_font_monospace = CFSTR(
-    "monospace"
+    "Monaco"
   );
 
   metil_text_defaults->render_parameters.font = CTFontCreateWithName(
