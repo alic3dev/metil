@@ -3,6 +3,7 @@
 
 #include <metil_configuration/metil_configuration.h>
 #include <metil_mesh/metil_mesh.h>
+#include <metil_text/metil_text_render_parameters.h>
 
 #include <math_c_vector.h>
 
@@ -12,20 +13,7 @@
 
 struct metil_text_image {
   unsigned char* _Nonnull data;
-  struct math_c_vector2_unsigned_int size;
-};
-
-#define metil_text_letter_spacing_style_default -1
-#define metil_text_letter_spacing_style_maximum -2
-
-struct metil_text_render_parameters {
-  CTFontRef _Nonnull font;
-
-  short int letter_width;
-  unsigned short int letter_spacing;
-  
-  struct math_c_vector2_unsigned_short_int padding;
-  float scale;
+  struct math_c_vector2_float size;
 };
 
 CGGlyph* _Nullable metil_text_glyphs_encode(

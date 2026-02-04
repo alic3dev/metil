@@ -2,6 +2,7 @@
 
 #include <metil_configuration/metil_configuration.h>
 #include <metil_debug/metil_debug_log.h>
+#include <metil_text/metil_text_render_parameters.h>
 
 void metil_text_defaults_initialize(
   struct metil_text_defaults* metil_text_defaults,
@@ -9,32 +10,24 @@ void metil_text_defaults_initialize(
 ) {
   metil_text_defaults->object_text_index_pipeline_render = 0;
 
-  metil_text_defaults->render_parameters.font = (
-    0
+  metil_text_render_parameters_initialize(
+    &metil_text_defaults->render_parameters,
+    "Monaco",
+    48.0f
+  );
+
+  metil_text_defaults->render_parameters.letter_width_style = (
+    metil_text_render_parameters_letter_width_style_default
   );
 
   metil_text_defaults->render_parameters.letter_width = (
-    metil_text_letter_spacing_style_default
+    0.0f
   );
 
-  metil_text_defaults->render_parameters.letter_spacing = 4;
+  metil_text_defaults->render_parameters.letter_spacing = 6.0f;
     
-  metil_text_defaults->render_parameters.padding.x = 5;
-  metil_text_defaults->render_parameters.padding.y = 15;
+  metil_text_defaults->render_parameters.padding.x = 20.0f;
+  metil_text_defaults->render_parameters.padding.y = 20.0f;
 
-  metil_text_defaults->render_parameters.scale = 0.001f;
-
-  CFStringRef name_family_font_monospace = CFSTR(
-    "Monaco"
-  );
-
-  metil_text_defaults->render_parameters.font = CTFontCreateWithName(
-    name_family_font_monospace,
-    48.0,
-    0
-  );
-
-  CFRelease(
-    name_family_font_monospace
-  );
+  metil_text_defaults->render_parameters.scale = 0.0008f;
 }

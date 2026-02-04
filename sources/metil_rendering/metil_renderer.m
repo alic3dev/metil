@@ -1102,7 +1102,7 @@
   );
 
   float position_x = (
-    0.0f
+    0.0015f
   );
 
   for (
@@ -1128,13 +1128,31 @@
       ]
     );
 
-    position_x = (
-      position_x +
-      self->objects_fps_display[
-        index_object_fps_display
-      ].mesh.size.x /
-      self->metil->rendering_properties.camera.ratio_aspect_view
-    );
+    if (
+      position_x == 0.0f
+    ) {
+      position_x = (
+        (
+          (
+            self->objects_fps_display[
+              index_object_fps_display
+            ].mesh.size.x /
+            2.0f
+          ) /
+          self->metil->rendering_properties.camera.ratio_aspect_view
+        )
+      );
+    } else {
+      position_x = (
+        position_x +
+        (
+          self->objects_fps_display[
+            index_object_fps_display
+          ].mesh.size.x /
+          self->metil->rendering_properties.camera.ratio_aspect_view
+        )
+      );
+    }
 
     self->objects_fps_display[
       index_object_fps_display
@@ -1150,18 +1168,39 @@
     ) {
       self->objects_fps_display[
         index_object_fps_display
-      ].position.x = self->objects_fps_display[
-        index_object_fps_display
-      ].position.x - 0.0035f;
-      self->objects_fps_display[
-        index_object_fps_display
-      ].position.y = 0.9675f;
-    } else {
-      self->objects_fps_display[
-        index_object_fps_display
-      ].position.y = 0.975f;
+      ].position.x = (
+        self->objects_fps_display[
+          index_object_fps_display
+        ].position.x -
+        (
+          (
+            self->objects_fps_display[
+              index_object_fps_display
+            ].mesh.size.x /
+            3.5f
+          ) /
+          self->metil->rendering_properties.camera.ratio_aspect_view
+        )
+      );
     }
 
+    self->objects_fps_display[
+      index_object_fps_display
+    ].position.y = (
+      (
+        1.0f -
+        0.029f
+      ) +
+      (
+        (
+          self->objects_fps_display[
+            index_object_fps_display
+          ].mesh.size.y /
+          2.0f
+        )
+      )
+    );
+    
     self->objects_fps_display[
       index_object_fps_display
     ].indices = (

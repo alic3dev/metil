@@ -202,7 +202,7 @@ c_flags_objc_debug=-O0 -g -v
 c_flags_debug=${c_flags_objc_debug} -da -Q
 
 c_flags_c=${c_flags_platform} ${c_flags_includes}
-c_flags_objc=${c_flags_platform} ${c_flags_includes} -x objective-c -fmodules -fconstant-cfstrings
+c_flags_objc=${c_flags_platform} ${c_flags_includes} -x objective-c -fmodules
 
 ifeq (${target_device},mac)
 c_flags_c:=${c_flags_c}

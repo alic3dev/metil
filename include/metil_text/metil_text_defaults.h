@@ -3,9 +3,7 @@
 
 #include <metil_configuration/metil_configuration.h>
 #include <metil_text/metil_text.h>
-
-#include <CoreGraphics/CoreGraphics.h>
-#include <CoreText/CoreText.h>
+#include <metil_text/metil_text_render_parameters.h>
 
 struct metil_text_defaults {
   unsigned char object_text_index_pipeline_render;

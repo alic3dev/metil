@@ -4,6 +4,7 @@
 #include <metil_configuration/metil_configuration.h>
 #include <metil_mesh/metil_mesh.h>
 #include <metil_text/metil_text.h>
+#include <metil_text/metil_text_render_parameters.h>
 
 #include <Metal/MTLBuffer.h>
 #include <Metal/MTLDevice.h>
