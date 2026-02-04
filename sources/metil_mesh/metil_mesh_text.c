@@ -16,8 +16,16 @@ void metil_mesh_text_initialize(
     mesh
   );
 
-  mesh->size.x = width * scale;
-  mesh->size.y = height * scale;
+  mesh->size.x = (
+    width *
+    scale
+  );
+
+  mesh->size.y = (
+    height *
+    scale
+  );
+  
   mesh->size.z = 1.0f;
 
   mesh->length_vertices = (
@@ -48,8 +56,21 @@ void metil_mesh_text_initialize(
     )
   );
 
-  float width_half = width / 2.0f * scale;
-  float height_half = height / 2.0f * scale;
+  float width_half = (
+    (
+      width /
+      2.0f
+    ) *
+    scale
+  );
+
+  float height_half = (
+    (
+      height /
+      2.0f
+    ) *
+    scale
+  );
 
   mesh->vertices[0].x = -width_half;
   mesh->vertices[0].y = -height_half;

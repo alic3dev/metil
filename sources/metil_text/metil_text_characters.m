@@ -51,10 +51,12 @@ void metil_text_characters_initialize(
 
   struct metil_text_render_parameters text_render_parameters = {
     .font = metil_text_render_parameters->font,
+    .letter_width_style = metil_text_render_parameters_letter_width_style_fixed,
+    .letter_width = 30,
     .letter_spacing = 0,
     .padding = {
-      .x = 5,
-      .y = 15
+      .x = 0.0f,
+      .y = 0.0f
     },
     .scale = 0.0005f
   };
@@ -81,14 +83,16 @@ void metil_text_characters_initialize(
 
     metil_text_characters_default->textures[
       index_character
-    ] = metil_text_mesh_with_texture_initialize(
-      metal_device,
-      &metil_text_characters_default->meshes[
-        index_character
-      ],
-      character_array,
-      &text_render_parameters,
-      metil_configuration
+    ] = (
+      metil_text_mesh_with_texture_initialize(
+        metal_device,
+        &metil_text_characters_default->meshes[
+          index_character
+        ],
+        character_array,
+        &text_render_parameters,
+        metil_configuration
+      )
     );
 
     metil_text_characters_default->vertices[
@@ -136,7 +140,9 @@ void metil_text_characters_destroy(
     ++index_character
   ) {
     metil_mesh_destroy(
-      &metil_text_characters_default->meshes[index_character]
+      &metil_text_characters_default->meshes[
+        index_character
+      ]
     );
 
     [

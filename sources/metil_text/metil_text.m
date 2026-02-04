@@ -156,15 +156,15 @@ struct metil_text_image* metil_text_render(
   float spacing_width_maximum = 0;
 
   if (
-    metil_text_render_parameters->letter_width ==
-    metil_text_letter_spacing_style_maximum
+    metil_text_render_parameters->letter_width_style ==
+    metil_text_render_parameters_letter_width_style_maximum
   ) {
     for (
       unsigned char index_glyph = 0;
       index_glyph < length_characters;
       ++index_glyph
     ) {
-      unsigned int width_glyph = (
+      float width_glyph = (
         bounding_box_glyphs[
           index_glyph
         ].size.width
@@ -200,18 +200,9 @@ struct metil_text_image* metil_text_render(
     unsigned short int spacing_width = 0;
 
     switch (
-      metil_text_render_parameters->letter_width
+      metil_text_render_parameters->letter_width_style
     ) {
-      case metil_text_letter_spacing_style_default: {
-        spacing_width = (
-          bounding_box_glyphs[
-            index_glyph
-          ].size.width
-        );
-
-        break;
-      }
-      case metil_text_letter_spacing_style_maximum: {
+      case metil_text_render_parameters_letter_width_style_maximum: {
         spacing_width = (
           spacing_width_maximum
         );
@@ -221,20 +212,26 @@ struct metil_text_image* metil_text_render(
         ].x = (
           positions_glyphs[
             index_glyph
-          ].x + (
-            spacing_width_maximum -
-            bounding_box_glyphs[
-              index_glyph
-            ].size.width
-          ) /
-          2.0f
+          ].x +
+          (
+            (
+              spacing_width_maximum /
+              2.0f
+            ) -
+            (
+              bounding_box_glyphs[
+                index_glyph
+              ].size.width /
+              2.0f
+            )
+          )
         );
 
         break;
       }
-      default: {
+      case metil_text_render_parameters_letter_width_style_fixed: {
         spacing_width = (
-          metil_text_render_parameters->letter_width
+          (float) metil_text_render_parameters->letter_width
         );
 
         positions_glyphs[
@@ -242,13 +239,29 @@ struct metil_text_image* metil_text_render(
         ].x = (
           positions_glyphs[
             index_glyph
-          ].x + (
-            metil_text_render_parameters->letter_width -
-            bounding_box_glyphs[
-              index_glyph
-            ].size.width
-          ) /
-          2.0f
+          ].x +
+          (
+            (
+              (float) metil_text_render_parameters->letter_width /
+              2.0f
+            ) -
+            (
+              bounding_box_glyphs[
+                index_glyph
+              ].size.width /
+              2.0f
+            )
+          )
+        );
+
+        break;
+      }
+      case metil_text_render_parameters_letter_width_style_default:
+      default: {
+        spacing_width = (
+          bounding_box_glyphs[
+            index_glyph
+          ].size.width
         );
 
         break;
@@ -278,8 +291,47 @@ struct metil_text_image* metil_text_render(
 
   text_image->size.y = (
     text_image->size.y +
-    metil_text_render_parameters->padding.y
+    (
+      metil_text_render_parameters->padding.y *
+      2.0f
+    )
   );
+
+  if (
+    text_image->size.x == 0.0f
+  ) {
+    text_image->size.x = 1.0f;
+  }
+
+  if (
+    text_image->size.y == 0.0f
+  ) {
+    text_image->size.y = 1.0f;
+  }
+
+  if (
+    text_image->size.x >
+    (unsigned int)
+    text_image->size.x
+  ) {
+    text_image->size.x = (
+      (unsigned int)
+      text_image->size.x +
+      1
+    );
+  }
+
+  if (
+    text_image->size.y >
+    (unsigned int)
+    text_image->size.y
+  ) {
+    text_image->size.y = (
+      (unsigned int)
+      text_image->size.y +
+      1
+    );
+  }
 
   unsigned int length_text_image_data = (
     4 *

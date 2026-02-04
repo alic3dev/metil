@@ -50,7 +50,8 @@ void metil_camera_ratio_aspect_set(
 ) {
   metil_camera->ratio_aspect = ratio_aspect;
   metil_camera->ratio_aspect_view = (
-    width / height
+    width /
+    height
   );
 
   metil_camera_field_of_view_set(
