@@ -82,10 +82,10 @@ int metil_initialize_with_data(
 
   metil_paths_initialize(
     &metil.paths,
-   (
-    (char*)
-    metil.parameters.parameters_proxied[0]
-   ),
+    (
+      (char*)
+      metil.parameters.parameters_proxied[0]
+    ),
     name
   );
 
