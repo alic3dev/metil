@@ -1352,4 +1352,4 @@ make target_device=iphone
 
 ## copyright|copyleft
 
-> ©️ [copyleft|copyright]->{alic3dev(2025|2026)}:[all_rights_reserved|all_lefts_reserved]
+> © [copyleft|copyright]->{alic3dev(2025|2026)}:[all_rights_reserved|all_lefts_reserved]
