@@ -23,7 +23,7 @@ struct metil_text_render_parameters {
   float scale;
 };
 
-unsigned char metil_text_render_parameters_initialize(
+void metil_text_render_parameters_initialize(
   struct metil_text_render_parameters* _Nonnull,
   char* _Nonnull,
   float
