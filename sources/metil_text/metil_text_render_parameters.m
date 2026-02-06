@@ -2,7 +2,7 @@
 
 #include <CoreText/CTFont.h>
 
-unsigned char metil_text_render_parameters_initialize(
+void metil_text_render_parameters_initialize(
   struct metil_text_render_parameters* metil_text_render_parameters,
   char* name_family_font,
   float size
