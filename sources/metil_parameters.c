@@ -7,7 +7,11 @@
 void metil_parameters_initialize(
   struct metil_parameters* metil_parameters,
   int length_parameters,
+  #if target_os_ios
+  char** parameters
+  #else
   const char** parameters
+  #endif
 ) {
   metil_parameters->length_parameters = (
     length_parameters
