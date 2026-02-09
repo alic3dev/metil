@@ -31,106 +31,110 @@ void metil_camera_initialize(
   metil_camera->distance_view.near = 0.5f;
   metil_camera->distance_view.far = 10000.0f;
 
-  metil_camera->lens.length_focal = 10.0f;
-  metil_camera->lens.size_sensor = 10.0f;
-
   metil_camera->matrix_viewport_projection = (simd_float4x4) {{
-    { 0.0f, 0.0f, 0.0f, 0.0f },
-    { 0.0f, 0.0f, 0.0f, 0.0f },
-    { 0.0f, 0.0f, 0.0f, -1.0f },
-    { 0.0f, 0.0f, 0.0f, 0.0f }
+    { 1.0f, 0.0f, 0.0f, 0.0f },
+    { 0.0f, 1.0f, 0.0f, 0.0f },
+    { 0.0f, 0.0f, 1.0f, -1.0f },
+    { 0.0f, 0.0f, 0.0f, 1.0f }
   }};
 }
 
 void metil_camera_ratio_aspect_set(
   struct metil_camera* metil_camera,
-  float ratio_aspect,
-  float width,
-  float height
+  struct math_c_vector2_float* metil_camera_size_view
 ) {
-  metil_camera->ratio_aspect = ratio_aspect;
   metil_camera->ratio_aspect_view = (
-    width /
-    height
+    metil_camera_size_view->x /
+    metil_camera_size_view->y
   );
 
   metil_camera_field_of_view_set(
-    metil_camera
-  );
-}
-
-float metil_camera_field_of_view_calculate(
-  struct metil_camera* metil_camera
-) {
-  return (
-    2.0f * atanf(
-      metil_camera->lens.size_sensor / (
-        2.0f *
-        metil_camera->lens.length_focal
-      )
-    )
-  );
-}
-
-float metil_camera_field_of_view_horizontal_calculate(
-  struct metil_camera* metil_camera
-) {
-  return (
-    metil_camera->field_of_view.y *
-    metil_camera->ratio_aspect
+    metil_camera,
+    (struct math_c_vector2_float) {
+      .x = 0.9f,
+      .y = 0.9f
+    }
   );
 }
 
 void metil_camera_field_of_view_set(
+  struct metil_camera* metil_camera,
+  struct math_c_vector2_float metil_camera_field_of_view
+) {
+  metil_camera->field_of_view.x = (
+    metil_camera_field_of_view.x
+  );
+
+  metil_camera->field_of_view.y = (
+    metil_camera_field_of_view.y
+  );
+
+  metil_camera_normalization_set(
+    metil_camera
+  );
+}
+
+void metil_camera_normalization_set(
   struct metil_camera* metil_camera
 ) {
-  metil_camera->field_of_view.y = (
-    metil_camera_field_of_view_calculate(
-      metil_camera
-    )
-  );
-
-  metil_camera->field_of_view.x = (
-    metil_camera_field_of_view_horizontal_calculate(
-      metil_camera
-    )
-  );
-
   metil_camera->vector_normalization.x = (
-    1.0f /
-    metil_camera->field_of_view.x
+    (
+      1.0f /
+      (
+        metil_camera->field_of_view.x /
+        metil_camera->ratio_aspect_view /
+        metil_camera->ratio_aspect_view
+      ) /
+      metil_camera->ratio_aspect_view
+    ) *
+    (
+      1.0f /
+      metil_camera->ratio_aspect_view
+    )
   );
 
   metil_camera->vector_normalization.y = (
     1.0f /
-    metil_camera->field_of_view.y
+    (
+      metil_camera->field_of_view.y /
+      metil_camera->ratio_aspect_view /
+      metil_camera->ratio_aspect_view
+    ) /
+    metil_camera->ratio_aspect_view
   );
 
   metil_camera->vector_normalization.z = (
-    metil_camera->distance_view.far / (
+    metil_camera->distance_view.near *
+    metil_camera->distance_view.far /
+    (
       metil_camera->distance_view.near -
       metil_camera->distance_view.far
     )
   );
 
-  // TODO: This keeps objects sized properly, however, it also increases the FOV when Y shrinks. Will fix this later.
-  metil_camera->matrix_viewport_projection.columns[0].x = (
-    metil_camera->vector_normalization.x * (
-      metil_camera->ratio_aspect /
-      metil_camera->ratio_aspect_view
-    )
+  metil_camera_matrix_projection_set(
+    metil_camera
+  );
+}
+
+void metil_camera_matrix_projection_set(
+  struct metil_camera* metil_camera
+) {
+   metil_camera->matrix_viewport_projection.columns[
+    0
+  ].x = (
+    metil_camera->vector_normalization.x
   );
 
-  metil_camera->matrix_viewport_projection.columns[1].y = (
+  metil_camera->matrix_viewport_projection.columns[
+    1
+  ].y = (
     metil_camera->vector_normalization.y
   );
 
-  metil_camera->matrix_viewport_projection.columns[2].z = (
-    metil_camera->vector_normalization.z
-  );
-
-  metil_camera->matrix_viewport_projection.columns[3].z = (
-    metil_camera->distance_view.near *
+  metil_camera->matrix_viewport_projection.columns[
+    2
+  ].z = (
     metil_camera->vector_normalization.z
   );
 }
