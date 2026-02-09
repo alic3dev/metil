@@ -13,7 +13,6 @@
 struct metil_camera {
   enum metil_camera_mode mode;
 
-  float ratio_aspect;
   float ratio_aspect_view;
 
   float height_default;
