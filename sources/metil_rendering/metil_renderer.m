@@ -604,7 +604,7 @@
   ][
     0
   ] = (
-    self->metil->rendering_properties.camera.ratio_aspect /
+    1.0f /
     self->metil->rendering_properties.camera.ratio_aspect_view
   );
 }
