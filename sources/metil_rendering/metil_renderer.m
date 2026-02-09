@@ -586,21 +586,25 @@
     1920x1203 is fine
     1920x1202 causes slow down
   */
-  self->metil->renderer_interface.size.x = size.width;
-  self->metil->renderer_interface.size.y = size.height;
+  self->metil->renderer_interface.size.x = (
+    size.width
+  );
+
+  self->metil->renderer_interface.size.y = (
+    size.height
+  );
 
   metil_camera_ratio_aspect_set(
     &self->metil->rendering_properties.camera,
-    (
-      16 /
-      9
-    ),
-    self->metil->renderer_interface.size.x,
-    self->metil->renderer_interface.size.y
+    &self->metil->renderer_interface.size
   );
 
-  self->matrix_projection_static.columns[0][0] = (
-    self->metil->rendering_properties.camera.ratio_aspect /
+  self->matrix_projection_static.columns[
+    0
+  ][
+    0
+  ] = (
+    1.0f /
     self->metil->rendering_properties.camera.ratio_aspect_view
   );
 }

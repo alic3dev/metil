@@ -2,7 +2,6 @@
 #define __metil_rendering_metil_camera_metil_camera_h
 
 #include <metil_rendering/metil_camera/metil_camera_mode.h>
-#include <metil_rendering/metil_camera/metil_lens.h>
 #include <metil_rendering/metil_camera/metil_near_far.h>
 
 #include <math_c_vector.h>
@@ -14,9 +13,6 @@
 struct metil_camera {
   enum metil_camera_mode mode;
 
-  struct metil_lens lens;
-
-  float ratio_aspect;
   float ratio_aspect_view;
 
   float height_default;
@@ -38,20 +34,24 @@ void metil_camera_initialize(
 
 void metil_camera_ratio_aspect_set(
   struct metil_camera*,
-  float,
-  float,
-  float
+  struct math_c_vector2_float*
+);
+
+void metil_camera_normalization_set(
+  struct metil_camera*
 );
 
 float metil_camera_field_of_view_calculate(
-  struct metil_camera*
-);
-
-float metil_camera_field_of_view_horizontal_calculate(
-  struct metil_camera*
+  struct metil_camera*,
+  struct math_c_vector2_float
 );
 
 void metil_camera_field_of_view_set(
+  struct metil_camera*,
+  struct math_c_vector2_float
+);
+
+void metil_camera_matrix_projection_set(
   struct metil_camera*
 );
 
