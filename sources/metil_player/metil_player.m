@@ -291,8 +291,10 @@ void metil_player_poll_input(
 
   if (
     metil->input.controller_state.available == 1 &&
-    metil->input.controller_state.left_stick.x != 0.0f ||
-    metil->input.controller_state.left_stick.y != 0.0f
+    metil->input.controller_state.left_stick.x >= metil_player->deadzone_stick ||
+    metil->input.controller_state.left_stick.x <= -metil_player->deadzone_stick ||
+    metil->input.controller_state.left_stick.y >= metil_player->deadzone_stick ||
+    metil->input.controller_state.left_stick.y <= -metil_player->deadzone_stick
   ) {
     movement.x = (
       (metil->input.controller_state.left_stick.y * ratio_movement.x) +
@@ -425,7 +427,7 @@ void metil_player_poll_input(
     (
       metil->input.keydown_map[
         metil_keycode_space
-      ] == 1 ||(
+      ] == 1 || (
         metil->input.controller_state.available == 1 &&
         metil->input.controller_state.cross >= 0.1f
       )
