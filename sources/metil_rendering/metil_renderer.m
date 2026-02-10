@@ -1311,6 +1311,12 @@
         metil_renderable->renderable
       );
 
+      if (
+        metil_model->visible == 0
+      ) {
+        break;
+      }
+
       for (
         unsigned char index_object = 0;
         index_object < metil_model->length_objects;
