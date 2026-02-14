@@ -67,16 +67,10 @@ void metil_text_characters_initialize(
     ++index_character
   ) {
     if (
-      index_character > 0 &&
-      index_character < 8 ||
-      index_character > 10 &&
-      index_character < 13 ||
-      index_character > 13 &&
-      index_character < 29 ||
-      index_character > 29 &&
-      index_character < 32
+      index_character < ' ' ||
+      index_character > '~'
     ) {
-      character_array[0] = 0;
+      character_array[0] = ' ';
     } else {
       character_array[0] = index_character;
     }
