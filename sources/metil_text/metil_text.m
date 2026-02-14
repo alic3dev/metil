@@ -160,7 +160,7 @@ struct metil_text_image* metil_text_render(
     metil_text_render_parameters_letter_width_style_maximum
   ) {
     for (
-      unsigned char index_glyph = 0;
+      unsigned int index_glyph = 0;
       index_glyph < length_characters;
       ++index_glyph
     ) {
@@ -181,7 +181,7 @@ struct metil_text_image* metil_text_render(
   }
 
   for (
-    unsigned char index_glyph = 0;
+    unsigned int index_glyph = 0;
     index_glyph < length_characters;
     ++index_glyph
   ) {
