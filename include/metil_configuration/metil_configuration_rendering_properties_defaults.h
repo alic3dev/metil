@@ -6,7 +6,7 @@
 #define metil_configuration_rendering_properties_default_brightness 1.0
 #define metil_configuration_rendering_properties_default_brightness_text 1.0
 
-#define metil_configuration_rendering_properties_default_fps_display 1
+#define metil_configuration_rendering_properties_default_fps_display 0
 
 #define metil_configuration_rendering_properties_default_colour_fps_display_x 1.0f
 #define metil_configuration_rendering_properties_default_colour_fps_display_y 1.0f
