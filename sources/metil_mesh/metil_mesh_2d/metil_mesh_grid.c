@@ -276,3 +276,303 @@ void metil_mesh_celled_grid_initialize(
     }
   }
 }
+
+void metil_mesh_celled_individual_triangles_grid_initialize(
+  struct metil_mesh* metil_mesh,
+  struct math_c_vector2_float size,
+  struct math_c_vector2_unsigned_long_int cells
+) {
+  metil_mesh_initialize(
+    metil_mesh
+  );
+
+  metil_mesh->size.x = (
+    size.x
+  );
+  metil_mesh->size.y = (
+    size.y
+  );
+  metil_mesh->size.z = (
+    0.0f
+  );
+
+  struct math_c_vector2_float size_cell = {
+    .x = (
+      metil_mesh->size.x /
+      cells.x
+    ),
+    .y = (
+      metil_mesh->size.y /
+      cells.y
+    )
+  };
+
+  struct math_c_vector2_float size_half = {
+    .x = (
+      metil_mesh->size.x /
+      2.0f
+    ),
+    .y = (
+      metil_mesh->size.y /
+      2.0f
+    )
+  };
+
+  unsigned long int total_cells = (
+    cells.x *
+    cells.y
+  );
+
+  metil_mesh->length_vertices = (
+    total_cells *
+    4
+  );
+
+  metil_mesh->length_indices = (
+    total_cells *
+    6
+  );
+
+  clic3_memory_reallocate_raw(
+    &metil_mesh->indices,
+    (
+      sizeof(
+        unsigned int
+      ) *
+      metil_mesh->length_indices
+    )
+  );
+
+  clic3_memory_reallocate_raw(
+    &metil_mesh->vertices,
+    (
+      sizeof(
+        struct math_c_vector4_float
+      ) *
+      metil_mesh->length_vertices
+    )
+  );
+
+  unsigned long int index_index = (
+    0
+  );
+
+  unsigned long int index_vertex = (
+    0
+  );
+
+  for (
+    unsigned int index_y = 0;
+    index_y < cells.y;
+    ++index_y
+  ) {
+    for (
+      unsigned int index_x = 0;
+      index_x < cells.x;
+      ++index_x
+    ) {
+      metil_mesh->vertices[
+        index_vertex
+      ].x = (
+        size_cell.x *
+        index_x -
+        size_half.x
+      );
+
+      metil_mesh->vertices[
+        index_vertex
+      ].y = (
+        size_half.y -
+        size_cell.y *
+        index_y
+      );
+
+      metil_mesh->vertices[
+        index_vertex
+      ].z = (
+        0.0f
+      );
+
+      metil_mesh->vertices[
+        index_vertex
+      ].w = (
+        1.0f
+      );
+
+      metil_mesh->vertices[
+        index_vertex +
+        1
+      ].x = (
+        size_cell.x *
+        (
+          index_x +
+          1
+        ) -
+        size_half.x
+      );
+
+      metil_mesh->vertices[
+        index_vertex +
+        1
+      ].y = (
+        size_half.y -
+        size_cell.y *
+        index_y
+      );
+
+      metil_mesh->vertices[
+        index_vertex +
+        1
+      ].z = (
+        0.0f
+      );
+
+      metil_mesh->vertices[
+        index_vertex +
+        1
+      ].w = (
+        1.0f
+      );
+
+      metil_mesh->vertices[
+        index_vertex +
+        2
+      ].x = (
+        size_cell.x *
+        index_x -
+        size_half.x
+      );
+
+      metil_mesh->vertices[
+        index_vertex +
+        2
+      ].y = (
+        size_half.y -
+        size_cell.y *
+        (
+          index_y +
+          1
+        )
+      );
+
+      metil_mesh->vertices[
+        index_vertex +
+        2
+      ].z = (
+        0.0f
+      );
+
+      metil_mesh->vertices[
+        index_vertex +
+        2
+      ].w = (
+        1.0f
+      );
+
+      metil_mesh->vertices[
+        index_vertex +
+        3
+      ].x = (
+        size_cell.x *
+        (
+          index_x +
+          1
+        ) -
+        size_half.x
+      );
+
+      metil_mesh->vertices[
+        index_vertex +
+        3
+      ].y = (
+        size_half.y -
+        size_cell.y *
+        (
+          index_y +
+          1
+        )
+      );
+
+      metil_mesh->vertices[
+        index_vertex +
+        3
+      ].z = (
+        0.0f
+      );
+
+      metil_mesh->vertices[
+        index_vertex +
+        3
+      ].w = (
+        1.0f
+      );
+
+      index_vertex = (
+        index_vertex +
+        4
+      );
+    }
+  }
+
+  for (
+    unsigned int index_cell = 0;
+    index_cell < total_cells;
+    ++index_cell
+  ) {
+    unsigned int index_vertex = (
+      index_cell *
+      4
+    );
+
+    metil_mesh->indices[
+      index_index
+    ] = (
+      index_vertex
+    );
+
+    metil_mesh->indices[
+      index_index +
+      1
+    ] = (
+      index_vertex +
+      1
+    );
+
+    metil_mesh->indices[
+      index_index +
+      2
+    ] = (
+      index_vertex +
+      2
+    );
+
+    metil_mesh->indices[
+      index_index +
+      3
+    ] = (
+      index_vertex +
+      2
+    );
+
+    metil_mesh->indices[
+      index_index +
+      4
+    ] = (
+      index_vertex +
+      1
+    );
+
+    metil_mesh->indices[
+      index_index +
+      5
+    ] = (
+      index_vertex +
+      3
+    );
+
+    index_index = (
+      index_index +
+      6
+    );
+  }
+}
