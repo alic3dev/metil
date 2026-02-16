@@ -69,4 +69,8 @@
 
 #define metil_keycode_max_value 126
 
+unsigned char metil_keycode_from_char(
+  unsigned char
+);
+
 #endif
