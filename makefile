@@ -1,44 +1,44 @@
 name=metil
 
-version_major=1
+ifeq (${debug}, 1)
+target_build=debug
+suffix_library_target_build=_${target_build}
+else
+target_build=release
+suffix_library_target_build=
+endif
+
+name:=${name}${suffix_library_target_build}
+
+version_major=2
 version_minor=0
 version_patch=0
 version_major_minor=${version_major}.${version_minor}
 version=${version_major}.${version_minor}.${version_patch}
 
 ifndef target_device
-	target_device=mac
+target_device=mac
+endif
+
+ifeq (${target_device},mac)
+target_os=macos
+target_sdk=macosx
+suffix_library_target_os=
+endif
+
+ifeq (${target_device},iphone)
+target_os=ios
+target_sdk=iphoneos
+suffix_library_target_os=_${target_os}
 endif
 
 directory_objects_base=objects
 directory_library_base=library
 
-
-ifeq (${target_device},mac)
 directory_examples=examples
-target_os=macos
-endif
-
-ifeq (${target_device},iphone)
-directory_examples=examples_ios
-directory_library=library_ios
-
-target_os=ios
-endif
-
-directory_library=${directory_library_base}/${target_os}
-directory_objects:=${directory_objects_base}/${target_os}
-
-ifeq (${debug}, 1)
-name:=${name}_debug
-directory_objects:=${directory_objects}/debug
-directory_library:=${directory_library}/debug
-else
-directory_objects:=${directory_objects}/release
-directory_library:=${directory_library}/release
-endif
-
 directory_include=include
+directory_library=${directory_library_base}/${target_os}/${target_build}
+directory_objects:=${directory_objects_base}/${target_os}/${target_build}
 directory_objects_c=${directory_objects}/c
 directory_objects_objc=${directory_objects}/objc
 directory_plist=plist
@@ -52,57 +52,24 @@ version_target_math_c=0
 
 directory_cer0=../cer0
 directory_cer0_include=${directory_cer0}/include
-directory_cer0_library=${directory_cer0}/library/${target_os}
+directory_cer0_library=${directory_cer0}/library/${target_os}/${target_build}
 
 directory_clic3=../clic3
 directory_clic3_include=${directory_clic3}/include
-directory_clic3_library=${directory_clic3}/library/${target_os}
+directory_clic3_library=${directory_clic3}/library/${target_os}/${target_build}
 
 directory_interrupt_handler=../interrupt_handler
 directory_interrupt_handler_include=${directory_interrupt_handler}/include
-directory_interrupt_handler_library=${directory_interrupt_handler}/library/${target_os}
+directory_interrupt_handler_library=${directory_interrupt_handler}/library/${target_os}/${target_build}
 
 directory_math_c=../math_c
 directory_math_c_include=${directory_math_c}/include
-directory_math_c_library=${directory_math_c}/library/${target_os}
+directory_math_c_library=${directory_math_c}/library/${target_os}/${target_build}
 
-ifeq (${debug}, 1)
-directory_cer0_library:=${directory_cer0_library}/debug
-directory_clic3_library:=${directory_clic3_library}/debug
-directory_interrupt_handler_library:=${directory_interrupt_handler_library}/debug
-directory_math_c_library:=${directory_math_c_library}/debug
-
-ifeq (${target_os},macos)
-file_cer0_library=${directory_cer0_library}/cer0_debug.${version_target_cer0}.dylib
-file_clic3_library=${directory_clic3_library}/clic3_debug.${version_target_clic3}.dylib
-file_interrupt_handler_library=${directory_interrupt_handler_library}/interrupt_handler_debug.${version_target_interrupt_handler}.dylib
-file_math_c_library=${directory_math_c_library}/math_c_debug.${version_target_math_c}.dylib
-else
-file_cer0_library=${directory_cer0_library}/cer0_${target_os}_debug.${version_target_cer0}.dylib
-file_clic3_library=${directory_clic3_library}/clic3_${target_os}_debug.${version_target_clic3}.dylib
-file_interrupt_handler_library=${directory_interrupt_handler_library}/interrupt_handler_${target_os}_debug.${version_target_interrupt_handler}.dylib
-file_math_c_library=${directory_math_c_library}/math_c_${target_os}_debug.${version_target_math_c}.dylib
-endif
-
-else
-directory_cer0_library:=${directory_cer0_library}/release
-directory_clic3_library:=${directory_clic3_library}/release
-directory_interrupt_handler_library:=${directory_interrupt_handler_library}/release
-directory_math_c_library:=${directory_math_c_library}/release
-
-ifeq (${target_os},macos)
-file_cer0_library=${directory_cer0_library}/cer0.${version_target_cer0}.dylib
-file_clic3_library=${directory_clic3_library}/clic3.${version_target_clic3}.dylib
-file_interrupt_handler_library=${directory_interrupt_handler_library}/interrupt_handler.${version_target_interrupt_handler}.dylib
-file_math_c_library=${directory_math_c_library}/math_c.${version_target_math_c}.dylib
-else
-file_cer0_library=${directory_cer0_library}/cer0_${target_os}.${version_target_cer0}.dylib
-file_clic3_library=${directory_clic3_library}/clic3_${target_os}.${version_target_clic3}.dylib
-file_interrupt_handler_library=${directory_interrupt_handler_library}/interrupt_handler_${target_os}.${version_target_interrupt_handler}.dylib
-file_math_c_library=${directory_math_c_library}/math_c_${target_os}.${version_target_math_c}.dylib
-endif
-
-endif
+file_cer0_library=${directory_cer0_library}/cer0${suffix_library_target_os}${suffix_library_target_build}.${version_target_cer0}.dylib
+file_clic3_library=${directory_clic3_library}/clic3${suffix_library_target_os}${suffix_library_target_build}.${version_target_clic3}.dylib
+file_interrupt_handler_library=${directory_interrupt_handler_library}/interrupt_handler${suffix_library_target_os}${suffix_library_target_build}.${version_target_interrupt_handler}.dylib
+file_math_c_library=${directory_math_c_library}/math_c${suffix_library_target_os}${suffix_library_target_build}.${version_target_math_c}.dylib
 
 directory_metal=metal
 
@@ -124,21 +91,12 @@ ifndef target_metal_standard
 target_metal_standard=metal4.0
 endif
 
-ifeq (${target_device},mac)
-target_platform=arm64-apple-macos${target_device_version}
-target_platform_metal=air64-apple-macos${target_metal_version}
+target_platform=arm64-apple-${target_os}${target_device_version}
+target_platform_metal=air64-apple-${target_os}${target_metal_version}
 
-directory_sdk=${shell xcrun --sdk macosx${target_device_version} --show-sdk-path}
-endif
+directory_sdk=${shell xcrun --sdk ${target_sdk}${target_device_version} --show-sdk-path}
 
-ifeq (${target_device},iphone)
-target_platform=arm64-apple-ios${target_device_version}
-target_platform_metal=air64-apple-ios${target_metal_version}
-
-directory_sdk=${shell xcrun --sdk iphoneos${target_device_version} --show-sdk-path}
-endif
-
-file_info_plist=${directory_plist}/Info.plist
+file_info_plist=${directory_plist}/Info${suffix_library_target_os}.plist
 
 file_library_object=${directory_library}/${name}.o
 
@@ -158,11 +116,8 @@ file_metalar_metil_model=${directory_metalar}/metil_metal_model.metalar
 file_output_metalar_metil_all=${directory_library}/metil_all.metalar
 file_output_metalar_metil_model=${directory_library}/metil_metal_model.metalar
 
-ifeq (${target_device},iphone)
-file_output_info_plist=${directory_library}/Info_ios.plist
-else
-file_output_info_plist=${directory_library}/Info.plist
-endif
+file_output_info_plist=${directory_library}/Info${suffix_library_target_os}.plist
+
 file_output_metal=${directory_library}/metil.metallib
 
 files_sources_c=${shell find ${directory_sources} -name "*.c"}
@@ -199,15 +154,10 @@ c_flags_includes=-I${directory_include} -I${directory_cer0_include} -I${director
 c_flags_platform=-target ${target_platform} -isysroot ${directory_sdk}
 
 c_flags_objc_debug=-O0 -g -v
-c_flags_debug=${c_flags_objc_debug} -da -Q
+c_flags_debug=${c_flags_objc_debug}
 
 c_flags_c=${c_flags_platform} ${c_flags_includes}
 c_flags_objc=${c_flags_platform} ${c_flags_includes} -x objective-c -fmodules
-
-ifeq (${target_device},mac)
-c_flags_c:=${c_flags_c}
-c_flags_objc:=${c_flags_objc}
-endif
 
 ifeq (${target_device},iphone)
 c_flags_c:=${c_flags_c} -Dtarget_os_ios
@@ -217,11 +167,11 @@ endif
 c_flags_frameworks=${addprefix -framework ,${frameworks}}
 
 ifeq (${debug}, 1)
-	c_flags_c:=${c_flags_c} ${c_flags_debug}
-	c_flags_objc:=${c_flags_objc} ${c_flags_objc_debug}
+c_flags_c:=${c_flags_c} ${c_flags_debug}
+c_flags_objc:=${c_flags_objc} ${c_flags_objc_debug}
 else
-	c_flags_c:=${c_flags_c} -O3
-	c_flags_objc:=${c_flags_objc} -O3
+c_flags_c:=${c_flags_c} -O3
+c_flags_objc:=${c_flags_objc} -O3
 endif
 
 ar=ar
@@ -241,7 +191,7 @@ metal_flags_common=-target ${target_platform_metal} -std=${target_metal_standard
 metal_flags=${metal_flags_common} -I${directory_include} -I${directory_math_c_include} -isysroot ${directory_sdk}
 
 ifneq (${disable_metal_fast_options}, 1)
-	metal_flags:=${metal_flags} -fmetal-math-mode\=fast -fmetal-math-fp32-functions\=fast
+metal_flags:=${metal_flags} -fmetal-math-mode\=fast -fmetal-math-fp32-functions\=fast
 endif
 
 metal_flags_output=
