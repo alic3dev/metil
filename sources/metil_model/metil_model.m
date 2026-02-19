@@ -314,7 +314,8 @@ void metil_model_buffers_initialize(
 
     metil_object->buffers_vertex[
       metil_object_buffer_default_index_vertex_joint_map
-    ].buffer = [metal_device
+    ].buffer = [
+      metal_device
       newBufferWithBytes: (
         metil_model->vertex_joint_maps[
           index_object
@@ -326,7 +327,7 @@ void metil_model_buffers_initialize(
         ) *
         metil_object->mesh.length_vertices
       )
-      options: MTLResourceStorageModePrivate
+      options: MTLResourceStorageModeShared
     ];
 
     metil_object->buffers_vertex[
