@@ -450,10 +450,43 @@ struct metil_text_image* metil_text_render(
     index_pixel < length_text_image_data;
     index_pixel = index_pixel + 4
   ) {
-    unsigned char value = text_image->data[
-      index_pixel
-    ];
+    unsigned char value = (
+      text_image->data[
+        index_pixel
+      ]
+    );
 
+    if (
+      value <
+      text_image->data[
+        index_pixel +
+        1
+      ]
+    ) {
+      value = (
+        text_image->data[
+          index_pixel +
+          1
+        ]
+      );
+    }
+
+    if (
+      value <
+      text_image->data[
+        index_pixel +
+        2
+      ]
+    ) {
+      value = (
+        text_image->data[
+          index_pixel +
+          2
+        ]
+      );
+    }
+
+    text_image->data[index_pixel] = value;
     text_image->data[index_pixel + 1] = value;
     text_image->data[index_pixel + 2] = value;
     text_image->data[index_pixel + 3] = value;
