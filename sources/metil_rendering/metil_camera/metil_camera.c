@@ -12,7 +12,7 @@ void metil_camera_initialize(
   );
 
   metil_camera->field_of_view.x = 1.45f;
-  metil_camera->field_of_view.y = 1.45f;
+  metil_camera->field_of_view.y = 1.45f * (9.0f / 16.0f);
 
   if (
     metil_camera->initialized == 0
