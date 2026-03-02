@@ -43,6 +43,18 @@ void example_2d_rendering_renderer_on_initialize(
     ]
   ];
 
+  example_2d_rendering_index_pipeline_player = [
+    metil->renderer_interface.renderer
+    pipeline_add: [
+      metil->library.library
+      newFunctionWithName: @"metil_example_2d_rendering_player_fragment"
+    ]
+    function_vertex: [
+      metil->library.library
+      newFunctionWithName: @"metil_example_2d_rendering_player_vertex"
+    ]
+  ];
+
   example_2d_scene_initialize(
     metil,
     &((struct metil_scene_controller*) metil->scene_controller)->scene

@@ -293,9 +293,20 @@ void example_2d_scene_initialize(
   metil_mesh_rectangle_initialize(
     &metil_object_player->mesh,
     (struct math_c_vector2_float) {
-      .x = 0.001f,
-      .y = 0.2f
+      .x = 0.0875f,
+      .y = 0.175f
     }
+  );
+
+  metil_object_player->position.y = (
+    metil_object_player->mesh.size.y /
+    2.0f
+  );
+
+  metil_object_player->position.x = (
+    -1.0f +
+    metil_object_player->mesh.size.x *
+    1.5f
   );
 
   metil_object_background->positioning = (
@@ -308,6 +319,10 @@ void example_2d_scene_initialize(
 
   metil_object_background->index_pipeline_render = (
     example_2d_rendering_index_pipeline_background
+  );
+
+  metil_object_player->index_pipeline_render = (
+    example_2d_rendering_index_pipeline_player
   );
 
   metil_object_buffers_initialize(
@@ -324,6 +339,27 @@ void example_2d_scene_initialize(
     metil_object_background,
     metil_scene->textures[
       example_2d_rendering_index_texture_background
+    ]
+  );
+
+  metil_object_texture_add(
+    metil_object_player,
+    metil_scene->textures[
+      example_2d_rendering_index_texture_player_walk_one
+    ]
+  );
+
+  metil_object_texture_add(
+    metil_object_player,
+    metil_scene->textures[
+      example_2d_rendering_index_texture_player_walk_two
+    ]
+  );
+
+  metil_object_texture_add(
+    metil_object_player,
+    metil_scene->textures[
+      example_2d_rendering_index_texture_player_walk_three
     ]
   );
 }
@@ -352,6 +388,12 @@ void example_2d_scene_poll(
       example_2d_rendering_index_renderable_floor
     ].renderable
   );
+
+  struct metil_object* metil_object_player = (
+    metil_scene->renderables[
+      example_2d_rendering_index_renderable_player
+    ].renderable
+  );
   
   struct metil_group* metil_group_servers = (
     metil_scene->renderables[
@@ -363,6 +405,11 @@ void example_2d_scene_poll(
     metil_scene->renderables[
       example_2d_rendering_index_renderable_server_housings
     ].renderable
+  );
+
+  metil_object_player->position.x = (
+    metil_object_player->position.x +
+    translation_x
   );
 
   metil_object_floor->position.x = (
