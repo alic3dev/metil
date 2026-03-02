@@ -1342,13 +1342,19 @@ make target_device=iphone
 
 ## examples
 
-| [2d_rendering](examples/2d_rendering/) | [3d_rendering](examples/3d_rendering/) | [face](examples/face/) |
-|-------|-----|---|
-| <img width="1966" height="1250" alt="metil_example_2d_rendering" src="https://github.com/user-attachments/assets/d61f70f0-7c05-4772-8fad-df52e550899f" /> | <img width="1966" height="1250" alt="metil_example_3d_rendering" src="https://github.com/user-attachments/assets/6da49b26-0001-4e5c-8af4-47191ac57aa5" /> | <img width="1966" height="1250" alt="metil_example_face" src="https://github.com/user-attachments/assets/466184c5-c724-4f80-b0c7-fa34aa55e7c2" /> |
+| [2d_rendering](examples/2d_rendering/) | [3d_rendering](examples/3d_rendering/) | [animation](examples/animation/) |
+|---|---|---|
+| <img width="1966" height="1250" alt="metil_example_2d_rendering" src="https://github.com/user-attachments/assets/d61f70f0-7c05-4772-8fad-df52e550899f" /> | <img width="1966" height="1250" alt="metil_example_3d_rendering" src="https://github.com/user-attachments/assets/6da49b26-0001-4e5c-8af4-47191ac57aa5" /> | <img width="1966" height="1250" alt="metil_example_animation" src="https://github.com/user-attachments/assets/1ad99942-9e18-470e-96b6-a00e1135ecc3" /> |
 
-| [fog](examples/fog/) | [model](examples/model/) |
-|-------|-----|
-| https://github.com/user-attachments/assets/0639ef29-43d6-4eb0-b12c-c42b1afd91ae | https://github.com/user-attachments/assets/6e3675f2-b369-4596-9d4f-ee68e24b98fe | 
+| [collision](examples/collision/) | [face](examples/face/) | [fog](examples/fog/) |
+|---|---|---|
+| <img width="1966" height="1250" alt="metil_example_collision" src="https://github.com/user-attachments/assets/8c4bd97a-df91-439b-abd6-04b7edfdae77" /> | <img width="1966" height="1250" alt="metil_example_face" src="https://github.com/user-attachments/assets/466184c5-c724-4f80-b0c7-fa34aa55e7c2" /> | <img width="1966" height="1250" alt="metil_example_fog" src="https://github.com/user-attachments/assets/a1714803-94a4-4047-9108-d4e33cff4715" /> |
+
+
+| [meshes](examples/meshes) | [model](examples/model) | |
+|---|---|
+| <img width="1966" height="1250" alt="metil_example_meshes" src="https://github.com/user-attachments/assets/6c14ae47-90c3-4071-8386-3d5e7be20c38" /> | <img width="1966" height="1250" alt="metil_example_model" src="https://github.com/user-attachments/assets/bcc73a50-8853-4fe8-8e4c-c054b3623ff6" /> | |
+
 
 ## copyright|copyleft
 
