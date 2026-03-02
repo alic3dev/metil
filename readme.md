@@ -1344,7 +1344,7 @@ make target_device=iphone
 
 | [2d_rendering](examples/2d_rendering/) | [3d_rendering](examples/3d_rendering/) | [face](examples/face/) |
 |-------|-----|---|
-| <img width="1966" height="1250" alt="metil_example_2d_rendering" src="https://github.com/user-attachments/assets/eed4ec93-5284-43a3-a5f2-2c2abff9527a" /> | <img width="1966" height="1250" alt="metil_example_3d_rendering" src="https://github.com/user-attachments/assets/6da49b26-0001-4e5c-8af4-47191ac57aa5" /> | <img width="1966" height="1250" alt="metil_example_face" src="https://github.com/user-attachments/assets/466184c5-c724-4f80-b0c7-fa34aa55e7c2" /> |
+| <img width="1966" height="1250" alt="metil_example_2d_rendering" src="https://github.com/user-attachments/assets/d61f70f0-7c05-4772-8fad-df52e550899f" /> | <img width="1966" height="1250" alt="metil_example_3d_rendering" src="https://github.com/user-attachments/assets/6da49b26-0001-4e5c-8af4-47191ac57aa5" /> | <img width="1966" height="1250" alt="metil_example_face" src="https://github.com/user-attachments/assets/466184c5-c724-4f80-b0c7-fa34aa55e7c2" /> |
 
 | [fog](examples/fog/) | [model](examples/model/) |
 |-------|-----|
