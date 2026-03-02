@@ -257,7 +257,7 @@ void example_2d_scene_initialize(
     &metil_object_floor->mesh,
     (struct math_c_vector2_float) {
       .x = (
-        2.0f
+        4.0f
       ),
       .y = (
         1.0f
@@ -367,8 +367,22 @@ void example_2d_scene_poll(
 
   metil_object_floor->position.x = (
     metil_object_floor->position.x +
-    translation_x
+    translation_x *
+    0.5f
   );
+
+  if (
+    (
+      metil_object_floor->position.x -
+      metil_scene->player.position.x
+    ) <
+    -1.0f
+  ) {
+    metil_object_floor->position.x = (
+      metil_object_floor->position.x +
+      2.0f
+    );
+  }
 
   for (
     unsigned int index_server = 0;
