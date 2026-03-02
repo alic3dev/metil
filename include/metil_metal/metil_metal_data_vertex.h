@@ -16,4 +16,11 @@ struct data_vertex_basic_textured_coloured {
   float4 colour;
 };
 
+struct data_vertex_basic_multiple_textured_coloured {
+  float4 position [[position]];
+  float2 position_texture;
+  float4 colour;
+  unsigned char index_texture;
+};
+
 #endif
