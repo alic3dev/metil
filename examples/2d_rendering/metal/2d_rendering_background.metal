@@ -8,7 +8,7 @@
 
 #include <metal_stdlib>
 
-[[vertex]] struct data_vertex_basic_textured_coloured metil_example_2d_rendering_vertex(
+[[vertex]] struct data_vertex_basic_textured_coloured metil_example_2d_rendering_background_vertex(
   const device simd_float4* vertices [[
     buffer(
       metil_renderer_vertex_index_parameter_vertices
@@ -57,7 +57,7 @@
   );
 }
 
-[[fragment]] float4 metil_example_2d_rendering_fragment(
+[[fragment]] float4 metil_example_2d_rendering_background_fragment(
   data_vertex_basic_textured_coloured data_vertex_basic_textured_coloured [[stage_in]],
   metal::texture2d<half> texture [[texture(0)]]
 ) {
