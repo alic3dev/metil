@@ -1328,7 +1328,7 @@ make target_device=iphone
 
 | [`c938`](https://github.com/alic3dev/c938) | [`zoe`](https://github.com/alic3dev/zoe) |
 |---|---|
-| <img width="640" height="407" alt="metil_zoe" src="https://github.com/user-attachments/assets/9ead54e1-db21-4145-ac1a-43993314c008" /> | <img width="1966" height="1250" alt="metil_c938" src="https://github.com/user-attachments/assets/536659aa-13e7-4591-848f-75aec95834ab" /> |
+| <img width="640" height="407" alt="metil_c938" src="https://github.com/user-attachments/assets/536659aa-13e7-4591-848f-75aec95834ab" /> | <img width="640" height="407" alt="metil_zoe" src="https://github.com/user-attachments/assets/9ead54e1-db21-4145-ac1a-43993314c008" /> |
 
 ### ios
 
