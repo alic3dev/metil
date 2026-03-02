@@ -27,7 +27,7 @@ void example_2d_scene_initialize(
   metil_scene_initialize_with_renderables(
     metil,
     metil_scene,
-    5
+    1
   );
 
   metil_scene->player.poll_input = (
@@ -43,131 +43,288 @@ void example_2d_scene_initialize(
     index_renderable < metil_scene->length_renderables;
     ++index_renderable
   ) {
-    metil_renderable_initialize_at_index(
-      metil_scene->renderables,
-      index_renderable,
-      metil_renderable_type_group
-    );
-
-    struct metil_group* metil_group = (
-      metil_scene->renderables[
-        index_renderable
-      ].renderable
-    );
-
-    metil_group_add_length_initialize(
-      metil_group,
-      100,
-      metil_renderable_type_object
-    );
-
-    for (
-      unsigned int index_group_renderable = 0;
-      index_group_renderable < metil_group->length;
-      ++index_group_renderable
+    switch (
+      index_renderable
     ) {
-      struct metil_object* metil_object = (
-        metil_group->renderables[
-          index_group_renderable
-        ]->renderable
-      );
-
-      float percentage_group = (
-        (float)
-        index_group_renderable /
-        (float)
-        (
-          metil_group->length -
-          1
-        )
-      );
-
-      if (
-        index_renderable > 0
-      ) {
-        metil_mesh_circle_initialize(
-          &metil_object->mesh,
-          (
-            0.001f *
-            (
-              index_group_renderable +
-              1
-            )
-          ),
-          (
-            index_group_renderable +
-            2
-          )
+      case 0: {
+        metil_renderable_initialize_at_index(
+          metil_scene->renderables,
+          index_renderable,
+          metil_renderable_type_object
         );
-      } else {
-        metil_mesh_square_initialize(
-          &metil_object->mesh,
-          (
-            1.6f *
-            (
-              1.0f -
-              percentage_group
-            )
-          )
-        );
+
+        break;
       }
-
-      metil_object->positioning = (
-        metil_positioning_static
-      );
-
-      metil_object_buffers_initialize(
-        metil_object,
-        metil->renderer_interface.metal_device
-      );
-
-      struct metil_renderer_data_object* metil_renderer_data_object = (
-        metil_object->buffers_vertex[
-          metil_object_buffer_default_index_data
-        ].buffer.contents
-      );
-
-      if (
-        index_renderable > 0
-      ) {
-        metil_renderer_data_object->colour.x = (
-          percentage_group
-        );
-
-        metil_renderer_data_object->colour.y = (
-          percentage_group *
-          0.75f +
-          0.25f
-        );
-
-        metil_renderer_data_object->colour.w = (
-          1.0f
-        );
-      } else {
-        metil_renderer_data_object->colour.x = (
-          1.0f
-        );
-
-        metil_renderer_data_object->colour.y = (
-          1.0f -
-          (
-            percentage_group
-          )
-        );
-
-        metil_renderer_data_object->colour.z = (
-          metil_renderer_data_object->colour.y
-        );
-
-        metil_renderer_data_object->colour.w = (
-          1.0f -
-          (
-            percentage_group
-          )
-        );
+      default: {
+        
+        break;
       }
     }
   }
+
+  struct metil_object* metil_object_background = (
+    metil_scene->renderables[
+      0
+    ].renderable
+  );
+
+  metil_mesh_square_initialize(
+    &metil_object_background->mesh,
+    2
+  );
+
+  metil_object_background->positioning = (
+    metil_positioning_absolute
+  );
+
+  metil_object_buffers_initialize(
+    metil_object_background,
+    metil->renderer_interface.metal_device
+  );
+
+  MTLTextureDescriptor* texture_descriptor = [
+    [
+      MTLTextureDescriptor
+      alloc
+    ]
+    init
+  ];
+
+  texture_descriptor.pixelFormat = (
+    MTLPixelFormatRGBA8Unorm
+  );
+
+  texture_descriptor.width = (
+    1600
+  );
+
+  texture_descriptor.height = (
+    900
+  );
+
+  metil_scene->length_textures = (
+    1
+  );
+
+  clic3_memory_reallocate_raw(
+    &metil_scene->textures,
+    (
+      sizeof(
+        id<MTLTexture>
+      ) *
+      metil_scene->length_textures
+    )
+  );
+
+  metil_scene->textures[
+    0
+  ] = [
+    metil->renderer_interface.metal_device
+    newTextureWithDescriptor: texture_descriptor
+  ];
+
+  MTLRegion region = {
+    {0, 0, 0},
+    {texture_descriptor.width, texture_descriptor.height, 1}
+  };
+
+  unsigned int length_bytes_texture_row = (
+    4 *
+    texture_descriptor.width
+  );
+
+  unsigned int length_bytes_texture = (
+    length_bytes_texture_row *
+    texture_descriptor.height
+  );
+
+  unsigned char* pixel_bytes = (
+    clic3_memory_allocate_raw(
+      length_bytes_texture
+    )
+  );
+
+  for (
+    unsigned short int index_y = 0;
+    index_y < texture_descriptor.height;
+    ++index_y
+  ) {
+    for (
+      unsigned short int index_x = 0;
+      index_x < texture_descriptor.width;
+      ++index_x
+    ) {
+      unsigned int index_pixel = (
+        (
+          (
+            index_y *
+            texture_descriptor.width
+          ) +
+          index_x
+        ) *
+        4
+      );
+
+      if (
+        (
+          index_x %
+          9
+        ) == 4
+      ) {
+        pixel_bytes[
+          index_pixel +
+          0
+        ] = (
+          0x00
+        );
+
+        pixel_bytes[
+          index_pixel +
+          1
+        ] = (
+          0x55
+        );
+
+        pixel_bytes[
+          index_pixel +
+          2
+        ] = (
+          0x00
+        );
+      } else if (
+        (
+          index_y %
+          16
+        ) == 7
+      ) {
+        pixel_bytes[
+          index_pixel +
+          0
+        ] = (
+          0x00
+        );
+
+        pixel_bytes[
+          index_pixel +
+          1
+        ] = (
+          0x00
+        );
+
+        pixel_bytes[
+          index_pixel +
+          2
+        ] = (
+          0x77
+        );
+      } else if (
+        (
+          index_x %
+          8
+        ) == 7 &&
+        (
+          index_y %
+          16
+        ) == 10
+      ) {
+        pixel_bytes[
+          index_pixel +
+          0
+        ] = (
+          0xff
+        );
+
+        pixel_bytes[
+          index_pixel +
+          1
+        ] = (
+          0x00
+        );
+
+        pixel_bytes[
+          index_pixel +
+          2
+        ] = (
+          0x00
+        );
+      } else {
+        unsigned char value = (
+          (
+            (
+              (
+                index_x
+              ) %
+              8
+            ) >
+            3 &&
+            (
+              (
+                index_y
+              ) %
+              8
+            ) >
+            3
+          )
+          ? 0x20
+          : 0x00
+        );
+
+        pixel_bytes[
+          index_pixel +
+          0
+        ] = (
+          value
+        );
+
+        pixel_bytes[
+          index_pixel +
+          1
+        ] = (
+          value
+        );
+
+        pixel_bytes[
+          index_pixel +
+          2
+        ] = (
+          value
+        );
+      }
+
+      pixel_bytes[
+        index_pixel +
+        3
+      ] = (
+        0xff 
+      );
+    }
+  }
+
+  [
+    metil_scene->textures[
+      0
+    ]
+    replaceRegion: region
+    mipmapLevel: 0
+    withBytes: pixel_bytes
+    bytesPerRow: length_bytes_texture_row
+  ];
+
+  [
+    texture_descriptor
+    release
+  ];
+
+  clic3_memory_free_raw(
+    pixel_bytes
+  );
+
+  metil_object_texture_add(
+    metil_object_background,
+    metil_scene->textures[
+      0
+    ]
+  );
 }
 
 void example_2d_scene_poll(
@@ -178,157 +335,4 @@ void example_2d_scene_poll(
     metil,
     metil_scene
   );
-
-  for (
-    unsigned char index_renderable = 0;
-    index_renderable < metil_scene->length_renderables;
-    ++index_renderable
-  ) {
-    struct metil_group* metil_group = (
-      metil_scene->renderables[
-        index_renderable
-      ].renderable
-    );
-
-    for (
-      unsigned int index_group_renderable = 0;
-      index_group_renderable < metil_group->length;
-      ++index_group_renderable
-    ) {
-      struct metil_object* metil_object = (
-        metil_group->renderables[
-          index_group_renderable
-        ]->renderable
-      );
-
-      float percentage_group = (
-        (float)
-        index_group_renderable /
-        (float)
-        (
-          metil_group->length -
-          1
-        )
-      );
-
-      struct metil_renderer_data_object* metil_renderer_data_object = (
-        metil_object->buffers_vertex[
-          metil_object_buffer_default_index_data
-        ].buffer.contents
-      );
-
-      if (
-        index_renderable > 0
-      ) {
-        metil_object->position.x = (
-          math_c_sine(
-            (
-              (float)
-              metil->renderer_interface.rendering_properties->frame /
-              60.0f +
-              index_renderable
-            ),
-            math_c_pi
-          ) *
-          (
-            percentage_group
-          ) *
-          (
-            index_group_renderable % 2 == 0
-            ? -1.0f
-            : 1.0f
-          )
-        );
-
-        metil_object->position.y = (
-          math_c_cosine(
-            (
-              (float)
-              metil->renderer_interface.rendering_properties->frame /
-              (
-                60.0f /
-                (
-                  (float)
-                  (
-                    index_renderable +
-                    1
-                  ) /
-                  4.0f
-                )
-              ) +
-              index_renderable
-            ),
-            math_c_pi
-          ) *
-          (
-            percentage_group
-          ) *
-          (
-            index_group_renderable % 2 == 0
-            ? -1.0f
-            : 1.0f
-          )
-        );
-
-        float tangent = (
-          math_c_tangent(
-            (
-              (
-                (float)
-                metil->renderer_interface.rendering_properties->frame /
-                (
-                  60.0f
-                )
-              ) *
-              math_c_pi *
-              1.0f +
-              (
-                index_renderable *
-                metil_group->length
-              ) +
-              index_group_renderable
-            ),
-            math_c_pi
-          ) /
-          math_c_pi
-        );
-
-        if (
-          tangent < 0.0f
-        ) {
-          tangent = (
-            -tangent
-          );
-        }
-        
-        if (
-          tangent > 1.0f
-        ) {
-          tangent = 1.0f;
-        }
-
-        metil_renderer_data_object->colour.y = (
-          percentage_group *
-          0.75f +
-          (
-            0.25f -
-            (
-              0.25f *
-              tangent
-            )
-          )
-        );
-
-        metil_renderer_data_object->colour.x = (
-          metil_renderer_data_object->colour.y  
-        );
-      } else {
-        metil_object->rotation.z = (
-          metil_object->rotation.z +
-          0.0001f *
-          index_group_renderable
-        );
-      }
-    }
-  }
 }
