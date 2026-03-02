@@ -1328,9 +1328,7 @@ make target_device=iphone
 
 | [`c938`](https://github.com/alic3dev/c938) | [`zoe`](https://github.com/alic3dev/zoe) |
 |---|---|
-| <img width="1966" height="1250" alt="c938" src="https://github.com/user-attachments/assets/99a495c2-f655-4a4b-9ece-9225deb5ccee" /> | <img width="1966" height="1250" alt="zoe" src="https://github.com/user-attachments/assets/7ec3bd2b-b281-4a0f-ab66-5d0802e62ede" /> |
-
-
+| <img width="640" height="407" alt="metil_zoe" src="https://github.com/user-attachments/assets/9ead54e1-db21-4145-ac1a-43993314c008" /> | <img width="1966" height="1250" alt="metil_c938" src="https://github.com/user-attachments/assets/536659aa-13e7-4591-848f-75aec95834ab" /> |
 
 ### ios
 
@@ -1338,7 +1336,7 @@ make target_device=iphone
 
 | [`ff`](https://github.com/alic3dev/ff) |
 |---|
-| <img width="295" height="639" alt="ff" src="https://github.com/user-attachments/assets/0e923f40-583f-4ef8-9ff9-5178fe6ebd4e" /> |
+| <img width="590" height="1278" alt="metil_ff_ios" src="https://github.com/user-attachments/assets/a2b1407c-98ee-461a-96c1-2fe989a8bf45" /> |
 
 ## examples
 
