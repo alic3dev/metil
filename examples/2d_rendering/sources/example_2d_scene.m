@@ -1,5 +1,6 @@
 #include <example_2d_scene.h>
 
+#include <example_2d_rendering_index_pipeline.h>
 #include <example_2d_scene_textures.h>
 
 #include <metil.h>
@@ -83,6 +84,10 @@ void example_2d_scene_initialize(
     metil_positioning_absolute
   );
 
+  metil_object_background->index_pipeline_render = (
+    example_2d_rendering_index_pipeline_background
+  );
+
   metil_object_buffers_initialize(
     metil_object_background,
     metil->renderer_interface.metal_device
@@ -103,5 +108,10 @@ void example_2d_scene_poll(
   metil_scene_poll_default(
     metil,
     metil_scene
+  );
+
+  metil_scene->player.position.x = (
+    metil_scene->player.position.x +
+    metil_scene->time_delta
   );
 }

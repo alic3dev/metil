@@ -29,18 +29,26 @@
   struct data_vertex_basic_textured_coloured data_vertex_basic_textured_coloured;
 
   data_vertex_basic_textured_coloured.position_texture.x = (
-    id_vertex %
-    2
+    (
+      id_vertex %
+      2
+    ) +
+    data_frame->position_player.x /
+    101010.101010f
   );
 
   data_vertex_basic_textured_coloured.position_texture.y = (
     id_vertex /
-    2
+    2 -
+    data_frame->position_player.y /
+    101010.101010f
   );
 
   data_vertex_basic_textured_coloured.position = (
     data_object->view_model_matrix_projection *
-    vertices[id_vertex]
+    vertices[
+      id_vertex
+    ]
   );
 
   data_vertex_basic_textured_coloured.colour = (
@@ -62,9 +70,7 @@
   metal::texture2d<half> texture [[texture(0)]]
 ) {
   constexpr metal::sampler sampler_texture(
-    metal::t_address::repeat,
-    metal::r_address::repeat,
-    metal::s_address::repeat
+    metal::address::repeat
   );
 
   float4 colour_texture = float4(
