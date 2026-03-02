@@ -19,7 +19,9 @@ version_target_interrupt_handler=0
 version_target_math_c=0
 version_target_metil=2
 
+directory_air=air
 directory_include=include
+directory_metal=metal
 directory_objects_c=${directory_objects}/c
 directory_objects_objc=${directory_objects}/objc
 directory_sources=sources
@@ -71,7 +73,9 @@ directory_app_contents=${directory_app}/Contents
 directory_app_contents_macos=${directory_app_contents}/MacOS
 directory_app_contents_resources=${directory_app_contents}/Resources
 
-file_metil_metallib=${directory_metil_library}/metil.metallib
+file_metalar_metil_fps_display=${directory_metil_library}/metil_fps_display.metalar
+file_metalar_metil_wireframe=${directory_metil_library}/metil_wireframe.metalar
+
 file_metil_storyboard=${directory_metil_library}/metil.storyboardc
 
 file_info_plist=${directory_metil_plist}/Info.plist
@@ -87,6 +91,9 @@ files_sources_objc=${shell find ${directory_sources} -name "*.m"}
 
 files_objects_c=${patsubst ${directory_sources}/%.c,${directory_objects_c}/%.o,${files_sources_c}}
 files_objects_objc=${patsubst ${directory_sources}/%.m,${directory_objects_objc}/%.o,${files_sources_objc}}
+
+files_metal=${wildcard ${directory_metal}/*.metal}
+files_air=${patsubst ${directory_metal}/%.metal,${directory_air}/%.air,${files_metal}}
 
 ifndef target_device_version
 target_device_version=26.1
@@ -120,17 +127,30 @@ c_flags_frameworks=${addprefix -framework ,${frameworks}}
 c_flags_output=${c_flags_platform} ${c_flags_frameworks}
 
 ifeq (${debug}, 1)
-	c_flags_c:=${c_flags_c} ${c_flags_debug}
-	c_flags_objc:=${c_flags_objc} ${c_flags_objc_debug}
-	c_flags_output:=${c_flags_output} ${c_flags_objc_debug}
+c_flags_c:=${c_flags_c} ${c_flags_debug}
+c_flags_objc:=${c_flags_objc} ${c_flags_objc_debug}
+c_flags_output:=${c_flags_output} ${c_flags_objc_debug}
 else
-	c_flags_c:=${c_flags_c} -O3
-	c_flags_objc:=${c_flags_objc} -O3
-	c_flags_output:=${c_flags_output} -O3
+c_flags_c:=${c_flags_c} -O3
+c_flags_objc:=${c_flags_objc} -O3
+c_flags_output:=${c_flags_output} -O3
 endif
 
 strip=strip
 strip_flags=-x
+
+metal=xcrun -sdk macosx metal
+metal_ar=xcrun -sdk macosx metal-ar
+metallib=xcrun -sdk macosx metallib
+metal_flags_common=-target ${target_platform_metal} -std=${target_metal_standard}
+
+metal_flags=${metal_flags_common} -I${directory_include} -I${directory_math_c_include} -I${directory_metil_include} -isysroot ${directory_sdk}
+
+ifneq (${disable_metal_fast_options}, 1)
+	metal_flags:=${metal_flags} -fmetal-math-mode\=fast -fmetal-math-fp32-functions\=fast
+endif
+
+metal_flags_output=
 
 all: ${name}
 
@@ -161,9 +181,13 @@ else
 endif
 endif
 
-${file_output_metal}: ${file_metil_metallib}
-	mkdir -p ${directory_app_contents_resources}
-	cp ${file_metil_metallib} ${file_output_metal}
+${file_output_metal}: ${files_air}
+	mkdir -p "${dir ${file_output_metal}}"
+	${metallib} ${metal_flags_output} ${files_air} ${file_metalar_metil_wireframe} ${file_metalar_metil_fps_display} ${file_math_c_metalar} -o ${file_output_metal}
+
+${directory_air}/%.air: ${directory_metal}/%.metal
+	mkdir -p "${dir $@}"
+	${metal} ${metal_flags} -c $< -o $@
 
 ${directory_objects_c}/%.o: ${directory_sources}/%.c
 	mkdir -p "${dir $@}"

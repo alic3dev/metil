@@ -26,8 +26,8 @@ void example_2d_rendering_renderer_on_initialize(
   metil_library_initialize(
     &metil->library,
     metil->renderer_interface.metal_device,
-    @"shader_2d_fragment",
-    @"shader_2d_vertex"
+    @"metil_example_2d_rendering_fragment",
+    @"metil_example_2d_rendering_vertex"
   );
 
   example_2d_scene_initialize(
