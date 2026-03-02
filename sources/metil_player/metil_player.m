@@ -1,5 +1,6 @@
 #include <metil_player/metil_player.h>
 
+#include <math_c_pi.h>
 #include <math_c_vector.h>
 
 #include <metil.h>
@@ -186,26 +187,23 @@ void metil_player_poll_input(
   }
 
   if (
-    metil_player->rotation.x > M_PI / 2.0f
+    metil_player->rotation.x > math_c_pi_half
   ) {
-    metil_player->rotation.x = M_PI / 2.0f;
+    metil_player->rotation.x = math_c_pi_half;
   } else if (
-    metil_player->rotation.x < -M_PI / 2.0f
+    metil_player->rotation.x < -math_c_pi_half
   ) {
-    metil_player->rotation.x = -M_PI / 2.0f;
+    metil_player->rotation.x = -math_c_pi_half;
   }
 
   metil_player->rotation.y = fmod(
-    metil_player->rotation.y, (
-      M_PI * 2.0f
-    )
+    metil_player->rotation.y,
+    math_c_pi_doubled
   );
 
   float ratio_axis = -(
-    metil_player->rotation.y / (
-      M_PI *
-      2.0f
-    )
+    metil_player->rotation.y /
+    math_c_pi_doubled
   );
 
   if (

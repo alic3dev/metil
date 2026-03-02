@@ -9,6 +9,8 @@
 #include <metil_model/metil_model.h>
 #include <metil_rendering/metil_renderer_data_model_object.h>
 
+#include <math_c_pi.h>
+
 void model_turret_initialize(
   struct metil* metil,
   struct metil_model* model_turret
@@ -120,26 +122,23 @@ void model_turret_initialize(
 
   object_turret_leg_one->position.x = -1.0f;
   object_turret_leg_one->rotation.z = (
-    M_PI /
+    math_c_pi /
     4.0f
   );
 
   object_turret_leg_two->position.x = 1.0f;
   object_turret_leg_two->rotation.z = -(
-    M_PI /
-    4.0f
+    object_turret_leg_one->rotation.z
   );
 
   object_turret_leg_three->position.z = -1.0f;
   object_turret_leg_three->rotation.x = -(
-    M_PI /
-    4.0f
+    object_turret_leg_one->rotation.z
   );
 
   object_turret_leg_four->position.z = 1.0f;
   object_turret_leg_four->rotation.x = (
-    M_PI /
-    4.0f
+    object_turret_leg_one->rotation.z
   );
 
   object_turret_box->position.y = 2.5f;

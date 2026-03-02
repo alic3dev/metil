@@ -55,12 +55,12 @@ void example_collision_scene_initialize(
   );
 
   scene->player.rotation.x = (
-    M_PI /
+    math_c_pi /
     42.13f
   );
 
   scene->player.rotation.y = (
-    M_PI /
+    math_c_pi /
     10.0f
   );
 
@@ -253,8 +253,7 @@ void example_collision_scene_initialize(
           5
         )
       ) *
-      M_PI *
-      2.0f
+      math_c_pi_doubled
     );
 
     metil_mesh_floor->vertices[
@@ -839,8 +838,7 @@ void scene_example_collision_populate_targets(
         metil_group_targets->length -
         1
       ) *
-      M_PI *
-      2.0f
+      math_c_pi_doubled
     );
 
     float distance = 100.0f;
@@ -982,8 +980,7 @@ void example_collision_scene_poll(
           )
         ) +
         metil_joint_turret->rotation.y -
-        M_PI /
-        2.0f
+        math_c_pi_half
       );
 
       float distance = (
@@ -1010,7 +1007,7 @@ void example_collision_scene_poll(
       );
 
       metil_object_projectile->rotation.x = (
-        M_PI / 2.0f
+        math_c_pi_half
       );
 
       metil_object_projectile->rotation.z = (

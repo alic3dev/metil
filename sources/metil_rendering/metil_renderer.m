@@ -937,9 +937,8 @@
         1.0f - (
           (
             -metil_player->rotation.x
-          ) / (
-            M_PI / 2.0f
-          )
+          ) /
+          math_c_pi_half
         )
       )
     );

@@ -17,6 +17,7 @@
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_scenes/metil_scene.h>
 
+#include <math_c_pi.h>
 #include <math_c_vector.h>
 
 void example_fog_scene_initialize(
@@ -251,8 +252,13 @@ void example_fog_scene_initialize(
 
   object->depth_disabled = 1;
 
-  object->rotation.x = M_PI / 2.0f;
-  object->rotation.z = M_PI / 2.0f;
+  object->rotation.x = (
+    math_c_pi_half
+  );
+
+  object->rotation.z = (
+    math_c_pi_half
+  );
 
   scene->player.speed_movement = (
     scene->player.speed_movement *
