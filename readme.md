@@ -1352,7 +1352,7 @@ make target_device=iphone
 
 
 | [meshes](examples/meshes) | [model](examples/model) | |
-|---|---|
+|---|---|---|
 | <img width="1966" height="1250" alt="metil_example_meshes" src="https://github.com/user-attachments/assets/6c14ae47-90c3-4071-8386-3d5e7be20c38" /> | <img width="1966" height="1250" alt="metil_example_model" src="https://github.com/user-attachments/assets/bcc73a50-8853-4fe8-8e4c-c054b3623ff6" /> | |
 
 
