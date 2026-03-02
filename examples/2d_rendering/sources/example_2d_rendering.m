@@ -1,5 +1,6 @@
 #include <example_2d_rendering.h>
 
+#include <example_2d_rendering_index_pipeline.h>
 #include <example_2d_scene.h>
 
 #include <metil_initialize.h>
@@ -29,6 +30,18 @@ void example_2d_rendering_renderer_on_initialize(
     @"metil_example_2d_rendering_fragment",
     @"metil_example_2d_rendering_vertex"
   );
+
+  example_2d_rendering_index_pipeline_background = [
+    metil->renderer_interface.renderer
+    pipeline_add: [
+      metil->library.library
+      newFunctionWithName: @"metil_example_2d_rendering_background_fragment"
+    ]
+    function_vertex: [
+      metil->library.library
+      newFunctionWithName: @"metil_example_2d_rendering_background_vertex"
+    ]
+  ];
 
   example_2d_scene_initialize(
     metil,

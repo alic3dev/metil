@@ -63,7 +63,6 @@ void example_2d_scene_initialize(
         break;
       }
       default: {
-        
         break;
       }
     }
