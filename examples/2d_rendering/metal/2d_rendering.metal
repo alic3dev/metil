@@ -40,7 +40,15 @@
 
   data_vertex_basic_textured_coloured.position = (
     data_object->view_model_matrix_projection *
-    vertices[id_vertex]
+    vertices[
+      id_vertex
+    ] +
+    float4(
+      -data_frame->position_player.x,
+      -data_frame->position_player.y,
+      0.0f,
+      0.0f
+    )
   );
 
   data_vertex_basic_textured_coloured.colour = (
