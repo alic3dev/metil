@@ -11,6 +11,7 @@
 
 #include <clic3_memory.h>
 
+#include <math_c_pi.h>
 #include <math_c_vector.h>
 
 void example_3d_scene_initialize(
@@ -269,11 +270,17 @@ void example_3d_scene_initialize(
       index_renderable % 3
     ) {
       case 0: {
-        object->rotation.x = (M_PI / 2.0f);
+        object->rotation.x = (
+          math_c_pi_half
+        );
+
         break;
       }
       case 1: {
-        object->rotation.z = (M_PI / 2.0f);
+        object->rotation.z = (
+          math_c_pi_half
+        );
+
         break;
       }
       default: {
