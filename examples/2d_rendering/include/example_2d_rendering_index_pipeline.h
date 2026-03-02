@@ -2,5 +2,6 @@
 #define __example_2d_rendering_index_pipeline_h
 
 extern unsigned char example_2d_rendering_index_pipeline_background;
+extern unsigned char example_2d_rendering_index_pipeline_player;
 
 #endif
