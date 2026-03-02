@@ -34,14 +34,14 @@
       2
     ) +
     data_frame->position_player.x /
-    101010.101010f
+    10.01f
   );
 
   data_vertex_basic_textured_coloured.position_texture.y = (
     id_vertex /
     2 -
     data_frame->position_player.y /
-    101010.101010f
+    10.01f
   );
 
   data_vertex_basic_textured_coloured.position = (
