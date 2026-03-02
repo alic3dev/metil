@@ -56,7 +56,7 @@ void example_2d_scene_textures_initialize_background(
   );
 
   metil_scene->textures[
-    example_2d_rendering_texture_index_background
+    example_2d_rendering_index_texture_background
   ] = [
     metil->renderer_interface.metal_device
     newTextureWithDescriptor: texture_descriptor

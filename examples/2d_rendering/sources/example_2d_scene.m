@@ -29,7 +29,7 @@ void example_2d_scene_initialize(
   metil_scene_initialize_with_renderables(
     metil,
     metil_scene,
-    1
+    example_2d_rendering_length_renderables
   );
 
   metil_scene->player.poll_input = (
@@ -53,7 +53,7 @@ void example_2d_scene_initialize(
     switch (
       index_renderable
     ) {
-      case 0: {
+      case example_2d_rendering_index_renderable_background: {
         metil_renderable_initialize_at_index(
           metil_scene->renderables,
           index_renderable,
@@ -71,7 +71,7 @@ void example_2d_scene_initialize(
 
   struct metil_object* metil_object_background = (
     metil_scene->renderables[
-      0
+      example_2d_rendering_index_renderable_background
     ].renderable
   );
 
@@ -92,7 +92,7 @@ void example_2d_scene_initialize(
   metil_object_texture_add(
     metil_object_background,
     metil_scene->textures[
-      example_2d_rendering_texture_index_background
+      example_2d_rendering_index_texture_background
     ]
   );
 }

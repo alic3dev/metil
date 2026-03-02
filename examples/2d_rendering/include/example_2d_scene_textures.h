@@ -6,8 +6,8 @@
 
 #define example_2d_rendering_length_textures 0x01
 
-enum example_2d_rendering_texture_index {
-  example_2d_rendering_texture_index_background = 0x00
+enum example_2d_rendering_index_texture {
+  example_2d_rendering_index_texture_background = 0x00
 };
 
 void example_2d_scene_textures_initialize(
