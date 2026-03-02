@@ -1336,7 +1336,7 @@ make target_device=iphone
 
 | [`ff`](https://github.com/alic3dev/ff) |
 |---|
-| <img width="590" height="1278" alt="metil_ff_ios" src="https://github.com/user-attachments/assets/a2b1407c-98ee-461a-96c1-2fe989a8bf45" /> |
+| <img width="295" height="639" alt="metil_ff_ios" src="https://github.com/user-attachments/assets/a2b1407c-98ee-461a-96c1-2fe989a8bf45" /> |
 
 ## examples
 
