@@ -4,13 +4,14 @@
 #include <metil.h>
 #include <metil_scenes/metil_scene.h>
 
-#define example_2d_rendering_length_renderables 0x04
+#define example_2d_rendering_length_renderables 0x05
 
 enum example_2d_rendering_index_renderable {
   example_2d_rendering_index_renderable_background = 0x00,
-  example_2d_rendering_index_renderable_servers = 0x01,
-  example_2d_rendering_index_renderable_server_housings = 0x02,
-  example_2d_rendering_index_renderable_player = 0x03
+  example_2d_rendering_index_renderable_floor = 0x01,
+  example_2d_rendering_index_renderable_servers = 0x02,
+  example_2d_rendering_index_renderable_server_housings = 0x03,
+  example_2d_rendering_index_renderable_player = 0x04
 };
 
 #define example_2d_rendering_length_servers 0x0128

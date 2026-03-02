@@ -30,6 +30,11 @@ void example_2d_scene_textures_initialize(
     metil_scene
   );
 
+  example_2d_scene_textures_initialize_floor(
+    metil,
+    metil_scene
+  );
+
   example_2d_scene_textures_initialize_server_housing(
     metil,
     metil_scene
@@ -264,6 +269,203 @@ void example_2d_scene_textures_initialize_background(
   );
 }
 
+
+void example_2d_scene_textures_initialize_floor(
+  struct metil* metil,
+  struct metil_scene* metil_scene
+) {
+  MTLTextureDescriptor* texture_descriptor = [
+    [
+      MTLTextureDescriptor
+      alloc
+    ]
+    init
+  ];
+
+  texture_descriptor.pixelFormat = (
+    MTLPixelFormatRGBA8Unorm
+  );
+
+  texture_descriptor.width = (
+    160
+  );
+
+  texture_descriptor.height = (
+    80
+  );
+
+  metil_scene->textures[
+    example_2d_rendering_index_texture_floor
+  ] = [
+    metil->renderer_interface.metal_device
+    newTextureWithDescriptor: texture_descriptor
+  ];
+
+  MTLRegion region = {
+    {0, 0, 0},
+    {texture_descriptor.width, texture_descriptor.height, 1}
+  };
+
+  unsigned int length_bytes_texture_row = (
+    4 *
+    texture_descriptor.width
+  );
+
+  unsigned int length_bytes_texture = (
+    length_bytes_texture_row *
+    texture_descriptor.height
+  );
+
+  unsigned char* pixel_bytes = (
+    clic3_memory_allocate_raw(
+      length_bytes_texture
+    )
+  );
+
+  unsigned char size_block = (
+    0x02
+  );
+
+  for (
+    unsigned short int index_y = 0;
+    index_y < texture_descriptor.height;
+    ++index_y
+  ) {
+    for (
+      unsigned short int index_x = 0;
+      index_x < texture_descriptor.width;
+      ++index_x
+    ) {
+      unsigned int index_pixel = (
+        (
+          (
+            index_y *
+            texture_descriptor.width
+          ) +
+          index_x
+        ) *
+        4
+      );
+
+      unsigned char value = (
+        (
+          (
+            (
+              (
+                texture_descriptor.height /
+                size_block -
+                1
+              ) -
+              (
+                index_y /
+                size_block
+              )
+            ) < 3
+          )
+          ? 0xff
+          : 0xff - (
+            (float)
+            (
+              (
+                (
+                  (
+                    index_x /
+                    size_block
+                  ) +
+                  (
+                    index_y /
+                    size_block
+                  ) *
+                  (
+                    index_y /
+                    size_block
+                  )
+                ) *
+                (
+                    index_x /
+                    size_block
+                  )
+              ) %
+              5
+            ) /
+            6.0f *
+            0xa0 *
+            (
+              (float) (
+                index_y /
+                size_block
+              ) /
+              (float) (
+                texture_descriptor.height /
+                size_block -
+                1
+              )
+            )
+          )
+        )
+      );
+
+      pixel_bytes[
+        index_pixel +
+        0
+      ] = (
+        0x00
+      );
+
+      pixel_bytes[
+        index_pixel +
+        1
+      ] = (
+        0x00
+      );
+
+      pixel_bytes[
+        index_pixel +
+        2
+      ] = (
+        0x00
+      );
+
+      pixel_bytes[
+        index_pixel +
+        3
+      ] = (
+        value
+      );
+
+      index_pixel = (
+        (
+          (
+            index_y *
+            texture_descriptor.width
+          ) +
+          index_x +
+          1
+        ) *
+        4
+      );
+    }
+  }
+
+  [
+    metil_scene->textures[
+      example_2d_rendering_index_texture_floor
+    ]
+    replaceRegion: region
+    mipmapLevel: 0
+    withBytes: pixel_bytes
+    bytesPerRow: length_bytes_texture_row
+  ];
+
+  [
+    texture_descriptor
+    release
+  ];
+
+  clic3_memory_free_raw(
+    pixel_bytes
+  );
+}
 
 void example_2d_scene_textures_initialize_server_housing(
   struct metil* metil,

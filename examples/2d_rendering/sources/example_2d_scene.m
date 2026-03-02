@@ -64,8 +64,7 @@ void example_2d_scene_initialize(
 
         break;
       }
-      case example_2d_rendering_index_renderable_background:
-      case example_2d_rendering_index_renderable_player: {
+      default: {
         metil_renderable_initialize_at_index(
           metil_scene->renderables,
           index_renderable,
@@ -74,15 +73,18 @@ void example_2d_scene_initialize(
 
         break;
       }
-      default: {
-        break;
-      }
     }
   }
 
   struct metil_object* metil_object_background = (
     metil_scene->renderables[
       example_2d_rendering_index_renderable_background
+    ].renderable
+  );
+
+  struct metil_object* metil_object_floor = (
+    metil_scene->renderables[
+      example_2d_rendering_index_renderable_floor
     ].renderable
   );
 
@@ -251,6 +253,38 @@ void example_2d_scene_initialize(
     );
   }
 
+  metil_mesh_rectangle_initialize(
+    &metil_object_floor->mesh,
+    (struct math_c_vector2_float) {
+      .x = (
+        2.0f
+      ),
+      .y = (
+        1.0f
+      )
+    }
+  );
+
+  metil_object_buffers_initialize(
+    metil_object_floor,
+    metil->renderer_interface.metal_device
+  );
+
+  metil_object_floor->position.y = (
+    -0.5f
+  );
+
+  metil_object_floor->positioning = (
+    metil_positioning_absolute
+  );
+
+  metil_object_texture_add(
+    metil_object_floor,
+    metil_scene->textures[
+      example_2d_rendering_index_texture_floor
+    ]
+  );
+
   metil_mesh_square_initialize(
     &metil_object_background->mesh,
     2
@@ -303,10 +337,20 @@ void example_2d_scene_poll(
     metil_scene
   );
 
-  metil_scene->player.position.x = (
-    metil_scene->player.position.x +
+  float translation_x = (
     (float) metil_scene->time_delta /
     3231.1323f
+  );
+
+  metil_scene->player.position.x = (
+    metil_scene->player.position.x +
+    translation_x
+  );
+
+  struct metil_object* metil_object_floor = (
+    metil_scene->renderables[
+      example_2d_rendering_index_renderable_floor
+    ].renderable
   );
   
   struct metil_group* metil_group_servers = (
@@ -319,6 +363,11 @@ void example_2d_scene_poll(
     metil_scene->renderables[
       example_2d_rendering_index_renderable_server_housings
     ].renderable
+  );
+
+  metil_object_floor->position.x = (
+    metil_object_floor->position.x +
+    translation_x
   );
 
   for (
