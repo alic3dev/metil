@@ -401,22 +401,11 @@ void metil_mesh_celled_triangles_grid_initialize(
         1.0f
       );
 
-      index_vertex = (
-        index_vertex +
-        1
-      );
-
       if (
         index_x <
-        (
-          cells.x -
-          1
-        ) &&
+        cells.x &&
         index_y <
-        (
-          cells.y -
-          1
-        )
+        cells.y
       ) {
         metil_mesh->indices[
           index_index
@@ -472,6 +461,11 @@ void metil_mesh_celled_triangles_grid_initialize(
           6
         );
       }
+
+      index_vertex = (
+        index_vertex +
+        1
+      );
     }
   }
 }
