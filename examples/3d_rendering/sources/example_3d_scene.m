@@ -1,7 +1,9 @@
 #include <example_3d_scene.h>
 
+#include <example_3d_rendering_index_pipeline.h>
+
 #include <metil.h>
-#include <metil_mesh/metil_mesh_box.h>
+#include <metil_mesh/metil_mesh_2d/metil_mesh_grid.h>
 #include <metil_object.h>
 #include <metil_player/metil_player.h>
 #include <metil_rendering/metil_renderable.h>
@@ -11,6 +13,7 @@
 
 #include <clic3_memory.h>
 
+#include <math_c_absolute.h>
 #include <math_c_pi.h>
 #include <math_c_vector.h>
 
@@ -39,52 +42,96 @@ void example_3d_scene_initialize(
       metil_renderable_type_object
     );
 
-    struct metil_object* object = (
+    struct metil_object* metil_object_ground = (
       metil_scene->renderables[
         index_renderable
       ].renderable
     );
 
-    metil_mesh_box_initialize(
-      &object->mesh,
-      (struct math_c_vector3_float) {
-        .x = 10.0f,
-        .y = 10.0f,
-        .z = 10.0f
+    metil_mesh_celled_triangles_quadruple_grid_initialize(
+      &metil_object_ground->mesh,
+      (struct math_c_vector2_float) {
+        .x = 500.0f,
+        .y = 500.0f
+      },
+      (struct math_c_vector2_unsigned_long_int) {
+        .x = 500,
+        .y = 500
       }
     );
 
+    for (
+      unsigned int index_vertex = 0;
+      index_vertex < metil_object_ground->mesh.length_vertices;
+      ++index_vertex
+    ) {
+      struct math_c_vector4_float* vertex = &(
+        metil_object_ground->mesh.vertices[
+          index_vertex
+        ]
+      );
+
+      if (
+        index_vertex <
+        (
+          500 * 100
+        )
+      ) {
+        vertex->z = (
+          math_c_absolute_float(
+            (float)
+            (
+              index_vertex /
+              1001
+            ) /
+            15.0f -
+            1.0f
+          ) *
+          math_c_absolute_float(
+            (float)
+            (
+              index_vertex %
+              1001
+            ) /
+            500.0f -
+            1.0f
+          ) *
+          10.0f
+        );
+      }
+    }
+
     metil_object_buffers_initialize(
-      object,
+      metil_object_ground,
       metil->renderer_interface.metal_device
     );
 
-    object->position.x = ((float) (
-      index_renderable % 21 + index_renderable % 32
-    ) / 53.0f - 0.5f) * 1000.0f;
-    object->position.y = (
-      object->mesh.size.y +
-      index_renderable % 14
+    metil_object_ground->index_pipeline_render = (
+      example_3d_rendering_index_pipeline_ground
     );
-    object->position.z = ((float) (
-      index_renderable % 34 + index_renderable % 23
-    ) / 57.0f - 0.5f) * 1000.0f;
 
     struct metil_renderer_data_object* data_object = (
-      object->buffers_vertex[
+      metil_object_ground->buffers_vertex[
         metil_object_buffer_default_index_data
       ].buffer.contents
     );
 
+    metil_object_ground->rotation.x = (
+      math_c_pi_half
+    );
+
     data_object->colour.x = (
-      (float) (index_renderable % 10) / 10.0f
+      0.7  
     );
+
     data_object->colour.y = (
-      (float) ((index_renderable + 3) % 10) / 10.0f
+      0.5
     );
+
     data_object->colour.z = (
-      (float) ((index_renderable + 5) % 10) / 10.0f
+      0.4
     );
+
     data_object->colour.w = 1.0f;
   }
 }

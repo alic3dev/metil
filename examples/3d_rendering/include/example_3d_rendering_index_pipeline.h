@@ -1,0 +1,6 @@
+#ifndef __example_3d_rendering_index_pipeline_h
+#define __example_3d_rendering_index_pipeline_h
+
+extern unsigned char example_3d_rendering_index_pipeline_ground;
+
+#endif
