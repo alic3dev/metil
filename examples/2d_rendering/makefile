@@ -6,11 +6,11 @@ directory_output_base=output
 directory_objects=${directory_objects_base}/release
 
 ifeq (${debug}, 1)
-	name:=${name}_debug
-	directory_objects=${directory_objects_base}/debug
-	directory_output=${directory_output_base}/debug
+name:=${name}_debug
+directory_objects=${directory_objects_base}/debug
+directory_output=${directory_output_base}/debug
 else
-	directory_output=${directory_output_base}/release
+directory_output=${directory_output_base}/release
 endif
 
 version_target_cer0=0
