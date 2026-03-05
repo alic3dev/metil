@@ -11,6 +11,12 @@ void metil_mesh_celled_grid_initialize(
   struct math_c_vector2_unsigned_long_int
 );
 
+void metil_mesh_celled_triangles_grid_initialize(
+  struct metil_mesh*,
+  struct math_c_vector2_float,
+  struct math_c_vector2_unsigned_long_int
+);
+
 void metil_mesh_celled_individual_triangles_grid_initialize(
   struct metil_mesh*,
   struct math_c_vector2_float,
