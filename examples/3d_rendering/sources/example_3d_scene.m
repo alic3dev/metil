@@ -16,33 +16,31 @@
 
 void example_3d_scene_initialize(
   struct metil* metil,
-  struct metil_scene* scene
+  struct metil_scene* metil_scene
 ) {
   metil_scene_initialize_with_renderables(
     metil,
-    scene,
-    400
+    metil_scene,
+    1
   );
 
-  scene->poll = example_3d_scene_poll;
-
-  struct metil_object* object = (
-    0
+  metil_scene->poll = (
+    example_3d_scene_poll
   );
 
   for (
     unsigned int index_renderable = 0;
-    index_renderable < 200;
+    index_renderable < metil_scene->length_renderables;
     ++index_renderable
   ) {
     metil_renderable_initialize_at_index(
-      scene->renderables,
+      metil_scene->renderables,
       index_renderable,
       metil_renderable_type_object
     );
 
-    object = (
-      scene->renderables[
+    struct metil_object* object = (
+      metil_scene->renderables[
         index_renderable
       ].renderable
     );
@@ -89,235 +87,14 @@ void example_3d_scene_initialize(
     );
     data_object->colour.w = 1.0f;
   }
-
-  for (
-    unsigned int index_renderable = 200;
-    index_renderable < scene->length_renderables;
-    ++index_renderable
-  ) {
-    metil_renderable_initialize_at_index(
-      scene->renderables,
-      index_renderable,
-      metil_renderable_type_object
-    );
-
-    object = (
-      scene->renderables[
-        index_renderable
-      ].renderable
-    );
-
-    struct metil_mesh* metil_mesh = (
-      &object->mesh
-    );
-
-    metil_mesh_initialize(
-      metil_mesh
-    );
-
-    metil_mesh->size.x = 10000.0f;
-    metil_mesh->size.y = 0.0f;
-    metil_mesh->size.z = 10000.0f;
-
-    metil_mesh->length_vertices = 400;
-    metil_mesh->length_indices = 404;
-
-    clic3_memory_reallocate_raw(
-      &metil_mesh->indices,
-      (
-        sizeof(
-          unsigned int
-        ) *
-        metil_mesh->length_indices
-      )
-    );
-
-    clic3_memory_reallocate_raw(
-      &metil_mesh->vertices,
-      (
-        sizeof(
-          struct math_c_vector4_float
-        ) *
-        metil_mesh->length_vertices
-      )
-    );
-
-    float size_segment = (
-      metil_mesh->size.x / 100
-    );
-
-    for (
-      unsigned short int index = 0;
-      index < 400;
-      ++index
-    ) {
-
-      switch (
-        index / 100
-      ) {
-        case 0: {
-          metil_mesh->vertices[
-            index
-          ].x = (
-            (index % 100) * size_segment - metil_mesh->size.x / 2.0f
-          );
-
-          metil_mesh->vertices[
-            index
-          ].z = -metil_mesh->size.z / 2.0f - (
-            index % 26 + index % 14 + index % 64
-          ) * size_segment;
-          break;
-        }
-        case 1: {
-          metil_mesh->vertices[
-            index
-          ].x = (
-            (index % 100) * size_segment - metil_mesh->size.x / 2.0f
-          );
-
-          metil_mesh->vertices[
-            index
-          ].z = metil_mesh->size.z / 2.0f + (
-            index % 14 + index % 64 + index % 8 +  index % 10
-          ) * size_segment;
-          break;
-        }
-        case 2: {
-          metil_mesh->vertices[
-            index
-          ].x = -metil_mesh->size.x / 2.0f - (
-            index % 7 + index % 47 + index % 27 + index % 37 + index % 17 + index % 67
-          ) * size_segment;
-
-          metil_mesh->vertices[
-            index
-          ].z = (
-            (index % 100) * size_segment - metil_mesh->size.z / 2.0f
-          );
-          break;
-        }
-        case 3: {
-          metil_mesh->vertices[
-            index
-          ].x = metil_mesh->size.x / 2.0f + (
-            index % 42 + index % 31 + index % 26
-          ) * size_segment;
-
-          metil_mesh->vertices[
-            index
-          ].z = (
-            (index % 100) * size_segment - metil_mesh->size.z / 2.0f
-          );
-          break;
-        }
-      }
-
-      metil_mesh->vertices[
-        index
-      ].y = 0.0f;
-
-      metil_mesh->vertices[
-        index
-      ].w = 1.0f;
-
-      if (
-        index < 100
-      ) {
-        metil_mesh->indices[
-          (index * 2)
-        ] = index;
-
-        metil_mesh->indices[
-          (index * 2) + 1
-        ] = index + 100;
-      } else if (
-        index >= 200 &&
-        index < 300
-      ) {
-        metil_mesh->indices[
-          (index - 100) * 2
-        ] = index;
-
-        metil_mesh->indices[
-          (index - 100) * 2 + 1
-        ] = index + 100;
-      }
-    }
-
-    metil_mesh->indices[
-      400
-    ] = 0;
-
-    metil_mesh->indices[
-      401
-    ] = 99;
-
-    metil_mesh->indices[
-      402
-    ] = 100;
-
-    metil_mesh->indices[
-      403
-    ] = 199;
-
-    object->type_primitive = MTLPrimitiveTypeLineStrip;
-
-    object->position.x = 100.0f * ((float) (index_renderable % 40) / 40) - 50.0f;
-    object->position.z = 100.0f * ((float) (index_renderable % 20 + index_renderable % 5) / 25.0f) - 50.0f;
-
-    switch (
-      index_renderable % 3
-    ) {
-      case 0: {
-        object->rotation.x = (
-          math_c_pi_half
-        );
-
-        break;
-      }
-      case 1: {
-        object->rotation.z = (
-          math_c_pi_half
-        );
-
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-
-    metil_object_buffers_initialize(
-      object,
-      metil->renderer_interface.metal_device
-    );
-
-    struct metil_renderer_data_object* data_object = (
-      object->buffers_vertex[
-        metil_object_buffer_default_index_data
-      ].buffer.contents
-    );
-
-    data_object->colour.x = (
-      (float) (index_renderable % 10) / 10.0f
-    );
-    data_object->colour.y = (
-      (float) ((index_renderable * 3) % 10) / 10.0f
-    );
-    data_object->colour.z = (
-      (float) ((index_renderable * 5) % 10) / 10.0f
-    );
-    data_object->colour.w = 1.0f;
-  }
 }
 
 void example_3d_scene_poll(
   struct metil* metil,
-  struct metil_scene* scene
+  struct metil_scene* metil_scene
 ) {
   metil_scene_poll_default(
     metil,
-    scene
+    metil_scene
   );
 }
