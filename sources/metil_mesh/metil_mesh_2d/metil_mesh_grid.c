@@ -492,10 +492,12 @@ void metil_mesh_celled_triangles_quadruple_grid_initialize(
   struct math_c_vector2_float size_cell = {
     .x = (
       metil_mesh->size.x /
+      (float)
       cells.x
     ),
     .y = (
       metil_mesh->size.y /
+      (float)
       cells.y
     )
   };
@@ -572,12 +574,12 @@ void metil_mesh_celled_triangles_quadruple_grid_initialize(
   );
 
   for (
-    unsigned int index_y = 0;
+    unsigned long int index_y = 0;
     index_y <= cells.y;
     ++index_y
   ) {
     for (
-      unsigned int index_x = 0;
+      unsigned long int index_x = 0;
       index_x <= cells.x;
       ++index_x
     ) {
@@ -609,11 +611,6 @@ void metil_mesh_celled_triangles_quadruple_grid_initialize(
         1.0f
       );
 
-      index_vertex = (
-        index_vertex +
-        1
-      );
-
       if (
         index_x <
         cells.x &&
@@ -621,7 +618,8 @@ void metil_mesh_celled_triangles_quadruple_grid_initialize(
         cells.y
       ) {
         metil_mesh->vertices[
-          index_vertex
+          index_vertex +
+          1
         ].x = (
           size_cell.x *
           index_x -
@@ -630,44 +628,29 @@ void metil_mesh_celled_triangles_quadruple_grid_initialize(
         );
 
         metil_mesh->vertices[
-          index_vertex
+          index_vertex +
+          1
         ].y = (
           size_half.y -
           size_cell.y *
-          index_y +
+          index_y -
           size_cell_half.y
         );
 
         metil_mesh->vertices[
-          index_vertex
+          index_vertex +
+          1
         ].z = (
           0.0f
         );
 
         metil_mesh->vertices[
-          index_vertex
+          index_vertex +
+          1
         ].w = (
           1.0f
         );
 
-        index_vertex = (
-          index_vertex +
-          1
-        );
-      }
-
-      if (
-        index_x <
-        (
-          cells.x -
-          1
-        ) &&
-        index_y <
-        (
-          cells.y -
-          1
-        )
-      ) {
         metil_mesh->indices[
           index_index
         ] = (
@@ -687,8 +670,7 @@ void metil_mesh_celled_triangles_quadruple_grid_initialize(
           2
         ] = (
           index_vertex +
-          cells.x +
-          1
+          2
         );
 
         metil_mesh->indices[
@@ -696,8 +678,7 @@ void metil_mesh_celled_triangles_quadruple_grid_initialize(
           3
         ] = (
           index_vertex +
-          cells.x +
-          1
+          2
         );
 
         metil_mesh->indices[
@@ -705,21 +686,162 @@ void metil_mesh_celled_triangles_quadruple_grid_initialize(
           4
         ] = (
           index_vertex +
-          cells.x +
-          2
-        );
-
-        metil_mesh->indices[
-          index_index +
-          5
-        ] = (
-          index_vertex +
           1
         );
 
+        if (
+          index_y <
+          (
+            cells.y -
+            1
+          )
+        ) {
+          metil_mesh->indices[
+            index_index +
+            5
+          ] = (
+            index_vertex +
+            (
+              cells.x *
+              2
+            ) +
+            3
+          );
+
+          metil_mesh->indices[
+            index_index +
+            6
+          ] = (
+            index_vertex +
+            (
+              cells.x *
+              2
+            ) +
+            3
+          );
+
+          metil_mesh->indices[
+            index_index +
+            7
+          ] = (
+            index_vertex +
+            1
+          );
+
+          metil_mesh->indices[
+            index_index +
+            8
+          ] = (
+            index_vertex +
+            (
+              cells.x *
+              2
+            ) +
+            1
+          );
+
+          metil_mesh->indices[
+            index_index +
+            9
+          ] = (
+            index_vertex +
+            (
+              cells.x *
+              2
+            ) +
+            1
+          );
+
+          metil_mesh->indices[
+            index_index +
+            10
+          ] = (
+            index_vertex +
+            1
+          );
+
+          metil_mesh->indices[
+            index_index +
+            11
+          ] = (
+            index_vertex
+          );
+        } else {
+           metil_mesh->indices[
+            index_index +
+            5
+          ] = (
+            metil_mesh->length_vertices -
+            cells.x +
+            index_x
+          );
+
+          metil_mesh->indices[
+            index_index +
+            6
+          ] = (
+            metil_mesh->length_vertices -
+            cells.x +
+            index_x
+          );
+
+          metil_mesh->indices[
+            index_index +
+            7
+          ] = (
+            index_vertex +
+            1
+          );
+
+          metil_mesh->indices[
+            index_index +
+            8
+          ] = (
+            metil_mesh->length_vertices -
+            cells.x +
+            index_x -
+            1
+          );
+
+          metil_mesh->indices[
+            index_index +
+            9
+          ] = (
+            metil_mesh->length_vertices -
+            cells.x +
+            index_x -
+            1
+          );
+
+          metil_mesh->indices[
+            index_index +
+            10
+          ] = (
+            index_vertex +
+            1
+          );
+
+          metil_mesh->indices[
+            index_index +
+            11
+          ] = (
+            index_vertex
+          );
+        }
+
         index_index = (
           index_index +
-          6
+          12
+        );
+
+        index_vertex = (
+          index_vertex +
+          2
+        );
+      } else {
+        index_vertex = (
+          index_vertex +
+          1
         );
       }
     }
