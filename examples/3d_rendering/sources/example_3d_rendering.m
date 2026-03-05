@@ -30,6 +30,18 @@ void example_3d_rendering_renderer_on_initialize(
     @"shader_3d_vertex"
   );
 
+  metil->rendering_properties.colour_clear.x = (
+    0.724f
+  );
+
+  metil->rendering_properties.colour_clear.y = (
+    0.832f
+  );
+
+  metil->rendering_properties.colour_clear.z = (
+    0.934f
+  );
+
   example_3d_scene_initialize(
     metil,
     &((struct metil_scene_controller*) metil->scene_controller)->scene
