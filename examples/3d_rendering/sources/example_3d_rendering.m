@@ -1,5 +1,6 @@
 #include <example_3d_rendering.h>
 
+#include <example_3d_rendering_index_pipeline.h>
 #include <example_3d_scene.h>
 
 #include <metil.h>
@@ -30,6 +31,18 @@ void example_3d_rendering_renderer_on_initialize(
     @"shader_3d_vertex"
   );
 
+  example_3d_rendering_index_pipeline_ground = [
+    metil->renderer_interface.renderer
+    pipeline_add: [
+      metil->library.library
+      newFunctionWithName: @"example_3d_rendering_ground_fragment"
+    ]
+    function_vertex: [
+      metil->library.library
+      newFunctionWithName: @"example_3d_rendering_ground_vertex"
+    ]
+  ];
+
   metil->rendering_properties.colour_clear.x = (
     0.724f
   );
@@ -42,8 +55,12 @@ void example_3d_rendering_renderer_on_initialize(
     0.934f
   );
 
+  struct metil_scene_controller* metil_scene_controller = (
+    metil->scene_controller
+  );
+
   example_3d_scene_initialize(
     metil,
-    &((struct metil_scene_controller*) metil->scene_controller)->scene
+    &metil_scene_controller->scene
   );
 }
