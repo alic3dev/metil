@@ -8,11 +8,11 @@ directory_metal=metal
 directory_objects=${directory_objects_base}/release
 
 ifeq (${debug}, 1)
-	name:=${name}_debug
-	directory_objects=${directory_objects_base}/debug
-	directory_output=${directory_output_base}/debug
+name:=${name}_debug
+directory_objects=${directory_objects_base}/debug
+directory_output=${directory_output_base}/debug
 else
-	directory_output=${directory_output_base}/release
+directory_output=${directory_output_base}/release
 endif
 
 version_target_cer0=0
@@ -85,14 +85,12 @@ ifndef target_metal_standard
 target_metal_standard=metal4.0
 endif
 
-
 target_platform=arm64-apple-macos${target_device_version}
 target_platform_metal=air64-apple-macos${target_metal_version}
 
 directory_sdk=${shell xcrun --sdk macosx${target_device_version} --show-sdk-path}
 
 file_metalar_metil_fps_display=${directory_metil_library}/metil_fps_display.metalar
-file_metalar_metil_wireframe=${directory_metil_library}/metil_wireframe.metalar
 
 file_metil_metallib=${directory_metil_library}/metil.metallib
 file_metil_storyboard=${directory_metil_library}/metil.storyboardc
@@ -129,13 +127,13 @@ c_flags_frameworks=${addprefix -framework ,${frameworks}}
 c_flags_output=${c_flags_platform} ${c_flags_frameworks}
 
 ifeq (${debug}, 1)
-	c_flags_c:=${c_flags_c} ${c_flags_debug}
-	c_flags_objc:=${c_flags_objc} ${c_flags_objc_debug}
-	c_flags_output:=${c_flags_output} ${c_flags_objc_debug}
+c_flags_c:=${c_flags_c} ${c_flags_debug}
+c_flags_objc:=${c_flags_objc} ${c_flags_objc_debug}
+c_flags_output:=${c_flags_output} ${c_flags_objc_debug}
 else
-	c_flags_c:=${c_flags_c} -O3
-	c_flags_objc:=${c_flags_objc} -O3
-	c_flags_output:=${c_flags_output} -O3
+c_flags_c:=${c_flags_c} -O3
+c_flags_objc:=${c_flags_objc} -O3
+c_flags_output:=${c_flags_output} -O3
 endif
 
 strip=strip
@@ -149,7 +147,7 @@ metal_flags_common=-target ${target_platform_metal} -std=${target_metal_standard
 metal_flags=${metal_flags_common} -I${directory_include} -I${directory_math_c_include} -I${directory_metil_include} -isysroot ${directory_sdk}
 
 ifneq (${disable_metal_fast_options}, 1)
-	metal_flags:=${metal_flags} -fmetal-math-mode\=fast -fmetal-math-fp32-functions\=fast
+metal_flags:=${metal_flags} -fmetal-math-mode\=fast -fmetal-math-fp32-functions\=fast
 endif
 
 metal_flags_output=
