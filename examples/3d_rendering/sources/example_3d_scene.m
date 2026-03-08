@@ -60,47 +60,6 @@ void example_3d_scene_initialize(
       }
     );
 
-    for (
-      unsigned int index_vertex = 0;
-      index_vertex < metil_object_ground->mesh.length_vertices;
-      ++index_vertex
-    ) {
-      struct math_c_vector4_float* vertex = &(
-        metil_object_ground->mesh.vertices[
-          index_vertex
-        ]
-      );
-
-      if (
-        index_vertex <
-        (
-          500 * 100
-        )
-      ) {
-        vertex->z = (
-          math_c_absolute_float(
-            (float)
-            (
-              index_vertex /
-              1001
-            ) /
-            15.0f -
-            1.0f
-          ) *
-          math_c_absolute_float(
-            (float)
-            (
-              index_vertex %
-              1001
-            ) /
-            500.0f -
-            1.0f
-          ) *
-          10.0f
-        );
-      }
-    }
-
     metil_object_buffers_initialize(
       metil_object_ground,
       metil->renderer_interface.metal_device
