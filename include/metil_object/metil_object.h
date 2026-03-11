@@ -78,6 +78,11 @@ void metil_object_buffers_initialize_with_data_size(
   unsigned long int
 );
 
+void metil_object_buffers_initialize_vertices(
+  struct metil_object* _Nonnull,
+  _Nonnull id<MTLDevice>
+);
+
 void metil_object_buffers_initialize(
   struct metil_object* _Nonnull,
   _Nonnull id<MTLDevice>
