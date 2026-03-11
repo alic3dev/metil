@@ -82,26 +82,10 @@ void metil_object_indices_initialize(
   ];
 }
 
-void metil_object_buffers_initialize_with_data_size(
+void metil_object_buffers_initialize_vertices(
   struct metil_object* metil_object,
-  id<MTLDevice> metal_device,
-  unsigned long int size_data
+  id<MTLDevice> metal_device
 ) {
-  metil_object_indices_initialize(
-    metil_object,
-    metal_device
-  );
-
-  unsigned char offset_buffer = (
-    metil_object->length_buffers_vertex
-  );
-
-  metil_object_buffers_add(
-    metil_object,
-    metal_device,
-    metil_object_buffer_type_vertex
-  );
-
   metil_object_buffers_add(
     metil_object,
     metal_device,
@@ -109,7 +93,8 @@ void metil_object_buffers_initialize_with_data_size(
   );
 
   metil_object->buffers_vertex[
-    offset_buffer
+    metil_object->length_buffers_vertex -
+    1
   ].buffer = [
     metal_device
     newBufferWithBytes: metil_object->mesh.vertices
@@ -121,9 +106,31 @@ void metil_object_buffers_initialize_with_data_size(
     )
     options: MTLResourceStorageModeShared
   ];
+}
+
+void metil_object_buffers_initialize_with_data_size(
+  struct metil_object* metil_object,
+  id<MTLDevice> metal_device,
+  unsigned long int size_data
+) {
+  metil_object_indices_initialize(
+    metil_object,
+    metal_device
+  );
+
+  metil_object_buffers_initialize_vertices(
+    metil_object,
+    metal_device
+  );
+
+  metil_object_buffers_add(
+    metil_object,
+    metal_device,
+    metil_object_buffer_type_vertex
+  );
 
   metil_object->buffers_vertex[
-    offset_buffer +
+    metil_object->length_buffers_vertex -
     1
   ].buffer = [
     metal_device
