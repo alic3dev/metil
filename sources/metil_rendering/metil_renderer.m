@@ -920,6 +920,14 @@
     self->metil->rendering_properties.brightness_text
   );
 
+  data_frame->size_viewport.x = (
+    self->metil->renderer_interface.size.x
+  );
+
+  data_frame->size_viewport.y = (
+    self->metil->renderer_interface.size.y
+  );
+
   matrix_float4x4 matrix_player_rotation_x = (matrix_float4x4) {{
     { 1.0f, 0.0f, 0.0f, 0.0f },
     { 0.0f, math_c_cosine(metil_player->rotation.x, math_c_pi), -math_c_sine(metil_player->rotation.x, math_c_pi), 0.0f },
