@@ -15,6 +15,8 @@ struct metil_renderer_data_frame {
 
   float brightness;
   float brightness_text;
+
+  struct math_c_vector2_float size_viewport;
 };
 
 #endif
