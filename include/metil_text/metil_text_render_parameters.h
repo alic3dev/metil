@@ -18,7 +18,7 @@ struct metil_text_render_parameters {
 
   float letter_width;
   float letter_spacing;
-  
+
   struct math_c_vector2_float padding;
   float scale;
 };

@@ -41,7 +41,7 @@ struct metil_model {
   unsigned char length_joints;
 
   _Nonnull id<MTLBuffer> buffer_joints;
-  
+
   _Nonnull id<MTLTexture>* _Nonnull textures;
   unsigned char length_textures;
 

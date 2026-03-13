@@ -107,7 +107,7 @@ void metil_joint_propagate(
         }}
       )
     );
-    
+
     matrix_metil_joint_propagation_selection_rotation = (
       matrix_multiply(
         matrix_metil_joint_propagation_selection_rotation,
@@ -140,7 +140,7 @@ void metil_joint_propagate(
       metil_joint_propagation_selection->position.z,
       1.0f
     };
-    
+
     simd_float4 position_joint_origin_offset = (
       position_joint_propagation_selection -
       position_joint
@@ -154,8 +154,8 @@ void metil_joint_propagate(
     );
 
     simd_float4 metil_joint_propagation_selection_translation = (
-      position_joint_propagation_selection_translation_rotated_origin + 
-      position_joint + 
+      position_joint_propagation_selection_translation_rotated_origin +
+      position_joint +
       position_joint_translation -
       position_joint_propagation_selection
     );

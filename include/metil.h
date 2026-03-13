@@ -32,7 +32,7 @@ struct metil {
   void* _Nonnull scene_controller;
   struct metil_system_information system_information;
   struct metil_termination termination;
-  
+
   struct metil_player_defaults player_defaults;
   struct metil_text_characters text_characters_default;
   struct metil_text_defaults text_defaults;

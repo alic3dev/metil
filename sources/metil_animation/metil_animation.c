@@ -82,7 +82,7 @@ void metil_animation_poll(
       metil_animation_resume(
         metil_animation
       );
-      
+
       break;
     }
     case metil_animation_state_active: {
@@ -119,7 +119,7 @@ void metil_animation_poll(
         percentage_complete
       );
     }
-    
+
     metil_animation->poll(
       metil_animation,
       metil_renderable_type,

@@ -15,7 +15,7 @@ void metil_system_information_initialize(
       unsigned int
     )
   );
-  
+
   metil_system_information->cores_cpu = 1;
 
   int status_core_count = (

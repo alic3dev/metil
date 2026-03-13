@@ -311,7 +311,7 @@ void model_turret_initialize(
   );
 
   object_turret_sight->index_pipeline_render = (
-    example_collision_pipeline_index_turret_sight  
+    example_collision_pipeline_index_turret_sight
   );
 
   metil_model_joints_add_length(

@@ -138,7 +138,7 @@ void metil_mesh_ring_initialize(
     metil_mesh_ring->length_vertices *
     6
   );
-  
+
   clic3_memory_reallocate_raw(
     &metil_mesh_ring->indices,
     (
@@ -248,7 +248,7 @@ void metil_mesh_ring_initialize(
         angles.x *
         size_difference_halved.x
       );
-      
+
       metil_mesh_ring->vertices[
         index_vertex
       ].y = (

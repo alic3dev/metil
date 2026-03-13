@@ -326,7 +326,7 @@ void metil_mesh_mushroom_initialize(
       );
 
       metil_mesh->indices[
-        index_index 
+        index_index
       ] = (
         index_vertex +
         segments.x

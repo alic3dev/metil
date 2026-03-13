@@ -101,7 +101,7 @@ otherwise individual header files can be included as such
 ### intialization
 
 - [macos] `metil_initialize`: must be called within your `main` function and it's value returned as the exit status code.
-- [ios] `metil_initialize`: must be called after `UIApplicationMain` and before `metil_renderer` initialization 
+- [ios] `metil_initialize`: must be called after `UIApplicationMain` and before `metil_renderer` initialization
 - - `metil_view_controller`: `viewDidLoad` is a spot in between these two that can be tapped into using `metil_view_controller_on_view_did_load`
 - `metil->library`: must be initialized (`metil_library_initialize`) within the `metil_renderer_on_initialize_function` passed to `metil_initialize`
 - - `metil->library.library`: must be set to an instance of a `metal` library (`id<MTLLibrary>`)
@@ -274,7 +274,7 @@ rendering_properties:colour_fps_display_a->{1.0f};
 
 ### input
 
-`metil` polls input every render frame.  
+`metil` polls input every render frame.
 use `delta` time values in any functionalities which handle input for proper input handling
 
 - `metil->input`
@@ -292,12 +292,12 @@ use `delta` time values in any functionalities which handle input for proper inp
 
 ### renderer_interface
 
-`metil->renderer_interface` stores the currently used `MTLDevice`, the `metil_renderer`, and the `size` of the viewport.  
+`metil->renderer_interface` stores the currently used `MTLDevice`, the `metil_renderer`, and the `size` of the viewport.
 this structure is used to interact more closely with the graphics device and the rendering pipeline
 
 ### rendering_properties
 
-`metil->rendering_properties` is a more high level way to interact with the graphical pipeline  
+`metil->rendering_properties` is a more high level way to interact with the graphical pipeline
 here you can set the rendering mode, change camera (`metil_camera`) settings, toggle fps display, set the brightness, or change the clear colour!
 
 ### scene_controller
@@ -328,7 +328,7 @@ metil_scene_controller_scene_change(
 
 ### system_information
 
-`metil->system_information` stores information about the system it is running on.  
+`metil->system_information` stores information about the system it is running on.
 
 currently this only contains the number of cpu cores which is then used to maximize multi-threading performance by creating threads spread evenly amongst the count of available cores.
 
@@ -350,7 +350,6 @@ the only signal caught by `metil` is `SIG_INT` (signal interruption), any other 
 - `metil->text_characters_default`:default_font_used_to_render_texts::monospace
 - `metil->text_defaults`:default_text_characters_used_to_render_text_with_fonts
 
-
 ### data/destroy
 
 these properties on the `metil` structure aren't required but may be utilized if it's beneficial to you
@@ -358,7 +357,6 @@ these properties on the `metil` structure aren't required but may be utilized if
 - `metil->data`:whatever_data_is_useful_for_you_to_store
 - `metil->destroy`:called_as_one_of_the_last_functions_during_termination
 - - this_may_be_set_to_whatever_you_like
-
 
 ## renderables
 
@@ -373,13 +371,13 @@ these properties on the `metil` structure aren't required but may be utilized if
 
 `metil_object`s contain a `metil_mesh` (`mesh`) which stores raw vertices and indices data as well as `size`. this mesh then gets used as the basis for `metal` gpu accesiible buffer objects set on `metil_object` through `buffers_vertex` and `indices`
 
-`buffers_fragment` is used to set buffers passed to fragment functions during rendering of the object  
-similiarly `buffers_vertex` is used to set buffers passed to vertex functions during rendering of the object  
+`buffers_fragment` is used to set buffers passed to fragment functions during rendering of the object
+similiarly `buffers_vertex` is used to set buffers passed to vertex functions during rendering of the object
 `textures` is used to set textures for fragment functions, the position of the `MTLTexture` within the fragment is according to its own index within the array
 
 the process of settings `metal` buffers for gpu usage is simplified through `metil_object_buffers_initialize` which will automatically set vertex and indices buffers for you according to the data within `mesh` as well as initializing a `metil_renderer_data_object` as a vertex buffer which stores information such as `view_model_matrix_projection` which is used to transform and render coordinates of vertices relative to the objects position rotation, player position, viewport sizes, etc.
 
-the standard way to render an objects position within a vertex function is 
+the standard way to render an objects position within a vertex function is
 
 ```metal
 struct data_vertex {
@@ -439,17 +437,17 @@ a group of renderables. useful for segmenting a section of renderables together 
 
 these joints have a position value which is then used to apply rotations/translations to any attached joints
 
-`metil_model` has functionality in place to handle most of this by default. 
+`metil_model` has functionality in place to handle most of this by default.
 
-joints are added to a model using `metil_model_joints_add_length`  
-once all joints are added to a model then the vertex joint map should be initialized using `metil_model_vertex_joint_maps_initialize` which sets a `metal` buffer at the index of `metil_renderer_vertex_index_parameter_vertex_joint_map`  
+joints are added to a model using `metil_model_joints_add_length`
+once all joints are added to a model then the vertex joint map should be initialized using `metil_model_vertex_joint_maps_initialize` which sets a `metal` buffer at the index of `metil_renderer_vertex_index_parameter_vertex_joint_map`
 after the vertex joint mapping is initialized then specific joints can be attached together through `metil_joint_attach` while vertices can be attached to specific joints using `metil_model_vertex_joint_attach`
 
 when you update the rotation of `metil_joint` you can propagate any changes to attached joints using `metil_joint_propagate` (this function should be used from the topmost joint otherwise translation and rotation values will be lost)
 
 during model polling these joints and their values are set within a `metal` buffer assigned to `metil_renderer_vertex_index_parameter_joints` mapped as `([position, rotation, translation])[id_joint]` (all joint indexes within this buffer are offset by 1 as `metil_model` creates a default joint with values set to `0.0f` for vertices to use as an `unattached` state value during calculations; if a vertex is set to a joint at index `0` on a model then the vertex joint map will have a value of `1`, this is something internal to `metil_model` which if using the standard functionality isn't something to concern yourself with unless your calculations within the vertex function require the value of the index of a specified joint)
 
-vertex rendering functions then takes the buffer values from `metil_renderer_vertex_index_parameter_vertex_joint_map` and `metil_renderer_vertex_index_parameter_joints` to perform lookups to obtain the `position` `rotation` and `translation` values of any attached joints to then be applied to the `vertex` position  
+vertex rendering functions then takes the buffer values from `metil_renderer_vertex_index_parameter_vertex_joint_map` and `metil_renderer_vertex_index_parameter_joints` to perform lookups to obtain the `position` `rotation` and `translation` values of any attached joints to then be applied to the `vertex` position
 
 the following example shows how to create and attach joints within a metil model
 
@@ -652,7 +650,7 @@ struct data_vertex {
   };
 
   float4 position_vertex_object_relation_offset_joint_origin = (
-    position_vertex_object_relation - 
+    position_vertex_object_relation -
     position_joint
   );
 
@@ -660,7 +658,7 @@ struct data_vertex {
     position_vertex_object_relation_offset_joint_origin *
     matrix_projection_object_with_rotation
   );
-  
+
   float4 position_vertex = (
     position_vertex_object_relation_offset_joint_origin_rotated +
     position_joint +
@@ -764,7 +762,7 @@ io_procs should be removed using `metil_audio_io_proc_remove` when they are no l
 macos and ios require two different frameworks for audio output, macos requiring the use of `CoreAudio` and ios requiring the use of `AVFAudio`
 because of this the type definition of the io_procs is slightly different and can be conditionally set using the preprocessor macro `target_os_ios`
 
-the current channel can be obtained using a modulus operator on the index of the output buffer frame by the number of channels  
+the current channel can be obtained using a modulus operator on the index of the output buffer frame by the number of channels
 a stereo configuration would have the left channel as channel `0` and the right channel as `1`
 
 every io_proc gets passed a pointer to a `metil_audio_io_proc_data` structure which contains a property for a pointer to `metil` and a parameter `data` for whatever data was passed in using `metil_audio_io_proc_add_with_data` (if `metil_audio_io_proc_add` was used instead then the `data` property is `0`)
@@ -864,7 +862,7 @@ int io_proc(
     unsigned long int count_channel_out = (
       audio_buffer_current.mNumberChannels
     );
-    
+
     for (
       unsigned int index_frame = 0;
       index_frame < frame_count;
@@ -887,7 +885,7 @@ int io_proc(
       );
     }
   }
-  
+
   return 0;
 }
 #else
@@ -938,7 +936,7 @@ OSStatus io_proc(
     unsigned long int count_channel_out = (
       audio_buffer_current.mNumberChannels
     );
-    
+
     for (
       unsigned long int index_buffer_out = 0;
       index_buffer_out < size_buffer_out;
@@ -1348,11 +1346,9 @@ make target_device=iphone
 |---|---|---|
 | <img width="1966" height="1250" alt="metil_example_collision" src="https://github.com/user-attachments/assets/8c4bd97a-df91-439b-abd6-04b7edfdae77" /> | <img width="1966" height="1250" alt="metil_example_face" src="https://github.com/user-attachments/assets/466184c5-c724-4f80-b0c7-fa34aa55e7c2" /> | <img width="1966" height="1250" alt="metil_example_fog" src="https://github.com/user-attachments/assets/a1714803-94a4-4047-9108-d4e33cff4715" /> |
 
-
 | [meshes](examples/meshes) | [model](examples/model) | |
 |---|---|---|
 | <img width="1966" height="1250" alt="metil_example_meshes" src="https://github.com/user-attachments/assets/6c14ae47-90c3-4071-8386-3d5e7be20c38" /> | <img width="1966" height="1250" alt="metil_example_model" src="https://github.com/user-attachments/assets/bcc73a50-8853-4fe8-8e4c-c054b3623ff6" /> | |
-
 
 ## copyright|copyleft
 

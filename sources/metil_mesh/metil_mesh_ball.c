@@ -334,7 +334,7 @@ void metil_mesh_ball_initialize(
       );
 
       metil_mesh->indices[
-        index_index 
+        index_index
       ] = (
         index_vertex +
         segments.x

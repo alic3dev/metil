@@ -284,7 +284,7 @@
       endEncoding
     ];
   }
-  
+
   #if !target_os_ios
   [
     self->encoder_render
@@ -319,7 +319,7 @@
     self->depth_state
     release
   ];
-  
+
   [
     self->depth_state_writes_disabled
     release
@@ -571,7 +571,7 @@
       metal_kit_view.currentDrawable
     )
   ];
-  
+
   [
     command_buffer
     commit
@@ -707,7 +707,7 @@
   self->threads = 0;
   self->threads_data = 0;
   self->length_threads = 0;
-  
+
   self->matrix_projection_static = (matrix_float3x4) {{
     { 1.0f, 0.0f, 0.0f, 0.0f },
     { 0.0f, 1.0f, 0.0f, 0.0f },
@@ -723,7 +723,7 @@
       index_data_buffer_frame_initializer
     ] = 0;
   }
-  
+
   self->pipelines_render = (
     clic3_memory_allocate_raw(
       sizeof(
@@ -744,8 +744,8 @@
   }
 }
 
-- (void) mtkView: 
-  (nonnull MTKView*) metal_kit_view 
+- (void) mtkView:
+  (nonnull MTKView*) metal_kit_view
   drawableSizeWillChange: (CGSize) size
 {}
 
@@ -845,7 +845,6 @@
     ];
   }
 }
-
 
 - (void) pipeline_render_library_initiliaze {
   [
@@ -991,7 +990,7 @@
     unsigned int index_thread = (
       self->metil->system_information.cores_cpu *
       _index_data_buffer_frame +
-      index_core_cpu 
+      index_core_cpu
     );
 
     if (
@@ -1081,7 +1080,7 @@
     unsigned int index_thread = (
       self->metil->system_information.cores_cpu *
       _index_data_buffer_frame +
-      index_core_cpu 
+      index_core_cpu
     );
 
     pthread_join(
@@ -1211,7 +1210,7 @@
         )
       )
     );
-    
+
     self->objects_fps_display[
       index_object_fps_display
     ].indices = (
@@ -1283,7 +1282,7 @@
           ];
         }
       }
-      
+
       break;
     }
     case metil_renderable_type_object: {

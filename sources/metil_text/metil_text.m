@@ -578,7 +578,7 @@ void metil_text_image_destroy(
   clic3_memory_free_raw(
     text_image->data
   );
-  
+
   clic3_memory_free_raw(
     text_image
   );

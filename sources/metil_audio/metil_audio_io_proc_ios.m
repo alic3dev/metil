@@ -113,7 +113,7 @@ int metil_audio_output_io_proc(
       );
     }
   }
-  
+
   return 0;
 }
 

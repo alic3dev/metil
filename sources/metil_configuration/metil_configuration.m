@@ -341,7 +341,7 @@ unsigned char metil_configuration_load(
                 1
               );
             }
-            
+
             break;
           }
           case 5: {
@@ -422,7 +422,7 @@ unsigned char metil_configuration_load(
         clic3_memory_free_raw(
           buffer_value
         );
-                      
+
         length_buffer = 0;
       }
     } else {

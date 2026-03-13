@@ -269,7 +269,7 @@ void metil_group_destroy_renderable_at_index(
         struct metil_renderable*
       ) *
       metil_group->length
-    ) 
+    )
   );
 }
 

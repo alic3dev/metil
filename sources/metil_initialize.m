@@ -153,11 +153,11 @@ int metil_initialize_with_data(
   );
 
   interrupt_handler_initialize();
-  
+
   metil_input_initialize(
     &metil.input
   );
-  
+
   metil_scene_controller_initialize(
     &metil,
     metil.scene_controller

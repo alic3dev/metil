@@ -181,7 +181,7 @@ void metil_mesh_shuttle_initialize(
       metil_mesh->vertices[
         index_vertex
       ].y = -(
-        position_y - 
+        position_y -
         size_half.y
       );
 
@@ -341,7 +341,7 @@ void metil_mesh_shuttle_initialize(
   metil_mesh->vertices[
     index_vertex_last
   ].y = -(
-    -size_half.y + 
+    -size_half.y +
     size.y *
     0.1f
   );

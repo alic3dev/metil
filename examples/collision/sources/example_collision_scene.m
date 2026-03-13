@@ -220,7 +220,7 @@ void example_collision_scene_initialize(
   ].z = (
     size_floor_half
   );
-  
+
   metil_mesh_floor->vertices[
     3
   ].w = (
@@ -337,7 +337,7 @@ void example_collision_scene_initialize(
     ] = (
       index_vertex
     );
-    
+
     if (
       index_vertex != (
         metil_mesh_floor->length_vertices -
@@ -623,7 +623,7 @@ void example_collision_scene_initialize(
     ] = (
       offset % 0xa0
     );
-    
+
     pixel_bytes[
       index_pixel +
       1
@@ -669,11 +669,11 @@ void example_collision_scene_initialize(
       (index_pixel / 4) %
       texture_descriptor.width
     );
-    
+
     pixel_bytes[
       index_pixel
     ] = 0x00;
-    
+
     if (
       index_row >= 10 &&
       index_row <= 30 ||
@@ -786,7 +786,7 @@ void example_collision_scene_initialize(
     metil,
     scene
   );
-  
+
   scene->destroy = example_collision_scene_destroy;
   scene->poll = example_collision_scene_poll;
 }
@@ -1113,7 +1113,7 @@ void example_collision_scene_poll(
           index_target
         ]->renderable
       );
-      
+
       if (
         (
           math_c_absolute_float(

@@ -51,7 +51,7 @@ void metil_mesh_clone(
   mesh_clone->size.y = (
     mesh_source->size.y
   );
-  
+
   mesh_clone->size.z = (
     mesh_source->size.z
   );
@@ -135,7 +135,7 @@ void metil_mesh_destroy(
   clic3_memory_free(
     metil_mesh->indices
   );
-  
+
   clic3_memory_free(
     metil_mesh->vertices
   );

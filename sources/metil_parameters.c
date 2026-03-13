@@ -21,7 +21,6 @@ void metil_parameters_initialize(
     parameters
   );
 
-
   metil_parameters->length_parameters_proxied = (
     1
   );

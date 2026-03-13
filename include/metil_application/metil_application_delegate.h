@@ -6,7 +6,7 @@
 #if target_os_ios
 #import <UIKit/UIKit.h>
 
-@interface metil_application_delegate: UIResponder <UIApplicationDelegate> 
+@interface metil_application_delegate: UIResponder <UIApplicationDelegate>
 #else
 #include <AppKit/AppKit.h>
 

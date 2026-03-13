@@ -23,7 +23,7 @@
     NSScreen
     mainScreen
   ];
-  
+
   NSRect frame_screen = [
     screen
     frame
