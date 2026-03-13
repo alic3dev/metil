@@ -36,7 +36,7 @@ struct metil_object {
 
   struct metil_object_buffer* _Nonnull buffers_fragment;
   struct metil_object_buffer* _Nonnull buffers_vertex;
-  
+
   unsigned char length_buffers_vertex;
   unsigned char length_buffers_fragment;
 

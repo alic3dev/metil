@@ -67,7 +67,7 @@ id<MTLTexture> metil_texture_concrete_generate(
     )
   );
 
-  for (unsigned int index_x = 0; index_x < texture_descriptor.width; ++index_x) { for (unsigned int index_y = 0; index_y < texture_descriptor.height; ++index_y) { 
+  for (unsigned int index_x = 0; index_x < texture_descriptor.width; ++index_x) { for (unsigned int index_y = 0; index_y < texture_descriptor.height; ++index_y) {
     unsigned int index_pixel = index_x * 4 + index_y * texture_descriptor.width * 4;
     unsigned int r = ((index_x + 548) % 7) * ((index_y + 234) % 2) * 0x1b * seed[((index_x + 54) * (index_y + 13)) % length_seed];
     pixel_bytes[index_pixel] = 0x7f + ((seed[r % length_seed] + 1) % 0x1b);
@@ -106,7 +106,7 @@ id<MTLTexture> metil_texture_concrete_generate(
         index_y > 0
       ) {
         unsigned int f = (index_x - 1) * 4 + (index_y - 1) * texture_descriptor.width * 4;
-    
+
         pixel_bytes_secondary[index_pixel] = (
           (pixel_bytes_secondary[index_pixel] + pixel_bytes[f]) / 2
         );
@@ -122,7 +122,7 @@ id<MTLTexture> metil_texture_concrete_generate(
         index_y < texture_descriptor.height - 1
       ) {
         unsigned int z = (index_x - 1) * 4 + (index_y + 1) * texture_descriptor.width * 4;
-    
+
         pixel_bytes_secondary[index_pixel] = (
           (pixel_bytes_secondary[index_pixel] + pixel_bytes[z]) / 2
         );
@@ -154,7 +154,7 @@ id<MTLTexture> metil_texture_concrete_generate(
         index_y > 0
       ) {
         unsigned int f = (index_x + 1) * 4 + (index_y - 1) * texture_descriptor.width * 4;
-    
+
         pixel_bytes_secondary[index_pixel] = (
           (pixel_bytes_secondary[index_pixel] + pixel_bytes[f]) / 2
         );
@@ -170,7 +170,7 @@ id<MTLTexture> metil_texture_concrete_generate(
         index_y < texture_descriptor.height - 1
       ) {
         unsigned int z = (index_x + 1) * 4 + (index_y + 1) * texture_descriptor.width * 4;
-    
+
         pixel_bytes_secondary[index_pixel] = (
           (pixel_bytes_secondary[index_pixel] + pixel_bytes[z]) / 2
         );
@@ -247,7 +247,7 @@ id<MTLTexture> metil_texture_concrete_generate(
         index_y > 0
       ) {
         unsigned int f = (index_x - 1) * 4 + (index_y - 1) * texture_descriptor.width * 4;
-    
+
         pixel_bytes_secondary[index_pixel] = (
           (pixel_bytes_secondary[index_pixel] + pixel_bytes_secondary[f]) / 2
         );
@@ -263,7 +263,7 @@ id<MTLTexture> metil_texture_concrete_generate(
         index_y < texture_descriptor.height - 1
       ) {
         unsigned int z = (index_x - 1) * 4 + (index_y + 1) * texture_descriptor.width * 4;
-    
+
         pixel_bytes_secondary[index_pixel] = (
           (pixel_bytes_secondary[index_pixel] + pixel_bytes_secondary[z]) / 2
         );
@@ -295,7 +295,7 @@ id<MTLTexture> metil_texture_concrete_generate(
         index_y > 0
       ) {
         unsigned int f = (index_x + 1) * 4 + (index_y - 1) * texture_descriptor.width * 4;
-    
+
         pixel_bytes_secondary[index_pixel] = (
           (pixel_bytes_secondary[index_pixel] + pixel_bytes_secondary[f]) / 2
         );
@@ -311,7 +311,7 @@ id<MTLTexture> metil_texture_concrete_generate(
         index_y < texture_descriptor.height - 1
       ) {
         unsigned int z = (index_x + 1) * 4 + (index_y + 1) * texture_descriptor.width * 4;
-    
+
         pixel_bytes_secondary[index_pixel] = (
           (pixel_bytes_secondary[index_pixel] + pixel_bytes_secondary[z]) / 2
         );
@@ -383,7 +383,6 @@ id<MTLTexture> metil_texture_concrete_generate(
   );
 }
 
-
 id<MTLTexture> metil_texture_concrete_secondary_generate(
   struct math_c_vector2_unsigned_short_int size,
   unsigned char* seed,
@@ -444,7 +443,7 @@ id<MTLTexture> metil_texture_concrete_secondary_generate(
     )
   );
 
-  for (unsigned int index_x = 0; index_x < texture_descriptor.width; ++index_x) { for (unsigned int index_y = 0; index_y < texture_descriptor.height; ++index_y) { 
+  for (unsigned int index_x = 0; index_x < texture_descriptor.width; ++index_x) { for (unsigned int index_y = 0; index_y < texture_descriptor.height; ++index_y) {
     unsigned int index_pixel = index_x * 4 + index_y * texture_descriptor.width * 4;
     unsigned int r = ((index_x + 0x0224) % 7) * ((index_y + 0xea) % 2) * 0x1b * seed[((index_x + 0x36) * (index_y + 0x0d)) % length_seed];
     pixel_bytes[index_pixel] = 0x7f + ((seed[r % length_seed] + 1) % 0x1b);
@@ -452,7 +451,7 @@ id<MTLTexture> metil_texture_concrete_secondary_generate(
     pixel_bytes[index_pixel + 2] = 0x7f + ((seed[(r) % length_seed] + 0) % 0x1b);
     pixel_bytes[index_pixel + 3] = 0xff;
   }}
-  
+
   for (unsigned int index_x = 0; index_x < texture_descriptor.width; index_x += 2) { for (unsigned int index_y = 0; index_y < texture_descriptor.height; index_y += 2) {
     unsigned int index_pixel = index_x * 4 + index_y * texture_descriptor.width * 4;
     pixel_bytes_secondary[index_pixel] = pixel_bytes[index_pixel];
@@ -483,7 +482,7 @@ id<MTLTexture> metil_texture_concrete_secondary_generate(
         index_y > 0
       ) {
         unsigned int f = (index_x - 1) * 4 + (index_y - 1) * texture_descriptor.width * 4;
-    
+
         pixel_bytes_secondary[index_pixel] = (
           (pixel_bytes_secondary[index_pixel] + pixel_bytes[f]) / 2
         );
@@ -499,7 +498,7 @@ id<MTLTexture> metil_texture_concrete_secondary_generate(
         index_y < texture_descriptor.height - 1
       ) {
         unsigned int z = (index_x - 1) * 4 + (index_y + 1) * texture_descriptor.width * 4;
-    
+
         pixel_bytes_secondary[index_pixel] = (
           (pixel_bytes_secondary[index_pixel] + pixel_bytes[z]) / 2
         );
@@ -531,7 +530,7 @@ id<MTLTexture> metil_texture_concrete_secondary_generate(
         index_y > 0
       ) {
         unsigned int f = (index_x + 1) * 4 + (index_y - 1) * texture_descriptor.width * 4;
-    
+
         pixel_bytes_secondary[index_pixel] = (
           (pixel_bytes_secondary[index_pixel] + pixel_bytes[f]) / 2
         );
@@ -547,7 +546,7 @@ id<MTLTexture> metil_texture_concrete_secondary_generate(
         index_y < texture_descriptor.height - 1
       ) {
         unsigned int z = (index_x + 1) * 4 + (index_y + 1) * texture_descriptor.width * 4;
-    
+
         pixel_bytes_secondary[index_pixel] = (
           (pixel_bytes_secondary[index_pixel] + pixel_bytes[z]) / 2
         );

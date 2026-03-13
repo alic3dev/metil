@@ -31,7 +31,7 @@ metil_status metil_mesh_parse(
   while (
     character_mesh_import != '\0'
   ) {
-    
+
   }
 
   return (

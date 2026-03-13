@@ -25,7 +25,7 @@ void metil_text_defaults_initialize(
   );
 
   metil_text_defaults->render_parameters.letter_spacing = 6.0f;
-    
+
   metil_text_defaults->render_parameters.padding.x = 20.0f;
   metil_text_defaults->render_parameters.padding.y = 20.0f;
 

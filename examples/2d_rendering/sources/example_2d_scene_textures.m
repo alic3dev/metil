@@ -44,7 +44,7 @@ void example_2d_scene_textures_initialize(
     metil,
     metil_scene
   );
-  
+
   example_2d_scene_textures_initialize_player_walk_two(
     metil,
     metil_scene
@@ -259,7 +259,7 @@ void example_2d_scene_textures_initialize_background(
         index_pixel +
         3
       ] = (
-        0xff 
+        0xff
       );
     }
   }

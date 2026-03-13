@@ -20,7 +20,7 @@ void metil_model_object_vertex_transform(
   );
 
   float4 position_vertex_object_relation_offset_joint_origin = (
-    position_vertex_object_relation - 
+    position_vertex_object_relation -
     *position_joint
   );
 
@@ -28,7 +28,7 @@ void metil_model_object_vertex_transform(
     position_vertex_object_relation_offset_joint_origin *
     *matrix_projection_rotation_joint
   );
-  
+
   *position_vertex_to_transform = (
     position_vertex_object_relation_offset_joint_origin_rotated +
     *position_joint +
@@ -49,7 +49,7 @@ float4 metil_model_object_position_calcluate(
   float4 position_joint_translation;
 
   matrix_float4x4 matrix_projection_rotation_joint;
-  
+
   float4 position_vertex_transformed;
 
   float4 position_object_simd = {
@@ -58,7 +58,7 @@ float4 metil_model_object_position_calcluate(
     position_object->z,
     0.0f
   };
-  
+
   unsigned int id_joint = (
     metil_metal_joint_id_get(
       id_vertex,

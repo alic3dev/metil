@@ -25,7 +25,7 @@ void metil_mesh_text_initialize(
     height *
     scale
   );
-  
+
   mesh->size.z = 1.0f;
 
   mesh->length_vertices = (

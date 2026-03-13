@@ -260,7 +260,7 @@ void example_meshes_scene_initialize(
     );
 
     float percentage = (
-      (float) index_renderable / 
+      (float) index_renderable /
       (float) (
         metil_scene->length_renderables -
         1

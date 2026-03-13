@@ -19,7 +19,7 @@ void metil_menu_item_initialize(
   metil_menu_item->data_menu_item = (
     0
   );
-  
+
   switch (
     metil_menu_item_type
   ) {
@@ -46,7 +46,7 @@ void metil_menu_item_initialize(
       break;
     }
   }
-  
+
   metil_menu_item->type = (
     metil_menu_item_type
   );

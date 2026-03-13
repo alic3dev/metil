@@ -128,7 +128,7 @@ void example_2d_scene_initialize(
         index_server
       ]->renderable
     );
-    
+
     struct metil_object* metil_object_server_housing = (
       metil_group_server_housings->renderables[
         index_server
@@ -164,7 +164,7 @@ void example_2d_scene_initialize(
           100.0f
         ),
         .y = (
-          0.1f + 
+          0.1f +
           (
             (
               index_server %
@@ -212,7 +212,7 @@ void example_2d_scene_initialize(
       index_server *
       0.1 +
       0.1f -
-      metil_object_server->mesh.size.x 
+      metil_object_server->mesh.size.x
     );
 
     metil_object_server->position.y = (
@@ -394,7 +394,7 @@ void example_2d_scene_poll(
       example_2d_rendering_index_renderable_player
     ].renderable
   );
-  
+
   struct metil_group* metil_group_servers = (
     metil_scene->renderables[
       example_2d_rendering_index_renderable_servers

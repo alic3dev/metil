@@ -34,7 +34,7 @@ void metil_menu_poll_input(
   enum metil_menu_item_type metil_menu_item_type = (
     metil_menu_item_type_display
   );
-  
+
   struct metil_menu_item* metil_menu_item = (
     0
   );

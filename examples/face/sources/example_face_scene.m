@@ -631,7 +631,7 @@ void example_face_scene_poll(
     );
 
     if (
-      distance < distance_closest && 
+      distance < distance_closest &&
       distance < 0.1f
     ) {
       data_object->vertex_hovered = (

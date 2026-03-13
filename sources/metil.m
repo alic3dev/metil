@@ -53,16 +53,16 @@ void metil_destroy(
   );
 
   interrupt_handler_destroy();
-  
+
   metil_paths_destroy(
     &metil->paths
   );
-  
+
   metil_audio_destroy(
     &metil->audio,
     &metil->configuration
   );
-  
+
   metil_text_destroy(
     &metil->text_defaults.render_parameters
   );

@@ -33,7 +33,6 @@
     ]
   );
 
-
   data_vertex_basic_coloured.colour = (
     float4(
       (

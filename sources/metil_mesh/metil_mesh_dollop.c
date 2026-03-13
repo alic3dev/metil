@@ -306,7 +306,7 @@ void metil_mesh_dollop_initialize(
       );
 
       metil_mesh->indices[
-        index_index 
+        index_index
       ] = (
         index_vertex +
         segments.x

@@ -108,7 +108,7 @@ void example_model_scene_initialize(
         metil_object->position.z = 53.0f + (14.0f * (index_object % 3));
       } else {
         metil_object->position.z = 50.0f + (10.0f * (index_object % 3));
-      } 
+      }
     } else if (
       index_object == 15
     ) {
@@ -394,7 +394,7 @@ void example_model_scene_initialize(
   metil_renderer_data_object->colour.w = (
     1.0f
   );
-  
+
   metil_object->index_pipeline_render = (
     example_model_pipeline_index_model_item
   );
@@ -402,7 +402,6 @@ void example_model_scene_initialize(
   scene->destroy = example_model_scene_destroy;
   scene->poll = example_model_scene_poll;
 }
-
 
 /*
     |  |  |  |
@@ -464,7 +463,7 @@ void example_model_scene_poll(
       ) {
         metil_model->joints[index_joint].rotation.x = (
           metil_model->joints[index_joint].rotation.x - (
-            (index_joint - 1) % 3 == 0 
+            (index_joint - 1) % 3 == 0
             ? 0.001f
             : (index_joint - 1) % 3 == 1
             ? 0.0025f
@@ -474,7 +473,7 @@ void example_model_scene_poll(
 
         metil_model->joints[index_joint].rotation.y = (
           metil_model->joints[index_joint].rotation.y - (
-            (index_joint - 1) % 3 == 0 
+            (index_joint - 1) % 3 == 0
             ? 0.001f
             : (index_joint - 1) % 3 == 1
             ? 0.0025f
@@ -484,7 +483,7 @@ void example_model_scene_poll(
       } else {
         metil_model->joints[index_joint].rotation.x = (
           metil_model->joints[index_joint].rotation.x + (
-            (index_joint - 1) % 3 == 0 
+            (index_joint - 1) % 3 == 0
             ? 0.001f
             : (index_joint - 1) % 3 == 1
             ? 0.0025f
@@ -494,7 +493,7 @@ void example_model_scene_poll(
 
         metil_model->joints[index_joint].rotation.y = (
           metil_model->joints[index_joint].rotation.y + (
-            (index_joint - 1) % 3 == 0 
+            (index_joint - 1) % 3 == 0
             ? 0.001f
             : (index_joint - 1) % 3 == 1
             ? 0.0025f
@@ -508,7 +507,7 @@ void example_model_scene_poll(
       ) {
         metil_model->joints[index_joint].rotation.x = (
           metil_model->joints[index_joint].rotation.x - (
-            (index_joint - 1) % 3 == 0 
+            (index_joint - 1) % 3 == 0
             ? 0.001f
             : (index_joint - 1) % 3 == 1
             ? 0.0025f
@@ -528,7 +527,7 @@ void example_model_scene_poll(
       } else {
         metil_model->joints[index_joint].rotation.x = (
           metil_model->joints[index_joint].rotation.x + (
-            (index_joint - 1) % 3 == 0 
+            (index_joint - 1) % 3 == 0
             ? 0.001f
             : (index_joint - 1) % 3 == 1
             ? 0.0025f

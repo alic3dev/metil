@@ -29,7 +29,7 @@ void metil_model_initialize(
       0
     )
   );
-  
+
   metil_model->length_textures = 0;
 
   metil_model->textures = (

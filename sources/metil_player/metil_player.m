@@ -398,7 +398,7 @@ void metil_player_poll_input(
         ] ||
         metil->input.keydown_map[
           metil_keycode_opening_square_bracket
-        ] == 1 
+        ] == 1
       ) +
       (
         metil->input.keydown_map[

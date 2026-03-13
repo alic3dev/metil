@@ -80,7 +80,7 @@ void example_3d_scene_initialize(
     );
 
     data_object->colour.x = (
-      0.7  
+      0.7
     );
 
     data_object->colour.y = (

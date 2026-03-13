@@ -48,7 +48,7 @@ void s(
     );
   } else {
     o->position.y = (
-      
+
       o->position.y + 5.0
     );
   }
@@ -90,7 +90,7 @@ void example_animation_scene_initialize(
   );
 
   for (
-    unsigned int i = 0 ; i < 13; 
+    unsigned int i = 0 ; i < 13;
     ++i
   ) {
   metil_animation_initialize(
@@ -123,7 +123,6 @@ void example_animation_scene_initialize(
   an[i].start = s;
   an[i].end = e;
   }
-
 
   metil_scene->poll = (
     example_animation_scene_poll
@@ -344,7 +343,7 @@ void example_animation_scene_initialize(
     );
 
     float percentage = (
-      (float) index_renderable / 
+      (float) index_renderable /
       (float) (
         metil_scene->length_renderables -
         1
