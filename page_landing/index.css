@@ -1,0 +1,137 @@
+:root {
+  --colour_blue: #3065ff;
+  --colour_white: #ffffff;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+  font-family: Monaco;
+  font-size: 10px;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+#title_banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background: linear-gradient(
+    to bottom right,
+    var(
+      --colour_blue
+    ),
+    var(
+      --colour_white
+    )
+  );
+
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 15%,
+    90% 30%,
+    30% 30%,
+    30% 80%,
+    15% 90%,
+    0 90%,
+    0 0
+  );
+}
+
+#title {
+  position: absolute;
+  left: 10dvw;
+  top: 10dvh;
+
+  margin: 0;
+  padding: 0;
+
+  font-size: 4rem;
+
+  color: var(
+    --colour_white
+  );
+}
+
+main {
+  position: absolute;
+  left: 30%;
+  top: 30%;
+  right: 0;
+  bottom: 0;
+
+  display: grid;
+  grid-template-rows: 0.5fr 0.5fr 2fr;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+}
+
+main p {
+  margin: 0;
+  padding: 20px 10px;
+}
+
+main p:first-of-type {
+  font-size: 1.25em;
+}
+
+main p:last-of-type {
+  font-size: 1.125em;
+}
+
+main a {
+  display: block;
+
+  padding: 20px 40px;
+
+  border: 1px solid var(
+    --colour_blue
+  );
+
+  border-radius: 30px;
+
+  text-decoration: none;
+}
+
+main a:not(:first-of-type) {
+  margin-top: 40px;
+}
+
+h2 {
+  margin-top: 100vh;
+  padding-bottom: 50px;
+  padding-top: 100px;
+
+  text-align: center;
+}
+
+ul {
+  width: fit-content;
+
+  margin: auto;
+}
+
+h2 + ul {
+  padding: 20px 0;
+  padding-bottom: 100px;
+}
+
+h2 + ul > li {
+  margin-top: 50px;
+}
+
+h2 + ul > li:first-of-type {
+  margin-top: 0;
+}
