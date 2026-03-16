@@ -1,0 +1,54 @@
+:root {
+  --colour_blue: #3065ff;
+  --colour_white: #ffffff;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+  font-family: Monaco;
+  font-size: 10px;
+}
+
+#title_banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background: linear-gradient(
+    to bottom right,
+    var(
+      --colour_blue
+    ),
+    var(
+      --colour_white
+    )
+  );
+
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 15%,
+    90% 30%,
+    30% 30%,
+    30% 80%,
+    15% 90%,
+    0 90%,
+    0 0
+  );
+}
+
+#title {
+  position: absolute;
+  left: 10dvw;
+  top: 10dvh;
+
+  margin: 0;
+  padding: 0;
+
+  font-size: 4rem;
+}
