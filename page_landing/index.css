@@ -1,5 +1,8 @@
 :root {
   --colour_blue: #3065ff;
+  --colour_grass: #10ff40;
+  --colour_one_o_one: #101101;
+  --colour_sky: #5582ff;
   --colour_white: #ffffff;
 }
 
@@ -22,8 +25,9 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+
+  width: 100dvw;
+  height: 100dvh;
 
   background: linear-gradient(
     to bottom right,
@@ -48,15 +52,45 @@ body {
   );
 }
 
+body::before {
+  content: '';
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 100dvh;
+
+  background: linear-gradient(
+    to bottom,
+    var(
+      --colour_sky
+    ),
+    var(
+      --colour_grass
+    )
+  );
+
+  clip-path: polygon(
+    0 0,
+    10% 0,
+    10% 97.5%,
+    0 97.5%
+  );
+
+  z-index: -1;
+}
+
 #title {
   position: absolute;
-  left: 10dvw;
-  top: 10dvh;
+  left: 5dvw;
+  top: 5dvh;
 
   margin: 0;
   padding: 0;
 
-  font-size: 4rem;
+  font-size: 7.5dvh;
 
   color: var(
     --colour_white
@@ -78,20 +112,28 @@ main {
   text-align: center;
 }
 
-main p {
+main > div {
   margin: 0;
   padding: 20px 10px;
 }
 
-main p:first-of-type {
+main > div:first-of-type {
   font-size: 1.25em;
 }
 
-main p:last-of-type {
+main > div:first-of-type > p:last-of-type {
+  font-size: 0.8em;
+}
+
+main > div:nth-of-type(2) {
   font-size: 1.125em;
 }
 
-main a {
+main > div:last-of-type {
+  align-self: start;
+}
+
+main > div:last-of-type > a {
   display: block;
 
   padding: 20px 40px;
@@ -109,8 +151,11 @@ main a:not(:first-of-type) {
   margin-top: 40px;
 }
 
-h2 {
-  margin-top: 100vh;
+main + h2 {
+  margin-top: max(
+    100vh,
+    696px
+  );
   padding-bottom: 50px;
   padding-top: 100px;
 
@@ -134,4 +179,63 @@ h2 + ul > li {
 
 h2 + ul > li:first-of-type {
   margin-top: 0;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  height: 2.5dvh;
+
+  padding-left: 10dvw;
+
+  background: var(
+    --colour_grass
+  );
+
+  line-height: 2.5dvh;
+
+  text-align: center;
+}
+
+footer::before {
+  content: '';
+
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+
+  width: 2.5dvw;
+  height: 5dvh;
+
+  background: linear-gradient(
+    to top,
+    var(
+      --colour_grass
+    ),
+    var(
+      --colour_sky
+    )
+  );
+
+  clip-path: polygon(
+    0 100%,
+    100% 100%,
+    100% 0%,
+    40% 0%,    0% 40%
+  );
+  z-index: -1;
+}
+
+footer a {
+  color: var(
+    --colour_white
+  );
+
+  text-decoration: none;
+  text-shadow: 1px 0px 1px var(
+    --colour_one_o_one
+  );
 }
