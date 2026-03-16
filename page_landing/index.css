@@ -22,8 +22,9 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+
+  width: 100dvw;
+  height: 100dvh;
 
   background: linear-gradient(
     to bottom right,
@@ -50,13 +51,13 @@ body {
 
 #title {
   position: absolute;
-  left: 10dvw;
-  top: 10dvh;
+  left: 5dvw;
+  top: 5dvh;
 
   margin: 0;
   padding: 0;
 
-  font-size: 4rem;
+  font-size: 7.5dvh;
 
   color: var(
     --colour_white
