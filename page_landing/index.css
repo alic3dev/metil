@@ -112,20 +112,28 @@ main {
   text-align: center;
 }
 
-main p {
+main > div {
   margin: 0;
   padding: 20px 10px;
 }
 
-main p:first-of-type {
+main > div:first-of-type {
   font-size: 1.25em;
 }
 
-main p:last-of-type {
+main > div:first-of-type > p:last-of-type {
+  font-size: 0.8em;
+}
+
+main > div:nth-of-type(2) {
   font-size: 1.125em;
 }
 
-main a {
+main > div:last-of-type {
+  align-self: start;
+}
+
+main > div:last-of-type > a {
   display: block;
 
   padding: 20px 40px;
@@ -143,8 +151,11 @@ main a:not(:first-of-type) {
   margin-top: 40px;
 }
 
-h2 {
-  margin-top: 100vh;
+main + h2 {
+  margin-top: max(
+    100vh,
+    696px
+  );
   padding-bottom: 50px;
   padding-top: 100px;
 
