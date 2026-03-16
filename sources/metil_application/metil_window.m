@@ -60,15 +60,169 @@
 }
 
 - (void) flagsChanged: (NSEvent*) event {
-  // TODO: Find what determines if this is a keyup or keydown
+  unsigned char down_lock_capitals = (
+    (
+      event.modifierFlags &
+      0x10000
+    ) ==
+    0x00
+    ? 0x00
+    : 0x01
+  );
+
+  unsigned char down_shift = (
+    (
+      event.modifierFlags &
+      0x20000
+    ) ==
+    0x00
+    ? 0x00
+    : 0x01
+  );
+
+  unsigned char down_control = (
+    (
+      event.modifierFlags &
+      0x40000
+    ) ==
+    0x00
+    ? 0x00
+    : 0x01
+  );
+
+  unsigned char down_option = (
+    (
+      event.modifierFlags &
+      0x80000
+    ) ==
+    0x00
+    ? 0x00
+    : 0x01
+  );
+
+  unsigned char down_command = (
+    (
+      event.modifierFlags &
+      0x100000
+    ) ==
+    0x00
+    ? 0x00
+    : 0x01
+  );
+
+  metil->input.keydown_map[
+    metil_keycode_caps_lock
+  ] = (
+    down_lock_capitals
+  );
+
+  metil->input.keydown_map[
+    metil_keycode_control
+  ] = (
+    down_control
+  );
+
+  unsigned char flip_key = (
+    0x00
+  );
+
+  switch (
+    event.keyCode
+  ) {
+    case metil_keycode_shift_left:
+    case metil_keycode_shift_right: {
+      if (
+        down_shift ==
+        0x01
+      ) {
+        flip_key = (
+          0x01
+        );
+      } else {
+        metil->input.keydown_map[
+          metil_keycode_shift_left
+        ] = (
+          0x00
+        );
+
+        metil->input.keydown_map[
+          metil_keycode_shift_right
+        ] = (
+          0x00
+        );      }
+      break;
+    }
+    case metil_keycode_option_left:
+    case metil_keycode_option_right: {
+      if (
+        down_option ==
+        0x01
+      ) {
+        flip_key = (
+          0x01
+        );
+      } else {
+        metil->input.keydown_map[
+          metil_keycode_option_left
+        ] = (
+          0x00
+        );
+
+        metil->input.keydown_map[
+          metil_keycode_option_right
+        ] = (
+          0x00
+        );
+      }
+
+      break;
+    }
+    case metil_keycode_command_left:
+    case metil_keycode_command_right: {
+      if (
+        down_command ==
+        0x01
+      ) {
+        flip_key = (
+          0x01
+        );
+      } else {
+        metil->input.keydown_map[
+          metil_keycode_command_left
+        ] = (
+          0x00
+        );
+
+        metil->input.keydown_map[
+          metil_keycode_command_right
+        ] = (
+          0x00
+        );
+      }
+
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+
   if (
-    event.keyCode < metil_input_map_keydown_length
+    flip_key ==
+    0x01
   ) {
     self->metil->input.keydown_map[
       event.keyCode
-    ] = self->metil->input.keydown_map[
-      event.keyCode
-    ] == 1 ? 0 : 1;
+    ] = (
+      (
+        self->metil->input.keydown_map[
+          event.keyCode
+        ] ==
+        0x00
+      )
+      ? 0x01
+      : 0x00
+    );
   }
 }
 
@@ -92,7 +246,6 @@
       event.keyCode
     ] = 0;
   }
-
   if (
     event.keyCode == metil_keycode_esc &&
     self->metil->input.cursor.lockable == 1
