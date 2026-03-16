@@ -71,8 +71,9 @@ main {
   bottom: 0;
 
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 0.5fr 0.5fr 2fr;
   justify-content: center;
+  align-items: center;
 
   text-align: center;
 }
@@ -91,7 +92,7 @@ main p:last-of-type {
 }
 
 main a {
-  display: inline-block;
+  display: block;
 
   padding: 20px 40px;
 
@@ -102,4 +103,35 @@ main a {
   border-radius: 30px;
 
   text-decoration: none;
+}
+
+main a:not(:first-of-type) {
+  margin-top: 40px;
+}
+
+h2 {
+  margin-top: 100vh;
+  padding-bottom: 50px;
+  padding-top: 100px;
+
+  text-align: center;
+}
+
+ul {
+  width: fit-content;
+
+  margin: auto;
+}
+
+h2 + ul {
+  padding: 20px 0;
+  padding-bottom: 100px;
+}
+
+h2 + ul > li {
+  margin-top: 50px;
+}
+
+h2 + ul > li:first-of-type {
+  margin-top: 0;
 }
