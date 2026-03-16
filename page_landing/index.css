@@ -12,6 +12,12 @@ body {
   font-size: 10px;
 }
 
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
 #title_banner {
   position: absolute;
   top: 0;
@@ -51,4 +57,49 @@ body {
   padding: 0;
 
   font-size: 4rem;
+
+  color: var(
+    --colour_white
+  );
+}
+
+main {
+  position: absolute;
+  left: 30%;
+  top: 30%;
+  right: 0;
+  bottom: 0;
+
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  justify-content: center;
+
+  text-align: center;
+}
+
+main p {
+  margin: 0;
+  padding: 20px 10px;
+}
+
+main p:first-of-type {
+  font-size: 1.25em;
+}
+
+main p:last-of-type {
+  font-size: 1.125em;
+}
+
+main a {
+  display: inline-block;
+
+  padding: 20px 40px;
+
+  border: 1px solid var(
+    --colour_blue
+  );
+
+  border-radius: 30px;
+
+  text-decoration: none;
 }
