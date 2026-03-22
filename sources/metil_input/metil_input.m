@@ -4,6 +4,7 @@
 #include <metil_input/metil_controller_state.h>
 #include <metil_input/metil_cursor.h>
 #include <metil_input/metil_input_map.h>
+#include <metil_input/metil_touch.h>
 
 void metil_input_initialize(
   struct metil_input* metil_input
@@ -18,6 +19,10 @@ void metil_input_initialize(
 
   metil_cursor_initialize(
     &metil_input->cursor
+  );
+
+  metil_touch_initialize(
+    &metil_input->touch
   );
 
   metil_input_keydown_map_initialize(
