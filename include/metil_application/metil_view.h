@@ -15,6 +15,12 @@
 }
 
 #if target_os_ios
+- (char) isMultipleTouchEnabled;
+- (char) isExclusiveTouch;
+
+- (void) touch_update: (UITouch* _Nonnull) touch index_touch: (unsigned char) index_touch;
+- (unsigned char) touch_index_get: (void* _Nullable) touch;
+
 - (void) touchesBegan: (NSSet<UITouch*>* _Nonnull) touches withEvent: (UIEvent* _Nullable) event;
 - (void) touchesMoved: (NSSet<UITouch*>* _Nonnull) touches withEvent: (UIEvent* _Nullable) event;
 - (void) touchesEnded: (NSSet<UITouch*>* _Nonnull) touches withEvent: (UIEvent* _Nullable) event;
