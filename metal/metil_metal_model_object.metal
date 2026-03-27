@@ -37,7 +37,7 @@ void metil_model_object_vertex_transform(
   );
 }
 
-float4 metil_model_object_position_calcluate(
+float4 metil_model_object_position_calculate(
   unsigned int id_vertex,
   const device float4* position_vertex,
   constant struct math_c_vector3_float* position_object,

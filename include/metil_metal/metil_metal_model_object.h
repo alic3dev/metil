@@ -14,7 +14,7 @@ void metil_model_object_vertex_transform(
   thread matrix_float4x4*
 );
 
-float4 metil_model_object_position_calcluate(
+float4 metil_model_object_position_calculate(
   unsigned int,
   const device float4*,
   constant struct math_c_vector3_float*,
