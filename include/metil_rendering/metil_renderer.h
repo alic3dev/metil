@@ -4,6 +4,7 @@
 #include <metil.h>
 #include <metil_object/metil_object.h>
 #include <metil_object/metil_object_buffer.h>
+#include <metil_rendering/metil_renderer_data_frame.h>
 #include <metil_rendering/metil_renderer_thread_poll_object_data.h>
 #include <metil_rendering/metil_rendering_properties.h>
 #include <metil_termination/metil_termination.h>
@@ -58,6 +59,8 @@
   unsigned int length_threads;
 
   matrix_float3x4 matrix_projection_static;
+
+  metil_renderer_data_frame_poll_function poll_data_frame;
 }
 
 - (nonnull instancetype) metil_renderer_initialize:
