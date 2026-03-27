@@ -59,7 +59,7 @@ void metil_model_initialize(
   metil_model->data = 0;
 }
 
-void metil_model_objects_add(
+void metil_model_object_add(
   struct metil_model* metil_model
 ) {
   metil_model_objects_add_length(
