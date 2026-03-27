@@ -183,6 +183,38 @@
   }
 }
 
+- (void) data_buffer_frames_length_buffer_set:
+  (unsigned int) length_buffer
+{
+  for (
+    unsigned int index_buffer = (
+      0x00
+    );
+    (
+      index_buffer <
+      metil_count_max_frames
+    );
+    ++index_buffer
+  ) {
+    [
+      data_buffer_frame[
+        index_buffer
+      ]
+      release
+    ];
+
+    data_buffer_frame[
+      index_buffer
+    ] = [
+      self->metil->renderer_interface.metal_device
+      newBufferWithLength: (
+        length_buffer
+      )
+      options: MTLResourceStorageModeShared
+    ];
+  }
+}
+
 - (void) descriptor_pipeline_render_initialize {
   if (
     self->descriptor_pipeline_render == 0

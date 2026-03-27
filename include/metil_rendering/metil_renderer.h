@@ -72,6 +72,7 @@
 - (void) command_queue_initialize;
 
 - (void) data_buffer_frames_initialize;
+- (void) data_buffer_frames_length_buffer_set: (unsigned int) length_buffer;
 
 - (void) descriptor_pipeline_render_initialize;
 
