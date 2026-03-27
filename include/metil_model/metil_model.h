@@ -62,7 +62,7 @@ void metil_model_initialize(
   struct metil_model* _Nonnull
 );
 
-void metil_model_objects_add(
+void metil_model_object_add(
   struct metil_model* _Nonnull
 );
 
