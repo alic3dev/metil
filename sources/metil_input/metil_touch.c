@@ -35,5 +35,3 @@ void metil_touch_initialize(
     0.0f
   );
 }
-
-

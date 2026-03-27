@@ -94,7 +94,7 @@
       self->metil->input.touch.length_touches = (
         0x05
       );
-  
+
       index_touch = (
         0x00
       );
@@ -163,7 +163,7 @@
     touch
     preciseLocationInView: self
   ];
-  
+
   metil_touch_item->delta.x = (
     metil_touch_item->delta.x +
     (
@@ -214,7 +214,7 @@
         index_touches
       );
     }
-  }  
+  }
 
   if (
     index_touch ==
@@ -254,7 +254,7 @@
     touches
     anyObject
   ];
-  
+
   NSArray<UITouch*>* touches_array = [
     touches
     allObjects
@@ -327,7 +327,7 @@
       touch_update: touch
       index_touch: index_touch
     ];
-  } 
+  }
 }
 
 - (void) touchesEnded: (NSSet<UITouch*>*) touches withEvent: (UIEvent*) event {
@@ -346,7 +346,7 @@
 
   unsigned char length_touches = (
     touches_array.count
-  );  
+  );
 
   for (
     unsigned char index_touches_array = (
