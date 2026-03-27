@@ -708,6 +708,10 @@
   self->threads_data = 0;
   self->length_threads = 0;
 
+  self->poll_data_frame = (
+    metil_renderer_data_frame_poll
+  );
+
   self->matrix_projection_static = (matrix_float3x4) {{
     { 1.0f, 0.0f, 0.0f, 0.0f },
     { 0.0f, 1.0f, 0.0f, 0.0f },
@@ -897,34 +901,10 @@
     ].contents
   );
 
-  data_frame->frame = poll_frame;
-
-  data_frame->time = metil_scene->time;
-  data_frame->time_elapsed = metil_scene->time_elapsed;
-  data_frame->time_delta = metil_scene->time_delta;
-
-  data_frame->rotation_camera.x = metil_player->rotation.x;
-  data_frame->rotation_camera.y = metil_player->rotation.y;
-  data_frame->rotation_camera.z = metil_player->rotation.z;
-
-  data_frame->position_player.x = metil_player->position.x;
-  data_frame->position_player.y = metil_player->position.y;
-  data_frame->position_player.z = metil_player->position.z;
-
-  data_frame->brightness = (
-    self->metil->rendering_properties.brightness
-  );
-
-  data_frame->brightness_text = (
-    self->metil->rendering_properties.brightness_text
-  );
-
-  data_frame->size_viewport.x = (
-    self->metil->renderer_interface.size.x
-  );
-
-  data_frame->size_viewport.y = (
-    self->metil->renderer_interface.size.y
+  self->poll_data_frame(
+    self->metil,
+    data_frame,
+    poll_frame
   );
 
   matrix_float4x4 matrix_player_rotation_x = (matrix_float4x4) {{
