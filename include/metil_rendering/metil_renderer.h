@@ -60,7 +60,7 @@
 
   matrix_float3x4 matrix_projection_static;
 
-  metil_renderer_data_frame_poll_function poll_data_frame;
+  @public metil_renderer_data_frame_poll_function poll_data_frame;
 }
 
 - (nonnull instancetype) metil_renderer_initialize:
