@@ -62,6 +62,63 @@ void metil_joint_attach(
   );
 }
 
+void metil_joint_propagate_reset(
+  struct metil_joint* metil_joint
+) {
+  metil_joint->translation.x = (
+    0x00
+  );
+
+  metil_joint->translation.y = (
+    0x00
+  );
+
+  metil_joint->translation.z = (
+    0x00
+  );
+
+  metil_joint->rotation.x = (
+    0x00
+  );
+
+  metil_joint->rotation.y = (
+    0x00
+  );
+
+  metil_joint->rotation.z = (
+    0x00
+  );
+
+  metil_joint->rotation_applied.x = (
+    0x00
+  );
+
+  metil_joint->rotation_applied.y = (
+    0x00
+  );
+
+  metil_joint->rotation_applied.z = (
+    0x00
+  );
+
+  for (
+    unsigned char index_joint = (
+      0x00
+    );
+    (
+      index_joint <
+      metil_joint->length_joints
+    );
+    ++index_joint
+  ) {
+    metil_joint_propagate_reset(
+      metil_joint->joints[
+        index_joint
+      ]
+    );
+  }
+}
+
 void metil_joint_propagate(
   struct metil_joint* metil_joint
 ) {

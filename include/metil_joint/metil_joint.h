@@ -22,6 +22,10 @@ void metil_joint_attach(
   struct metil_joint* _Nonnull
 );
 
+void metil_joint_propagate_reset(
+  struct metil_joint* _Nonnull
+);
+
 void metil_joint_propagate(
   struct metil_joint* _Nonnull
 );
