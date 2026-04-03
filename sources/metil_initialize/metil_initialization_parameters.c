@@ -7,7 +7,8 @@ void metil_initialization_parameters_initialize(
 ) {
   metil_initialization_parameters->disabled_audio = (
     0x00
-  );  }
+  );
+}
 
 void metil_initialization_parameters_clone(
   struct metil_initialization_parameters* metil_initialization_parameters_target,
