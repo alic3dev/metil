@@ -8,7 +8,7 @@
 
 #include <pthread.h>
 
-#define metil_count_max_frames 5
+#define metil_count_max_frames 1
 
 #define metil_count_time_frames 60
 
