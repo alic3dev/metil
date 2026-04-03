@@ -16,7 +16,7 @@ void metil_structure_initialize(
   struct metil* metil
 ) {
   metil->text_defaults.object_text_index_pipeline_render = (
-    0
+    0x00
   );
 
   metil_player_defaults_initialize(
@@ -32,11 +32,11 @@ void metil_structure_initialize(
   );
 
   metil->data = (
-    0
+    0x00
   );
 
   metil->destroy = (
-    0
+    0x00
   );
 }
 
@@ -58,10 +58,15 @@ void metil_destroy(
     &metil->paths
   );
 
-  metil_audio_destroy(
-    &metil->audio,
-    &metil->configuration
-  );
+  if (
+    metil->initialization_parameters.disabled_audio ==
+    0x00
+  ) {
+    metil_audio_destroy(
+      &metil->audio,
+      &metil->configuration
+    );
+  }
 
   metil_text_destroy(
     &metil->text_defaults.render_parameters
@@ -76,7 +81,8 @@ void metil_destroy(
   );
 
   if (
-    metil->destroy != 0
+    metil->destroy !=
+    0x00
   ) {
     metil->destroy(
       metil
