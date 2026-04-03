@@ -3,6 +3,7 @@
 
 #include <metil_audio/metil_audio_data.h>
 #include <metil_configuration/metil_configuration.h>
+#include <metil_initialize/metil_initialization_parameters.h>
 #include <metil_input/metil_input.h>
 #include <metil_library.h>
 #include <metil_parameters.h>
@@ -18,11 +19,14 @@
 
 struct metil;
 
-typedef void (*metil_destroy_function)(struct metil* _Nonnull);
+typedef void (*metil_destroy_function)(
+  struct metil* _Nonnull
+);
 
 struct metil {
   struct metil_audio_data audio;
   struct metil_configuration configuration;
+  struct metil_initialization_parameters initialization_parameters;
   struct metil_input input;
   struct metil_library library;
   struct metil_parameters parameters;

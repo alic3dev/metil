@@ -7,6 +7,7 @@
 #include <metil_configuration/metil_configuration.h>
 #include <metil_configuration/metil_configuration_values_set.h>
 #include <metil_debug/metil_debug_log.h>
+#include <metil_initialize/metil_initialization_parameters.h>
 #include <metil_input/metil_input.h>
 #include <metil_library.h>
 #include <metil_parameters.h>
@@ -41,12 +42,38 @@ int metil_initialize(
   char* name,
   metil_renderer_on_initialize_function metil_renderer_on_initialize_function
 ) {
-  return metil_initialize_with_data(
-    length_parameters,
-    parameters,
-    name,
-    metil_renderer_on_initialize_function,
-    0
+  return (
+    metil_initialize_with_parameters_with_data(
+      length_parameters,
+      parameters,
+      name,
+      metil_renderer_on_initialize_function,
+      0x00,
+      0x00
+    )
+  );
+}
+
+int metil_initialize_with_parameters(
+  int length_parameters,
+  #if target_os_ios
+  char** parameters,
+  #else
+  const char** parameters,
+  #endif
+  char* name,
+  metil_renderer_on_initialize_function metil_renderer_on_initialize_function,
+  struct metil_initialization_parameters* metil_initialization_parameters
+) {
+  return (
+    metil_initialize_with_parameters_with_data(
+      length_parameters,
+      parameters,
+      name,
+      metil_renderer_on_initialize_function,
+      0x00,
+      metil_initialization_parameters
+    )
   );
 }
 
@@ -61,11 +88,49 @@ int metil_initialize_with_data(
   metil_renderer_on_initialize_function metil_renderer_on_initialize_function,
   void* metil_renderer_on_initialize_function_data
 ) {
+  return (
+    metil_initialize_with_parameters_with_data(
+      length_parameters,
+      parameters,
+      name,
+      metil_renderer_on_initialize_function,
+      metil_renderer_on_initialize_function_data,
+      0x00
+    )
+  );
+}
+
+int metil_initialize_with_parameters_with_data(
+  int length_parameters,
+  #if target_os_ios
+  char** parameters,
+  #else
+  const char** parameters,
+  #endif
+  char* name,
+  metil_renderer_on_initialize_function metil_renderer_on_initialize_function,
+  void* metil_renderer_on_initialize_function_data,
+  struct metil_initialization_parameters* metil_initialization_parameters
+) {
   static struct metil metil;
 
   metil_structure_initialize(
     &metil
   );
+
+  if (
+    metil_initialization_parameters !=
+    0x00
+  ) {
+    metil_initialization_parameters_clone(
+      &metil.initialization_parameters,
+      metil_initialization_parameters
+    );
+  } else {
+    metil_initialization_parameters_initialize(
+      &metil.initialization_parameters
+    );
+  }
 
   metil_parameters_initialize(
     &metil.parameters,
@@ -163,10 +228,15 @@ int metil_initialize_with_data(
     metil.scene_controller
   );
 
-  metil_audio_initialize(
-    &metil,
-    &metil.audio
-  );
+  if (
+    metil.initialization_parameters.disabled_audio ==
+    0x00
+  ) {
+    metil_audio_initialize(
+      &metil,
+      &metil.audio
+    );
+  }
 
   metil_text_defaults_initialize(
     &metil.text_defaults,
