@@ -14,7 +14,7 @@ void metil_example_3d_rendering_sky_initialize(
 ) {
   metil_mesh_sphere_initialize(
     &metil_object_sky->mesh,
-    10000.0f,
+    100000.0f,
     (struct math_c_vector2_unsigned_short_int) {
       .x = (
         0x13
