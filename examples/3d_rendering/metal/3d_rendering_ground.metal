@@ -22,23 +22,38 @@
       metil_renderer_vertex_index_parameter_data_object
     )
   ]],
-  unsigned int id_vertex [[vertex_id]]
+  unsigned int index_vertex [[vertex_id]]
 ) {
   struct data_vertex_basic_coloured data_vertex_basic_coloured;
 
   data_vertex_basic_coloured.position = (
     data_object->view_model_matrix_projection *
     vertices[
-      id_vertex
+      index_vertex
     ]
   );
 
   float colour_max = (
-    vertices[
-      id_vertex
-    ].z == 0
-    ? 1.0f
-    : 0.5f
+    0.5f *
+    (float)
+    (
+      index_vertex %
+      0x0a
+    ) /
+    0x09 +
+    0.05f +
+    (float)
+    (
+      index_vertex %
+      0x0f
+    ) /
+    0x0e *
+    0.05f
+  );
+
+  colour_max = (
+    colour_max *
+    0.75f
   );
 
   data_vertex_basic_coloured.colour = (
@@ -46,17 +61,20 @@
       (
         data_frame->brightness *
         colour_max *
-        data_object->colour.x
+        data_object->colour.x *
+        0.25f
       ),
       (
         data_frame->brightness *
         colour_max *
-        data_object->colour.y
+        data_object->colour.y *
+        0.5f
       ),
       (
         data_frame->brightness *
         colour_max *
-        data_object->colour.z
+        data_object->colour.z *
+        0.3f
       ),
       data_object->colour.w
     )

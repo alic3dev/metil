@@ -89,7 +89,7 @@ void example_3d_scene_poll(
 
   metil_object_sky->rotation.y = (
     metil_object_sky->rotation.y +
-    -0.0001f *
+    -0.00001f *
     metil_scene->time_delta
   );
 
