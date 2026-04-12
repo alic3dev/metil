@@ -449,6 +449,32 @@
     )
   );
 
+  if (
+    (
+      self->metil->rendering_properties.disables &
+      metil_rendering_properties_disables_rendering
+    ) ==
+    0x00
+  ) {
+    descriptor_render_pass.colorAttachments[
+      0x00
+    ].loadAction = (
+      MTLLoadActionClear
+    );
+  } else {
+    descriptor_render_pass.colorAttachments[
+      0x00
+    ].loadAction = (
+      MTLLoadActionLoad
+    );
+  }
+
+  descriptor_render_pass.colorAttachments[
+    0x00
+  ].storeAction = (
+    MTLStoreActionStore
+  );
+
   encoder_render = [
     command_buffer
     renderCommandEncoderWithDescriptor: (
@@ -504,11 +530,18 @@
     self
     poll: _frame
   ];
-
-  [
-    self
-    render
-  ];
+  if (
+    (
+      self->metil->rendering_properties.disables &
+      metil_rendering_properties_disables_rendering
+    ) ==
+    0x00
+  ) {
+    [
+      self
+      render
+    ];
+  }
 
   if (
     self->metil->rendering_properties.fps_display == 1 &&
@@ -921,11 +954,20 @@
   struct metil_player* metil_player = &(
     metil_scene->player
   );
-
-  metil_scene_poll(
-    self->metil,
-    metil_scene
+  unsigned char disabled_polling = (
+    self->metil->rendering_properties.disables &
+    metil_rendering_properties_disables_polling
   );
+
+  if (
+    disabled_polling ==
+    0x00
+  ) {
+    metil_scene_poll(
+      self->metil,
+      metil_scene
+    );
+  }
 
   struct metil_renderer_data_frame* data_frame = (
     data_buffer_frame[
@@ -988,90 +1030,98 @@
     matrix_player_rotation_y
   );
 
-  unsigned char _index_data_buffer_frame = self->index_data_buffer_frame;
-  unsigned int length_segment_objects = (
-    metil_scene->length_renderables /
-    self->metil->system_information.cores_cpu
+  unsigned char _index_data_buffer_frame = (
+    self->index_data_buffer_frame
   );
 
-  for (
-    unsigned int index_core_cpu = 0;
-    index_core_cpu < self->metil->system_information.cores_cpu;
-    ++index_core_cpu
+  if (
+    disabled_polling ==
+    0x00
   ) {
-    unsigned int index_thread = (
-      self->metil->system_information.cores_cpu *
-      _index_data_buffer_frame +
-      index_core_cpu
+    unsigned int length_segment_objects = (
+      metil_scene->length_renderables /
+      self->metil->system_information.cores_cpu
     );
 
-    if (
-      self->threads[
-        index_thread
-      ] != 0
+    for (
+      unsigned int index_core_cpu = 0;
+      index_core_cpu < self->metil->system_information.cores_cpu;
+      ++index_core_cpu
     ) {
-      pthread_join(
+      unsigned int index_thread = (
+        self->metil->system_information.cores_cpu *
+        _index_data_buffer_frame +
+        index_core_cpu
+      );
+
+      if (
         self->threads[
           index_thread
-        ],
-        0
+        ] != 0
+      ) {
+        pthread_join(
+          self->threads[
+            index_thread
+          ],
+          0
+        );
+      }
+
+      unsigned int offset_index_object = (
+        length_segment_objects * index_core_cpu
       );
-    }
 
-    unsigned int offset_index_object = (
-      length_segment_objects * index_core_cpu
-    );
-
-    self->threads_data[
-      index_thread
-    ].renderables = (
-      metil_scene->renderables +
-      offset_index_object
-    );
-
-    if (
-      index_core_cpu < (
-        self->metil->system_information.cores_cpu - 1
-      )
-    ) {
       self->threads_data[
         index_thread
-      ].length_renderables = (
-        length_segment_objects
+      ].renderables = (
+        metil_scene->renderables +
+        offset_index_object
       );
-    } else {
-      self->threads_data[
-        index_thread
-      ].length_renderables = (
-        metil_scene->length_renderables - (
-          length_segment_objects *
-          index_core_cpu
+
+      if (
+        index_core_cpu < (
+          self->metil->system_information.cores_cpu - 1
         )
+      ) {
+        self->threads_data[
+          index_thread
+        ].length_renderables = (
+          length_segment_objects
+        );
+      } else {
+        self->threads_data[
+          index_thread
+        ].length_renderables = (
+          metil_scene->length_renderables - (
+            length_segment_objects *
+            index_core_cpu
+          )
+        );
+      }
+
+      self->threads_data[
+        index_thread
+      ].matrix_object_projection = (
+        &matrix_object_projection
+      );
+
+      self->threads_data[
+        index_thread
+      ].matrix_player_projection = (
+        &matrix_player_projection
+      );
+
+      pthread_create(
+        &self->threads[
+          index_thread
+        ],
+        0,
+        metil_renderer_thread_poll_object,
+        &self->threads_data[
+          index_thread
+        ]
       );
     }
-
-    self->threads_data[
-      index_thread
-    ].matrix_object_projection = (
-      &matrix_object_projection
-    );
-
-    self->threads_data[
-      index_thread
-    ].matrix_player_projection = (
-      &matrix_player_projection
-    );
-
-    pthread_create(
-      &self->threads[
-        index_thread
-      ],
-      0,
-      metil_renderer_thread_poll_object,
-      &self->threads_data[
-        index_thread
-      ]
-    );
   }
 
   if (
@@ -1084,27 +1134,32 @@
     ];
   }
 
-  for (
-    unsigned int index_core_cpu = 0;
-    index_core_cpu < self->metil->system_information.cores_cpu;
-    ++index_core_cpu
+  if (
+    disabled_polling ==
+    0x00
   ) {
-    unsigned int index_thread = (
-      self->metil->system_information.cores_cpu *
-      _index_data_buffer_frame +
-      index_core_cpu
-    );
+    for (
+      unsigned int index_core_cpu = 0;
+      index_core_cpu < self->metil->system_information.cores_cpu;
+      ++index_core_cpu
+    ) {
+      unsigned int index_thread = (
+        self->metil->system_information.cores_cpu *
+        _index_data_buffer_frame +
+        index_core_cpu
+      );
 
-    pthread_join(
+      pthread_join(
+        self->threads[
+          index_thread
+        ],
+        0
+      );
+
       self->threads[
         index_thread
-      ],
-      0
-    );
-
-    self->threads[
-      index_thread
-    ] = 0;
+      ] = 0;
+    }
   }
 }
 

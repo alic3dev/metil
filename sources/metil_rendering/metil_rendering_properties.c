@@ -71,6 +71,10 @@ void metil_rendering_properties_initialize(
       index_time_frame
     ] = 0;
   }
+
+  metil_rendering_properties->disables = (
+    metil_rendering_properties_disables_none
+  );
 }
 
 void metil_rendering_properties_destory(
