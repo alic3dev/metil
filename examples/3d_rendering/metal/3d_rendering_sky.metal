@@ -30,16 +30,15 @@
     data_object->view_model_matrix_projection *
     vertices[
       index_vertex
-    ]      );
-
-  unsigned int index_offset = (
-    index_vertex
+    ]
   );
-
   float shift = (
     (float)
-    data_frame->frame /
-    100.0f
+    (
+      data_frame->frame +
+      0xff
+    ) /
+    1000.0f
   );
 
   if (
@@ -65,6 +64,7 @@
       shift
     );
   } 
+
   if (
     shift >
     0x02
@@ -92,7 +92,9 @@
   }
 
   data_vertex_basic_textured_coloured.colour.x = (
-    0.4f
+    0.4f +
+    shift *
+    0.04f
   );
 
   data_vertex_basic_textured_coloured.colour.y = (
@@ -106,42 +108,8 @@
     shift
   );
 
-  if (
-    shift >
-    0x02
-  ) {
-    shift = (
-      shift -
-      (unsigned int)
-      (
-        shift -
-        0x01
-      )
-    );
-  }
-
-  if (
-    shift >
-    0x01
-  ) {
-    shift = (
-      1.0f -
-      (
-        shift -
-        0x01
-      )
-    );
-  }
   data_vertex_basic_textured_coloured.colour.z = (
-    0.6f +
-    (float)
-    (
-      index_offset %
-      0x06
-    ) *
-    shift /
-    5.0f *
-    0.4f
+    0x01
   );
 
   data_vertex_basic_textured_coloured.colour.w = (
@@ -153,17 +121,13 @@
     (
       (float)
       (
-        index_offset %
+        (unsigned int)
+        index_vertex %
         0x07
       ) /
       6.0f *
       0.3f +
       0.7f
-    ) *
-    (
-      ((((index_vertex + 0x01) + (data_frame->frame / 0x08)) % (0x13 * 0x16 )) == 0x00)
-      ? 0x00
-      : 0x01
     )
   );
 
@@ -189,10 +153,12 @@
       data_vertex_basic_textured_coloured.position_texture
     )
   );
+
   colour_output = (
     colour_output *
     sample_texture_sky
   );*/
+
   return (
     colour_output
   );
