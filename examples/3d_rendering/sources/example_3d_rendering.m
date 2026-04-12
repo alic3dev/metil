@@ -43,16 +43,28 @@ void example_3d_rendering_renderer_on_initialize(
     ]
   ];
 
+  example_3d_rendering_index_pipeline_sky = [
+    metil->renderer_interface.renderer
+    pipeline_add: [
+      metil->library.library
+      newFunctionWithName: @"metil_example_3d_rendering_sky_fragment"
+    ]
+    function_vertex: [
+      metil->library.library
+      newFunctionWithName: @"metil_example_3d_rendering_sky_vertex"
+    ]
+  ];
+
   metil->rendering_properties.colour_clear.x = (
-    0.724f
+    0.0f
   );
 
   metil->rendering_properties.colour_clear.y = (
-    0.832f
+    0.0f
   );
 
   metil->rendering_properties.colour_clear.z = (
-    0.934f
+    0.0f
   );
 
   struct metil_scene_controller* metil_scene_controller = (

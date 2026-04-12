@@ -1,5 +1,7 @@
 #include <example_3d_scene.h>
 
+#include <3d_rendering_objects/3d_rendering_ground.h>
+#include <3d_rendering_objects/3d_rendering_sky.h>
 #include <example_3d_rendering_index_pipeline.h>
 
 #include <metil.h>
@@ -24,7 +26,7 @@ void example_3d_scene_initialize(
   metil_scene_initialize_with_renderables(
     metil,
     metil_scene,
-    1
+    example_3d_scene_length_renderables
   );
 
   metil_scene->poll = (
@@ -36,69 +38,61 @@ void example_3d_scene_initialize(
     index_renderable < metil_scene->length_renderables;
     ++index_renderable
   ) {
-    metil_renderable_initialize_at_index(
-      metil_scene->renderables,
-      index_renderable,
-      metil_renderable_type_object
-    );
+    switch (
+      index_renderable
+    ) {
+      case example_3d_scene_index_renderable_sky:
+      case example_3d_scene_index_renderable_ground:
+      default: {
+        metil_renderable_initialize_at_index(
+          metil_scene->renderables,
+          index_renderable,
+          metil_renderable_type_object
+        );
 
-    struct metil_object* metil_object_ground = (
-      metil_scene->renderables[
-        index_renderable
-      ].renderable
-    );
-
-    metil_mesh_celled_triangles_quadruple_grid_initialize(
-      &metil_object_ground->mesh,
-      (struct math_c_vector2_float) {
-        .x = 500.0f,
-        .y = 500.0f
-      },
-      (struct math_c_vector2_unsigned_long_int) {
-        .x = 500,
-        .y = 500
+        break;
       }
-    );
-
-    metil_object_buffers_initialize(
-      metil_object_ground,
-      metil->renderer_interface.metal_device
-    );
-
-    metil_object_ground->index_pipeline_render = (
-      example_3d_rendering_index_pipeline_ground
-    );
-
-    struct metil_renderer_data_object* data_object = (
-      metil_object_ground->buffers_vertex[
-        metil_object_buffer_default_index_data
-      ].buffer.contents
-    );
-
-    metil_object_ground->rotation.x = (
-      math_c_pi_half
-    );
-
-    data_object->colour.x = (
-      0.7
-    );
-
-    data_object->colour.y = (
-      0.5
-    );
-
-    data_object->colour.z = (
-      0.4
-    );
-
-    data_object->colour.w = 1.0f;
+    }
   }
+  struct metil_object* metil_object_sky = (
+    metil_scene->renderables[
+      example_3d_scene_index_renderable_sky
+    ].renderable
+  );
+
+  metil_example_3d_rendering_sky_initialize(
+    metil,
+    metil_object_sky
+  );
+
+  struct metil_object* metil_object_ground = (
+    metil_scene->renderables[
+      example_3d_scene_index_renderable_ground
+    ].renderable
+  );
+
+  metil_example_3d_rendering_ground_initialize(
+    metil,
+    metil_object_ground
+  );
 }
 
 void example_3d_scene_poll(
   struct metil* metil,
   struct metil_scene* metil_scene
 ) {
+  struct metil_object* metil_object_sky = (
+    metil_scene->renderables[
+      example_3d_scene_index_renderable_sky
+    ].renderable
+  );
+
+  metil_object_sky->rotation.y = (
+    metil_object_sky->rotation.y +
+    -0.0001f *
+    metil_scene->time_delta
+  );
+
   metil_scene_poll_default(
     metil,
     metil_scene
