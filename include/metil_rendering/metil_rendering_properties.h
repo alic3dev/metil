@@ -12,8 +12,16 @@
 
 #define metil_count_time_frames 60
 
-#define metil_rendering_properties_mode_default 0b1
-#define metil_rendering_properties_mode_wireframe 0b10
+enum metil_rendering_properties_mode {
+  metil_rendering_properties_mode_default   = 0b01,
+  metil_rendering_properties_mode_wireframe = 0b10
+};
+
+enum metil_rendering_properties_disables {
+  metil_rendering_properties_disables_none      = 0b00,
+  metil_rendering_properties_disables_polling   = 0b01,
+  metil_rendering_properties_disables_rendering = 0b10
+};
 
 struct metil_rendering_properties {
   struct metil_camera camera;
@@ -31,11 +39,13 @@ struct metil_rendering_properties {
   struct math_c_vector4_float colour_fps_display;
   float fps;
 
-  unsigned char mode;
+  enum metil_rendering_properties_mode mode;
 
   unsigned long int time_frames[
     metil_count_time_frames
   ];
+
+  enum metil_rendering_properties_disables disables;
 };
 
 void metil_rendering_properties_initialize(
