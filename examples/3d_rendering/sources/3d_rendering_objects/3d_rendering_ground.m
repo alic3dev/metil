@@ -17,10 +17,10 @@ void metil_example_3d_rendering_ground_initialize(
     &metil_object_ground->mesh,
     (struct math_c_vector2_float) {
       .x = (
-        0.00001f * 0x01f4
+        0xffff
       ),
       .y = (
-        0.00001f * 0x01f4
+        0xffff
       )
     },
     (struct math_c_vector2_unsigned_long_int) {
