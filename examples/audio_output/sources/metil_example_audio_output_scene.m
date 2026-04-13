@@ -61,7 +61,7 @@ void metil_example_audio_output_scene_initialize(
     struct metil_mesh* metil_mesh = (
       &metil_object->mesh
     );
-    
+
     struct math_c_vector3_float points[
       metil_example_audio_output_io_proc_data_length_buffer
     ];
@@ -102,7 +102,7 @@ void metil_example_audio_output_scene_initialize(
         0.4f
       );
     }
-  
+
     metil_mesh_line_initialize(
       metil_mesh,
       metil_example_audio_output_io_proc_data_length_buffer,
@@ -213,7 +213,7 @@ void metil_example_audio_output_scene_initialize(
       synthesizer,
       square
     );
-  
+
     cer0_synthesizer_oscillator_add(
       synthesizer,
       sawtooth_up

@@ -54,7 +54,7 @@ OSStatus metil_example_audio_output_io_proc(
         index_buffer
       ]
     );
-  
+
     float* buffer_out = (
       audio_buffer_current.mData
     );
@@ -134,7 +134,7 @@ OSStatus metil_example_audio_output_io_proc(
         );
       }
     }
-  
+
     value_total = (
       value_total /
       (float)
