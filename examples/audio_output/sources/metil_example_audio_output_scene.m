@@ -86,8 +86,8 @@ void metil_example_audio_output_scene_initialize(
         index_point
       ].x = (
         percentage *
-        2.0f -
-        1.0f
+        0x02 -
+        0x01
       );
 
       points[
@@ -261,7 +261,7 @@ void metil_example_audio_output_scene_poll(
         0x01
       )
     ) /
-    100.0f
+    0x64
   );
 
   if (
@@ -275,7 +275,10 @@ void metil_example_audio_output_scene_poll(
 
     cer0_synthesizer_frequency_set(
       synthesizer_secondary,
-      frequency + 0x02
+      (
+        frequency +
+        0x02
+      )
     );
   }
 }

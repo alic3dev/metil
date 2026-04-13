@@ -53,7 +53,8 @@
       ),
       0x00,      (
         data_object->colour.z *
-        data_frame->brightness *        math_c_absolute_float(
+        data_frame->brightness *
+        math_c_absolute_float(
           vertices[
             id_vertex
           ].y
