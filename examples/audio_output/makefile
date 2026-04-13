@@ -91,6 +91,7 @@ target_platform_metal=air64-apple-macos${target_metal_version}
 directory_sdk=${shell xcrun --sdk macosx${target_device_version} --show-sdk-path}
 
 file_metalar_metil_fps_display=${directory_metil_library}/metil_fps_display.metalar
+file_metalar_math_c=${directory_math_c}/metalar/macos/math_c_absolute.metalar
 
 file_metil_metallib=${directory_metil_library}/metil.metallib
 file_metil_storyboard=${directory_metil_library}/metil.storyboardc
@@ -183,7 +184,7 @@ endif
 
 ${file_output_metal}: ${files_air}
 	mkdir -p "${dir ${file_output_metal}}"
-	${metallib} ${metal_flags_output} ${files_air} ${file_metalar_metil_wireframe} ${file_metalar_metil_fps_display} -o ${file_output_metal}
+	${metallib} ${metal_flags_output} ${files_air} ${file_metalar_metil_wireframe} ${file_metalar_metil_fps_display} ${file_metalar_math_c} -o ${file_output_metal}
 
 ${directory_air}/%.air: ${directory_metal}/%.metal
 	mkdir -p "${dir $@}"

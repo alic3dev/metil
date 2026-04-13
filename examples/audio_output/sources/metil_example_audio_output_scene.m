@@ -5,24 +5,7 @@
 
 #include <metil.h>
 #include <metil_audio/metil_audio.h>
-
-/* 2d meshes */
-#include <metil_mesh/metil_mesh_2d/metil_mesh_circle.h>
-#include <metil_mesh/metil_mesh_2d/metil_mesh_rectangle.h>
-#include <metil_mesh/metil_mesh_2d/metil_mesh_square.h>
-#include <metil_mesh/metil_mesh_2d/metil_mesh_triangle.h>
-
-/* 3d meshes */
-#include <metil_mesh/metil_mesh_ball.h>
-#include <metil_mesh/metil_mesh_box.h>
-#include <metil_mesh/metil_mesh_dollop.h>
-#include <metil_mesh/metil_mesh_gem.h>
-#include <metil_mesh/metil_mesh_mushroom.h>
-#include <metil_mesh/metil_mesh_ring.h>
-#include <metil_mesh/metil_mesh_shuttle.h>
-#include <metil_mesh/metil_mesh_sphere.h>
-#include <metil_mesh/metil_mesh_tube.h>
-
+#include <metil_mesh/metil_mesh_line.h>
 #include <metil_object.h>
 #include <metil_player/metil_player.h>
 #include <metil_rendering/metil_renderable.h>
@@ -42,21 +25,25 @@ void metil_example_audio_output_scene_initialize(
   metil_scene_initialize_with_renderables(
     metil,
     metil_scene,
-    13
+    0x02
   );
 
   metil_scene->poll = (
     metil_example_audio_output_scene_poll
   );
 
-  float width = (
-    metil_scene->length_renderables *
-    20.0f
-  );
+  void* vertex_pointers[
+    0x02
+  ];
 
   for (
-    unsigned int index_renderable = 0;
-    index_renderable < metil_scene->length_renderables;
+    unsigned int index_renderable = (
+      0x00
+    );
+    (
+      index_renderable <
+      metil_scene->length_renderables
+    );
     ++index_renderable
   ) {
     metil_renderable_initialize_at_index(
@@ -75,213 +62,64 @@ void metil_example_audio_output_scene_initialize(
       &metil_object->mesh
     );
 
-    switch (
-      index_renderable %
-      13
+    struct math_c_vector3_float points[
+      metil_example_audio_output_io_proc_data_length_buffer
+    ];
+
+    for (
+      unsigned short int index_point = (
+        0x00
+      );
+      (
+        index_point <
+        metil_example_audio_output_io_proc_data_length_buffer
+      );
+      ++index_point
     ) {
-      case 0: {
-        metil_mesh_circle_initialize(
-          metil_mesh,
-          10.0f,
-          100
-        );
+      float percentage = (
+        (float)
+        index_point /
+        metil_example_audio_output_io_proc_data_length_buffer
+      );
 
-        break;
-      }
-      case 1: {
-        metil_mesh_rectangle_initialize(
-          metil_mesh,
-          (struct math_c_vector2_float) {
-            .x = 10.0f,
-            .y = 5.0f
-          }
-        );
+      points[
+        index_point
+      ].x = (
+        percentage *
+        2.0f -
+        1.0f
+      );
 
-        break;
-      }
-      case 2: {
-        metil_mesh_square_initialize(
-          metil_mesh,
-          10.0f
-        );
+      points[
+        index_point
+      ].y = (
+        0x00
+      );
 
-        break;
-      }
-      case 3: {
-        metil_mesh_triangle_initialize(
-          metil_mesh,
-          (struct math_c_vector2_float) {
-            .x = 10.0f,
-            .y = 10.0f
-          }
-        );
-
-        break;
-      }
-      case 4: {
-        metil_mesh_ball_initialize(
-          metil_mesh,
-          10,
-          (struct math_c_vector2_unsigned_short_int) {
-            .x = 100,
-            .y = 100
-          }
-        );
-
-        break;
-      }
-      case 5: {
-        metil_mesh_box_initialize(
-          metil_mesh,
-          (struct math_c_vector3_float) {
-            .x = 10.0f,
-            .y = 10.0f,
-            .z = 10.0f
-          }
-        );
-
-        break;
-      }
-      case 6: {
-        metil_mesh_dollop_initialize(
-          metil_mesh,
-          (struct math_c_vector3_float) {
-            .x = 10.0f,
-            .y = 10.0f,
-            .z = 10.0f
-          },
-          (struct math_c_vector2_unsigned_short_int) {
-            .x = 100,
-            .y = 100
-          }
-        );
-
-        break;
-      }
-      case 7: {
-        metil_mesh_gem_initialize(
-          metil_mesh,
-          (struct math_c_vector3_float) {
-            .x = 10.0f,
-            .y = 10.0f,
-            .z = 10.0f
-          },
-          (struct math_c_vector2_unsigned_short_int) {
-            .x = 100,
-            .y = 100
-          }
-        );
-
-        break;
-      }
-      case 8: {
-        metil_mesh_mushroom_initialize(
-          metil_mesh,
-          (struct math_c_vector3_float) {
-            .x = 10.0f,
-            .y = 10.0f,
-            .z = 10.0f
-          },
-          (struct math_c_vector2_unsigned_short_int) {
-            .x = 110,
-            .y = 110
-          }
-        );
-
-        break;
-      }
-      case 9: {
-        metil_mesh_ring_initialize(
-          metil_mesh,
-          (struct math_c_vector3_float) {
-            .x = 10.0f,
-            .y = 1.0f,
-            .z = 10.0f
-          },
-          (struct math_c_vector3_float) {
-            .x = 8.0f,
-            .y = 1.0f,
-            .z = 8.0f
-          },
-          (struct math_c_vector2_unsigned_short_int) {
-            .x = 100,
-            .y = 100
-          }
-        );
-
-        break;
-      }
-      case 10: {
-        metil_mesh_shuttle_initialize(
-          metil_mesh,
-          (struct math_c_vector3_float) {
-            .x = 10.0f,
-            .y = 10.0f,
-            .z = 10.0f
-          },
-          (struct math_c_vector2_unsigned_short_int) {
-            .x = 7,
-            .y = 7
-          }
-        );
-
-        break;
-      }
-      case 11: {
-        metil_mesh_sphere_initialize(
-          metil_mesh,
-          10,
-          (struct math_c_vector2_unsigned_short_int) {
-            .x = 100,
-            .y = 100
-          }
-        );
-
-        break;
-      }
-      case 12: {
-        metil_mesh_tube_initialize(
-          metil_mesh,
-          (struct math_c_vector3_float) {
-            .x = 10.0f,
-            .y = 10.0f,
-            .z = 10.0f
-          },
-          (struct math_c_vector2_unsigned_short_int) {
-            .x = 100,
-            .y = 100
-          },
-          metil_direction_up
-        );
-
-        break;
-      }
+      points[
+        index_point
+      ].z = (
+        0.4f
+      );
     }
+
+    metil_mesh_line_initialize(
+      metil_mesh,
+      metil_example_audio_output_io_proc_data_length_buffer,
+      points
+    );
 
     metil_object_buffers_initialize(
       metil_object,
       metil->renderer_interface.metal_device
     );
 
-    float percentage = (
-      (float) index_renderable /
-      (float) (
-        metil_scene->length_renderables -
-        1
-      )
+    metil_object->positioning = (
+      metil_positioning_absolute
     );
 
-    metil_object->position.x = percentage * width - width / 2.0f;
-    metil_object->position.y = 10.0f;
-
-    metil_object->rotation.x = (
-      index_renderable *
-      math_c_pi
-    );
-
-    metil_object->rotation.y = (
-      index_renderable *
-      math_c_pi_half
+    metil_object->type_primitive = (
+      MTLPrimitiveTypeLine
     );
 
     struct metil_renderer_data_object* data_object = (
@@ -289,24 +127,104 @@ void metil_example_audio_output_scene_initialize(
         metil_object_buffer_default_index_data
       ].buffer.contents
     );
-  }
 
-  metil_scene->player.position.z = -100.0f;
+    struct math_c_vector4_float* vertices = (
+      metil_object->buffers_vertex[
+        metil_object_buffer_default_index_vertices
+      ].buffer.contents
+    );
+
+    vertex_pointers[
+      index_renderable
+    ] = (
+      vertices
+    );
+  }
 
   static struct metil_example_audio_output_io_proc_data* metil_example_audio_output_io_proc_data;
 
   metil_example_audio_output_io_proc_data = (
     clic3_memory_allocate_raw(
       sizeof(
-        struct metil_example_audio_output_io_proc_data*
+        struct metil_example_audio_output_io_proc_data
       )
     )
+  );
+
+  metil_scene->data = (
+    metil_example_audio_output_io_proc_data
+  );
+
+  metil_example_audio_output_io_proc_data->vertices = (
+    vertex_pointers[
+      0x00
+    ]
+  );
+
+  metil_example_audio_output_io_proc_data->vertices_secondary = (
+    vertex_pointers[
+      0x01
+    ]
   );
 
   cer0_synthesizer_initialize(
     &metil_example_audio_output_io_proc_data->synthesizer,
     metil->audio.audio_output.sample_rate
   );
+
+  cer0_synthesizer_initialize(
+    &metil_example_audio_output_io_proc_data->synthesizer_secondary,
+    metil->audio.audio_output.sample_rate
+  );
+
+  struct cer0_synthesizer* synthesizer = &(
+    metil_example_audio_output_io_proc_data->synthesizer
+  );
+  for (
+    unsigned char index_synthesizer = (
+      0x00
+    );
+    (
+      index_synthesizer <
+      0x02
+    );
+    ++index_synthesizer
+  ) {
+    if (
+      index_synthesizer ==
+      0x01
+    ) {
+      synthesizer = &(
+        metil_example_audio_output_io_proc_data->synthesizer_secondary
+      );
+    }
+
+    cer0_synthesizer_oscillator_add(
+       synthesizer,
+       sine
+    );
+
+    cer0_synthesizer_oscillator_add(
+      synthesizer,
+      triangle
+    );
+
+    cer0_synthesizer_oscillator_add(
+      synthesizer,
+      square
+    );
+
+    cer0_synthesizer_oscillator_add(
+      synthesizer,
+      sawtooth_up
+    );
+
+    cer0_synthesizer_oscillator_add(
+      synthesizer,
+      sawtooth_down
+    );
+  }
+
   metil_audio_io_proc_add_with_data(
     &metil->audio,
     metil_example_audio_output_io_proc,
@@ -323,25 +241,41 @@ void metil_example_audio_output_scene_poll(
     metil_scene
   );
 
-  for (
-    unsigned int index_renderable = 0;
-    index_renderable < metil_scene->length_renderables;
-    ++index_renderable
+  struct metil_example_audio_output_io_proc_data* metil_example_audio_output_io_proc_data = (
+    metil_scene->data
+  );
+
+  struct cer0_synthesizer* synthesizer = &(
+    metil_example_audio_output_io_proc_data->synthesizer
+  );
+
+  struct cer0_synthesizer* synthesizer_secondary = &(
+    metil_example_audio_output_io_proc_data->synthesizer_secondary
+  );
+
+  float frequency = (
+    (float)
+    (
+      (
+        metil_scene->time_elapsed /
+        0x01
+      )
+    ) /
+    100.0f
+  );
+
+  if (
+    synthesizer->frequency !=
+    frequency
   ) {
-    struct metil_object* metil_object = (
-      metil_scene->renderables[
-        index_renderable
-      ].renderable
+    cer0_synthesizer_frequency_set(
+      synthesizer,
+      frequency
     );
 
-    metil_object->rotation.x = (
-      metil_object->rotation.x +
-      0.01
-    );
-
-    metil_object->rotation.y = (
-      metil_object->rotation.y +
-      0.01
+    cer0_synthesizer_frequency_set(
+      synthesizer_secondary,
+      frequency + 0x02
     );
   }
 }
@@ -350,4 +284,24 @@ void metil_example_audio_output_scene_destroy(
   struct metil* metil,
   struct metil_scene* metil_scene
 ) {
+  metil_audio_io_proc_remove(
+    &metil->audio,
+    metil_example_audio_output_io_proc
+  );
+
+  struct metil_example_audio_output_io_proc_data* metil_example_audio_output_io_proc_data = (
+    metil_scene->data
+  );
+
+  cer0_synthesizer_destroy(
+    &metil_example_audio_output_io_proc_data->synthesizer
+  );
+
+  cer0_synthesizer_destroy(
+    &metil_example_audio_output_io_proc_data->synthesizer_secondary
+  );
+
+  clic3_memory_free_raw(
+    metil_scene->data
+  );
 }
