@@ -5,12 +5,13 @@ rendering_framework.utilizing(`apple::metal`)
 ## releases
 
 - [`latest`](https://github.com/alic3dev/metil/releases/latest)
+- [`metil`:version->{`2.0.0`}](https://github.com/alic3dev/metil/releases/tag/release_version-%3E%7B2.0.0%7D%3B)::[ice_castles]
 - [`metil`:version->{`1.0.0`}](https://github.com/alic3dev/metil/releases/tag/release_version-%3E%7B1.0.0%7D%3B)::[introduction_of_ios_support]
 - [`metil`:version->{`0.0.0`}](https://github.com/alic3dev/metil/releases/tag/release_version-%3E%7B0.0.0%7D%3B)::[macos_only]
 
 ### versioning
 
-the current version being worked on is version `2.0.0`
+the current version being worked on is version `3.0.0`
 
 ### development
 
@@ -1326,7 +1327,7 @@ make target_device=iphone
 
 | [`c938`](https://github.com/alic3dev/c938) | [`zoe`](https://github.com/alic3dev/zoe) |
 |---|---|
-| <img width="640" height="407" alt="metil_c938" src="https://github.com/user-attachments/assets/536659aa-13e7-4591-848f-75aec95834ab" /> | <img width="640" height="407" alt="metil_zoe" src="https://github.com/user-attachments/assets/9ead54e1-db21-4145-ac1a-43993314c008" /> |
+| <img alt="metil_c938" src="https://github.com/user-attachments/assets/2ea41731-9462-445d-968b-5a18830bebf7" /> | <img alt="metil_zoe" src="https://github.com/user-attachments/assets/a228afd8-657e-41d9-a644-9720799e3f8c" /> |
 
 ### ios
 
@@ -1334,13 +1335,13 @@ make target_device=iphone
 
 | [`ff`](https://github.com/alic3dev/ff) |
 |---|
-| <img width="295" height="639" alt="metil_ff_ios" src="https://github.com/user-attachments/assets/a2b1407c-98ee-461a-96c1-2fe989a8bf45" /> |
+| <img width="295" height="639" alt="metil_ff_ios" src="https://github.com/user-attachments/assets/aaf3ac4e-e2dc-41e8-b306-663cc238ea83" /> |
 
 ## examples
 
 | [2d_rendering](examples/2d_rendering/) | [3d_rendering](examples/3d_rendering/) | [animation](examples/animation/) |
 |---|---|---|
-| <img width="1966" height="1250" alt="metil_example_2d_rendering" src="https://github.com/user-attachments/assets/d61f70f0-7c05-4772-8fad-df52e550899f" /> | <img width="1966" height="1250" alt="metil_example_3d_rendering" src="https://github.com/user-attachments/assets/6da49b26-0001-4e5c-8af4-47191ac57aa5" /> | <img width="1966" height="1250" alt="metil_example_animation" src="https://github.com/user-attachments/assets/1ad99942-9e18-470e-96b6-a00e1135ecc3" /> |
+| <img width="1966" height="1250" alt="metil_example_2d_rendering" src="https://github.com/user-attachments/assets/d61f70f0-7c05-4772-8fad-df52e550899f" /> | <img width="1966" height="1250" alt="metil_example_3d_rendering" src="https://github.com/user-attachments/assets/3109d45c-abec-429f-8c95-b48aa17fed8f" /> | <img width="1966" height="1250" alt="metil_example_animation" src="https://github.com/user-attachments/assets/1ad99942-9e18-470e-96b6-a00e1135ecc3" /> |
 
 | [collision](examples/collision/) | [face](examples/face/) | [fog](examples/fog/) |
 |---|---|---|
