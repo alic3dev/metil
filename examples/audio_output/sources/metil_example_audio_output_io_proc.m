@@ -31,6 +31,14 @@ OSStatus metil_example_audio_output_io_proc(
     metil_example_audio_output_io_proc_data->synthesizer
   );
 
+  struct cer0_synthesizer* synthesizer_secondary = &(
+    metil_example_audio_output_io_proc_data->synthesizer_secondary
+  );
+
+  float value_total = (
+    0.0f
+  );
+
   for (
     unsigned long int index_buffer = (
       0x00
@@ -77,16 +85,81 @@ OSStatus metil_example_audio_output_io_proc(
         length_channels
       );
 
-      buffer_out[
-        index_buffer_out
-      ] = (
+      if (
+        index_channel ==
         0x00
-      );
+      ) {
+        float value_synthesizer = (
+          cer0_synthesizer_poll(
+            synthesizer
+          ) +
+          cer0_synthesizer_poll(
+            synthesizer_secondary
+          )
+        );
+
+        value_total = (
+          value_total +
+          value_synthesizer
+        );
+
+        buffer_out[
+          index_buffer_out
+        ] = (
+          value_synthesizer /
+          0x02
+        );
+
+        metil_example_audio_output_io_proc_data->vertices[
+          metil_example_audio_output_io_proc_data->index_vertex
+        ]. y = (
+          value_synthesizer
+        );
+
+        metil_example_audio_output_io_proc_data->index_vertex = (
+          (
+            metil_example_audio_output_io_proc_data->index_vertex +
+            0x01
+          ) %
+          metil_example_audio_output_io_proc_data_length_buffer
+        );
+      } else {
+        buffer_out[
+          index_buffer_out
+        ] = (
+          buffer_out[
+            index_buffer_out -
+            index_channel
+          ]
+        );
+      }
     }
+  
+    value_total = (
+      value_total /
+      (float)
+      (
+        length_buffer_out /
+        length_channels
+      )
+    );
   }
+
+  metil_example_audio_output_io_proc_data->vertices_secondary[
+    metil_example_audio_output_io_proc_data->index_vertex_secondary
+  ].y = (
+    value_total
+  );
+
+  metil_example_audio_output_io_proc_data->index_vertex_secondary = (
+    (
+      metil_example_audio_output_io_proc_data->index_vertex_secondary +
+      0x01
+    ) %
+    metil_example_audio_output_io_proc_data_length_buffer
+  );
 
   return (
     0x00
   );
 }
-

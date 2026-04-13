@@ -1,5 +1,7 @@
 #include <metil_example_audio_output_metal.h>
 
+#include <math_c_absolute.h>
+
 #include <metil_metal/basic_3d_shaders.h>
 
 #include <metil_metal/metil_metal_data_vertex.h>
@@ -38,37 +40,24 @@
   data_vertex_basic_coloured.colour = (
     float4(
       (
+        data_object->colour.x *
+        data_frame->brightness *
         (
-          (
-            id_vertex %
-            3
-          ) == 0
-          ? 1.0f
-          : 0.0f
-        ) *
-        data_frame->brightness
+          1.0f -
+          math_c_absolute_float(
+            vertices[
+              id_vertex
+            ].y
+          )
+        )
       ),
-      (
-        (
-          (
-            id_vertex %
-            3
-          ) == 1
-          ? 1.0f
-          : 0.0f
-        ) *
-        data_frame->brightness
-      ),
-      (
-        (
-          (
-            id_vertex %
-            3
-          ) == 2
-          ? 1.0f
-          : 0.0f
-        ) *
-        data_frame->brightness
+      0x00,      (
+        data_object->colour.z *
+        data_frame->brightness *        math_c_absolute_float(
+          vertices[
+            id_vertex
+          ].y
+        )
       ),
       data_object->colour.w
     )
