@@ -8,6 +8,7 @@
 #include <metil_group.h>
 #include <metil_mesh/metil_mesh_2d/metil_mesh_grid.h>
 #include <metil_mesh/metil_mesh_box.h>
+#include <metil_mesh/metil_mesh_sphere.h>
 #include <metil_object.h>
 #include <metil_player/metil_player.h>
 #include <metil_rendering/metil_renderable.h>
@@ -48,7 +49,8 @@ void example_3d_scene_initialize(
       index_renderable
     ) {
       case example_3d_scene_index_renderable_structures:
-      case example_3d_scene_index_renderable_doors: {
+      case example_3d_scene_index_renderable_doors:
+      case example_3d_scene_index_renderable_solar_system: {
         metil_renderable_initialize_at_index(
           metil_scene->renderables,
           index_renderable,
@@ -265,6 +267,70 @@ data->colour.z=data->colour.y;
     );
   }
 
+  struct metil_group* metil_group_solar_system = (
+    metil_scene->renderables[
+      example_3d_scene_index_renderable_solar_system
+    ].renderable
+  );
+
+  metil_group_add_length_initialize(
+    metil_group_solar_system,
+    0x10ff,
+    metil_renderable_type_object
+  );
+
+  for (
+    unsigned short int index_solar_system_object = (
+      0x00
+    );
+    (
+      index_solar_system_object <
+    metil_group_solar_system->length
+  );
+++index_solar_system_object
+) {
+  struct metil_object* metil_object_solar_system_object = (
+    metil_group_solar_system->renderables[
+      index_solar_system_object
+    ]->renderable
+    );
+
+  metil_mesh_sphere_initialize(
+    &metil_object_solar_system_object->mesh,
+    0x00ff + 0x1000 * (float) ( index_solar_system_object * 0x88 % 0xfab) / 0xfaa,
+    (struct math_c_vector2_unsigned_short_int) {
+    .x = (0x0a), .y = 0x0a });
+
+  metil_object_solar_system_object->position.x = (
+    0xffff * ((index_solar_system_object * 0xcab9 % 0xa0) - (0xa0 - 0x01) / 0x02) + (0xffff * ((index_solar_system_object * 0x78 % 0x20) - (0x1f / 0x02)))
+  );
+
+
+metil_object_solar_system_object->position.x = (
+  metil_object_solar_system_object->position.x
++(
+  (metil_object_solar_system_object->position.x < 0x00) ? -0x186a0 : 0x186a0)) / 0x04;
+
+metil_object_solar_system_object->position.z = (
+    0xffff * ((index_solar_system_object * 0x711 % 0x80) - (0x80 - 0x01) / 0x02) +
+    (0xffff * ((index_solar_system_object * 0xb8c % 0x28) - (0x27 / 0x02))));
+
+metil_object_solar_system_object->position.z = (
+  metil_object_solar_system_object->position.z +
+  ((metil_object_solar_system_object->position.z < 0x00) ? -0x186a0 : 0x186a0)) / 0x04;
+
+metil_object_solar_system_object->position.y = (
+    0xffff * (((index_solar_system_object * 0x4f2 + 0x32) % 0x78) - (0x78 - 0x01) / 0x02) +
+(0xffff * (((index_solar_system_object * 0x63 + 0x34) % 0x10) - (0x09 / 0x02))));
+
+metil_object_solar_system_object->position.y = (metil_object_solar_system_object->position.y +( (
+  metil_object_solar_system_object->position.y < 0x00)?-0x186a0 : 0x186a0)) / 0x04;
+  metil_object_buffers_initialize(
+    metil_object_solar_system_object,
+    metil->renderer_interface.metal_device
+  );
+}
+
   metil_scene->player.position.z = -0x80ff;
 }
 
@@ -277,7 +343,48 @@ void example_3d_scene_poll(
       example_3d_scene_index_renderable_sky
     ].renderable
   );
+/*
 
+ill need to make this a model in order to have proper rotation will do in a bit
+*/
+
+struct metil_group* metil_group_solar_system = (
+    metil_scene->renderables[
+      example_3d_scene_index_renderable_solar_system
+    ].renderable
+  );
+
+for (unsigned short int index_object = 0x00;index_object <metil_group_solar_system->length;++index_object){
+struct metil_object* metil_object_system = metil_group_solar_system->renderables[index_object]->renderable;
+  metil_object_system->rotation.x = (
+    metil_object_system->rotation.x +
+    0.0001f * metil_scene->time_delta
+  );
+
+  metil_object_system->rotation.y = (
+    metil_object_system->rotation.y +
+    0.00001f * metil_scene->time_delta
+);
+
+struct metil_renderer_data_object* data =(
+metil_object_system->buffers_vertex[
+  metil_object_buffer_default_index_data
+].buffer.contents
+);
+
+data->colour.x = (
+  1.0f - ((float) (
+  (metil_scene->time_elapsed / 0xfff + index_object * 0xfa) % 0xffff) / 0xffff)
+);
+
+data->colour.y = (
+  data->colour.x * 0.95f
+);
+data->colour.z = (
+  data->colour.x * 0.9f
+);
+data->colour.w = (data->colour.z);
+}
   metil_object_sky->rotation.y = (
     metil_object_sky->rotation.y +
     -0.00001f *
