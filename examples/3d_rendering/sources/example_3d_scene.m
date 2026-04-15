@@ -9,6 +9,8 @@
 #include <metil_mesh/metil_mesh_2d/metil_mesh_grid.h>
 #include <metil_mesh/metil_mesh_box.h>
 #include <metil_mesh/metil_mesh_sphere.h>
+#include <metil_mesh/metil_mesh_gem.h>
+#include <metil_model/metil_model.h>
 #include <metil_object.h>
 #include <metil_player/metil_player.h>
 #include <metil_rendering/metil_renderable.h>
@@ -50,6 +52,7 @@ void example_3d_scene_initialize(
     switch (
       index_renderable
     ) {
+      case example_3d_scene_index_renderable_planes:
       case example_3d_scene_index_renderable_structures:
       case example_3d_scene_index_renderable_doors:
       case example_3d_scene_index_renderable_solar_system: {
@@ -108,6 +111,130 @@ void example_3d_scene_initialize(
       example_3d_scene_index_renderable_doors
     ].renderable
   );
+
+  struct metil_group* metil_group_planes = (
+      metil_scene->renderables[
+        example_3d_scene_index_renderable_planes
+      ].renderable
+    );
+
+    metil_group_add_length_initialize(
+      metil_group_planes,
+      0x06,
+      metil_renderable_type_model
+    );
+
+  for (
+    unsigned char index_plane = (
+      0x00
+    );
+    (
+      index_plane <
+      metil_group_planes->length
+    );
+    ++index_plane
+  ) {
+    struct metil_model* metil_model_plane = (
+      metil_group_planes->renderables[
+      index_plane
+      ]->renderable
+    );
+
+  metil_model_objects_add_length(
+    metil_model_plane,
+    0x03
+  );
+
+  struct metil_object* metil_object_plane_body = (
+    &metil_model_plane->objects[0x01]
+);
+
+  struct metil_object* metil_object_plane_wing_left = (
+      &metil_model_plane->objects[0x00
+  ]);
+
+  struct metil_object* metil_object_plane_wing_right = (
+      &metil_model_plane->objects[0x02
+]);
+  metil_mesh_gem_initialize(
+    &metil_object_plane_body->mesh,
+    (struct math_c_vector3_float) {
+      .x = 0x20, .y = 0x20, .z = 0x80
+    },
+    (struct math_c_vector2_unsigned_short_int) {
+      .x = 0x04, .y = 0x04
+    }
+  );  
+
+  metil_mesh_gem_initialize(
+    &metil_object_plane_wing_left->mesh,
+    (struct math_c_vector3_float) {
+      .x = 0x10, .y = 0x10, .z = 0x80
+    }, (struct math_c_vector2_unsigned_short_int) {
+        .x = 0x04, .y = 0x04
+  }
+);
+
+metil_mesh_gem_initialize(
+    &metil_object_plane_wing_right->mesh,
+    (struct math_c_vector3_float) {
+      .x = 0x10, .y = 0x10, .z = 0x80
+    }, (struct math_c_vector2_unsigned_short_int) {
+      .x = 0x04, .y = 0x04
+    }
+  );
+
+  metil_model_vertex_joint_maps_initialize(
+    metil_model_plane
+  );
+
+    metil_model_buffers_initialize(
+    metil,
+metil_model_plane,
+metil->renderer_interface.metal_device
+
+    );  
+  metil_object_plane_wing_right->index_pipeline_render = (
+    example_3d_rendering_index_pipeline_plane
+  );
+
+  metil_object_plane_body->index_pipeline_render = (
+    example_3d_rendering_index_pipeline_plane
+  );
+  metil_object_plane_wing_left->index_pipeline_render = (
+    example_3d_rendering_index_pipeline_plane
+);
+
+metil_object_plane_wing_left->position.x = (
+  -0x11
+);
+metil_object_plane_wing_right->position.x = (
+  0x11
+);
+
+metil_object_plane_wing_right->position.z = (
+  -0x08
+);
+
+metil_object_plane_wing_left->position.z = (
+  metil_object_plane_wing_right->position.z
+);
+metil_object_plane_wing_left->rotation.y = (1.1f);
+metil_object_plane_wing_right->rotation.y = (
+  -metil_object_plane_wing_left->rotation.y
+);
+
+    metil_model_plane->position.y = (
+      0x3ff
+    );
+
+    metil_model_plane->position.x = (
+      (index_plane % 2 == 0x00
+      ? -1.0f
+      : 0x01) *
+       0x3ff * (index_plane / 0x02 + 0x01)
+    );
+}
 
   metil_group_add_length_initialize(
     metil_group_structures,
@@ -382,6 +509,38 @@ struct metil_group* metil_group_doors = (
     ].renderable
   );
 
+if (
+   metil_scene->player.position.z < 0x00) {
+  
+  struct metil_group* metil_group_planes = (
+    metil_scene->renderables[
+      example_3d_scene_index_renderable_planes
+    ].renderable
+  );
+
+  for (
+      unsigned char index_plane = (
+        0x00
+      );
+      (
+        index_plane <
+    metil_group_planes->length
+      );
+    ++index_plane
+  ) {
+    struct metil_model* metil_model_plane = (
+      metil_group_planes->renderables[
+        index_plane
+      ]->renderable
+    );
+
+      metil_model_plane->position.z = (
+        metil_scene->time_elapsed * 9.5f - 
+        0x83ff - (
+          index_plane / 0x02) * 0x2ff
+      );
+    }
+}
     for (
       unsigned int index_room = (
         0x00

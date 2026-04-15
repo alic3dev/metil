@@ -4,14 +4,15 @@
 #include <metil.h>
 #include <metil_scenes/metil_scene.h>
 
-#define example_3d_scene_length_renderables 0x05
+#define example_3d_scene_length_renderables 0x06
 
 enum example_3d_scene_index_renderable {
-  example_3d_scene_index_renderable_sky          = 0x00,
-  example_3d_scene_index_renderable_ground       = 0x01,
-  example_3d_scene_index_renderable_structures   = 0x02,
-  example_3d_scene_index_renderable_doors        = 0x03,
-  example_3d_scene_index_renderable_solar_system = 0x04
+  example_3d_scene_index_renderable_sky          = 0x04,
+  example_3d_scene_index_renderable_ground       = 0x00,
+  example_3d_scene_index_renderable_planes       = 0x03,
+  example_3d_scene_index_renderable_structures   = 0x01,
+  example_3d_scene_index_renderable_doors        = 0x02,
+  example_3d_scene_index_renderable_solar_system = 0x05
 };
 
 void example_3d_scene_initialize(

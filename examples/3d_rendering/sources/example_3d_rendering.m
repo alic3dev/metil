@@ -43,6 +43,18 @@ void example_3d_rendering_renderer_on_initialize(
     ]
   ];
 
+  example_3d_rendering_index_pipeline_plane = [
+    metil->renderer_interface.renderer
+    pipeline_add: [
+      metil->library.library
+      newFunctionWithName: @"metil_example_3d_renderng_plane_fragment"
+    ]
+    function_vertex: [
+      metil->library.library
+      newFunctionWithName: @"metil_example_3d_rendering_plane_vertex"
+    ]
+  ];
+
   example_3d_rendering_index_pipeline_sky = [
     metil->renderer_interface.renderer
     pipeline_add: [
