@@ -1,6 +1,7 @@
 #ifndef __example_3d_rendering_index_pipeline_h
 #define __example_3d_rendering_index_pipeline_h
 
+extern unsigned char example_3d_rendering_index_pipeline_door;
 extern unsigned char example_3d_rendering_index_pipeline_ground;
 extern unsigned char example_3d_rendering_index_pipeline_plane;
 extern unsigned char example_3d_rendering_index_pipeline_sky;

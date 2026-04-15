@@ -30,7 +30,10 @@ void example_3d_rendering_renderer_on_initialize(
     @"shader_3d_fragment",
     @"shader_3d_vertex"
   );
-
+example_3d_rendering_index_pipeline_door=[metil->renderer_interface.renderer
+pipeline_add: [metil->library.library newFunctionWithName: @"example_3d_rendering_door_fragment"]
+function_vertex: [metil->library.library newFunctionWithName: @"example_3d_rendering_door_vertex"]
+];
   example_3d_rendering_index_pipeline_ground = [
     metil->renderer_interface.renderer
     pipeline_add: [

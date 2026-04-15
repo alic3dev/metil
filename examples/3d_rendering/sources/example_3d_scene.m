@@ -1,5 +1,6 @@
 #include <example_3d_scene.h>
 
+#include <3d_rendering_textures/3d_rendering_texture_door.h>
 #include <3d_rendering_objects/3d_rendering_ground.h>
 #include <3d_rendering_objects/3d_rendering_sky.h>
 #include <example_3d_rendering_index_pipeline.h>
@@ -358,8 +359,13 @@ brightness = (float) ((index_room % 0x10) + 0x01) / 0x10;
   data->colour.y=(data->colour.x);
 data->colour.z=data->colour.y;
 }
+metil_scene->length_textures=0x01;
 
-  for (
+clic3_memory_reallocate_raw(
+&metil_scene->textures
+,sizeof(id<MTLTexture>)*metil_scene->length_textures)
+;
+metil_scene->textures[0x00]=metil_example_3d_rendering_texture_door_generate(metil->renderer_interface.metal_device);  for (
     unsigned int index_door = (
       0x00
     );
@@ -417,11 +423,13 @@ data->colour.z=data->colour.y;
       metil->renderer_interface.metal_device
     );
 
+metil_object_texture_add(metil_object_door,metil_scene->textures[0x00]);
+
     struct metil_renderer_data_object* data = (
       metil_object_door->buffers_vertex[
         metil_object_buffer_default_index_data
       ].buffer.contents
-    );
+    );metil_object_door->index_pipeline_render=(example_3d_rendering_index_pipeline_door);
 
     data->colour.x = (0.9f + 0.1f * ((float) ((index_room + 0x05) % 0x09) / 0x08));
     data->colour.y = (data->colour.x);
@@ -574,6 +582,8 @@ if (
       metil_object_door_right->position.x = (
         -metil_object_door_left->position.x
       );    
+
+  
     }
   
 

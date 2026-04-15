@@ -1,5 +1,6 @@
 #include <3d_rendering_objects/3d_rendering_ground.h>
 
+#include <3d_rendering_textures/3d_rendering_texture_ground.h>
 #include <example_3d_rendering_index_pipeline.h>
 
 #include <math_c_pi.h>
@@ -44,5 +45,20 @@ void metil_example_3d_rendering_ground_initialize(
 
   metil_object_ground->rotation.x = (
     math_c_pi_half
+  );
+
+id<MTLTexture> texture_ground = (
+metil_example_3d_rendering_texture_ground_generate(
+  metil->renderer_interface.metal_device
+)
+);  
+
+metil_object_texture_add(
+  metil_object_ground
+  ,texture_ground
+);
+
+  metil_object_ground->destroy = (
+    metil_object_destroy_with_textures
   );
 }
