@@ -75,6 +75,9 @@ directory_app_contents_resources=${directory_app_contents}/Resources
 
 file_metalar_metil_basic_3d_shaders=${directory_metil_library}/basic_3d_shaders.metalar
 file_metalar_metil_fps_display=${directory_metil_library}/metil_fps_display.metalar
+file_metalar_metil_metal_model=${directory_metil_library}/metil_metal_model.metalar
+file_metalar_math_c_pi=${directory_math_c}/metalar/macos/math_c_pi.metalar
+file_metalar_math_c_sine=${directory_math_c}/metalar/macos/math_c_sine.metalar
 
 file_metil_storyboard=${directory_metil_library}/metil.storyboardc
 
@@ -183,7 +186,7 @@ endif
 
 ${file_output_metal}: ${files_air}
 	mkdir -p "${dir ${file_output_metal}}"
-	${metallib} ${metal_flags_output} ${files_air} ${file_metalar_metil_basic_3d_shaders} ${file_metalar_metil_fps_display} -o ${file_output_metal}
+	${metallib} ${metal_flags_output} ${files_air} ${file_metalar_metil_basic_3d_shaders} ${file_metalar_metil_fps_display} ${file_metalar_metil_metal_model} ${file_metalar_math_c_pi} ${file_metalar_math_c_sine} -o ${file_output_metal}
 
 ${directory_air}/%.air: ${directory_metal}/%.metal
 	mkdir -p "${dir $@}"
