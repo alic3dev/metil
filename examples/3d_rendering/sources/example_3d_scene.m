@@ -211,12 +211,14 @@ float brightness = 1.0f;
 
 if (index_room > 0xff && index_room < 0x01ff) {
   brightness = index_room % 4 == 0
-  ;}
-
-if (index_room > 0x02aa) {
-  
+  ;} else if (index_room > 0x02aa) {  
     brightness =math_c_maximum_float(0.0f, 1.0f - (float) (index_room - 0x02aa) / 0x00cc);
+} else {
+brightness = (float) ((index_room % 0x10) + 0x01) / 0x10;
+
+  if (brightness > 1.0f) { brightness = 1.0f - (brightness - 1.0f); }
 }
+
     data->colour.x = (
   brightness * (float)(
       (index_structure  % 0x0a) + 0x03)  / (float) 0x0c
@@ -262,6 +264,8 @@ data->colour.z=data->colour.y;
       metil->renderer_interface.metal_device
     );
   }
+
+  metil_scene->player.position.z = -0x80ff;
 }
 
 void example_3d_scene_poll(
@@ -283,6 +287,16 @@ void example_3d_scene_poll(
   struct metil_player* metil_player = &(
     metil_scene->player
   );
+
+  if (metil_player->position.z < -0xff) {
+    metil_player->rotation.x = (
+      math_c_sine(
+        (math_c_absolute_float(metil_player->position.z + 0xff) / 0x8000) * math_c_pi, math_c_pi
+) * 0.75f);  
+
+    metil_player->rotation.y = (
+        metil_player->rotation.x / 0x04);
+}
 
   if (
     metil_player->position.z < 0x10ff * 0xaa / 5 
