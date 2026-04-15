@@ -22,6 +22,8 @@
 #include <math_c_maximum.h>
 #include <math_c_minimum.h>
 #include <math_c_pi.h>
+#include <math_c_power.h>
+#include <math_c_square_root.h>
 
 #include <math_c_sine.h>
 #include <math_c_vector.h>
@@ -115,7 +117,7 @@ void example_3d_scene_initialize(
 
   metil_group_add_length_initialize(
     metil_group_doors,
-    0x10ff,
+    metil_group_structures->length / 0x05 / 0x10 * 0x02,
     metil_renderable_type_object
   );
 
@@ -250,22 +252,53 @@ data->colour.z=data->colour.y;
       &metil_object_door->mesh,
       (struct math_c_vector3_float) {
         .x = (
-          0x05
+          0x50
         ),
         .y = (
-          0x0a
+          0xa0
         ),
         .z = (
-          0x01
+          0x06
         )
       }
+    );
+
+
+    unsigned int index_room = (
+      index_door / 0x02
+    );
+
+    if (
+      index_door % 0x02 == 0x00
+    ) {
+      metil_object_door->position.x = (
+        -0x28
+      );
+    } else {
+      metil_object_door->position.x = (
+        0x28
+      );
+    }
+
+    metil_object_door->position.z = (
+      index_room *
+      0xa0 * 0x10
     );
 
     metil_object_buffers_initialize(
       metil_object_door,
       metil->renderer_interface.metal_device
     );
-  }
+
+    struct metil_renderer_data_object* data = (
+      metil_object_door->buffers_vertex[
+        metil_object_buffer_default_index_data
+      ].buffer.contents
+    );
+
+    data->colour.x = (0.9f + 0.1f * ((float) ((index_room + 0x05) % 0x09) / 0x08));
+    data->colour.y = (data->colour.x);
+    data->colour.z = (data->colour.x);  }
 
   struct metil_group* metil_group_solar_system = (
     metil_scene->renderables[
@@ -338,6 +371,48 @@ void example_3d_scene_poll(
   struct metil* metil,
   struct metil_scene* metil_scene
 ) {
+struct metil_group* metil_group_doors = (
+    metil_scene->renderables[
+        example_3d_scene_index_renderable_doors
+    ].renderable
+  );
+
+    for (
+      unsigned int index_room = (
+        0x00
+      );
+      (
+        index_room <
+        metil_group_doors->length / 0x02
+      );
+      ++index_room
+    ) {
+      struct metil_object* metil_object_door_left = (
+        metil_group_doors->renderables[
+          index_room * 0x02
+        ]->renderable
+      );
+
+      struct metil_object* metil_object_door_right = (
+        metil_group_doors->renderables[
+          index_room * 0x02
+        + 0x01
+        ]->renderable
+      );
+
+      metil_object_door_left->position.x = (
+        -0x28 -
+      (1.0f - 
+         math_c_maximum_float(0x00,math_c_minimum_float((metil_object_door_left->position.z - metil_scene->player.position.z - 0x10) / 0x12ff, 0x01)
+      )) * 0x50
+      );
+
+      metil_object_door_right->position.x = (
+        -metil_object_door_left->position.x
+      );    
+    }
+  
+
   struct metil_object* metil_object_sky = (
     metil_scene->renderables[
       example_3d_scene_index_renderable_sky
