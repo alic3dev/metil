@@ -362,6 +362,11 @@ metil_object_solar_system_object->position.y = (metil_object_solar_system_object
     metil_object_solar_system_object,
     metil->renderer_interface.metal_device
   );
+
+  metil_object_buffers_initialize(
+    metil_object_solar_system_object,
+    metil->renderer_interface.metal_device
+  );
 }
 
   metil_scene->player.position.z = -0x80ff;
@@ -418,10 +423,6 @@ struct metil_group* metil_group_doors = (
       example_3d_scene_index_renderable_sky
     ].renderable
   );
-/*
-
-ill need to make this a model in order to have proper rotation will do in a bit
-*/
 
 struct metil_group* metil_group_solar_system = (
     metil_scene->renderables[
