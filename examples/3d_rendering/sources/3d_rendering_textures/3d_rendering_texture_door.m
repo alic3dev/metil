@@ -1,11 +1,11 @@
-#include <3d_rendering_textures/3d_rendering_texture_ground.h>
+#include <3d_rendering_textures/3d_rendering_texture_door.h>
 
 #include <clic3_memory.h>
 
 #include <Metal/MTLDevice.h>
 #include <Metal/MTLTexture.h>
 
-id<MTLTexture> metil_example_3d_rendering_texture_ground_generate(
+id<MTLTexture> metil_example_3d_rendering_texture_door_generate(
   id<MTLDevice> metal_device
 ) {
   static id<MTLTexture> metil_example_3d_rendering_texture_ground;
@@ -23,7 +23,7 @@ id<MTLTexture> metil_example_3d_rendering_texture_ground_generate(
   );
 
   descriptor_texture.width = (
-    0x10ff
+    0x10ff / 0x02
   );
   
   descriptor_texture.height = (
@@ -90,13 +90,17 @@ id<MTLTexture> metil_example_3d_rendering_texture_ground_generate(
 
       bytes_pixels[
         index
-      ] = ((
-        
-((index * 0x30) % 0x30) > 0x2a ? 0x00 : 0x01) *        0x30 + 0xdf * ((float) (((index * 0x24 + index_column * 0x3)) % 0x83)) / 0x82
-      );
+      ] = (
+        (
+    index_row > 0x13f && index_row < (descriptor_texture.height - 0x13f) &&
+          index_column > 
+          0x13f &&
+          index_column <(descriptor_texture.width - 0x13f)
+        )
+? 0x80 : 0xff      );
 
       bytes_pixels[
-        0x01 + index] = ((index * 0x30) % 0x30) > 0x2a ? 0x00 : 0xff;
+        0x01 + index] = bytes_pixels[index];
 
       bytes_pixels[
         index +
