@@ -9,4 +9,3 @@ id<MTLTexture> _Nonnull metil_example_3d_rendering_texture_ground_generate(
 );
 
 #endif
-

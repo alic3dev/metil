@@ -82,12 +82,16 @@
     )
   );
 
-  data_vertex_basic_coloured.position_texture.x = (  
-    vertices[index_vertex].x
+  data_vertex_basic_coloured.position_texture.x = (
+    vertices[
+      index_vertex
+    ].x
   );
 
   data_vertex_basic_coloured.position_texture.y = (
-    vertices[index_vertex].y
+    vertices[
+      index_vertex
+    ].y
   );
 
   return data_vertex_basic_coloured;
@@ -97,14 +101,20 @@
   struct data_vertex_basic_textured_coloured data_vertex_basic_coloured [[stage_in]],
   metal::texture2d<float> texture [[texture(0)]]
 ) {
-
-  constexpr metal::sampler sam(
+  constexpr metal::sampler sampler_texture(
     metal::t_address::repeat,
     metal::r_address::repeat,
     metal::s_address::repeat
 );
 
   return (
-    data_vertex_basic_coloured.colour * texture.sample(sam, data_vertex_basic_coloured.position_texture / 1000.0f)
+    data_vertex_basic_coloured.colour *
+    texture.sample(
+      sampler_texture,
+      (
+        data_vertex_basic_coloured.position_texture /
+        1000.0f
+      )
+    )
   );
 }
