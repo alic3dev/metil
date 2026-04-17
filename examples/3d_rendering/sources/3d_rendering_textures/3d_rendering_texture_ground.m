@@ -25,7 +25,7 @@ id<MTLTexture> metil_example_3d_rendering_texture_ground_generate(
   descriptor_texture.width = (
     0x10ff
   );
-  
+
   descriptor_texture.height = (
     0x10ff
   );
@@ -36,7 +36,11 @@ id<MTLTexture> metil_example_3d_rendering_texture_ground_generate(
   ];
 
   MTLRegion region = {
-    {0x00, 0x00, 0x00},
+    {
+      0x00,
+      0x00,
+      0x00
+    },
     {
       descriptor_texture.width,
       descriptor_texture.height,
@@ -55,7 +59,6 @@ id<MTLTexture> metil_example_3d_rendering_texture_ground_generate(
       descriptor_texture.height
     )
   );
-
 
   for (
     unsigned int index_row = (
@@ -90,19 +93,61 @@ id<MTLTexture> metil_example_3d_rendering_texture_ground_generate(
 
       bytes_pixels[
         index
-      ] = ((
-        
-((index * 0x30) % 0x30) > 0x2a ? 0x00 : 0x01) *        0x30 + 0xdf * ((float) (((index * 0x24 + index_column * 0x3)) % 0x83)) / 0x82
+      ] = (
+        (
+          (
+            (
+              index *
+              0x30
+            ) %
+            0x30
+          ) >
+          0x2a
+          ? 0x00
+          : 0x01
+        ) *
+        0x30 +
+        0xdf *
+        (
+          (float)
+          (
+            (
+              (
+                index *
+                0x24 +
+                index_column *
+                0x03
+              )
+            ) %
+            0x83
+          )
+        ) /
+        0x82
       );
 
       bytes_pixels[
-        0x01 + index] = ((index * 0x30) % 0x30) > 0x2a ? 0x00 : 0xff;
+        0x01 +
+        index
+      ] = (
+        (
+          (
+            index *
+            0x30
+          ) %
+          0x30
+        ) >
+        0x2a
+        ? 0x00
+        : 0xff
+      );
 
       bytes_pixels[
         index +
         0x02
       ] = (
-        bytes_pixels[index]
+        bytes_pixels[
+          index
+        ]
       );
 
       bytes_pixels[
@@ -110,8 +155,10 @@ id<MTLTexture> metil_example_3d_rendering_texture_ground_generate(
         0x03
       ] = (
         0xff
-      );    }
+      );
+    }
   }
+
   [
     metil_example_3d_rendering_texture_ground
     replaceRegion: region
@@ -124,7 +171,7 @@ id<MTLTexture> metil_example_3d_rendering_texture_ground_generate(
     descriptor_texture
     release
   ];
-  
+
   clic3_memory_free_raw(
     bytes_pixels
   );
@@ -133,4 +180,3 @@ id<MTLTexture> metil_example_3d_rendering_texture_ground_generate(
     metil_example_3d_rendering_texture_ground
   );
 }
-

@@ -46,8 +46,13 @@ void example_3d_scene_initialize(
   );
 
   for (
-    unsigned int index_renderable = 0;
-    index_renderable < metil_scene->length_renderables;
+    unsigned int index_renderable = (
+      0x00
+    );
+    (
+      index_renderable <
+      metil_scene->length_renderables
+    );
     ++index_renderable
   ) {
     switch (
@@ -62,7 +67,7 @@ void example_3d_scene_initialize(
           index_renderable,
           metil_renderable_type_group
         );
-      
+
         break;
       }
       case example_3d_scene_index_renderable_sky:
@@ -73,7 +78,7 @@ void example_3d_scene_initialize(
           index_renderable,
           metil_renderable_type_object
         );
-  
+
         break;
       }
     }
@@ -141,101 +146,110 @@ void example_3d_scene_initialize(
       ]->renderable
     );
 
-  metil_model_objects_add_length(
-    metil_model_plane,
-    0x03
-  );
+    metil_model_objects_add_length(
+      metil_model_plane,
+      0x03
+    );
 
-  struct metil_object* metil_object_plane_body = (
-    &metil_model_plane->objects[0x01]
-);
+    struct metil_object* metil_object_plane_body = (
+      &metil_model_plane->objects[0x01]
+    );
 
-  struct metil_object* metil_object_plane_wing_left = (
+    struct metil_object* metil_object_plane_wing_left = (
       &metil_model_plane->objects[0x00
-  ]);
+    ]);
 
-  struct metil_object* metil_object_plane_wing_right = (
+    struct metil_object* metil_object_plane_wing_right = (
       &metil_model_plane->objects[0x02
-]);
-  metil_mesh_gem_initialize(
-    &metil_object_plane_body->mesh,
-    (struct math_c_vector3_float) {
-      .x = 0x20, .y = 0x20, .z = 0x80
-    },
-    (struct math_c_vector2_unsigned_short_int) {
-      .x = 0x04, .y = 0x04
-    }
-  );  
+    ]);
 
-  metil_mesh_gem_initialize(
-    &metil_object_plane_wing_left->mesh,
-    (struct math_c_vector3_float) {
-      .x = 0x10, .y = 0x10, .z = 0x80
-    }, (struct math_c_vector2_unsigned_short_int) {
+    metil_mesh_gem_initialize(
+      &metil_object_plane_body->mesh,
+      (struct math_c_vector3_float) {
+        .x = 0x20, .y = 0x20, .z = 0x80
+      },
+      (struct math_c_vector2_unsigned_short_int) {
         .x = 0x04, .y = 0x04
-  }
-);
+      }
+    );
 
-metil_mesh_gem_initialize(
-    &metil_object_plane_wing_right->mesh,
-    (struct math_c_vector3_float) {
-      .x = 0x10, .y = 0x10, .z = 0x80
-    }, (struct math_c_vector2_unsigned_short_int) {
-      .x = 0x04, .y = 0x04
-    }
-  );
+    metil_mesh_gem_initialize(
+      &metil_object_plane_wing_left->mesh,
+      (struct math_c_vector3_float) {
+        .x = 0x10, .y = 0x10, .z = 0x80
+      }, (struct math_c_vector2_unsigned_short_int) {
+        .x = 0x04, .y = 0x04
+      }
+    );
 
-  metil_model_vertex_joint_maps_initialize(
-    metil_model_plane
-  );
+    metil_mesh_gem_initialize(
+      &metil_object_plane_wing_right->mesh,
+      (struct math_c_vector3_float) {
+        .x = 0x10, .y = 0x10, .z = 0x80
+      }, (struct math_c_vector2_unsigned_short_int) {
+        .x = 0x04, .y = 0x04
+      }
+    );
+
+    metil_model_vertex_joint_maps_initialize(
+      metil_model_plane
+    );
 
     metil_model_buffers_initialize(
-    metil,
-metil_model_plane,
-metil->renderer_interface.metal_device
+      metil,
+      metil_model_plane,
+      metil->renderer_interface.metal_device
+    );
 
-    );  
-  metil_object_plane_wing_right->index_pipeline_render = (
-    example_3d_rendering_index_pipeline_plane
-  );
+    metil_object_plane_wing_right->index_pipeline_render = (
+      example_3d_rendering_index_pipeline_plane
+    );
 
-  metil_object_plane_body->index_pipeline_render = (
-    example_3d_rendering_index_pipeline_plane
-  );
-  metil_object_plane_wing_left->index_pipeline_render = (
-    example_3d_rendering_index_pipeline_plane
-);
+    metil_object_plane_body->index_pipeline_render = (
+      example_3d_rendering_index_pipeline_plane
+    );
 
-metil_object_plane_wing_left->position.x = (
-  -0x11
-);
-metil_object_plane_wing_right->position.x = (
-  0x11
-);
+    metil_object_plane_wing_left->index_pipeline_render = (
+      example_3d_rendering_index_pipeline_plane
+    );
 
-metil_object_plane_wing_right->position.z = (
-  -0x08
-);
+    metil_object_plane_wing_left->position.x = (
+      -0x11
+    );
 
-metil_object_plane_wing_left->position.z = (
-  metil_object_plane_wing_right->position.z
-);
-metil_object_plane_wing_left->rotation.y = (1.1f);
-metil_object_plane_wing_right->rotation.y = (
-  -metil_object_plane_wing_left->rotation.y
-);
+    metil_object_plane_wing_right->position.x = (
+      0x11
+    );
+
+    metil_object_plane_wing_right->position.z = (
+      -0x08
+    );
+
+    metil_object_plane_wing_left->position.z = (
+      metil_object_plane_wing_right->position.z
+    );
+
+    metil_object_plane_wing_left->rotation.y = (
+      1.1f
+    );
+
+    metil_object_plane_wing_right->rotation.y = (
+      -metil_object_plane_wing_left->rotation.y
+    );
 
     metil_model_plane->position.y = (
       0x3ff
     );
 
     metil_model_plane->position.x = (
-      (index_plane % 2 == 0x00
-      ? -1.0f
-      : 0x01) *
+      (
+        index_plane % 2 == 0x00
+        ? -1.0f
+        : 0x01
+      ) *
        0x3ff * (index_plane / 0x02 + 0x01)
     );
-}
+  }
 
   metil_group_add_length_initialize(
     metil_group_structures,
@@ -245,7 +259,12 @@ metil_object_plane_wing_right->rotation.y = (
 
   metil_group_add_length_initialize(
     metil_group_doors,
-    metil_group_structures->length / 0x05 / 0x10 * 0x02,
+    (
+      metil_group_structures->length /
+      0x05 /
+      0x10 *
+      0x02
+    ),
     metil_renderable_type_object
   );
 
@@ -325,7 +344,7 @@ metil_object_plane_wing_right->rotation.y = (
       0xa0 / 0x02 - 0x03
     );
   }
-        
+
     }
 
     metil_object_buffers_initialize(
@@ -343,7 +362,7 @@ float brightness = 1.0f;
 
 if (index_room > 0xff && index_room < 0x01ff) {
   brightness = index_room % 4 == 0
-  ;} else if (index_room > 0x02aa) {  
+  ;} else if (index_room > 0x02aa) {
     brightness =math_c_maximum_float(0.0f, 1.0f - (float) (index_room - 0x02aa) / 0x00cc);
 } else {
 brightness = (float) ((index_room % 0x10) + 0x01) / 0x10;
@@ -395,7 +414,6 @@ metil_scene->textures[0x00]=metil_example_3d_rendering_texture_door_generate(met
         )
       }
     );
-
 
     unsigned int index_room = (
       index_door / 0x02
@@ -473,7 +491,6 @@ metil_object_texture_add(metil_object_door,metil_scene->textures[0x00]);
     0xffff * ((index_solar_system_object * 0xcab9 % 0xa0) - (0xa0 - 0x01) / 0x02) + (0xffff * ((index_solar_system_object * 0x78 % 0x20) - (0x1f / 0x02)))
   );
 
-
 metil_object_solar_system_object->position.x = (
   metil_object_solar_system_object->position.x
 +(
@@ -519,7 +536,7 @@ struct metil_group* metil_group_doors = (
 
 if (
    metil_scene->player.position.z < 0x00) {
-  
+
   struct metil_group* metil_group_planes = (
     metil_scene->renderables[
       example_3d_scene_index_renderable_planes
@@ -543,7 +560,7 @@ if (
     );
 
       metil_model_plane->position.z = (
-        metil_scene->time_elapsed * 9.5f - 
+        metil_scene->time_elapsed * 9.5f -
         0x83ff - (
           index_plane / 0x02) * 0x2ff
       );
@@ -574,18 +591,16 @@ if (
 
       metil_object_door_left->position.x = (
         -0x28 -
-      (1.0f - 
+      (1.0f -
          math_c_maximum_float(0x00,math_c_minimum_float((metil_object_door_left->position.z - metil_scene->player.position.z - 0x10) / 0x12ff, 0x01)
       )) * 0x50
       );
 
       metil_object_door_right->position.x = (
         -metil_object_door_left->position.x
-      );    
+      );
 
-  
     }
-  
 
   struct metil_object* metil_object_sky = (
     metil_scene->renderables[
@@ -644,42 +659,42 @@ data->colour.w = (data->colour.z);
     metil_player->rotation.x = (
       math_c_sine(
         (math_c_absolute_float(metil_player->position.z + 0xff) / 0x8000) * math_c_pi, math_c_pi
-) * 0.75f);  
+) * 0.75f);
 
     metil_player->rotation.y = (
         metil_player->rotation.x / 0x04);
 }
 
   if (
-    metil_player->position.z < 0x10ff * 0xaa / 5 
+    metil_player->position.z < 0x10ff * 0xaa / 5
   ) {
     metil_player->position.z = (
       metil_player->position.z +
       (float) metil_scene->time_delta *
        0x08
-     );        
+     );
   }
 else {
     metil_player->position.z =    (  metil_player->position.z +
       (float) metil_scene->time_delta *
       0x08 *
-      (1.0f - 
+      (1.0f -
       math_c_minimum_float(
       (metil_scene->time_elapsed - 0x4650), 0x186a0) / 0x186af)
-    );  
+    );
 
   }
 
   if (
     metil_player->position.z >= 0x00ff * 0xaa / 0x05 &&
     metil_player->rotation.y > -math_c_pi
-  
+
     ) {
 metil_player->rotation.y = (metil_player->rotation.y - (float)metil_scene->time_delta / 3000.0f);
   }
   if (
 
-  metil_scene->time_elapsed > 0x1600 &&  metil_scene->time_elapsed < 0x1300 + 0x1600) {  metil_player->rotation.x = math_c_absolute_float(math_c_sine((float) (metil_scene->time_elapsed - 0x1600) * math_c_pi / 5000.0f,math_c_pi) * math_c_pi_half);  
+  metil_scene->time_elapsed > 0x1600 &&  metil_scene->time_elapsed < 0x1300 + 0x1600) {  metil_player->rotation.x = math_c_absolute_float(math_c_sine((float) (metil_scene->time_elapsed - 0x1600) * math_c_pi / 5000.0f,math_c_pi) * math_c_pi_half);
   }
   metil_player->position.y = (
     math_c_sine(
@@ -690,7 +705,7 @@ metil_player->rotation.y = (metil_player->rotation.y - (float)metil_scene->time_
     math_c_sine(
       (float)
       metil_scene->time_elapsed / 760.0f
-  + 30.0f,math_c_pi) * 4.4f);  
+  + 30.0f,math_c_pi) * 4.4f);
   metil_scene_poll_default(
     metil,
     metil_scene

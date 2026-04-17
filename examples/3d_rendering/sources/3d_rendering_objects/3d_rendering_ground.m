@@ -47,16 +47,16 @@ void metil_example_3d_rendering_ground_initialize(
     math_c_pi_half
   );
 
-id<MTLTexture> texture_ground = (
-metil_example_3d_rendering_texture_ground_generate(
-  metil->renderer_interface.metal_device
-)
-);  
+  id<MTLTexture> texture_ground = (
+    metil_example_3d_rendering_texture_ground_generate(
+      metil->renderer_interface.metal_device
+    )
+  );
 
-metil_object_texture_add(
-  metil_object_ground
-  ,texture_ground
-);
+  metil_object_texture_add(
+    metil_object_ground,
+    texture_ground
+  );
 
   metil_object_ground->destroy = (
     metil_object_destroy_with_textures

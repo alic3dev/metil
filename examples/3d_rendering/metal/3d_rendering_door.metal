@@ -39,8 +39,8 @@
     float4(
       (
         data_frame->brightness *
- 
-        data_object->colour.x    ),
+        data_object->colour.x
+      ),
       (
         data_frame->brightness *
         data_object->colour.y
@@ -53,12 +53,21 @@
     )
   );
 
-  data_vertex_basic_coloured.position_texture.x = (  
-    (0x28 + vertices[index_vertex].x) / 0x50
+  data_vertex_basic_coloured.position_texture.x = (
+    (
+      0x28 +
+      vertices[
+        index_vertex
+      ].x
+    ) /
+    0x50
   );
 
   data_vertex_basic_coloured.position_texture.y = (
-    (vertices[index_vertex].y) / 0x50
+    vertices[
+      index_vertex
+    ].y /
+    0x50
   );
 
   return data_vertex_basic_coloured;
@@ -68,12 +77,15 @@
   struct data_vertex_basic_textured_coloured data_vertex_basic_coloured [[stage_in]],
   metal::texture2d<float> texture [[texture(0)]]
 ) {
-
-  constexpr metal::sampler sam(
+  constexpr metal::sampler sampler_texture(
     metal::mag_filter::nearest
 );
 
   return (
-    data_vertex_basic_coloured.colour * texture.sample(sam, data_vertex_basic_coloured.position_texture)
+    data_vertex_basic_coloured.colour *
+    texture.sample(
+      sampler_texture,
+      data_vertex_basic_coloured.position_texture
+    )
   );
 }

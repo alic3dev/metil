@@ -1,4 +1,3 @@
-
 #include <metil_metal/metil_metal_data_vertex.h>
 #include <metil_rendering/metil_renderer_data_frame.h>
 #include <metil_rendering/metil_renderer_data_object.h>
@@ -63,7 +62,7 @@
       (unsigned int)
       shift
     );
-  } 
+  }
 
   if (
     shift >
@@ -138,7 +137,6 @@
 
 [[fragment]] float4 metil_example_3d_rendering_sky_fragment(
   struct data_vertex_basic_textured_coloured data_vertex_basic_textured_coloured [[stage_in]]
-  //metal::texture2d<float> texture_sky [[texture(0x00)]]
 ) {
   float4 colour_output = (
     data_vertex_basic_textured_coloured.colour
@@ -147,17 +145,6 @@
   constexpr metal::sampler sampler_texture_sky(
     metal::mag_filter::linear
   );
-  /*float4 sample_texture_sky = (
-    texture_sky.sample(
-      sampler_texture_sky,
-      data_vertex_basic_textured_coloured.position_texture
-    )
-  );
-
-  colour_output = (
-    colour_output *
-    sample_texture_sky
-  );*/
 
   return (
     colour_output

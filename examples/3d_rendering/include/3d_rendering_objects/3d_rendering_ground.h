@@ -10,4 +10,3 @@ void metil_example_3d_rendering_ground_initialize(
 );
 
 #endif
-
