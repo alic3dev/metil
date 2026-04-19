@@ -132,7 +132,7 @@ void metil_group_add(
   );
 
   clic3_memory_reallocate_raw(
-    metil_group->renderables,
+    &metil_group->renderables,
     (
       sizeof(
         struct metil_renderable*
