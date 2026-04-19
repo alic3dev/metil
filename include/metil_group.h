@@ -44,6 +44,11 @@ void metil_group_add_initialize(
   enum metil_renderable_type
 );
 
+void metil_group_add_length_unallocated(
+  struct metil_group* _Nonnull,
+  unsigned int
+);
+
 void metil_group_add_length_initialize(
   struct metil_group* _Nonnull,
   unsigned int,
