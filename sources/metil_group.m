@@ -109,6 +109,51 @@ void metil_group_add_initialize(
   );
 }
 
+void metil_group_add_length_unallocated(
+  struct metil_group* metil_group,
+  unsigned int length
+) {
+  unsigned int index_renderable_starting = (
+    metil_group->length
+  );
+
+  metil_group->length = (
+    metil_group->length +
+    length
+  );
+
+  clic3_memory_reallocate_raw(
+    &metil_group->renderables,
+    (
+      sizeof(
+        struct metil_renderable*
+      ) *
+      metil_group->length
+    )
+  );
+
+  for (
+    unsigned int index_renderable = (
+      index_renderable_starting
+    );
+    (
+      index_renderable <
+      metil_group->length
+    );
+    ++index_renderable
+  ) {
+    metil_group->renderables[
+      index_renderable
+    ] = (
+      clic3_memory_allocate_raw(
+        sizeof(
+          struct metil_renderable
+        )
+      )
+    );
+  }
+}
+
 void metil_group_add_length_initialize(
   struct metil_group* metil_group,
   unsigned int length,
