@@ -87,6 +87,10 @@ void metil_audio_io_proc_destroy(
 
 #if target_os_ios
 #define metil_audio_io_proc_macro_definition_frame_loop\
+  unsigned long int length_channels = (\
+    output_data->mNumberBuffers\
+  );\
+\
   for (\
     unsigned long int index_buffer = (\
       0x00\
@@ -105,10 +109,6 @@ void metil_audio_io_proc_destroy(
 \
     float* buffer_out = (\
       audio_buffer_current.mData\
-    );\
-\
-    unsigned long int length_channels = (\
-      audio_buffer_current.mNumberChannels\
     );\
 \
     for (\
@@ -168,11 +168,19 @@ void metil_audio_io_proc_destroy(
 
 #endif
 
+
+#if target_os_ios
+#define metil_audio_io_proc_macro_definition_index_channel\
+  unsigned long int index_channel = (\
+    index_buffer\
+  );
+#else
 #define metil_audio_io_proc_macro_definition_index_channel\
   unsigned long int index_channel = (\
     index_frame %\
     length_channels\
-  );  
+  ); 
+#endif 
 
 #define metil_audio_io_proc_macro_definition_frame_set(metil_audio_io_proc_macro_definition_value_frame)\
   buffer_out[\
