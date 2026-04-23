@@ -10,7 +10,7 @@ endif
 
 name:=${name}${suffix_library_target_build}
 
-version_major=2
+version_major=3
 version_minor=0
 version_patch=0
 version_major_minor=${version_major}.${version_minor}
