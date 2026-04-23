@@ -32,4 +32,26 @@ void metil_audio_io_proc_destroy(
   struct metil_audio_data*
 );
 
+#if target_os_ios
+#define metil_audio_io_proc_macro_type(name_metil_audio_io_proc)\
+  int name_metil_audio_io_proc(\
+    unsigned char,\
+    const AudioTimeStamp* _Nonnull,\
+    unsigned int,\
+    AudioBufferList* _Nonnull,\
+    void* _Nonnull\
+  );
+#else
+#define metil_audio_io_proc_macro_type(name_metil_audio_io_proc)\
+  OSStatus name_metil_audio_io_proc(\
+    AudioObjectID,\
+    const AudioTimeStamp* _Nonnull,\
+    const AudioBufferList* _Nonnull,\
+    const AudioTimeStamp* _Nonnull,\
+    AudioBufferList* _Nonnull,\
+    const AudioTimeStamp* _Nonnull,\
+    void* _Nonnull\
+  );
+#endif
+
 #endif
