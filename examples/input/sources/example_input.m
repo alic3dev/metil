@@ -15,7 +15,7 @@ int main(
   return metil_initialize(
     length_parameters,
     parameters,
-    "example_model",
+    "example_input",
     example_input_renderer_on_initialize
   );
 }
