@@ -1,5 +1,5 @@
-#ifndef __example_model_h
-#define __example_model_h
+#ifndef __examples_input_example_input_h
+#define __examples_input_example_input_h
 
 #include <metil.h>
 
@@ -8,7 +8,7 @@ int main(
   const char* _Nonnull * _Nonnull
 );
 
-void example_model_renderer_on_initialize(
+void example_input_renderer_on_initialize(
   struct metil* _Nonnull,
   void* _Nullable
 );

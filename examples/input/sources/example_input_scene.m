@@ -1,6 +1,6 @@
-#include <example_model_scene.h>
+#include <example_input_scene.h>
 
-#include <example_model_pipeline_index.h>
+#include <example_input_pipeline_index.h>
 
 #include <clic3_memory.h>
 
@@ -19,7 +19,7 @@
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_scenes/metil_scene.h>
 
-void example_model_scene_initialize(
+void example_input_scene_initialize(
   struct metil* metil,
   struct metil_scene* scene
 ) {
@@ -988,19 +988,19 @@ void example_model_scene_initialize(
   );
 
   metil_object_ground->index_pipeline_render = (
-    example_model_pipeline_index_model_item
+    example_input_pipeline_index_model_item
   );
 
   scene->destroy = (
-    example_model_scene_destroy
+    example_input_scene_destroy
   );
   
   scene->poll = (
-    example_model_scene_poll
+    example_input_scene_poll
   );
 }
 
-void example_model_scene_poll(
+void example_input_scene_poll(
   struct metil* metil,
   struct metil_scene* scene
 ) {
@@ -1040,7 +1040,7 @@ void example_model_scene_poll(
   );
 }
 
-void example_model_scene_destroy(
+void example_input_scene_destroy(
   struct metil* metil,
   struct metil_scene* scene
 ) {
