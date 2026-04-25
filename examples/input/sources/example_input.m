@@ -43,8 +43,12 @@ void example_input_renderer_on_initialize(
     ]
   ];
 
+  struct metil_scene_controller* metil_scene_controller = (
+    metil->scene_controller
+  );
+
   example_input_scene_initialize(
     metil,
-    &((struct metil_scene_controller*) metil->scene_controller)->scene
+    &metil_scene_controller->scene
   );
 }
