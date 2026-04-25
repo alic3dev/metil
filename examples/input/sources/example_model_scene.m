@@ -7,6 +7,7 @@
 #include <metil_direction.h>
 #include <metil_mesh/metil_mesh.h>
 #include <metil_mesh/metil_mesh_box.h>
+#include <metil_mesh/metil_mesh_ring.h>
 #include <metil_mesh/metil_mesh_sphere.h>
 #include <metil_mesh/metil_mesh_tube.h>
 #include <metil_model/metil_model.h>
@@ -188,6 +189,7 @@ void example_model_scene_initialize(
       )
     }
   );
+
   metil_mesh_tube_initialize(
     &metil_object_player_body->mesh,
     (struct math_c_vector3_float) {
@@ -211,6 +213,7 @@ void example_model_scene_initialize(
     },
     metil_direction_down
   );
+
   metil_mesh_tube_initialize(
     &metil_object_player_arm_left->mesh,
     (struct math_c_vector3_float) {
@@ -257,6 +260,331 @@ void example_model_scene_initialize(
       )
     },
     metil_direction_down
+  );
+
+  metil_mesh_tube_initialize(
+    &metil_object_player_arm_right->mesh,
+    (struct math_c_vector3_float) {
+      .x = (
+        0x01
+      ),
+      .y = (
+        0x02
+      ),
+      .z = (
+        0x01
+      )
+    },
+    (struct math_c_vector2_unsigned_short_int) {
+      .x = (
+        0x08
+      ),
+      .y = (
+        0x08
+      )
+    },
+    metil_direction_down
+  );
+
+  metil_mesh_tube_initialize(
+    &metil_object_player_arm_right_lower->mesh,
+    (struct math_c_vector3_float) {
+      .x = (
+        0x01
+      ),
+      .y = (
+        0x02
+      ),
+      .z = (
+        0x01
+      )
+    },
+    (struct math_c_vector2_unsigned_short_int) {
+      .x = (
+        0x08
+      ),
+      .y = (
+        0x08
+      )
+    },
+    metil_direction_down
+  );
+
+  metil_mesh_tube_initialize(
+    &metil_object_player_leg_left->mesh,
+    (struct math_c_vector3_float) {
+      .x = (
+        0x01
+      ),
+      .y = (
+        0x02
+      ),
+      .z = (
+        0x01
+      )
+    },
+    (struct math_c_vector2_unsigned_short_int) {
+      .x = (
+        0x08
+      ),
+      .y = (
+        0x08
+      )
+    },
+    metil_direction_down
+  );
+
+  metil_mesh_tube_initialize(
+    &metil_object_player_leg_left_lower->mesh,
+    (struct math_c_vector3_float) {
+      .x = (
+        0x01
+      ),
+      .y = (
+        0x02
+      ),
+      .z = (
+        0x01
+      )
+    },
+    (struct math_c_vector2_unsigned_short_int) {
+      .x = (
+        0x08
+      ),
+      .y = (
+        0x08
+      )
+    },
+    metil_direction_down
+  );
+
+  metil_mesh_tube_initialize(
+    &metil_object_player_leg_right->mesh,
+    (struct math_c_vector3_float) {
+      .x = (
+        0x01
+      ),
+      .y = (
+        0x02
+      ),
+      .z = (
+        0x01
+      )
+    },
+    (struct math_c_vector2_unsigned_short_int) {
+      .x = (
+        0x08
+      ),
+      .y = (
+        0x08
+      )
+    },
+    metil_direction_down
+  );
+
+  metil_mesh_tube_initialize(
+    &metil_object_player_leg_right_lower->mesh,
+    (struct math_c_vector3_float) {
+      .x = (
+        0x01
+      ),
+      .y = (
+        0x02
+      ),
+      .z = (
+        0x01
+      )
+    },
+    (struct math_c_vector2_unsigned_short_int) {
+      .x = (
+        0x08
+      ),
+      .y = (
+        0x08
+      )
+    },
+    metil_direction_down
+  );
+
+  metil_mesh_box_initialize(
+    &metil_object_skateboard_deck->mesh,
+    (struct math_c_vector3_float) {
+      .x = (
+        0x01
+      ),
+      .y = (
+        0.125f
+      ),
+      .z = (
+        0x02
+      )
+    }
+  );
+
+  metil_mesh_box_initialize(
+    &metil_object_skateboard_truck_front->mesh,
+    (struct math_c_vector3_float) {
+      .x = (
+        0.125f
+      ),
+      .y = (
+        0.125f
+      ),
+      .z = (
+        0.125f
+      )
+    }
+  );
+
+  metil_mesh_box_initialize(
+    &metil_object_skateboard_truck_back->mesh,
+    (struct math_c_vector3_float) {
+      .x = (
+        0.125f
+      ),
+      .y = (
+        0.125f
+      ),
+      .z = (
+        0.125f
+      )
+    }
+  );
+
+  metil_mesh_ring_initialize(
+    &metil_object_skateboard_wheel_front_left->mesh,
+    (struct math_c_vector3_float) {
+      .x = (
+        0.25f
+      ),
+      .y = (
+        0.25f
+      ),
+      .z = (
+        0.25f
+      ),
+    },
+    (struct math_c_vector3_float) {
+      .x = (
+        0.125f
+      ),
+      .y = (
+        0.125f
+      ),
+      .z = (
+        0.125f
+      )
+    },
+    (struct math_c_vector2_unsigned_short_int) {
+      .x = (
+        0x08
+      ),
+      .y = (
+        0x08
+      )
+    }
+  );
+
+  metil_mesh_ring_initialize(
+    &metil_object_skateboard_wheel_front_right->mesh,
+    (struct math_c_vector3_float) {
+      .x = (
+        0.25f
+      ),
+      .y = (
+        0.25f
+      ),
+      .z = (
+        0.25f
+      )
+    },
+    (struct math_c_vector3_float) {
+      .x = (
+        0.125f
+      ),
+      .y = (
+        0.125f
+      ),
+      .z = (
+        0.125f
+      )
+    },
+    (struct math_c_vector2_unsigned_short_int) {
+      .x = (
+        0x08
+      ),
+      .y = (
+        0x08
+      )
+    }
+  );
+
+  metil_mesh_ring_initialize(
+    &metil_object_skateboard_wheel_back_left->mesh,
+    (struct math_c_vector3_float) {
+      .x = (
+        0.25f
+      ),
+      .y = (
+        0.25f
+      ),
+      .z = (
+        0.25f
+      )
+    },
+    (struct math_c_vector3_float) {
+      .x = (
+        0.125f
+      ),
+      .y = (
+        0.125f
+      ),
+      .z = (
+        0.125f
+      )
+    },
+    (struct math_c_vector2_unsigned_short_int) {
+      .x = (
+        0x08
+      ),
+      .y = (
+        0x08
+      )
+    }
+  );
+
+  metil_mesh_ring_initialize(
+    &metil_object_skateboard_wheel_back_right->mesh,
+    (struct math_c_vector3_float) {
+      .x = (
+        0.25f
+      ),
+      .y = (
+        0.25f
+      ),
+      .z = (
+        0.25f
+      )
+    },
+    (struct math_c_vector3_float) {
+      .x = (
+        0.125f
+      ),
+      .y = (
+        0.125f
+      ),
+      .z = (
+        0.125f
+      )
+    },
+    (struct math_c_vector2_unsigned_short_int) {
+      .x = (
+        0x08
+      ),
+      .y = (
+        0x08
+      )
+    }
   );
 
   metil_model_joints_add_length(
