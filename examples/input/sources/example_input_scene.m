@@ -10,6 +10,7 @@
 #include <math_c_sine.h>
 #include <math_c_vector.h>
 
+#include <metil_animation/metil_animation.h>
 #include <metil_direction.h>
 #include <metil_mesh/metil_mesh.h>
 #include <metil_mesh/metil_mesh_box.h>
@@ -24,6 +25,7 @@
 #include <metil_rendering/metil_renderable_type.h>
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_scenes/metil_scene.h>
+#include <metil_scenes/metil_scene_controller.h>
 
 void example_input_scene_initialize(
   struct metil* metil,
@@ -37,6 +39,30 @@ void example_input_scene_initialize(
     metil,
     scene,
     0x03
+  );
+
+  scene->data = (
+    clic3_memory_allocate_raw(
+      sizeof(
+        struct example_input_scene_data
+      )
+    )
+  );
+
+  struct example_input_scene_data* example_input_scene_data = (
+    scene->data
+  );
+
+  example_input_scene_data->animation = (
+    0x00
+  );
+
+  example_input_scene_data->trick = (
+    example_input_scene_trick_none
+  );
+
+  example_input_scene_data->stance = (
+    example_input_scene_stance_goofy
   );
 
   metil->rendering_properties.camera.height = (
@@ -1391,6 +1417,96 @@ void example_input_scene_player_poll_input(
     ratio_movement.y *
     amount_movement
   );
+
+  struct metil_scene_controller* metil_scene_controller = (
+    metil->scene_controller
+  );
+
+  struct metil_scene* metil_scene = &(
+    metil_scene_controller->scene
+  );
+
+  struct example_input_scene_data* example_input_scene_data = (
+    metil_scene->data
+  );
+
+  struct metil_model* metil_model_player = (
+    metil_scene->renderables[
+      0x01
+    ].renderable
+  );
+
+  struct metil_model* metil_model_skateboard = (
+    metil_scene->renderables[
+      0x02
+    ].renderable
+  );
+
+  if (
+    metil_model_skateboard->position.y ==
+    0x00
+  ) {
+    if (
+      metil->input.keydown_map[
+        metil_keycode_space
+      ] !=
+      0x00
+    ) {
+      metil_player->velocity.y = (
+        0x01
+      );
+    } else {
+      metil_player->velocity.y = (
+        0x00
+      );
+    }
+  } else {
+    metil_player->velocity.y = (
+      metil_player->velocity.y -
+      0.004f *
+      time_delta
+    );
+
+    if (
+      (
+        metil_player->velocity.y >=
+        -0.25f
+      ) &&
+      (
+        example_input_scene_data->trick ==
+        example_input_scene_trick_none
+      )
+    ) {
+      if (
+        metil->input.keydown_map[
+          metil_keycode_e
+        ] !=
+        0x00
+      ) {
+        example_input_scene_data->trick = (
+          example_input_scene_trick_kickflip
+        );
+      }
+    }
+  }
+
+  metil_model_skateboard->position.y = (
+    metil_model_skateboard->position.y +
+    metil_player->velocity.y
+  );
+
+  if (
+    metil_model_skateboard->position.y <
+    0x00
+  ) {
+    metil_model_skateboard->position.y = (
+      0x00
+    );
+  }
+
+  metil_model_player->position.y = (
+    metil_model_skateboard->position.y
+  );
 }
 
 void example_input_scene_poll(
@@ -1401,6 +1517,102 @@ void example_input_scene_poll(
     metil,
     scene
   );
+
+  struct example_input_scene_data* example_input_scene_data = (
+    scene->data
+  );
+
+  if (
+    example_input_scene_data->animation ==
+    0x00
+  ) {
+    if (
+      example_input_scene_data->trick !=
+      example_input_scene_trick_none
+    ) {
+      example_input_scene_data->animation = (
+        clic3_memory_allocate_raw(
+          sizeof(
+            struct metil_animation
+          )
+        )
+      );
+
+      metil_animation_initialize(
+        example_input_scene_data->animation
+      );
+
+      example_input_scene_data->animation->loops = (
+        0x00
+      );
+
+      example_input_scene_data->animation->length = (
+        0xff
+      );
+
+      switch (
+        example_input_scene_data->trick
+      ) {
+        case example_input_scene_trick_kickflip: {
+          example_input_scene_data->animation->poll = (
+            example_input_scene_animation_kickflip
+          );
+
+          break;
+        }
+        default: {
+          clic3_memory_free_raw(
+            example_input_scene_data->animation
+          );
+
+          example_input_scene_data->animation = (
+            0x00
+          );
+ 
+          break;
+        }
+      }
+
+      if (
+        example_input_scene_data->animation !=
+        0x00
+      ) {
+        metil_animation_start(
+          example_input_scene_data->animation,
+          0x00,
+          scene->renderables
+        );
+      }
+    }
+  }
+else if (    example_input_scene_data->animation->state ==
+    metil_animation_state_complete
+  ) {
+    example_input_scene_data->animation->poll(
+      example_input_scene_data->animation,
+      0x00,
+      scene,
+      0x01
+    );
+
+    clic3_memory_free_raw(
+      example_input_scene_data->animation
+    );
+
+    example_input_scene_data->animation = (
+      0x00
+    );
+
+    example_input_scene_data->trick = (
+      example_input_scene_trick_none
+    );
+  } else {
+    metil_animation_poll(
+      example_input_scene_data->animation,
+      0x00,
+      scene
+    );
+  }
 
   struct metil_model* metil_model_player = (
     scene->renderables[
@@ -1457,6 +1669,45 @@ void example_input_scene_poll(
     ]
   );
 }
+
+void example_input_scene_animation_kickflip(
+  struct metil_animation* metil_animation,
+  enum metil_renderable_type metil_renderable_type,
+  void* data,
+  float progress
+) {
+  struct metil_scene* scene = (
+    data
+  );
+
+  struct example_input_scene_data* example_input_scene_data = (
+    scene->data
+  );
+
+  struct metil_model* metil_model_player = (
+    scene->renderables[
+      0x01
+    ].renderable
+  );
+
+  struct metil_model* metil_model_skateboard = (
+    scene->renderables[
+      0x02
+    ].renderable
+  );
+
+  metil_model_skateboard->rotation.z = (
+    progress *
+    (
+      (
+        example_input_scene_data->stance ==
+        example_input_scene_stance_goofy
+      )
+      ? 1.0f
+      : -1.0f
+    ) *
+    math_c_pi_doubled
+  );}
 
 void example_input_scene_destroy(
   struct metil* metil,
