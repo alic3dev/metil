@@ -12,8 +12,10 @@ void metil_mesh_text_initialize(
   float height,
   float scale
 ) {
-  metil_mesh_initialize(
-    mesh
+  metil_mesh_initialize_with_lengths(
+    mesh,
+    0x04,
+    0x06
   );
 
   mesh->size.x = (
@@ -26,49 +28,19 @@ void metil_mesh_text_initialize(
     scale
   );
 
-  mesh->size.z = 1.0f;
-
-  mesh->length_vertices = (
-    4
-  );
-
-  mesh->length_indices = (
-    6
-  );
-
-  clic3_memory_reallocate_raw(
-    &mesh->vertices,
-    (
-      sizeof(
-        struct math_c_vector4_float
-      ) *
-      mesh->length_vertices
-    )
-  );
-
-  clic3_memory_reallocate_raw(
-    &mesh->indices,
-    (
-      sizeof(
-        unsigned int
-      ) *
-      mesh->length_indices
-    )
+  mesh->size.z = (
+    0x01
   );
 
   float width_half = (
-    (
-      width /
-      2.0f
-    ) *
+    width /
+    0x02 *
     scale
   );
 
   float height_half = (
-    (
-      height /
-      2.0f
-    ) *
+    height /
+    0x02 *
     scale
   );
 

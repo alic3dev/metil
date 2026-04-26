@@ -15,66 +15,51 @@ void metil_mesh_tube_initialize(
   struct math_c_vector2_unsigned_short_int segments,
   enum metil_direction direction
 ) {
-  metil_mesh_initialize(
-    metil_mesh
+  metil_mesh_initialize_with_lengths(
+    metil_mesh,
+    (
+      segments.x *
+      segments.y +
+      0x02
+    ),
+    (
+      0x06 *
+      segments.x +
+      segments.x *
+      (
+        segments.y -
+        0x01
+      ) *
+      0x06
+    )
   );
 
-  metil_mesh->size.x = size.x;
-  metil_mesh->size.y = size.y;
-  metil_mesh->size.z = size.z;
+  metil_mesh->size.x = (
+    size.x
+  );
+  
+  metil_mesh->size.y = (
+    size.y
+  );
+  
+  metil_mesh->size.z = (
+    size.z
+  );
 
   struct math_c_vector3_float size_half = {
     .x = (
       size.x /
-      2.0f
+      0x02
     ),
     .y = (
       size.y /
-      2.0f
+      0x02
     ),
     .z = (
       size.z /
-      2.0f
+      0x02
     )
   };
-
-  metil_mesh->length_vertices = (
-    segments.x *
-    segments.y +
-    2
-  );
-
-  metil_mesh->length_indices = (
-    6 * (
-      segments.x
-    ) + (
-      segments.x * (
-        segments.y -
-        1
-      ) *
-      6
-    )
-  );
-
-  clic3_memory_reallocate_raw(
-    &metil_mesh->indices,
-    (
-      sizeof(
-        unsigned int
-      ) *
-      metil_mesh->length_indices
-    )
-  );
-
-  clic3_memory_reallocate_raw(
-    &metil_mesh->vertices,
-    (
-      sizeof(
-        struct math_c_vector4_float
-      ) *
-      metil_mesh->length_vertices
-    )
-  );
 
   unsigned int index_index = (
     0

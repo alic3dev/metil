@@ -11,38 +11,24 @@ void metil_mesh_celled_grid_initialize(
   struct math_c_vector2_float size,
   struct math_c_vector2_unsigned_long_int cells
 ) {
-  metil_mesh_initialize(
-    metil_mesh
-  );
-
-  metil_mesh->size.x = (
-    size.x
-  );
-  metil_mesh->size.y = (
-    size.y
-  );
-  metil_mesh->size.z = (
-    0.0f
-  );
-
   struct math_c_vector2_float size_cell = {
     .x = (
-      metil_mesh->size.x /
+      size.x /
       cells.x
     ),
     .y = (
-      metil_mesh->size.y /
+      size.y /
       cells.y
     )
   };
 
   struct math_c_vector2_float size_half = {
     .x = (
-      metil_mesh->size.x /
+      size.x /
       2.0f
     ),
     .y = (
-      metil_mesh->size.y /
+      size.y /
       2.0f
     )
   };
@@ -52,52 +38,46 @@ void metil_mesh_celled_grid_initialize(
     cells.y
   );
 
-  metil_mesh->length_vertices = (
+  metil_mesh_initialize_with_lengths(
+    metil_mesh,
     (
-      cells.x +
-      1
-    ) *
-    (
-      cells.y +
-      1
-    )
-  );
-
-  metil_mesh->length_indices = (
-    total_cells *
-    4 +
-    cells.y *
-    2 +
-    cells.x *
-    2
-  );
-
-  clic3_memory_reallocate_raw(
-    &metil_mesh->indices,
-    (
-      sizeof(
-        unsigned int
+      (
+        cells.x +
+        0x01
       ) *
-      metil_mesh->length_indices
-    )
-  );
-
-  clic3_memory_reallocate_raw(
-    &metil_mesh->vertices,
+      (
+        cells.y +
+        0x01
+      )
+    ),
     (
-      sizeof(
-        struct math_c_vector4_float
-      ) *
-      metil_mesh->length_vertices
+      total_cells *
+      0x04 +
+      cells.y *
+      0x02 +
+      cells.x *
+      0x02
     )
   );
 
+  metil_mesh->size.x = (
+    size.x
+  );
+
+  metil_mesh->size.y = (
+    size.y
+  );
+
+  metil_mesh->size.z = (
+    0x00
+  );
+  
   unsigned long int index_index = (
-    0
+    0x00
   );
 
   unsigned long int index_vertex = (
-    0
+    0x00
   );
 
   for (
@@ -282,85 +262,64 @@ void metil_mesh_celled_triangles_grid_initialize(
   struct math_c_vector2_float size,
   struct math_c_vector2_unsigned_long_int cells
 ) {
-  metil_mesh_initialize(
-    metil_mesh
-  );
-
-  metil_mesh->size.x = (
-    size.x
-  );
-  metil_mesh->size.y = (
-    size.y
-  );
-  metil_mesh->size.z = (
-    0.0f
-  );
-
   struct math_c_vector2_float size_cell = {
     .x = (
-      metil_mesh->size.x /
+      size.x /
       cells.x
     ),
     .y = (
-      metil_mesh->size.y /
+      size.y /
       cells.y
     )
   };
 
   struct math_c_vector2_float size_half = {
     .x = (
-      metil_mesh->size.x /
+      size.x /
       2.0f
     ),
     .y = (
-      metil_mesh->size.y /
+      size.y /
       2.0f
     )
   };
 
-  metil_mesh->length_vertices = (
+  metil_mesh_initialize_with_lengths(
+    metil_mesh,
     (
-      cells.x +
-      1
-    ) *
-    (
-      cells.y +
-      1
-    )
-  );
-
-  metil_mesh->length_indices = (
-    cells.x *
-    cells.y *
-    6
-  );
-
-  clic3_memory_reallocate_raw(
-    &metil_mesh->indices,
-    (
-      sizeof(
-        unsigned int
+      (
+        cells.x +
+        0x01
       ) *
-      metil_mesh->length_indices
+      (
+        cells.y +
+        0x01
+      )
+    ),
+    (      cells.x *
+      cells.y *
+      0x06
     )
   );
 
-  clic3_memory_reallocate_raw(
-    &metil_mesh->vertices,
-    (
-      sizeof(
-        struct math_c_vector4_float
-      ) *
-      metil_mesh->length_vertices
-    )
+  metil_mesh->size.x = (
+    size.x
+  );
+
+  metil_mesh->size.y = (
+    size.y
+  );
+
+  metil_mesh->size.z = (
+    0x00
   );
 
   unsigned long int index_index = (
-    0
+    0x00
   );
 
   unsigned long int index_vertex = (
-    0
+    0x00
   );
 
   for (
@@ -475,28 +434,14 @@ void metil_mesh_celled_triangles_quadruple_grid_initialize(
   struct math_c_vector2_float size,
   struct math_c_vector2_unsigned_long_int cells
 ) {
-  metil_mesh_initialize(
-    metil_mesh
-  );
-
-  metil_mesh->size.x = (
-    size.x
-  );
-  metil_mesh->size.y = (
-    size.y
-  );
-  metil_mesh->size.z = (
-    0.0f
-  );
-
   struct math_c_vector2_float size_cell = {
     .x = (
-      metil_mesh->size.x /
+      size.x /
       (float)
       cells.x
     ),
     .y = (
-      metil_mesh->size.y /
+      size.y /
       (float)
       cells.y
     )
@@ -504,73 +449,66 @@ void metil_mesh_celled_triangles_quadruple_grid_initialize(
 
   struct math_c_vector2_float size_half = {
     .x = (
-      metil_mesh->size.x /
-      2.0f
+      size.x /
+      0x02
     ),
     .y = (
-      metil_mesh->size.y /
-      2.0f
+      size.y /
+      0x02
     )
   };
 
   struct math_c_vector2_float size_cell_half = {
     .x = (
       size_cell.x /
-      2.0f
+      0x02
     ),
     .y = (
       size_cell.y /
-      2.0f
+      0x02
     )
   };
 
-  metil_mesh->length_vertices = (
+  metil_mesh_initialize_with_lengths(
+    metil_mesh,
     (
-      cells.x +
-      1
-    ) *
-    (
-      cells.y +
-      1
-    ) +
-    (
-      cells.x *
-      cells.y
-    )
-  );
-
-  metil_mesh->length_indices = (
-    cells.x *
-    cells.y *
-    12
-  );
-
-  clic3_memory_reallocate_raw(
-    &metil_mesh->indices,
-    (
-      sizeof(
-        unsigned int
+      (
+        cells.x +
+        0x01
       ) *
-      metil_mesh->length_indices
+      (
+        cells.y +
+        0x01
+      ) +
+      (
+        cells.x *
+        cells.y
+      )
+    ),
+    (      cells.x *
+      cells.y *
+      0x0c
     )
   );
 
-  clic3_memory_reallocate_raw(
-    &metil_mesh->vertices,
-    (
-      sizeof(
-        struct math_c_vector4_float
-      ) *
-      metil_mesh->length_vertices
-    )
+  metil_mesh->size.x = (
+    size.x
+  );
+  
+  metil_mesh->size.y = (
+    size.y
+  );
+
+  metil_mesh->size.z = (
+    0x00
   );
 
   unsigned long int index_index = (
-    0
+    0x00
   );
 
   unsigned long int index_vertex = (
-    0
+    0x00
   );
 
   for (
@@ -853,39 +791,25 @@ void metil_mesh_celled_individual_triangles_grid_initialize(
   struct math_c_vector2_float size,
   struct math_c_vector2_unsigned_long_int cells
 ) {
-  metil_mesh_initialize(
-    metil_mesh
-  );
-
-  metil_mesh->size.x = (
-    size.x
-  );
-  metil_mesh->size.y = (
-    size.y
-  );
-  metil_mesh->size.z = (
-    0.0f
-  );
-
   struct math_c_vector2_float size_cell = {
     .x = (
-      metil_mesh->size.x /
+      size.x /
       cells.x
     ),
     .y = (
-      metil_mesh->size.y /
+      size.y /
       cells.y
     )
   };
 
   struct math_c_vector2_float size_half = {
     .x = (
-      metil_mesh->size.x /
-      2.0f
+      size.x /
+      0x02
     ),
     .y = (
-      metil_mesh->size.y /
-      2.0f
+      size.y /
+      0x02
     )
   };
 
@@ -894,14 +818,15 @@ void metil_mesh_celled_individual_triangles_grid_initialize(
     cells.y
   );
 
-  metil_mesh->length_vertices = (
-    total_cells *
-    4
-  );
-
-  metil_mesh->length_indices = (
-    total_cells *
-    6
+  metil_mesh_initialize_with_lengths(
+    metil_mesh,
+    (
+      total_cells *
+      0x04
+    ),
+    (      total_cells *
+      0x06
+    )
   );
 
   clic3_memory_reallocate_raw(
@@ -911,16 +836,6 @@ void metil_mesh_celled_individual_triangles_grid_initialize(
         unsigned int
       ) *
       metil_mesh->length_indices
-    )
-  );
-
-  clic3_memory_reallocate_raw(
-    &metil_mesh->vertices,
-    (
-      sizeof(
-        struct math_c_vector4_float
-      ) *
-      metil_mesh->length_vertices
     )
   );
 

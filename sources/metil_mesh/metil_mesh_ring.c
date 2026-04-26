@@ -12,12 +12,22 @@ void metil_mesh_ring_initialize(
   struct math_c_vector3_float size_inner,
   struct math_c_vector2_unsigned_short_int segments
 ) {
-  metil_mesh_initialize(
-    metil_mesh_ring
+  metil_mesh_initialize_with_lengths(
+    metil_mesh_ring,
+    (
+      segments.x *
+      segments.y
+    ),
+    (
+      segments.x *
+      segments.y *
+      0x06
+    )
   );
 
   if (
-    size_outer.x < size_inner.x
+    size_outer.x <
+    size_inner.x
   ) {
     float size_x_hold = (
       size_outer.x
@@ -33,7 +43,8 @@ void metil_mesh_ring_initialize(
   }
 
   if (
-    size_outer.z < size_inner.z
+    size_outer.z <
+    size_inner.z
   ) {
     float size_z_hold = (
       size_outer.z
@@ -129,38 +140,13 @@ void metil_mesh_ring_initialize(
     ),
   };
 
-  metil_mesh_ring->length_vertices = (
-    segments.x *
-    segments.y
+  unsigned int index_vertex = (
+    0x00
   );
-
-  metil_mesh_ring->length_indices = (
-    metil_mesh_ring->length_vertices *
-    6
+  
+  unsigned int index_index = (
+    0x00
   );
-
-  clic3_memory_reallocate_raw(
-    &metil_mesh_ring->indices,
-    (
-      sizeof(
-        unsigned int
-      ) *
-      metil_mesh_ring->length_indices
-    )
-  );
-
-  clic3_memory_reallocate_raw(
-    &metil_mesh_ring->vertices,
-    (
-      sizeof(
-        struct math_c_vector4_float
-      ) *
-      metil_mesh_ring->length_vertices
-    )
-  );
-
-  unsigned int index_vertex = 0;
-  unsigned int index_index = 0;
 
   for (
     unsigned short int index_segment_x = 0;
