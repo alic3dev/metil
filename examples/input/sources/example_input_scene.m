@@ -29,6 +29,10 @@ void example_input_scene_initialize(
   struct metil* metil,
   struct metil_scene* scene
 ) {
+  struct example_input_pipeline_index* example_input_pipeline_index = (
+    metil->data
+  );
+
   metil_scene_initialize_with_renderables(
     metil,
     scene,
@@ -1198,10 +1202,73 @@ void example_input_scene_initialize(
     1.0f
   );
 
-  metil_object_ground->index_pipeline_render = (
-    example_input_pipeline_index_model_item
+  metil_object_player_head->index_pipeline_render = (
+    example_input_pipeline_index->model_player_body
   );
 
+  metil_object_player_arm_left->index_pipeline_render = (
+    example_input_pipeline_index->model_player_shirt
+  );
+  
+  metil_object_player_arm_left_lower->index_pipeline_render = (
+    example_input_pipeline_index->model_player_body
+  );
+
+  metil_object_player_arm_right->index_pipeline_render = (
+    example_input_pipeline_index->model_player_shirt
+  );
+
+  metil_object_player_arm_right_lower->index_pipeline_render = (
+    example_input_pipeline_index->model_player_body
+  );
+
+  metil_object_player_body->index_pipeline_render = (
+    example_input_pipeline_index->model_player_shirt
+  );
+
+  metil_object_player_leg_left->index_pipeline_render = (
+    example_input_pipeline_index->model_player_pants
+  );
+
+  metil_object_player_leg_left_lower->index_pipeline_render = (
+    example_input_pipeline_index->model_player_pants
+  );
+
+  metil_object_player_leg_right->index_pipeline_render = (
+    example_input_pipeline_index->model_player_pants
+  );
+
+  metil_object_player_leg_right_lower->index_pipeline_render = (
+    example_input_pipeline_index->model_player_pants
+  );
+
+  metil_object_skateboard_deck->index_pipeline_render = (
+    example_input_pipeline_index->model_skateboard_deck
+  );
+
+  metil_object_skateboard_truck_front->index_pipeline_render = (
+    example_input_pipeline_index->model_skateboard_truck
+  );
+
+  metil_object_skateboard_wheel_front_left->index_pipeline_render = (
+    example_input_pipeline_index->model_skateboard_wheel
+  );
+
+  metil_object_skateboard_wheel_front_right->index_pipeline_render = (
+    example_input_pipeline_index->model_skateboard_wheel
+  );
+
+  metil_object_skateboard_truck_back->index_pipeline_render = (
+    example_input_pipeline_index->model_skateboard_truck
+  );
+
+  metil_object_skateboard_wheel_back_left->index_pipeline_render = (
+    example_input_pipeline_index->model_skateboard_wheel
+  );
+
+  metil_object_skateboard_wheel_back_right->index_pipeline_render = (
+    example_input_pipeline_index->model_skateboard_wheel
+  );
   scene->destroy = (
     example_input_scene_destroy
   );
