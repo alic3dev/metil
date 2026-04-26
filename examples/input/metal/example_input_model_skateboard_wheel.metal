@@ -9,7 +9,7 @@ struct data_vertex {
   float4 colour;
 };
 
-[[vertex]] struct data_vertex model_vertex(
+[[vertex]] struct data_vertex example_input_model_skateboard_wheel_vertex(
   const device simd_float4* vertices [[
     buffer(
       metil_renderer_vertex_index_parameter_vertices
@@ -66,7 +66,7 @@ struct data_vertex {
   return data_vertex;
 }
 
-[[fragment]] float4 model_fragment(
+[[fragment]] float4 example_input_model_skateboard_wheel_fragment(
   struct data_vertex data_vertex [[stage_in]]
 ) {
   return data_vertex.colour;

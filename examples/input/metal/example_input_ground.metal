@@ -4,11 +4,10 @@
 
 struct data_vertex {
   float4 position [[position]];
-  float point_size [[point_size]];
   float4 colour;
 };
 
-[[vertex]] struct data_vertex model_item_vertex(
+[[vertex]] struct data_vertex example_input_ground_vertex(
   const device simd_float4* vertices [[
     buffer(
       metil_renderer_vertex_index_parameter_vertices
@@ -45,11 +44,15 @@ struct data_vertex {
     data_object->colour.w
   );
 
-  return data_vertex;
+  return (
+    data_vertex
+  );
 }
 
-[[fragment]] float4 model_item_fragment(
+[[fragment]] float4 example_input_ground_fragment(
   struct data_vertex data_vertex [[stage_in]]
 ) {
-  return data_vertex.colour;
+  return (
+    data_vertex.colour
+  );
 }
