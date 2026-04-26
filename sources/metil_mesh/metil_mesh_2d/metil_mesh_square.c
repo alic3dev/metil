@@ -8,37 +8,27 @@ void metil_mesh_square_initialize(
   struct metil_mesh* metil_mesh,
   float size
 ) {
-  metil_mesh_initialize(
-    metil_mesh
+  metil_mesh_initialize_with_lengths(
+    metil_mesh,
+    0x04,
+    0x06
   );
 
-  metil_mesh->size.x = size;
-  metil_mesh->size.y = size;
-  metil_mesh->size.z = 0.0f;
-
-  float size_half = size / 2.0f;
-
-  metil_mesh->length_vertices = 4;
-  metil_mesh->length_indices = 6;
-
-  clic3_memory_reallocate_raw(
-    &metil_mesh->indices,
-    (
-      sizeof(
-        unsigned int
-      ) *
-      metil_mesh->length_indices
-    )
+  metil_mesh->size.x = (
+    size
+  );
+  
+  metil_mesh->size.y = (
+    size
+  );
+  
+  metil_mesh->size.z = (
+    0x00
   );
 
-  clic3_memory_reallocate_raw(
-    &metil_mesh->vertices,
-    (
-      sizeof(
-        struct math_c_vector4_float
-      ) *
-      metil_mesh->length_vertices
-    )
+  float size_half = (
+    size /
+    0x02
   );
 
   metil_mesh->vertices[0].x = -size_half;

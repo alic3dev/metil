@@ -12,8 +12,16 @@ void metil_mesh_circle_initialize(
   float diameter,
   unsigned short int segments
 ) {
-  metil_mesh_initialize(
-    metil_mesh
+  metil_mesh_initialize_with_lengths(
+    metil_mesh,
+    (
+      segments +
+      0x01
+    ),
+    (
+      segments *
+      0x03
+    )
   );
 
   float radius = (
@@ -21,33 +29,17 @@ void metil_mesh_circle_initialize(
     2.0f
   );
 
-  metil_mesh->size.x = diameter;
-  metil_mesh->size.y = diameter;
-  metil_mesh->size.z = diameter;
-
-  metil_mesh->length_vertices = segments + 1;
-  metil_mesh->length_indices = segments * 3;
-
-  clic3_memory_reallocate_raw(
-    &metil_mesh->indices,
-    (
-      sizeof(
-        unsigned int
-      ) *
-      metil_mesh->length_indices
-    )
+  metil_mesh->size.x = (
+    diameter
   );
-
-  clic3_memory_reallocate_raw(
-    &metil_mesh->vertices,
-    (
-      sizeof(
-        struct math_c_vector4_float
-      ) *
-      metil_mesh->length_vertices
-    )
+  
+  metil_mesh->size.y = (
+    diameter
   );
-
+  
+  metil_mesh->size.z = (
+    diameter
+  );
   metil_mesh->vertices[0].x = 0.0f;
   metil_mesh->vertices[0].y = 0.0f;
   metil_mesh->vertices[0].z = 0.0f;

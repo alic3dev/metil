@@ -11,43 +11,21 @@ void metil_mesh_line_initialize(
   unsigned int length_points,
   struct math_c_vector3_float* points
 ) {
-  metil_mesh_initialize(
-    metil_mesh_line
-  );
-
-  metil_mesh_line->length_indices = (
+  metil_mesh_initialize_with_lengths(
+    metil_mesh_line,
+    length_points,
     (
-      length_points -
-      1
-    ) *
-    2
-  );
-
-  metil_mesh_line->length_vertices = (
-    length_points
-  );
-
-  clic3_memory_reallocate_raw(
-    &metil_mesh_line->indices,
-    (
-      sizeof(
-        unsigned int
-      ) *
-      metil_mesh_line->length_indices
+      0x02 *
+      (
+        length_points -
+        0x01
+      )
     )
   );
 
-  clic3_memory_reallocate_raw(
-    &metil_mesh_line->vertices,
-    (
-      sizeof(
-        struct math_c_vector4_float
-      ) *
-      metil_mesh_line->length_vertices
-    )
+  unsigned int index_index = (
+    0x00
   );
-
-  unsigned int index_index = 0;
 
   struct math_c_vector3_float size_minimums = {
     .x = (

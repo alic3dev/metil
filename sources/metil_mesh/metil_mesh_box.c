@@ -8,42 +8,38 @@ void metil_mesh_box_initialize(
   struct metil_mesh* metil_mesh,
   struct math_c_vector3_float size
 ) {
-  metil_mesh_initialize(
-    metil_mesh
+  metil_mesh_initialize_with_lengths(
+    metil_mesh,
+    0x08,
+    0x24
   );
 
-  metil_mesh->size.x = size.x;
-  metil_mesh->size.y = size.y;
-  metil_mesh->size.z = size.z;
+  metil_mesh->size.x = (
+    size.x
+  );
+  
+  metil_mesh->size.y = (
+    size.y
+  );
+  
+  metil_mesh->size.z = (
+    size.z
+  );
 
   struct math_c_vector3_float size_half = {
-    .x = metil_mesh->size.x / 2.0f,
-    .y = metil_mesh->size.y / 2.0f,
-    .z = metil_mesh->size.z / 2.0f
+    .x = (
+      metil_mesh->size.x /
+      0x02
+    ),
+    .y = (
+      metil_mesh->size.y /
+      0x02
+    ),
+    .z = (
+      metil_mesh->size.z /
+      0x02
+    )
   };
-
-  metil_mesh->length_vertices = 8;
-  metil_mesh->length_indices = 36;
-
-  clic3_memory_reallocate_raw(
-    &metil_mesh->indices,
-    (
-      sizeof(
-        unsigned int
-      ) *
-      metil_mesh->length_indices
-    )
-  );
-
-  clic3_memory_reallocate_raw(
-    &metil_mesh->vertices,
-    (
-      sizeof(
-        struct math_c_vector4_float
-      ) *
-      metil_mesh->length_vertices
-    )
-  );
 
   metil_mesh->vertices[0].x = -size_half.x;
   metil_mesh->vertices[0].y = -size_half.y;
