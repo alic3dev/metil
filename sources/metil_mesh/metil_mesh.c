@@ -2,31 +2,63 @@
 
 #include <clic3_memory.h>
 
+#include <math_c_vector.h>
+
 void metil_mesh_initialize(
   struct metil_mesh* metil_mesh
 ) {
-  metil_mesh->length_indices = 0;
+  metil_mesh_initialize_with_lengths(
+    metil_mesh,
+    0x00,
+    0x00
+  );
+}
 
-  metil_mesh->length_vertices = 0;
+void metil_mesh_initialize_with_lengths(
+  struct metil_mesh* metil_mesh,
+  unsigned int length_vertices,
+  unsigned int length_indices
+) {
+  metil_mesh->length_indices = (
+    length_indices
+  );
 
-  metil_mesh->size.x = 0.0f;
-  metil_mesh->size.y = 0.0f;
-  metil_mesh->size.z = 0.0f;
+  metil_mesh->length_vertices = (
+    length_vertices
+  );
+
+  metil_mesh->size.x = (
+    0x00
+  );
+
+  metil_mesh->size.y = (
+    0x00
+  );
+
+  metil_mesh->size.z = (
+    0x00
+  );
 
   metil_mesh->indices = (
     clic3_memory_allocate_raw(
-      0
+      sizeof(
+        unsigned int
+      ) *
+      metil_mesh->length_indices
     )
   );
 
   metil_mesh->vertices = (
     clic3_memory_allocate_raw(
-      0
+      sizeof(
+        struct math_c_vector4_float
+      ) *
+      metil_mesh->length_vertices
     )
   );
 
   metil_mesh->data = (
-    0
+    0x00
   );
 }
 
@@ -34,12 +66,10 @@ void metil_mesh_clone(
   struct metil_mesh* mesh_source,
   struct metil_mesh* mesh_clone
 ) {
-  mesh_clone->indices = 0;
   mesh_clone->length_indices = (
     mesh_source->length_indices
   );
 
-  mesh_clone->vertices = 0;
   mesh_clone->length_vertices = (
     mesh_source->length_vertices
   );
@@ -75,8 +105,13 @@ void metil_mesh_clone(
   );
 
   for (
-    unsigned int index_index = 0;
-    index_index < mesh_clone->length_indices;
+    unsigned int index_index = (
+      0x00
+    );
+    (
+      index_index <
+      mesh_clone->length_indices
+    );
     ++index_index
   ) {
     mesh_clone->indices[
@@ -89,8 +124,13 @@ void metil_mesh_clone(
   }
 
   for (
-    unsigned int index_vertex = 0;
-    index_vertex < mesh_clone->length_vertices;
+    unsigned int index_vertex = (
+      0x00
+    );
+    (
+      index_vertex <
+      mesh_clone->length_vertices
+    );
     ++index_vertex
   ) {
     mesh_clone->vertices[
@@ -126,7 +166,9 @@ void metil_mesh_clone(
     );
   }
 
-  mesh_clone->data = 0;
+  mesh_clone->data = (
+    0x00
+  );
 }
 
 void metil_mesh_destroy(
