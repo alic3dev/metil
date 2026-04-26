@@ -8,11 +8,24 @@
 #include <metil_scenes/metil_scene.h>
 
 enum example_input_scene_trick {
-  example_input_scene_trick_none     = 0x00,
-  example_input_scene_trick_kickflip
-= 0x01};
+  example_input_scene_trick_none = (
+    0x00
+  ),
+  example_input_scene_trick_kickflip = (
+    0x01
+  )
+};
+enum example_input_scene_stance {
+  example_input_scene_stance_goofy = (
+    0x00
+  ),
+  example_input_scene_stance_regular = (
+    0x01
+  )
+};
 
 struct example_input_scene_data {
+  unsigned char stance;
   unsigned char trick;
 
   struct metil_animation* _Nullable animation;
