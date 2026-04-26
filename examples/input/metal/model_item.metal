@@ -39,8 +39,8 @@ struct data_vertex {
   );
 
   data_vertex.colour = float4(
-    metal::fmod(data_object->colour.x + offset, 1.0f),
-    metal::fmod(data_object->colour.y + offset, 1.0f),
+    metal::fmod(data_object->colour.x + offset * 4, 1.0f),
+    metal::fmod(data_object->colour.y + offset * 2, 1.0f),
     metal::fmod(data_object->colour.z + offset, 1.0f),
     data_object->colour.w
   );

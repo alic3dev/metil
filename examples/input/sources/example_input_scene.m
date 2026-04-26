@@ -4,6 +4,12 @@
 
 #include <clic3_memory.h>
 
+#include <math_c_absolute.h>
+#include <math_c_modulus.h>
+#include <math_c_pi.h>
+#include <math_c_sine.h>
+#include <math_c_vector.h>
+
 #include <metil_direction.h>
 #include <metil_mesh/metil_mesh.h>
 #include <metil_mesh/metil_mesh_box.h>
@@ -27,6 +33,22 @@ void example_input_scene_initialize(
     metil,
     scene,
     0x03
+  );
+
+  metil->rendering_properties.camera.height = (
+    0x20
+  );
+
+  metil->rendering_properties.camera.mode = (
+    metil_camera_mode_third_person
+  );
+
+  scene->player.rotation.x = (
+    -0.25f
+  );
+
+  scene->player.speed_movement = (
+    0.025f
   );
 
   metil_renderable_initialize_at_index(
@@ -945,13 +967,13 @@ void example_input_scene_initialize(
     &metil_object_ground->mesh,
     (struct math_c_vector3_float) {
       .x = (
-        0xffff
+        0xff
       ),
       .y = (
         0x01
       ),
       .z = (
-        0xffff
+        0xff
       )
     }
   );
@@ -998,6 +1020,121 @@ void example_input_scene_initialize(
   scene->poll = (
     example_input_scene_poll
   );
+
+  scene->player.poll_input = (
+    example_input_scene_player_poll_input
+  );
+}
+
+void example_input_scene_player_poll_input(
+  struct metil* metil,
+  struct metil_player* metil_player,
+  unsigned long int time,
+  unsigned long int time_delta
+) {
+  float amount_movement = (
+    time_delta *
+    metil_player->speed_movement
+  );
+
+  metil_player->rotation.x = (
+    metil_player->rotation.x +
+    -metil->input.cursor.delta.y *
+    0.005f
+  );
+
+  metil_player->rotation.y = (
+    metil_player->rotation.y +
+    -metil->input.cursor.delta.x *
+    0.005f  );
+
+  while (
+    metil_player->rotation.y <
+    -math_c_pi
+  ) {
+    metil_player->rotation.y = (
+      metil_player->rotation.y +
+      math_c_pi_doubled
+    );
+  }
+
+  while (
+    metil_player->rotation.y >
+    math_c_pi
+  ) {
+    metil_player->rotation.y = (
+      metil_player->rotation.y -
+      math_c_pi_doubled
+    );
+  }
+
+  metil->input.cursor.delta.x = (
+    0x00
+  );
+
+  metil->input.cursor.delta.y = (
+    0x00
+  );
+  struct math_c_vector2_float ratio_movement = {
+    .x = -(
+      metil_player->rotation.y /
+      math_c_pi_half
+    ),
+    .y = (
+      0x00
+    )
+  };
+
+  if (
+    ratio_movement.x >
+    0x00
+  ) {
+    ratio_movement.x = (
+      math_c_modulus_mirror_float(
+        ratio_movement.x,
+        1.0f
+      )
+    );
+  } else {
+    ratio_movement.x = (
+      -math_c_modulus_mirror_float(
+        -ratio_movement.x,
+        1.0f
+      )
+    );
+  }
+
+  ratio_movement.y = (
+    1.0f -
+    math_c_absolute_float(
+      ratio_movement.x
+    )
+  );
+
+  if (
+    (
+      metil_player->rotation.y >
+      math_c_pi_half
+    ) ||
+    (
+      metil_player->rotation.y <
+      -math_c_pi_half
+    )
+  ) {
+    ratio_movement.y = -(
+      ratio_movement.y
+    );
+  }  metil_player->position.x = (
+    metil_player->position.x +
+    ratio_movement.x *
+    amount_movement
+  );
+
+  metil_player->position.z = (
+    metil_player->position.z +
+    ratio_movement.y *
+    amount_movement
+  );
 }
 
 void example_input_scene_poll(
@@ -1019,6 +1156,30 @@ void example_input_scene_poll(
     scene->renderables[
       0x02
     ].renderable
+  );
+
+  metil_model_player->position.x = (
+    scene->player.position.x
+  );
+
+  metil_model_player->position.z = (
+    scene->player.position.z
+  );
+
+  metil_model_player->rotation.y = (
+    -scene->player.rotation.y
+  );
+
+  metil_model_skateboard->position.x = (
+    scene->player.position.x
+  );
+
+  metil_model_skateboard->position.z = (
+    scene->player.position.z
+  );
+
+  metil_model_skateboard->rotation.y = (
+    -scene->player.rotation.y
   );
 
   metil_joint_propagate(
