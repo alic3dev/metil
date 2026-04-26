@@ -48,7 +48,7 @@ void example_input_scene_initialize(
   );
 
   scene->player.speed_movement = (
-    0.025f
+    0.25f
   );
 
   metil_renderable_initialize_at_index(
@@ -201,7 +201,7 @@ void example_input_scene_initialize(
 
   metil_mesh_sphere_initialize(
     &metil_object_player_head->mesh,
-    1.0f,
+    2.0f,
     (struct math_c_vector2_unsigned_short_int) {
       .x = (
         0x08
@@ -240,13 +240,13 @@ void example_input_scene_initialize(
     &metil_object_player_arm_left->mesh,
     (struct math_c_vector3_float) {
       .x = (
-        0x01
+        0.5f
       ),
       .y = (
         0x02
       ),
       .z = (
-        0x01
+        0.5f
       )
     },
     (struct math_c_vector2_unsigned_short_int) {
@@ -264,13 +264,13 @@ void example_input_scene_initialize(
     &metil_object_player_arm_left_lower->mesh,
     (struct math_c_vector3_float) {
       .x = (
-        0x01
+        0.5f
       ),
       .y = (
         0x02
       ),
       .z = (
-        0x01
+        0.5f
       )
     },
     (struct math_c_vector2_unsigned_short_int) {
@@ -288,13 +288,13 @@ void example_input_scene_initialize(
     &metil_object_player_arm_right->mesh,
     (struct math_c_vector3_float) {
       .x = (
-        0x01
+        0.5f
       ),
       .y = (
         0x02
       ),
       .z = (
-        0x01
+        0.5f
       )
     },
     (struct math_c_vector2_unsigned_short_int) {
@@ -312,13 +312,13 @@ void example_input_scene_initialize(
     &metil_object_player_arm_right_lower->mesh,
     (struct math_c_vector3_float) {
       .x = (
-        0x01
+        0.5f
       ),
       .y = (
         0x02
       ),
       .z = (
-        0x01
+        0.5f
       )
     },
     (struct math_c_vector2_unsigned_short_int) {
@@ -336,13 +336,13 @@ void example_input_scene_initialize(
     &metil_object_player_leg_left->mesh,
     (struct math_c_vector3_float) {
       .x = (
-        0x01
+        0.5f
       ),
       .y = (
         0x02
       ),
       .z = (
-        0x01
+        0.5f
       )
     },
     (struct math_c_vector2_unsigned_short_int) {
@@ -360,13 +360,13 @@ void example_input_scene_initialize(
     &metil_object_player_leg_left_lower->mesh,
     (struct math_c_vector3_float) {
       .x = (
-        0x01
+        0.5f
       ),
       .y = (
         0x02
       ),
       .z = (
-        0x01
+        0.5f
       )
     },
     (struct math_c_vector2_unsigned_short_int) {
@@ -384,13 +384,13 @@ void example_input_scene_initialize(
     &metil_object_player_leg_right->mesh,
     (struct math_c_vector3_float) {
       .x = (
-        0x01
+        0.5f
       ),
       .y = (
         0x02
       ),
       .z = (
-        0x01
+        0.5f
       )
     },
     (struct math_c_vector2_unsigned_short_int) {
@@ -408,13 +408,13 @@ void example_input_scene_initialize(
     &metil_object_player_leg_right_lower->mesh,
     (struct math_c_vector3_float) {
       .x = (
-        0x01
+        0.5f
       ),
       .y = (
         0x02
       ),
       .z = (
-        0x01
+        0.5f
       )
     },
     (struct math_c_vector2_unsigned_short_int) {
@@ -447,7 +447,7 @@ void example_input_scene_initialize(
     &metil_object_skateboard_truck_front->mesh,
     (struct math_c_vector3_float) {
       .x = (
-        0.125f
+        0.9f
       ),
       .y = (
         0.125f
@@ -462,7 +462,7 @@ void example_input_scene_initialize(
     &metil_object_skateboard_truck_back->mesh,
     (struct math_c_vector3_float) {
       .x = (
-        0.125f
+        0.9f
       ),
       .y = (
         0.125f
@@ -607,6 +607,195 @@ void example_input_scene_initialize(
         0x08
       )
     }
+  );
+
+  metil_object_skateboard_wheel_front_left->position.x = (
+    -metil_object_skateboard_deck->mesh.size.x /
+    0x02 +
+    metil_object_skateboard_wheel_front_left->mesh.size.x /
+    0x02
+  );
+
+  metil_object_skateboard_wheel_front_left->position.y = (
+    metil_object_skateboard_wheel_front_left->mesh.size.y /
+    0x02
+  );
+
+  metil_object_skateboard_wheel_front_left->position.z = (
+    metil_object_skateboard_deck->mesh.size.z *
+    0.4f
+  );
+
+  metil_object_skateboard_wheel_front_right->position.x = (
+    metil_object_skateboard_deck->mesh.size.x /
+    0x02 -
+    metil_object_skateboard_wheel_front_right->mesh.size.x /
+    0x02
+  );
+
+  metil_object_skateboard_wheel_front_right->position.y = (
+    metil_object_skateboard_wheel_front_right->mesh.size.y /
+    0x02
+  );
+
+  metil_object_skateboard_wheel_front_right->position.z = (
+    metil_object_skateboard_deck->mesh.size.z *
+    0.4f
+  );
+
+  metil_object_skateboard_wheel_back_left->position.x = (
+    metil_object_skateboard_wheel_front_left->position.x
+  );
+
+  metil_object_skateboard_wheel_back_left->position.y = (
+    metil_object_skateboard_wheel_front_left->position.y
+  );
+
+  metil_object_skateboard_wheel_back_left->position.z = (
+    -metil_object_skateboard_wheel_front_left->position.z
+  );
+
+  metil_object_skateboard_wheel_back_right->position.x = (
+    metil_object_skateboard_wheel_front_right->position.x
+  );
+
+  metil_object_skateboard_wheel_back_right->position.y = (
+    metil_object_skateboard_wheel_front_right->position.y
+  );
+
+  metil_object_skateboard_wheel_back_right->position.z = (
+    -metil_object_skateboard_wheel_front_right->position.z
+  );
+
+  metil_object_skateboard_truck_front->position.y = (
+    metil_object_skateboard_wheel_front_left->mesh.size.y /
+    0x02
+  );
+
+  metil_object_skateboard_truck_front->position.z = (
+    metil_object_skateboard_wheel_front_right->position.z
+  );
+
+  metil_object_skateboard_truck_back->position.y = (
+    metil_object_skateboard_wheel_back_right->mesh.size.y /
+    0x02
+  );
+
+  metil_object_skateboard_truck_back->position.z = (
+    metil_object_skateboard_wheel_back_left->position.z
+  );
+  metil_object_skateboard_deck->position.y = (
+    metil_object_skateboard_wheel_back_right->mesh.size.y *
+    1.25f
+  );
+
+  metil_object_player_leg_left_lower->position.x = (
+    -metil_object_player_leg_left_lower->mesh.size.x /
+    0x02
+  );
+
+  metil_object_player_leg_left_lower->position.y = (
+    metil_object_player_leg_left_lower->mesh.size.y /
+    0x02 +
+    metil_object_skateboard_deck->position.y +
+    metil_object_skateboard_deck->mesh.size.y /
+    0x02
+  );
+
+  metil_object_player_leg_left->position.x = (
+    metil_object_player_leg_left_lower->position.x
+  );
+
+  metil_object_player_leg_left->position.y = (
+    metil_object_player_leg_left_lower->position.y +
+    metil_object_player_leg_left_lower->mesh.size.y /
+    0x02 +
+    metil_object_player_leg_left->mesh.size.y /
+    0x02
+  );
+
+  metil_object_player_leg_right_lower->position.x = (
+    metil_object_player_leg_right_lower->mesh.size.x /
+    0x02
+  );
+
+  metil_object_player_leg_right_lower->position.y = (
+    metil_object_player_leg_right_lower->mesh.size.y /
+    0x02 +
+    metil_object_skateboard_deck->position.y +
+    metil_object_skateboard_deck->mesh.size.y /
+    0x02
+  );
+
+  metil_object_player_leg_right->position.x = (
+    metil_object_player_leg_right_lower->position.x
+  );
+
+  metil_object_player_leg_right->position.y = (
+    metil_object_player_leg_right_lower->position.y +
+    metil_object_player_leg_right_lower->mesh.size.y /
+    0x02 +
+    metil_object_player_leg_right->mesh.size.y /
+    0x02
+  );
+
+  metil_object_player_body->position.y = (
+    metil_object_player_leg_right->position.y +
+    metil_object_player_leg_right->mesh.size.y /
+    0x02 +
+    metil_object_player_body->mesh.size.y /
+    0x02
+  );
+
+  metil_object_player_arm_left->position.y = (
+    metil_object_player_body->position.y +
+    metil_object_player_body->mesh.size.y /
+    0x02 -
+    metil_object_player_arm_left->mesh.size.y /
+    0x02
+  );
+
+  metil_object_player_arm_left->position.x = (
+    -metil_object_player_body->mesh.size.x /
+    0x02 -
+    metil_object_player_arm_left->mesh.size.x /
+    0x02
+  );
+
+  metil_object_player_arm_left_lower->position.x = (
+    metil_object_player_arm_left->position.x
+  );
+
+  metil_object_player_arm_left_lower->position.y = (
+    metil_object_player_arm_left->position.y -
+    metil_object_player_arm_left->mesh.size.y /
+    0x02 -
+    metil_object_player_arm_left_lower->mesh.size.y /
+    0x02
+  );
+
+  metil_object_player_arm_right->position.x = (
+    -metil_object_player_arm_left->position.x
+  );
+
+  metil_object_player_arm_right->position.y = (
+    metil_object_player_arm_left->position.y
+  );
+
+  metil_object_player_arm_right_lower->position.x = (
+    metil_object_player_arm_right->position.x
+  );
+
+  metil_object_player_arm_right_lower->position.y = (
+    metil_object_player_arm_left_lower->position.y
+  );
+
+  metil_object_player_head->position.y = (
+    metil_object_player_body->position.y +
+    metil_object_player_body->mesh.size.y /
+    0x02 +
+    metil_object_player_head->mesh.size.y /
+    0x02
   );
 
   metil_model_joints_add_length(
@@ -967,19 +1156,19 @@ void example_input_scene_initialize(
     &metil_object_ground->mesh,
     (struct math_c_vector3_float) {
       .x = (
-        0xff
+        0x1ff
       ),
       .y = (
         0x01
       ),
       .z = (
-        0xff
+        0x1ff
       )
     }
   );
 
   metil_object_ground->position.y = (
-    -0.5f
+    -0x01
   );
 
   metil_object_buffers_initialize(
@@ -1167,7 +1356,8 @@ void example_input_scene_poll(
   );
 
   metil_model_player->rotation.y = (
-    -scene->player.rotation.y
+    -scene->player.rotation.y -
+    math_c_pi_half
   );
 
   metil_model_skateboard->position.x = (
