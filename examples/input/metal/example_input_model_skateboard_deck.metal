@@ -35,15 +35,15 @@ struct data_vertex {
       metil_renderer_vertex_index_parameter_joints
     )
   ]],
-  unsigned int id_vertex [[vertex_id]]
+  unsigned int index_vertex [[vertex_id]]
 ) {
   struct data_vertex data_vertex;
 
   float4 position_vertex = (
     metil_model_object_position_calculate(
-      id_vertex,
+      index_vertex,
       &vertices[
-        id_vertex
+        index_vertex
       ],
       &data_object->position,
       vertex_joint_map,
@@ -57,17 +57,21 @@ struct data_vertex {
   );
 
   data_vertex.colour = float4(
-    1.0f,
-    1.0f,
-    1.0f,
-    1.0f
+    0.01f,
+    0.01f,
+    0.01f,
+    0x01
   );
 
-  return data_vertex;
+  return (
+    data_vertex
+  );
 }
 
 [[fragment]] float4 example_input_model_skateboard_deck_fragment(
   struct data_vertex data_vertex [[stage_in]]
 ) {
-  return data_vertex.colour;
+  return (
+    data_vertex.colour
+  );
 }

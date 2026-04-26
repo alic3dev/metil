@@ -23,24 +23,47 @@ struct data_vertex {
       metil_renderer_vertex_index_parameter_data_object
     )
   ]],
-  unsigned int id_vertex [[vertex_id]]
+  unsigned int index_vertex [[vertex_id]]
 ) {
   struct data_vertex data_vertex;
 
   data_vertex.position = (
     data_object->view_model_matrix_projection *
-    vertices[id_vertex]
+    vertices[
+      index_vertex
+    ]
   );
 
   float offset = (
-    (float) id_vertex /
+    (float)
+    index_vertex /
     10.0f
   );
 
   data_vertex.colour = float4(
-    metal::fmod(data_object->colour.x + offset * 4, 1.0f),
-    metal::fmod(data_object->colour.y + offset * 2, 1.0f),
-    metal::fmod(data_object->colour.z + offset, 1.0f),
+    metal::fmod(
+      (
+        data_object->colour.x +
+        offset *
+        0x04
+      ),
+      0x01
+    ),
+    metal::fmod(
+      (
+        data_object->colour.y +
+        offset *
+        0x02
+      ),
+      0x01
+    ),
+    metal::fmod(
+      (
+        data_object->colour.z +
+        offset
+      ),
+      0x01
+    ),
     data_object->colour.w
   );
 
