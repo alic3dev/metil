@@ -1,7 +1,7 @@
-#include <example_model.h>
+#include <example_input.h>
 
-#include <example_model_pipeline_index.h>
-#include <example_model_scene.h>
+#include <example_input_pipeline_index.h>
+#include <example_input_scene.h>
 
 #include <metil.h>
 #include <metil_initialize.h>
@@ -15,12 +15,12 @@ int main(
   return metil_initialize(
     length_parameters,
     parameters,
-    "example_model",
-    example_model_renderer_on_initialize
+    "example_input",
+    example_input_renderer_on_initialize
   );
 }
 
-void example_model_renderer_on_initialize(
+void example_input_renderer_on_initialize(
   struct metil* metil,
   void* data
 ) {
@@ -31,7 +31,7 @@ void example_model_renderer_on_initialize(
     @"model_vertex"
   );
 
-  example_model_pipeline_index_model_item = [
+  example_input_pipeline_index_model_item = [
     metil->renderer_interface.renderer
     pipeline_add: [
       metil->library.library
@@ -43,8 +43,12 @@ void example_model_renderer_on_initialize(
     ]
   ];
 
-  example_model_scene_initialize(
+  struct metil_scene_controller* metil_scene_controller = (
+    metil->scene_controller
+  );
+
+  example_input_scene_initialize(
     metil,
-    &((struct metil_scene_controller*) metil->scene_controller)->scene
+    &metil_scene_controller->scene
   );
 }

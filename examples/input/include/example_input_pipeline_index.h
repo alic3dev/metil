@@ -1,0 +1,6 @@
+#ifndef __examples_input_example_input_pipeline_index_h
+#define __examples_input_example_input_pipeline_index_h
+
+extern unsigned short int example_input_pipeline_index_model_item;
+
+#endif
