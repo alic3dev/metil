@@ -824,27 +824,29 @@ void metil_mesh_celled_individual_triangles_grid_initialize(
       total_cells *
       0x04
     ),
-    (      total_cells *
+    (
+      total_cells *
       0x06
     )
   );
 
-  clic3_memory_reallocate_raw(
-    &metil_mesh->indices,
-    (
-      sizeof(
-        unsigned int
-      ) *
-      metil_mesh->length_indices
-    )
+  metil_mesh->size.x = (
+    size.x
   );
 
+  metil_mesh->size.y = (
+    size.y
+  );
+
+  metil_mesh->size.z = (
+    0x00
+  );
   unsigned long int index_index = (
-    0
+    0x00
   );
 
   unsigned long int index_vertex = (
-    0
+    0x00
   );
 
   for (
