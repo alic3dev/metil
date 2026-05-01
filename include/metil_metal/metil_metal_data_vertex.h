@@ -8,18 +8,21 @@ struct data_vertex_basic {
 struct data_vertex_basic_coloured {
   float4 position [[position]];
   float4 colour;
+  float brightness;
 };
 
 struct data_vertex_basic_textured_coloured {
   float4 position [[position]];
   float2 position_texture;
   float4 colour;
+  float brightness;
 };
 
 struct data_vertex_basic_multiple_textured_coloured {
   float4 position [[position]];
   float2 position_texture;
   float4 colour;
+  float brightness;
   unsigned char index_texture;
 };
 
