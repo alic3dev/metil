@@ -168,7 +168,6 @@ void metil_audio_io_proc_destroy(
 
 #endif
 
-
 #if target_os_ios
 #define metil_audio_io_proc_macro_definition_index_channel\
   unsigned long int index_channel = (\
@@ -179,8 +178,8 @@ void metil_audio_io_proc_destroy(
   unsigned long int index_channel = (\
     index_frame %\
     length_channels\
-  ); 
-#endif 
+  );
+#endif
 
 #define metil_audio_io_proc_macro_definition_frame_set(metil_audio_io_proc_macro_definition_value_frame)\
   buffer_out[\

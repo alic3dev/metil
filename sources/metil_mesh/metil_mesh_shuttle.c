@@ -29,17 +29,17 @@ void metil_mesh_shuttle_initialize(
         0x01
       ) *
       0x06
-    )  
+    )
   );
 
   metil_mesh->size.x = (
     size.x
   );
-  
+
   metil_mesh->size.y = (
     size.y
   );
-  
+
   metil_mesh->size.z = (
     size.z
   );

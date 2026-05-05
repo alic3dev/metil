@@ -143,7 +143,7 @@ void metil_mesh_ring_initialize(
   unsigned int index_vertex = (
     0x00
   );
-  
+
   unsigned int index_index = (
     0x00
   );

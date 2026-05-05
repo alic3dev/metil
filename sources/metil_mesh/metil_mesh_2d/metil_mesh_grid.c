@@ -71,7 +71,7 @@ void metil_mesh_celled_grid_initialize(
   metil_mesh->size.z = (
     0x00
   );
-  
+
   unsigned long int index_index = (
     0x00
   );
@@ -494,7 +494,7 @@ void metil_mesh_celled_triangles_quadruple_grid_initialize(
   metil_mesh->size.x = (
     size.x
   );
-  
+
   metil_mesh->size.y = (
     size.y
   );

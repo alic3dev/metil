@@ -11,7 +11,6 @@ struct example_input_pipeline_index {
   unsigned short int model_skateboard_wheel;
 };
 
-
 void example_input_pipeline_index_initialize(
   struct example_input_pipeline_index*
 );

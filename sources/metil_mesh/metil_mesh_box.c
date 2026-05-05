@@ -17,11 +17,11 @@ void metil_mesh_box_initialize(
   metil_mesh->size.x = (
     size.x
   );
-  
+
   metil_mesh->size.y = (
     size.y
   );
-  
+
   metil_mesh->size.z = (
     size.z
   );

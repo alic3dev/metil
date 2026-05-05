@@ -17,11 +17,11 @@ void metil_mesh_square_initialize(
   metil_mesh->size.x = (
     size
   );
-  
+
   metil_mesh->size.y = (
     size
   );
-  
+
   metil_mesh->size.z = (
     0x00
   );

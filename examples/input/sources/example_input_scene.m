@@ -133,7 +133,6 @@ void example_input_scene_initialize(
     ]
   );
 
-
   struct metil_object* metil_object_player_body = &(
     metil_model_player->objects[
       0x01
@@ -1235,7 +1234,7 @@ void example_input_scene_initialize(
   metil_object_player_arm_left->index_pipeline_render = (
     example_input_pipeline_index->model_player_shirt
   );
-  
+
   metil_object_player_arm_left_lower->index_pipeline_render = (
     example_input_pipeline_index->model_player_body
   );
@@ -1298,7 +1297,7 @@ void example_input_scene_initialize(
   scene->destroy = (
     example_input_scene_destroy
   );
-  
+
   scene->poll = (
     example_input_scene_poll
   );
@@ -1568,7 +1567,7 @@ void example_input_scene_poll(
           example_input_scene_data->animation = (
             0x00
           );
- 
+
           break;
         }
       }

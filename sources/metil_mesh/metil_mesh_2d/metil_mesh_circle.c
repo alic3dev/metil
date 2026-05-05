@@ -32,11 +32,11 @@ void metil_mesh_circle_initialize(
   metil_mesh->size.x = (
     diameter
   );
-  
+
   metil_mesh->size.y = (
     diameter
   );
-  
+
   metil_mesh->size.z = (
     diameter
   );
