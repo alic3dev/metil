@@ -2,6 +2,8 @@
 
 #include <metil_joint/metil_joint.h>
 #include <metil_joint/metil_joint_id_offset.h>
+#include <metil_object/metil_object.h>
+#include <metil_object/metil_object_buffer.h>
 #include <metil_positioning.h>
 #include <metil_rendering/metil_renderer_data_model_object.h>
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
@@ -12,25 +14,33 @@
 void metil_model_initialize(
   struct metil_model* metil_model
 ) {
-  metil_model->length_objects = 0;
+  metil_model->length_objects = (
+    0x00
+  );
 
   metil_model->objects = (
     clic3_memory_allocate_raw(
-      0
+      0x00
     )
   );
 
-  metil_model->vertex_joint_maps = 0;
+  metil_model->vertex_joint_maps = (
+    0x00
+  );
 
-  metil_model->length_joints = 0;
+  metil_model->length_joints = (
+    0x00
+  );
 
   metil_model->joints = (
     clic3_memory_allocate_raw(
-      0
+      0x00
     )
   );
 
-  metil_model->length_textures = 0;
+  metil_model->length_textures = (
+    0x00
+  );
 
   metil_model->textures = (
     clic3_memory_allocate_raw(
@@ -41,22 +51,49 @@ void metil_model_initialize(
     )
   );
 
-  metil_model->position.x = 0.0f;
-  metil_model->position.y = 0.0f;
-  metil_model->position.z = 0.0f;
+  metil_model->position.x = (
+    0x00
+  );
 
-  metil_model->rotation.x = 0.0f;
-  metil_model->rotation.y = 0.0f;
-  metil_model->rotation.z = 0.0f;
+  metil_model->position.y = (
+    0x00
+  );
 
-  metil_model->visible = 1;
+  metil_model->position.z = (
+    0x00
+  );
 
-  metil_model->positioning = metil_positioning_normal;
+  metil_model->rotation.x = (
+    0x00
+  );
 
-  metil_model->destroy = metil_model_destroy;
-  metil_model->poll = metil_model_poll;
+  metil_model->rotation.y = (
+    0x00
+  );
 
-  metil_model->data = 0;
+  metil_model->rotation.z = (
+    0x00
+  );
+
+  metil_model->visible = (
+    0x01
+  );
+
+  metil_model->positioning = (
+    metil_positioning_normal
+  );
+
+  metil_model->destroy = (
+    metil_model_destroy
+  );
+  
+  metil_model->poll = (
+    metil_model_poll
+  );
+
+  metil_model->data = (
+    0x00
+  );
 }
 
 void metil_model_object_add(
@@ -64,7 +101,7 @@ void metil_model_object_add(
 ) {
   metil_model_objects_add_length(
     metil_model,
-    1
+    0x01
   );
 }
 
@@ -114,7 +151,7 @@ void metil_model_joints_add(
 ) {
   metil_model_joints_add_length(
     metil_model,
-    1
+    0x01
   );
 }
 
@@ -166,8 +203,13 @@ void metil_model_vertex_joint_maps_initialize(
   );
 
   for (
-    unsigned char index_vertex_joint_map = 0;
-    index_vertex_joint_map < metil_model->length_objects;
+    unsigned char index_vertex_joint_map = (
+      0x00
+    );
+    (
+      index_vertex_joint_map <
+      metil_model->length_objects
+    );
     ++index_vertex_joint_map
   ) {
     unsigned int length_vertex_joint_map = (
@@ -188,8 +230,13 @@ void metil_model_vertex_joint_maps_initialize(
     );
 
     for (
-      unsigned int index_vertex_joint_map_value = 0;
-      index_vertex_joint_map_value < length_vertex_joint_map;
+      unsigned int index_vertex_joint_map_value = (
+        0x00
+      );
+      (
+        index_vertex_joint_map_value <
+        length_vertex_joint_map
+      );
       ++index_vertex_joint_map_value
     ) {
       metil_model->vertex_joint_maps[
@@ -197,7 +244,7 @@ void metil_model_vertex_joint_maps_initialize(
       ][
         index_vertex_joint_map_value
       ] = (
-        0
+        0x00
       );
     }
   }
@@ -215,7 +262,7 @@ void metil_model_vertex_joint_attach(
     index_vertex
   ] = (
     index_joint +
-    1
+    0x01
   );
 }
 
@@ -236,9 +283,9 @@ void metil_model_buffers_initialize(
         struct math_c_vector3_float
       ) * (
         metil_model->length_joints +
-        1
+        0x01
       ) *
-      3
+      0x03
     )
     options: MTLResourceStorageModeShared
   ];
@@ -247,34 +294,64 @@ void metil_model_buffers_initialize(
     (
       (struct math_c_vector3_float*)
       metil_model->buffer_joints.contents
-    )[0]
+    )[
+      0x00
+    ]
   );
 
-  buffer_joints_contents_joint->x = 0.0f;
-  buffer_joints_contents_joint->y = 0.0f;
-  buffer_joints_contents_joint->z = 0.0f;
+  buffer_joints_contents_joint->x = (
+    0x00
+  );
+  
+  buffer_joints_contents_joint->y = (
+    0x00
+  );
+  
+  buffer_joints_contents_joint->z = (
+    0x00
+  );
 
   buffer_joints_contents_joint = &(
     (
       (struct math_c_vector3_float*)
       metil_model->buffer_joints.contents
-    )[1]
+    )[
+      0x01
+    ]
   );
 
-  buffer_joints_contents_joint->x = 0.0f;
-  buffer_joints_contents_joint->y = 0.0f;
-  buffer_joints_contents_joint->z = 0.0f;
+  buffer_joints_contents_joint->x = (
+    0x00
+  );
+  
+  buffer_joints_contents_joint->y = (
+    0x00
+  );
+  
+  buffer_joints_contents_joint->z = (
+    0x00
+  );
 
   buffer_joints_contents_joint = &(
     (
       (struct math_c_vector3_float*)
       metil_model->buffer_joints.contents
-    )[2]
+    )[
+      0x02
+    ]
   );
 
-  buffer_joints_contents_joint->x = 0.0f;
-  buffer_joints_contents_joint->y = 0.0f;
-  buffer_joints_contents_joint->z = 0.0f;
+  buffer_joints_contents_joint->x = (
+    0x00
+  );
+  
+  buffer_joints_contents_joint->y = (
+    0x00
+  );
+  
+  buffer_joints_contents_joint->z = (
+    0x00
+  );
 
   metil_model_buffer_joints_poll(
     metil,
@@ -282,8 +359,13 @@ void metil_model_buffers_initialize(
   );
 
   for (
-    unsigned char index_object = 0;
-    index_object < metil_model->length_objects;
+    unsigned char index_object = (
+      0x00
+    );
+    (
+      index_object <
+      metil_model->length_objects
+    );
     ++index_object
   ) {
     struct metil_object* metil_object = &(
@@ -356,9 +438,18 @@ void metil_model_poll(
     metil_model
   );
 
+  struct metil_scene_controller* metil_scene_controller = (
+    metil->scene_controller
+  );
+
   for (
-    unsigned char index_object = 0;
-    index_object < metil_model->length_objects;
+    unsigned char index_object = (
+      0x00
+    );
+    (
+      index_object <
+      metil_model->length_objects
+    );
     ++index_object
   ) {
     struct metil_object* metil_object = &(
@@ -381,7 +472,7 @@ void metil_model_poll(
       matrix_player_projection,
       &metil_object->position,
       &metil_object->rotation,
-      &((struct metil_scene_controller*) metil->scene_controller)->scene.player.position,
+      &metil_scene_controller->scene.player.position,
       &metil_model->position,
       &metil_model->rotation,
       metil_camera
@@ -405,8 +496,13 @@ void metil_model_buffer_joints_poll(
   struct math_c_vector3_float* buffer_joints_contents_joint;
 
   for (
-    unsigned char index_joint = 0;
-    index_joint < metil_model->length_joints;
+    unsigned char index_joint = (
+      0x00
+    );
+    (
+      index_joint <
+      metil_model->length_joints
+    );
     ++index_joint
   ) {
     struct metil_joint* metil_joint = &(
@@ -418,14 +514,15 @@ void metil_model_buffer_joints_poll(
     unsigned int id_buffer_joint = (
       (
         index_joint +
-        1
+        0x01
       ) *
       metil_joint_id_offset_length
     );
 
     buffer_joints_contents_joint = &(
       (
-        (struct math_c_vector3_float*) metil_model->buffer_joints.contents
+        (struct math_c_vector3_float*) 
+        metil_model->buffer_joints.contents
       )[
         id_buffer_joint +
         metil_joint_id_offset_position
@@ -446,7 +543,8 @@ void metil_model_buffer_joints_poll(
 
     buffer_joints_contents_joint = &(
       (
-        (struct math_c_vector3_float*) metil_model->buffer_joints.contents
+        (struct math_c_vector3_float*)
+        metil_model->buffer_joints.contents
       )[
         id_buffer_joint +
         metil_joint_id_offset_rotation
@@ -470,7 +568,8 @@ void metil_model_buffer_joints_poll(
 
     buffer_joints_contents_joint = &(
       (
-        (struct math_c_vector3_float*) metil_model->buffer_joints.contents
+        (struct math_c_vector3_float*)
+        metil_model->buffer_joints.contents
       )[
         id_buffer_joint +
         metil_joint_id_offset_translation
@@ -517,9 +616,17 @@ void metil_model_object_poll(
     metil_object->position.z
   );
 
-  data->size.x = metil_object->mesh.size.x;
-  data->size.y = metil_object->mesh.size.y;
-  data->size.z = metil_object->mesh.size.z;
+  data->size.x = (
+    metil_object->mesh.size.x
+  );
+  
+  data->size.y = (
+    metil_object->mesh.size.y
+  );
+  
+  data->size.z = (
+    metil_object->mesh.size.z
+  );
 }
 
 void metil_model_destroy(
@@ -532,8 +639,13 @@ void metil_model_destroy(
   ];
 
   for (
-    unsigned char index_object = 0;
-    index_object < metil_model->length_objects;
+    unsigned char index_object = (
+      0x00
+    );
+    (
+      index_object <
+      metil_model->length_objects
+    );
     ++index_object
   ) {
     struct metil_object* metil_object = &(
@@ -545,7 +657,7 @@ void metil_model_destroy(
     metil_object->buffers_vertex[
       metil_object_buffer_default_index_joints
     ].buffer = (
-      0
+      0x00
     );
 
     metil_object->destroy(
@@ -559,8 +671,13 @@ void metil_model_destroy(
   );
 
   for (
-    unsigned char index_joint = 0;
-    index_joint < metil_model->length_joints;
+    unsigned char index_joint = (
+      0x00
+    );
+    (
+      index_joint <
+      metil_model->length_joints
+    );
     ++index_joint
   ) {
     metil_joint_destroy(
@@ -588,13 +705,20 @@ void metil_model_destroy_with_textures(
   struct metil_model* metil_model
 ) {
   for (
-    unsigned char index_texture = 0;
-    index_texture < metil_model->length_textures;
+    unsigned char index_texture = (
+      0x00
+    );
+    (
+      index_texture <
+      metil_model->length_textures
+    );
     ++index_texture
   ) {
-    [metil_model->textures[
-      index_texture
-    ] release];
+    [
+      metil_model->textures[
+        index_texture
+      ] release
+    ];
   }
 
   metil_model_destroy(

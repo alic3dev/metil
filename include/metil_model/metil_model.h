@@ -3,7 +3,8 @@
 
 #include <metil_joint/metil_joint.h>
 #include <metil_mesh/metil_mesh.h>
-#include <metil_object.h>
+#include <metil_object/metil_object.h>
+#include <metil_object/metil_object_buffer.h>
 #include <metil_positioning.h>
 #include <metil_rendering/metil_camera/metil_camera.h>
 
