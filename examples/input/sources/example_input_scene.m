@@ -1,6 +1,10 @@
 #include <example_input_scene.h>
 
+#include <example_input_animations/example_input_animation_kickflip.h>
+#include <example_input_data.h>
 #include <example_input_pipeline_index.h>
+#include <example_input_stance.h>
+#include <example_input_trick.h>
 
 #include <clic3_memory.h>
 
@@ -44,25 +48,25 @@ void example_input_scene_initialize(
   scene->data = (
     clic3_memory_allocate_raw(
       sizeof(
-        struct example_input_scene_data
+        struct example_input_data
       )
     )
   );
 
-  struct example_input_scene_data* example_input_scene_data = (
+  struct example_input_data* example_input_data = (
     scene->data
   );
 
-  example_input_scene_data->animation = (
+  example_input_data->animation = (
     0x00
   );
 
-  example_input_scene_data->trick = (
-    example_input_scene_trick_none
+  example_input_data->trick = (
+    example_input_trick_none
   );
 
-  example_input_scene_data->stance = (
-    example_input_scene_stance_goofy
+  example_input_data->stance = (
+    example_input_stance_goofy
   );
 
   metil->rendering_properties.camera.height = (
@@ -230,7 +234,7 @@ void example_input_scene_initialize(
 
   metil_mesh_sphere_initialize(
     &metil_object_player_head->mesh,
-    2.0f,
+    0x02,
     (struct math_c_vector2_unsigned_short_int) {
       .x = (
         0x08
@@ -1294,6 +1298,7 @@ void example_input_scene_initialize(
   metil_object_skateboard_wheel_back_right->index_pipeline_render = (
     example_input_pipeline_index->model_skateboard_wheel
   );
+
   scene->destroy = (
     example_input_scene_destroy
   );
@@ -1425,7 +1430,7 @@ void example_input_scene_player_poll_input(
     metil_scene_controller->scene
   );
 
-  struct example_input_scene_data* example_input_scene_data = (
+  struct example_input_data* example_input_data = (
     metil_scene->data
   );
 
@@ -1472,8 +1477,8 @@ void example_input_scene_player_poll_input(
         -0.25f
       ) &&
       (
-        example_input_scene_data->trick ==
-        example_input_scene_trick_none
+        example_input_data->trick ==
+        example_input_trick_none
       )
     ) {
       if (
@@ -1482,8 +1487,8 @@ void example_input_scene_player_poll_input(
         ] !=
         0x00
       ) {
-        example_input_scene_data->trick = (
-          example_input_scene_trick_kickflip
+        example_input_data->trick = (
+          example_input_trick_kickflip
         );
       }
     }
@@ -1517,19 +1522,19 @@ void example_input_scene_poll(
     scene
   );
 
-  struct example_input_scene_data* example_input_scene_data = (
+  struct example_input_data* example_input_data = (
     scene->data
   );
 
   if (
-    example_input_scene_data->animation ==
+    example_input_data->animation ==
     0x00
   ) {
     if (
-      example_input_scene_data->trick !=
-      example_input_scene_trick_none
+      example_input_data->trick !=
+      example_input_trick_none
     ) {
-      example_input_scene_data->animation = (
+      example_input_data->animation = (
         clic3_memory_allocate_raw(
           sizeof(
             struct metil_animation
@@ -1538,33 +1543,33 @@ void example_input_scene_poll(
       );
 
       metil_animation_initialize(
-        example_input_scene_data->animation
+        example_input_data->animation
       );
 
-      example_input_scene_data->animation->loops = (
+      example_input_data->animation->loops = (
         0x00
       );
 
-      example_input_scene_data->animation->length = (
+      example_input_data->animation->length = (
         0xff
       );
 
       switch (
-        example_input_scene_data->trick
+        example_input_data->trick
       ) {
-        case example_input_scene_trick_kickflip: {
-          example_input_scene_data->animation->poll = (
-            example_input_scene_animation_kickflip
+        case example_input_trick_kickflip: {
+          example_input_data->animation->poll = (
+            example_input_animation_kickflip
           );
 
           break;
         }
         default: {
           clic3_memory_free_raw(
-            example_input_scene_data->animation
+            example_input_data->animation
           );
 
-          example_input_scene_data->animation = (
+          example_input_data->animation = (
             0x00
           );
 
@@ -1573,41 +1578,40 @@ void example_input_scene_poll(
       }
 
       if (
-        example_input_scene_data->animation !=
+        example_input_data->animation !=
         0x00
       ) {
         metil_animation_start(
-          example_input_scene_data->animation,
+          example_input_data->animation,
           0x00,
           scene->renderables
         );
       }
     }
-  }
-else if (    example_input_scene_data->animation->state ==
-    metil_animation_state_complete
+  } else if (
+    example_input_data->animation->state ==    metil_animation_state_complete
   ) {
-    example_input_scene_data->animation->poll(
-      example_input_scene_data->animation,
+    example_input_data->animation->poll(
+      example_input_data->animation,
       0x00,
       scene,
       0x01
     );
 
     clic3_memory_free_raw(
-      example_input_scene_data->animation
+      example_input_data->animation
     );
 
-    example_input_scene_data->animation = (
+    example_input_data->animation = (
       0x00
     );
 
-    example_input_scene_data->trick = (
-      example_input_scene_trick_none
+    example_input_data->trick = (
+      example_input_trick_none
     );
   } else {
     metil_animation_poll(
-      example_input_scene_data->animation,
+      example_input_data->animation,
       0x00,
       scene
     );
@@ -1669,56 +1673,19 @@ else if (    example_input_scene_data->animation->state ==
   );
 }
 
-void example_input_scene_animation_kickflip(
-  struct metil_animation* metil_animation,
-  enum metil_renderable_type metil_renderable_type,
-  void* data,
-  float progress
-) {
-  struct metil_scene* scene = (
-    data
-  );
-
-  struct example_input_scene_data* example_input_scene_data = (
-    scene->data
-  );
-
-  struct metil_model* metil_model_player = (
-    scene->renderables[
-      0x01
-    ].renderable
-  );
-
-  struct metil_model* metil_model_skateboard = (
-    scene->renderables[
-      0x02
-    ].renderable
-  );
-
-  metil_model_skateboard->rotation.z = (
-    progress *
-    (
-      (
-        example_input_scene_data->stance ==
-        example_input_scene_stance_goofy
-      )
-      ? 1.0f
-      : -1.0f
-    ) *
-    math_c_pi_doubled
-  );}
-
 void example_input_scene_destroy(
   struct metil* metil,
   struct metil_scene* scene
 ) {
   struct metil_model* metil_model = (
     scene->renderables[
-      0
+      0x00
     ].renderable
   );
 
-  metil_model->data = 0;
+  metil_model->data = (
+    0x00
+  );
 
   metil_scene_destroy_default(
     metil,

@@ -14,4 +14,5 @@ struct example_input_pipeline_index {
 void example_input_pipeline_index_initialize(
   struct example_input_pipeline_index*
 );
+
 #endif
