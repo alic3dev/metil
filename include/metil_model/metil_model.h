@@ -13,7 +13,6 @@
 #include <Metal/MTLBuffer.h>
 #include <Metal/MTLDevice.h>
 #include <Metal/MTLTexture.h>
-#include <Metal/MTLRenderCommandEncoder.h>
 
 #include <simd/simd.h>
 
@@ -98,6 +97,13 @@ void metil_model_buffers_initialize(
   _Nonnull id<MTLDevice>
 );
 
+void metil_model_buffer_add(
+  struct metil_model* _Nonnull,
+  _Nonnull id<MTLDevice>,
+  _Nullable id<MTLBuffer>,
+  enum metil_object_buffer_type
+);
+
 void metil_model_texture_add(
   struct metil_model* _Nonnull,
   _Nullable id<MTLTexture>
@@ -131,7 +137,17 @@ void metil_model_destroy(
   struct metil_model* _Nonnull
 );
 
+void metil_model_destroy_nullify_buffers(
+  struct metil* _Nonnull,
+  struct metil_model* _Nonnull
+);
+
 void metil_model_destroy_with_textures(
+  struct metil* _Nonnull,
+  struct metil_model* _Nonnull
+);
+
+void metil_model_destroy_nullify_buffers_with_textures(
   struct metil* _Nonnull,
   struct metil_model* _Nonnull
 );

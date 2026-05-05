@@ -86,7 +86,7 @@ void metil_model_initialize(
   metil_model->destroy = (
     metil_model_destroy
   );
-  
+
   metil_model->poll = (
     metil_model_poll
   );
@@ -302,11 +302,11 @@ void metil_model_buffers_initialize(
   buffer_joints_contents_joint->x = (
     0x00
   );
-  
+
   buffer_joints_contents_joint->y = (
     0x00
   );
-  
+
   buffer_joints_contents_joint->z = (
     0x00
   );
@@ -323,11 +323,11 @@ void metil_model_buffers_initialize(
   buffer_joints_contents_joint->x = (
     0x00
   );
-  
+
   buffer_joints_contents_joint->y = (
     0x00
   );
-  
+
   buffer_joints_contents_joint->z = (
     0x00
   );
@@ -344,11 +344,11 @@ void metil_model_buffers_initialize(
   buffer_joints_contents_joint->x = (
     0x00
   );
-  
+
   buffer_joints_contents_joint->y = (
     0x00
   );
-  
+
   buffer_joints_contents_joint->z = (
     0x00
   );
@@ -417,6 +417,64 @@ void metil_model_buffers_initialize(
     ].buffer = (
       metil_model->buffer_joints
     );
+  }
+}
+
+void metil_model_buffer_add(
+  struct metil_model* metil_model,
+  id<MTLDevice> metal_device,
+  id<MTLBuffer> metal_buffer,
+  enum metil_object_buffer_type metil_object_buffer_type
+) {
+  for (
+    unsigned char index_object = (
+      0x00
+    );
+    (
+      index_object <
+      metil_model->length_objects
+    );
+    ++index_object
+  ) {
+    struct metil_object* metil_object = &(
+      metil_model->objects[
+        index_object
+      ]
+    );
+
+    metil_object_buffers_add(
+      metil_object,
+      metal_device,
+      metil_object_buffer_type
+    );
+
+    switch (
+      metil_object_buffer_type
+    ) {
+      case metil_object_buffer_type_fragment: {
+        metil_object->buffers_fragment[
+          metil_object->length_buffers_fragment -
+          0x01
+        ].buffer = (
+          metal_buffer
+        );
+
+        break;
+      }
+      case metil_object_buffer_type_vertex: {
+        metil_object->buffers_vertex[
+          metil_object->length_buffers_vertex -
+          0x01
+        ].buffer = (
+          metal_buffer
+        );
+
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 }
 
@@ -521,7 +579,7 @@ void metil_model_buffer_joints_poll(
 
     buffer_joints_contents_joint = &(
       (
-        (struct math_c_vector3_float*) 
+        (struct math_c_vector3_float*)
         metil_model->buffer_joints.contents
       )[
         id_buffer_joint +
@@ -619,14 +677,94 @@ void metil_model_object_poll(
   data->size.x = (
     metil_object->mesh.size.x
   );
-  
+
   data->size.y = (
     metil_object->mesh.size.y
   );
-  
+
   data->size.z = (
     metil_object->mesh.size.z
   );
+}
+
+void metil_model_nullify_buffers(
+  struct metil_model* metil_model
+) {
+  for (
+    unsigned char index_object = (
+      0x00
+    );
+    (
+      index_object <
+      metil_model->length_objects
+    );
+    ++index_object
+  ) {
+    struct metil_object* metil_object = &(
+      metil_model->objects[
+        index_object
+      ]
+    );
+
+    for (
+      unsigned int index_buffer_vertex = (
+        metil_object_buffer_default_index_joints +
+        0x01
+      );
+      (
+        index_buffer_vertex <
+        metil_object->length_buffers_vertex
+      );
+      ++index_buffer_vertex
+    ) {
+      if (
+        index_object ==
+        0x00
+      ) {
+        [
+          metil_object->buffers_vertex[
+            index_buffer_vertex
+          ].buffer
+          release
+        ];
+      }
+
+      metil_object->buffers_vertex[
+        index_buffer_vertex
+      ].buffer = (
+        0x00
+      );
+    }
+
+    for (
+      unsigned int index_buffer_fragment = (
+        0x00
+      );
+      (
+        index_buffer_fragment <
+        metil_object->length_buffers_fragment
+      );
+      ++index_buffer_fragment
+    ) {
+      if (
+        index_object ==
+        0x00
+      ) {
+        [
+          metil_object->buffers_fragment[
+            index_buffer_fragment
+          ].buffer
+          release
+        ];
+      }
+
+      metil_object->buffers_fragment[
+        index_buffer_fragment
+      ].buffer = (
+        0x00
+      );
+    }
+  }
 }
 
 void metil_model_destroy(
@@ -700,6 +838,20 @@ void metil_model_destroy(
   );
 }
 
+void metil_model_destroy_nullify_buffers(
+  struct metil* metil,
+  struct metil_model* metil_model
+) {
+  metil_model_nullify_buffers(
+    metil_model
+  );
+
+  metil_model_destroy(
+    metil,
+    metil_model
+  );
+}
+
 void metil_model_destroy_with_textures(
   struct metil* metil,
   struct metil_model* metil_model
@@ -722,6 +874,20 @@ void metil_model_destroy_with_textures(
   }
 
   metil_model_destroy(
+    metil,
+    metil_model
+  );
+}
+
+void metil_model_destroy_nullify_buffers_with_textures(
+  struct metil* metil,
+  struct metil_model* metil_model
+) {
+  metil_model_nullify_buffers(
+    metil_model
+  );
+
+  metil_model_destroy_with_textures(
     metil,
     metil_model
   );
