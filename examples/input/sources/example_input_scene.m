@@ -1343,7 +1343,6 @@ void example_input_scene_player_poll_input(
     );
   }
 
-  
   metil_player->rotation.x = (
     math_c_bound_float(
       metil_player->rotation.x,
@@ -1354,7 +1353,7 @@ void example_input_scene_player_poll_input(
       )
     )
   );
-  
+
   if (
     math_c_absolute_float(
       metil->input.controller_state.left_stick.x
@@ -1373,7 +1372,7 @@ void example_input_scene_player_poll_input(
       0.005f
     );
   }
-  
+
   while (
     metil_player->rotation.y <
     -math_c_pi
@@ -1448,7 +1447,7 @@ void example_input_scene_player_poll_input(
       ratio_movement.y
     );
   }
-  
+
   metil_player->position.x = (
     metil_player->position.x +
     ratio_movement.x *
