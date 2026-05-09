@@ -1,5 +1,6 @@
 #include <example_input_scene.h>
 
+#include <example_input_animations/example_input_animation_heelflip.h>
 #include <example_input_animations/example_input_animation_kickflip.h>
 #include <example_input_data.h>
 #include <example_input_pipeline_index.h>
@@ -1533,12 +1534,29 @@ void example_input_scene_player_poll_input(
           0x00
         ) ||
         (
-          metil->input.controller_state.square !=
+          metil->input.controller_state.circle !=
           0x00
         )
       ) {
         example_input_data->trick = (
           example_input_trick_kickflip
+        );
+      }
+
+      if (
+        (
+          metil->input.keydown_map[
+            metil_keycode_q
+          ] !=
+          0x00
+        ) ||
+        (
+          metil->input.controller_state.square !=
+          0x00
+        )
+      ) {
+        example_input_data->trick = (
+          example_input_trick_heelflip
         );
       }
     }
@@ -1610,6 +1628,13 @@ void example_input_scene_poll(
         case example_input_trick_kickflip: {
           example_input_data->animation->poll = (
             example_input_animation_kickflip
+          );
+
+          break;
+        }
+        case example_input_trick_heelflip: {
+          example_input_data->animation->poll = (
+            example_input_animation_heelflip
           );
 
           break;

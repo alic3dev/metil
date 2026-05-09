@@ -1,4 +1,4 @@
-#include <example_input_animations/example_input_animation_kickflip.h>
+#include <example_input_animations/example_input_animation_heelflip.h>
 
 #include <example_input_data.h>
 #include <example_input_stance.h>
@@ -10,7 +10,7 @@
 #include <metil_rendering/metil_renderable_type.h>
 #include <metil_scenes/metil_scene.h>
 
-void example_input_animation_kickflip(
+void example_input_animation_heelflip(
   struct metil_animation* metil_animation,
   enum metil_renderable_type metil_renderable_type,
   void* data,
@@ -43,8 +43,8 @@ void example_input_animation_kickflip(
         example_input_data->stance ==
         example_input_stance_goofy
       )
-      ?  0x01
-      : -0x01
+      ? -0x01
+      :  0x01
     ) *
     math_c_pi_doubled
   );
