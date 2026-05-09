@@ -9,6 +9,7 @@
 #include <clic3_memory.h>
 
 #include <math_c_absolute.h>
+#include <math_c_bound.h>
 #include <math_c_modulus.h>
 #include <math_c_pi.h>
 #include <math_c_sine.h>
@@ -1323,17 +1324,56 @@ void example_input_scene_player_poll_input(
     metil_player->speed_movement
   );
 
+  if (
+    math_c_absolute_float(
+      metil->input.controller_state.right_stick.y
+    ) >=
+    metil_player->deadzone_stick
+  ) {
+    metil_player->rotation.x = (
+      metil_player->rotation.x +
+      metil->input.controller_state.right_stick.y *
+      0.1f
+    );
+  } else {
+    metil_player->rotation.x = (
+      metil_player->rotation.x +
+      -metil->input.cursor.delta.y *
+      0.005f
+    );
+  }
+
+  
   metil_player->rotation.x = (
-    metil_player->rotation.x +
-    -metil->input.cursor.delta.y *
-    0.005f
+    math_c_bound_float(
+      metil_player->rotation.x,
+      -0.1f,
+      -(
+        math_c_pi_half *
+        0.5f
+      )
+    )
   );
-
-  metil_player->rotation.y = (
-    metil_player->rotation.y +
-    -metil->input.cursor.delta.x *
-    0.005f  );
-
+  
+  if (
+    math_c_absolute_float(
+      metil->input.controller_state.left_stick.x
+    ) >=
+    metil_player->deadzone_stick
+  ) {
+    metil_player->rotation.y = (
+      metil_player->rotation.y -
+      metil->input.controller_state.left_stick.x *
+      0.1f
+    );
+  } else {
+    metil_player->rotation.y = (
+      metil_player->rotation.y -
+      metil->input.cursor.delta.x *
+      0.005f
+    );
+  }
+  
   while (
     metil_player->rotation.y <
     -math_c_pi
@@ -1361,6 +1401,7 @@ void example_input_scene_player_poll_input(
   metil->input.cursor.delta.y = (
     0x00
   );
+
   struct math_c_vector2_float ratio_movement = {
     .x = -(
       metil_player->rotation.y /
@@ -1378,39 +1419,37 @@ void example_input_scene_player_poll_input(
     ratio_movement.x = (
       math_c_modulus_mirror_float(
         ratio_movement.x,
-        1.0f
+        0x01
       )
     );
   } else {
-    ratio_movement.x = (
-      -math_c_modulus_mirror_float(
+    ratio_movement.x = -(
+      math_c_modulus_mirror_float(
         -ratio_movement.x,
-        1.0f
+        0x01
       )
     );
   }
 
   ratio_movement.y = (
-    1.0f -
+    0x01 -
     math_c_absolute_float(
       ratio_movement.x
     )
   );
 
   if (
-    (
-      metil_player->rotation.y >
-      math_c_pi_half
-    ) ||
-    (
-      metil_player->rotation.y <
-      -math_c_pi_half
-    )
+    math_c_absolute_float(
+      metil_player->rotation.y
+    ) >
+    math_c_pi_half
   ) {
     ratio_movement.y = -(
       ratio_movement.y
     );
-  }  metil_player->position.x = (
+  }
+  
+  metil_player->position.x = (
     metil_player->position.x +
     ratio_movement.x *
     amount_movement
@@ -1451,10 +1490,16 @@ void example_input_scene_player_poll_input(
     0x00
   ) {
     if (
-      metil->input.keydown_map[
-        metil_keycode_space
-      ] !=
-      0x00
+      (
+        metil->input.keydown_map[
+          metil_keycode_space
+        ] !=
+        0x00
+      ) ||
+      (
+        metil->input.controller_state.cross !=
+        0x00
+      )
     ) {
       metil_player->velocity.y = (
         0x01
@@ -1482,10 +1527,16 @@ void example_input_scene_player_poll_input(
       )
     ) {
       if (
-        metil->input.keydown_map[
-          metil_keycode_e
-        ] !=
-        0x00
+        (
+          metil->input.keydown_map[
+            metil_keycode_e
+          ] !=
+          0x00
+        ) ||
+        (
+          metil->input.controller_state.square !=
+          0x00
+        )
       ) {
         example_input_data->trick = (
           example_input_trick_kickflip
@@ -1589,7 +1640,8 @@ void example_input_scene_poll(
       }
     }
   } else if (
-    example_input_data->animation->state ==    metil_animation_state_complete
+    example_input_data->animation->state ==
+    metil_animation_state_complete
   ) {
     example_input_data->animation->poll(
       example_input_data->animation,
