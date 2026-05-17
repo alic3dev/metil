@@ -5,12 +5,27 @@
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
 #include <metil_text/metil_text.h>
+#include <metil_text/metil_text_render_parameters.h>
 
 #include <Metal/MTLRenderCommandEncoder.h>
 
 void metil_object_text_initialize(
   struct metil* metil,
   struct metil_object* metil_object_text,
+  char* metil_object_text_char_array
+) {
+  metil_object_text_initialize_with_parameters(
+    metil,
+    metil_object_text,
+    &metil->text_defaults.render_parameters,
+    metil_object_text_char_array
+  );
+}
+
+void metil_object_text_initialize_with_parameters(
+  struct metil* metil,
+  struct metil_object* metil_object_text,
+  struct metil_text_render_parameters* metil_text_render_parameters,
   char* metil_object_text_char_array
 ) {
   metil_object_text->index_pipeline_render = (
@@ -22,7 +37,7 @@ void metil_object_text_initialize(
       metil->renderer_interface.metal_device,
       &metil_object_text->mesh,
       metil_object_text_char_array,
-      &metil->text_defaults.render_parameters,
+      metil_text_render_parameters,
       &metil->configuration
     )
   );

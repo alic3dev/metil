@@ -17,11 +17,19 @@ void metil_text_render_parameters_initialize(
     CTFontCreateWithName(
       name_family_font_core_foundation_string,
       size,
-      0
+      0x00
     )
   );
 
   CFRelease(
     name_family_font_core_foundation_string
+  );
+}
+
+void metil_text_render_parameters_destroy(
+  struct metil_text_render_parameters* metil_text_render_parameters
+) {
+  CFRelease(
+    metil_text_render_parameters->font
   );
 }

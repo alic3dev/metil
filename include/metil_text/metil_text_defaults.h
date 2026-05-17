@@ -16,4 +16,8 @@ void metil_text_defaults_initialize(
   struct metil_configuration* _Nonnull
 );
 
+void metil_text_defaults_destroy(
+  struct metil_text_defaults* _Nonnull
+);
+
 #endif

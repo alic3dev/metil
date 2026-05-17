@@ -68,8 +68,8 @@ void metil_destroy(
     );
   }
 
-  metil_text_destroy(
-    &metil->text_defaults.render_parameters
+  metil_text_defaults_destroy(
+    &metil->text_defaults
   );
 
   metil_configuration_destroy(

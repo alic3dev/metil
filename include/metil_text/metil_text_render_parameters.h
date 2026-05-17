@@ -7,7 +7,7 @@
 
 enum metil_text_render_parameters_letter_width_style {
   metil_text_render_parameters_letter_width_style_default = 0x00,
-  metil_text_render_parameters_letter_width_style_fixed = 0x80,
+  metil_text_render_parameters_letter_width_style_fixed   = 0x80,
   metil_text_render_parameters_letter_width_style_maximum = 0xff
 };
 
@@ -27,6 +27,10 @@ void metil_text_render_parameters_initialize(
   struct metil_text_render_parameters* _Nonnull,
   char* _Nonnull,
   float
+);
+
+void metil_text_render_parameters_destroy(
+  struct metil_text_render_parameters* _Nonnull
 );
 
 #endif

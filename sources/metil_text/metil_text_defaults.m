@@ -31,3 +31,11 @@ void metil_text_defaults_initialize(
 
   metil_text_defaults->render_parameters.scale = 0.0008f;
 }
+
+void metil_text_defaults_destroy(
+  struct metil_text_defaults* metil_text_defaults
+) {
+  metil_text_render_parameters_destroy(
+    &metil_text_defaults->render_parameters
+  );
+}

@@ -587,6 +587,10 @@ void metil_text_image_destroy(
 void metil_text_destroy(
   struct metil_text_render_parameters* metil_text_render_parameters
 ) {
+  metil_text_render_parameters_destroy(
+    metil_text_render_parameters
+  );
+
   CFRelease(
     metil_text_render_parameters->font
   );
