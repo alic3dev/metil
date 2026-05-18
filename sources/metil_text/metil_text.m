@@ -590,8 +590,4 @@ void metil_text_destroy(
   metil_text_render_parameters_destroy(
     metil_text_render_parameters
   );
-
-  CFRelease(
-    metil_text_render_parameters->font
-  );
 }
