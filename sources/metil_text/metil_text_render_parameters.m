@@ -1,29 +1,36 @@
 #include <metil_text/metil_text_render_parameters.h>
 
 #include <CoreText/CTFont.h>
+#include <Foundation/NSObject.h>
+#include <Foundation/NSString.h>
 
 void metil_text_render_parameters_initialize(
   struct metil_text_render_parameters* metil_text_render_parameters,
   char* name_family_font,
   float size
 ) {
-  CFStringRef name_family_font_core_foundation_string = (
-    __CFStringMakeConstantString(
+  NSString* string_name_family_font = [
+    [
+      NSString
+      alloc
+    ]
+    initWithUTF8String: (
       name_family_font
     )
-  );
+  ];
 
   metil_text_render_parameters->font = (
     CTFontCreateWithName(
-      name_family_font_core_foundation_string,
+      string_name_family_font,
       size,
       0x00
     )
   );
-
-  CFRelease(
-    name_family_font_core_foundation_string
-  );
+  
+  [
+    string_name_family_font
+    release
+  ];
 }
 
 void metil_text_render_parameters_destroy(
