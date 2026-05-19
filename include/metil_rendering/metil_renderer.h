@@ -22,16 +22,11 @@
 #include <simd/simd.h>
 #include <pthread.h>
 
-#define metil_renderer_length_objects_fps_display 5
+#define metil_renderer_length_objects_fps_display 0x05
 
-#define metil_renderer_pipelines_render_index_library 0
-#define metil_renderer_pipelines_render_index_fps_display 1
-#define metil_renderer_pipelines_render_index_wireframe 2
-
-struct l {
-  _Nonnull id<MTLCommandBuffer> command_buffer;
-  MTKView* _Nonnull metal_kit_view;
-};
+#define metil_renderer_pipelines_render_index_library 0x00
+#define metil_renderer_pipelines_render_index_fps_display 0x01
+#define metil_renderer_pipelines_render_index_wireframe 0x02
 
 @interface metil_renderer : NSObject<MTKViewDelegate> {
   struct metil* metil;
@@ -146,14 +141,6 @@ void metil_renderer_poll_object(
 );
 
 void* _Nullable metil_renderer_thread_poll_object(
-  void* _Nonnull
-);
-
-void* _Nullable metil_renderer_thread_draw(
-  void* _Nonnull
-);
-
-void* _Nullable metil_renderer_thread_command_buffer_finalization(
   void* _Nonnull
 );
 void metil_renderer_after_scene_change(
