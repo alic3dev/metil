@@ -10,6 +10,7 @@
 #include <metil_termination/metil_termination.h>
 
 #include <Metal/MTLBuffer.h>
+#include <Metal/MTLCommandBuffer.h>
 #include <Metal/MTLCommandQueue.h>
 #include <Metal/MTLDepthStencil.h>
 #include <Metal/MTLDevice.h>
@@ -27,12 +28,21 @@
 #define metil_renderer_pipelines_render_index_fps_display 1
 #define metil_renderer_pipelines_render_index_wireframe 2
 
+struct l {
+  _Nonnull id<MTLCommandBuffer> command_buffer;
+  MTKView* _Nonnull metal_kit_view;
+};
+
 @interface metil_renderer : NSObject<MTKViewDelegate> {
   struct metil* metil;
+  
+  MTKView* view;
 
   id<MTLCommandQueue> command_queue;
 
-  id<MTLBuffer> data_buffer_frame[metil_count_max_frames];
+  id<MTLBuffer> data_buffer_frame[
+    metil_count_max_frames
+  ];
   unsigned char index_data_buffer_frame;
 
   id<MTLDepthStencilState> depth_state;
@@ -79,6 +89,8 @@
 - (void) destroy;
 
 - (void) drawInMTKView: (nonnull MTKView*) metal_kit_view;
+- (void) render_view: (nonnull MTKView*) metal_kit_view;
+
 - (void) drawableSizeWillChange: (CGSize) size;
 
 - (void) fps_display_objects_initialize;
@@ -137,6 +149,13 @@ void* _Nullable metil_renderer_thread_poll_object(
   void* _Nonnull
 );
 
+void* _Nullable metil_renderer_thread_draw(
+  void* _Nonnull
+);
+
+void* _Nullable metil_renderer_thread_command_buffer_finalization(
+  void* _Nonnull
+);
 void metil_renderer_after_scene_change(
   struct metil* _Nonnull,
   int,

@@ -13,10 +13,14 @@ metil_view_controller_on_view_did_load_function metil_view_controller_on_view_di
 }
 
 - (void) viewDidLoad {
-  [super viewDidLoad];
+  [
+    super
+    viewDidLoad
+  ];
 
   if (
-    metil_view_controller_on_view_did_load != 0
+    metil_view_controller_on_view_did_load !=
+    0x00
   ) {
     metil_view_controller_on_view_did_load();
   }
@@ -33,7 +37,8 @@ metil_view_controller_on_view_did_load_function metil_view_controller_on_view_di
   );
 
   view = (
-    (metil_view*) self.view
+    (metil_view*)
+    self.view
   );
 
   view->metil = (
@@ -45,16 +50,38 @@ metil_view_controller_on_view_did_load_function metil_view_controller_on_view_di
   );
 
   renderer = [
-    [metil_renderer alloc]
-    metil_renderer_initialize: view
-    metil: self->metil
+    [
+      metil_renderer
+      alloc
+    ]
+    metil_renderer_initialize: (
+      view
+    )
+    metil: (
+      self->metil
+    )
   ];
 
   [renderer
     drawableSizeWillChange: view.bounds.size
   ];
 
-  view.delegate = self;
+  view.delegate = (
+    self
+  );
+  
+  view.paused = (
+    0x01
+  );
+  
+  view.enableSetNeedsDisplay = (
+    0x00
+  );
+  
+  [
+    view
+    draw
+  ];
 }
 
 - (void) drawInMTKView: (nonnull metil_view*) _view {
