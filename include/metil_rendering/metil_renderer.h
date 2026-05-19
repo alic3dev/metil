@@ -30,7 +30,7 @@
 
 @interface metil_renderer : NSObject<MTKViewDelegate> {
   struct metil* metil;
-
+  
   MTKView* view;
 
   id<MTLCommandQueue> command_queue;
@@ -47,7 +47,6 @@
   MTLRenderPipelineDescriptor* descriptor_pipeline_render;
 
   id<MTLRenderCommandEncoder> encoder_render;
-  unsigned char encoder_render_encoding;
 
   id<MTLBuffer> index_buffer_mesh_current;
 
@@ -66,6 +65,9 @@
   matrix_float3x4 matrix_projection_static;
 
   @public metil_renderer_data_frame_poll_function poll_data_frame;
+ 
+  unsigned char destroying;
+  pthread_mutex_t mutex_destroying;
 }
 
 - (nonnull instancetype) metil_renderer_initialize:

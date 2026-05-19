@@ -16,7 +16,7 @@ void metil_rendering_properties_initialize(
 
   pthread_mutex_init(
     &metil_rendering_properties->mutex_frame,
-    0
+    0x00
   );
 
   metil_rendering_properties->count_completed_frames = (
@@ -35,10 +35,21 @@ void metil_rendering_properties_initialize(
     metil_configuration_rendering_properties->brightness_text
   );
 
-  metil_rendering_properties->colour_clear.x = 0.0f;
-  metil_rendering_properties->colour_clear.y = 0.0f;
-  metil_rendering_properties->colour_clear.z = 0.0f;
-  metil_rendering_properties->colour_clear.w = 1.0f;
+  metil_rendering_properties->colour_clear.x = (
+    0x00
+  );
+  
+  metil_rendering_properties->colour_clear.y = (
+    0x00
+  );
+  
+  metil_rendering_properties->colour_clear.z = (
+    0x00
+  );
+  
+  metil_rendering_properties->colour_clear.w = (
+    0x01
+  );
 
   metil_rendering_properties->fps_display = (
     metil_configuration_rendering_properties->fps_display
@@ -60,16 +71,25 @@ void metil_rendering_properties_initialize(
     metil_configuration_rendering_properties->colour_fps_display.w
   );
 
-  metil_rendering_properties->fps = 0.0f;
+  metil_rendering_properties->fps = (
+    0x00
+  );
 
   for (
-    unsigned char index_time_frame = 0;
-    index_time_frame < metil_count_time_frames;
+    unsigned char index_time_frame = (
+      0x00
+    );
+    (
+      index_time_frame <
+      metil_count_time_frames
+    );
     ++index_time_frame
   ) {
     metil_rendering_properties->time_frames[
       index_time_frame
-    ] = 0;
+    ] = (
+      0x00
+    );
   }
 
   metil_rendering_properties->disables = (

@@ -37,7 +37,8 @@ void metil_audio_destroy(
   );
 
   if (
-    status_audio_destory != 0
+    status_audio_destory !=
+    0x00
   ) {
     metil_debug_log_error(
       metil_configuration->debug_log_level,

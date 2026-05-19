@@ -5,6 +5,7 @@
 #include <metil_parameters.h>
 #include <metil_paths/metil_paths.h>
 #include <metil_player/metil_player_defaults.h>
+#include <metil_rendering/metil_renderer.h>
 #include <metil_scenes/metil_scene_controller.h>
 #include <metil_text/metil_text.h>
 
@@ -45,6 +46,18 @@ void metil_destroy(
 ) {
   struct metil* metil = (
     metil_pointer
+  );
+  
+  metil->renderer_interface.renderer->destroying = (
+    0x01
+  );
+  
+  pthread_mutex_lock(
+    &metil->renderer_interface.renderer->mutex_destroying
+  );
+  
+  pthread_mutex_unlock(
+    &metil->renderer_interface.renderer->mutex_destroying
   );
 
   metil_scene_controller_destroy(

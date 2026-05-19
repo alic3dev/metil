@@ -8,9 +8,9 @@
 #include <clic3_memory.h>
 
 void metil_renderable_allocate_group(
-  struct metil_renderable* renderable
+  struct metil_renderable* metil_renderable
 ) {
-  renderable->renderable = (
+  metil_renderable->renderable = (
     clic3_memory_allocate_raw(
       sizeof(
         struct metil_group
@@ -20,9 +20,9 @@ void metil_renderable_allocate_group(
 }
 
 void metil_renderable_allocate_object(
-  struct metil_renderable* renderable
+  struct metil_renderable* metil_renderable
 ) {
-  renderable->renderable = (
+  metil_renderable->renderable = (
     clic3_memory_allocate_raw(
       sizeof(
         struct metil_object
@@ -32,9 +32,9 @@ void metil_renderable_allocate_object(
 }
 
 void metil_renderable_allocate_model(
-  struct metil_renderable* renderable
+  struct metil_renderable* metil_renderable
 ) {
-  renderable->renderable = (
+  metil_renderable->renderable = (
     clic3_memory_allocate_raw(
       sizeof(
         struct metil_model
@@ -44,24 +44,26 @@ void metil_renderable_allocate_model(
 }
 
 void metil_renderable_allocate(
-  struct metil_renderable* renderable,
-  enum metil_renderable_type type
+  struct metil_renderable* metil_renderable,
+  enum metil_renderable_type metil_renderable_type
 ) {
-  renderable->type = type;
+  metil_renderable->type = (
+    metil_renderable_type
+  );
 
   switch (
-    type
+    metil_renderable->type
   ) {
     case metil_renderable_type_group: {
       metil_renderable_allocate_group(
-        renderable
+        metil_renderable
       );
 
       break;
     }
     case metil_renderable_type_object: {
       metil_renderable_allocate_object(
-        renderable
+        metil_renderable
       );
 
       break;
@@ -71,7 +73,7 @@ void metil_renderable_allocate(
     }
     case metil_renderable_type_model: {
       metil_renderable_allocate_model(
-        renderable
+        metil_renderable
       );
 
       break;
@@ -83,27 +85,27 @@ void metil_renderable_allocate(
 }
 
 void metil_renderable_initialize(
-  struct metil_renderable* renderable,
-  enum metil_renderable_type type
+  struct metil_renderable* metil_renderable,
+  enum metil_renderable_type metil_renderable_type
 ) {
   metil_renderable_allocate(
-    renderable,
-    type
+    metil_renderable,
+    metil_renderable_type
   );
 
   switch (
-    type
+    metil_renderable->type
   ) {
     case metil_renderable_type_group: {
       metil_group_initialize(
-        renderable->renderable
+        metil_renderable->renderable
       );
 
       break;
     }
     case metil_renderable_type_object: {
       metil_object_initialize(
-        renderable->renderable
+        metil_renderable->renderable
       );
 
       break;
@@ -113,7 +115,7 @@ void metil_renderable_initialize(
     }
     case metil_renderable_type_model: {
       metil_model_initialize(
-        renderable->renderable
+        metil_renderable->renderable
       );
 
       break;
@@ -125,48 +127,48 @@ void metil_renderable_initialize(
 }
 
 void metil_renderable_allocate_at_index(
-  struct metil_renderable* renderables,
-  unsigned int index,
-  enum metil_renderable_type type
+  struct metil_renderable* metil_renderables,
+  unsigned int index_metil_renderable,
+  enum metil_renderable_type metil_renderable_type
 ) {
   metil_renderable_allocate(
-    &renderables[
-      index
+    &metil_renderables[
+      index_metil_renderable
     ],
-    type
+    metil_renderable_type
   );
 }
 
 void metil_renderable_initialize_at_index(
-  struct metil_renderable* renderables,
-  unsigned int index,
-  enum metil_renderable_type type
+  struct metil_renderable* metil_renderables,
+  unsigned int index_metil_renderable,
+  enum metil_renderable_type metil_renderable_type
 ) {
   metil_renderable_initialize(
-    &renderables[
-      index
+    &metil_renderables[
+      index_metil_renderable
     ],
-    type
+    metil_renderable_type
   );
 }
 
 void metil_renderable_destroy(
   struct metil* metil,
-  struct metil_renderable* renderable
+  struct metil_renderable* metil_renderable
 ) {
   switch (
-    renderable->type
+    metil_renderable->type
   ) {
     case metil_renderable_type_group: {
       metil_group_destroy(
         metil,
-        renderable->renderable
+        metil_renderable->renderable
       );
       break;
     }
     case metil_renderable_type_object: {
       struct metil_object* metil_object = (
-        renderable->renderable
+        metil_renderable->renderable
       );
 
       metil_object->destroy(
@@ -180,7 +182,7 @@ void metil_renderable_destroy(
     }
     case metil_renderable_type_model: {
       struct metil_model* metil_model = (
-        renderable->renderable
+        metil_renderable->renderable
       );
 
       metil_model->destroy(
@@ -195,6 +197,6 @@ void metil_renderable_destroy(
   }
 
   clic3_memory_free(
-    renderable->renderable
+    metil_renderable->renderable
   );
 }

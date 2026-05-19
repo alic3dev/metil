@@ -201,6 +201,19 @@
     self
     pipelines_initialize
   ];
+  
+  self->destroying = (
+    0x00
+  );
+  
+  pthread_mutex_init(
+    &self->mutex_destroying,
+    0x00
+  );
+  
+  pthread_mutex_lock(
+    &self->mutex_destroying
+  );
 
   return (
     self
@@ -300,6 +313,18 @@
 }
 
 - (void) destroy {
+  self->destroying = (
+    0x01
+  );
+  
+  pthread_mutex_lock(
+    &self->mutex_destroying
+  );
+  
+  pthread_mutex_unlock(
+    &self->mutex_destroying
+  );
+
   for (
     unsigned int index_thread = (
       0x00
@@ -378,23 +403,6 @@
     self->descriptor_pipeline_render
     release
   ];
-
-  if (
-    self->encoder_render_encoding ==
-    0x01
-  ) {
-    [
-      self->encoder_render
-      endEncoding
-    ];
-  }
-
-  #if !target_os_ios
-  [
-    self->encoder_render
-    release
-  ];
-  #endif
 
   for (
     unsigned char index_pipeline_render = (
@@ -635,10 +643,6 @@
     )
   ];
 
-  self->encoder_render_encoding = (
-    0x01
-  );
-
   if (
     (
       self->pipelines_render[
@@ -730,10 +734,6 @@
     endEncoding
   ];
 
-  self->encoder_render_encoding = (
-    0x00
-  );
-
   [
     command_buffer
     addCompletedHandler: ^(id<MTLCommandBuffer> buffer) {
@@ -741,11 +741,20 @@
         self->metil->rendering_properties.count_completed_frames +
         0x01
       );
-
-      [
-        metal_kit_view
-        draw
-      ];
+      
+      if (
+        self->destroying ==
+        0x00
+      ) {
+        [
+          metal_kit_view
+          draw
+        ];
+      } else {
+        pthread_mutex_unlock(
+          &self->mutex_destroying
+        );
+      }
     }
   ];
 
@@ -905,10 +914,6 @@
     0x00
   );
 
-  self->encoder_render_encoding = (
-    0x00
-  );
-
   self->index_buffer_mesh_current = (
     0x00
   );
@@ -1036,7 +1041,7 @@
 
   return (
     self->length_pipelines_render -
-    1
+    0x01
   );
 }
 
@@ -1192,26 +1197,23 @@
   );
 
   matrix_float4x4 matrix_player_rotation_x = (matrix_float4x4) {{
-    { 1.0f, 0.0f, 0.0f, 0.0f },
-    { 0.0f, math_c_cosine(metil_player->rotation.x, math_c_pi), -math_c_sine(metil_player->rotation.x, math_c_pi), 0.0f },
-    { 0.0f, math_c_sine(metil_player->rotation.x, math_c_pi), math_c_cosine(metil_player->rotation.x, math_c_pi), 0.0f },
-    { 0.0f, 0.0f, 0.0f, 1.0f }
+    { 0x01, 0x00, 0x00, 0x00 },
+    { 0x00, math_c_cosine(metil_player->rotation.x, math_c_pi), -math_c_sine(metil_player->rotation.x, math_c_pi), 0x00 },
+    { 0x00, math_c_sine(metil_player->rotation.x, math_c_pi), math_c_cosine(metil_player->rotation.x, math_c_pi), 0x00 },
+    { 0x00, 0x00, 0x00, 0x01 }
   }};
 
   if (
-    self->metil->rendering_properties.camera.mode == metil_camera_mode_third_person
+    self->metil->rendering_properties.camera.mode ==
+    metil_camera_mode_third_person
   ) {
     matrix_player_rotation_x.columns[
       0x03
     ].y = (
       self->metil->rendering_properties.camera.height * (
         1.0f -
-        (
-          (
-            -metil_player->rotation.x
-          ) /
-          math_c_pi_half
-        )
+        -metil_player->rotation.x /
+        math_c_pi_half
       )
     );
 
@@ -1225,10 +1227,10 @@
   }
 
   matrix_float4x4 matrix_player_rotation_y = (matrix_float4x4) {{
-    { math_c_cosine(metil_player->rotation.y, math_c_pi), 0.0f, math_c_sine(metil_player->rotation.y, math_c_pi), 0.0f },
-    { 0.0f, 1.0f, 0.0f, 0.0f },
-    { math_c_sine(metil_player->rotation.y, math_c_pi), 0.0f, -math_c_cosine(metil_player->rotation.y, math_c_pi), 0.0f },
-    { 0.0f, 0.0f, 0.0f, 1.0f }
+    { math_c_cosine(metil_player->rotation.y, math_c_pi), 0x00, math_c_sine(metil_player->rotation.y, math_c_pi), 0x00 },
+    { 0x00, 0x01, 0x00, 0x00 },
+    { math_c_sine(metil_player->rotation.y, math_c_pi), 0x00, -math_c_cosine(metil_player->rotation.y, math_c_pi), 0x00 },
+    { 0x00, 0x00, 0x00, 0x01 }
   }};
 
   matrix_float4x4 matrix_player_projection = matrix_multiply(
@@ -1298,7 +1300,8 @@
 
       if (
         index_core_cpu < (
-          self->metil->system_information.cores_cpu - 1
+          self->metil->system_information.cores_cpu -
+          0x01
         )
       ) {
         self->threads_data[
@@ -1348,8 +1351,12 @@
   ) {
     [
       self
-      poll_fps_display: &matrix_object_projection
-      matrix_player_projection: &matrix_player_projection
+      poll_fps_display: (
+        &matrix_object_projection
+      )
+      matrix_player_projection: (
+        &matrix_player_projection
+      )
     ];
   }
 
@@ -1496,7 +1503,8 @@
         self->objects_fps_display[
           index_object_fps_display
         ].mesh.size.x /
-        3.5f /        self->metil->rendering_properties.camera.ratio_aspect_view
+        3.5f /
+        self->metil->rendering_properties.camera.ratio_aspect_view
       );
     }
 

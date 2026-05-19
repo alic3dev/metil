@@ -62,8 +62,11 @@ metil_view_controller_on_view_did_load_function metil_view_controller_on_view_di
     )
   ];
 
-  [renderer
-    drawableSizeWillChange: view.bounds.size
+  [
+    renderer
+    drawableSizeWillChange: (
+      view.bounds.size
+    )
   ];
 
   view.delegate = (
@@ -85,13 +88,15 @@ metil_view_controller_on_view_did_load_function metil_view_controller_on_view_di
 }
 
 - (void) drawInMTKView: (nonnull metil_view*) _view {
-  [renderer
+  [
+    renderer
     drawInMTKView: _view
   ];
 }
 
 - (void) mtkView: (nonnull metil_view*) _view drawableSizeWillChange: (CGSize) size {
-  [renderer
+  [
+    renderer
     drawableSizeWillChange: _view.bounds.size
   ];
 }

@@ -270,7 +270,9 @@
 
   CGPoint position = [
     touch
-    preciseLocationInView: self
+    preciseLocationInView: (
+      self
+    )
   ];
 
   self->metil->input.touch.pressure = (
@@ -319,13 +321,19 @@
 
     unsigned char index_touch = [
       self
-      touch_index_get: touch
+      touch_index_get: (
+        touch
+      )
     ];
 
     [
       self
-      touch_update: touch
-      index_touch: index_touch
+      touch_update: (
+        touch
+      )
+      index_touch: (
+        index_touch
+      )
     ];
   }
 }
@@ -333,8 +341,12 @@
 - (void) touchesEnded: (NSSet<UITouch*>*) touches withEvent: (UIEvent*) event {
   [
     self
-    touchesCancelled: touches
-    withEvent: event
+    touchesCancelled: (
+      touches
+    )
+    withEvent: (
+      event
+    )
   ];
 }
 
@@ -438,7 +450,8 @@
       0x04
     ].touching = (
       0x00
-    );       }
+    );
+  }
 
   self->metil->input.touch.length_touches = (
     self->metil->input.touch.length_touches -
@@ -446,7 +459,10 @@
   );
 
   self->metil->input.touch.touching = (
-    self->metil->input.touch.length_touches > 0x00
+    (
+      self->metil->input.touch.length_touches >
+      0x00
+    )
     ? 0x01
     : 0x00
   );

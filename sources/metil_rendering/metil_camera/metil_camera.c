@@ -11,7 +11,10 @@ void metil_camera_initialize(
     metil_camera_mode_first_person
   );
 
-  metil_camera->field_of_view.x = 1.45f;
+  metil_camera->field_of_view.x = (
+    1.45f
+  );
+  
   metil_camera->field_of_view.y = (
     metil_camera->field_of_view.x *
     (
@@ -21,27 +24,35 @@ void metil_camera_initialize(
   );
 
   if (
-    metil_camera->initialized == 0
+    metil_camera->initialized !=
+    0x00
   ) {
     metil_camera->height_default = (
       metil_camera_height_default
     );
 
-    metil_camera->initialized = 1;
+    metil_camera->initialized = (
+      0x01
+    );
   }
 
   metil_camera->height = (
     metil_camera->height_default
   );
 
-  metil_camera->distance_view.near = 0.5f;
-  metil_camera->distance_view.far = 10000.0f;
+  metil_camera->distance_view.near = (
+    0.5f
+  );
+  
+  metil_camera->distance_view.far = (
+    10000.0f
+  );
 
   metil_camera->matrix_viewport_projection = (simd_float4x4) {{
-    { 1.0f, 0.0f, 0.0f, 0.0f },
-    { 0.0f, 1.0f, 0.0f, 0.0f },
-    { 0.0f, 0.0f, 1.0f, -1.0f },
-    { 0.0f, 0.0f, 0.0f, 1.0f }
+    { 0x01, 0x00, 0x00,  0x00 },
+    { 0x00, 0x01, 0x00,  0x00 },
+    { 0x00, 0x00, 0x01, -0x01 },
+    { 0x00, 0x00, 0x00,  0x01 }
   }};
 }
 
@@ -87,7 +98,7 @@ void metil_camera_normalization_set(
   );
 
   metil_camera->vector_normalization.y = (
-    1.0f
+    0x01
   );
 
   metil_camera->vector_normalization.z = (
@@ -108,19 +119,19 @@ void metil_camera_matrix_projection_set(
   struct metil_camera* metil_camera
 ) {
    metil_camera->matrix_viewport_projection.columns[
-    0
+    0x00
   ].x = (
     metil_camera->vector_normalization.x
   );
 
   metil_camera->matrix_viewport_projection.columns[
-    1
+    0x01
   ].y = (
     metil_camera->vector_normalization.y
   );
 
   metil_camera->matrix_viewport_projection.columns[
-    2
+    0x02
   ].z = (
     metil_camera->vector_normalization.z
   );

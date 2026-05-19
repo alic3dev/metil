@@ -11,20 +11,71 @@ void metil_rendering_descriptors_pipeline_render_initialize(
   MTLPixelFormat format_pixel_depth,
   MTLPixelFormat format_pixel_stencil
 ) {
-  descriptor_pipeline_render.rasterSampleCount = count_samples;
+  descriptor_pipeline_render.rasterSampleCount = (
+    count_samples
+  );
 
-  descriptor_pipeline_render.fragmentFunction = function_fragment;
-  descriptor_pipeline_render.vertexFunction = function_vertex;
+  descriptor_pipeline_render.fragmentFunction = (
+    function_fragment
+  );
+  
+  descriptor_pipeline_render.vertexFunction = (
+    function_vertex
+  );
 
-  descriptor_pipeline_render.colorAttachments[0].pixelFormat = format_pixel_colour_attachment;
-  descriptor_pipeline_render.colorAttachments[0].blendingEnabled = 1;
-  descriptor_pipeline_render.colorAttachments[0].rgbBlendOperation = MTLBlendOperationAdd;
-  descriptor_pipeline_render.colorAttachments[0].alphaBlendOperation = MTLBlendOperationAdd;
-  descriptor_pipeline_render.colorAttachments[0].sourceRGBBlendFactor = MTLBlendFactorSourceAlpha;
-  descriptor_pipeline_render.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactorSourceAlpha;
-  descriptor_pipeline_render.colorAttachments[0].destinationRGBBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
-  descriptor_pipeline_render.colorAttachments[0].destinationAlphaBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
+  descriptor_pipeline_render.colorAttachments[
+    0x00
+  ].pixelFormat = (
+    format_pixel_colour_attachment
+  );
 
-  descriptor_pipeline_render.depthAttachmentPixelFormat = format_pixel_depth;
-  descriptor_pipeline_render.stencilAttachmentPixelFormat = format_pixel_stencil;
+      descriptor_pipeline_render.colorAttachments[
+    0x00
+  ].blendingEnabled = (
+    0x01
+  );
+  
+  descriptor_pipeline_render.colorAttachments[
+    0x00
+  ].rgbBlendOperation = (
+    MTLBlendOperationAdd
+  );
+  
+  descriptor_pipeline_render.colorAttachments[
+    0x00
+  ].alphaBlendOperation = (
+    MTLBlendOperationAdd
+  );
+  
+  descriptor_pipeline_render.colorAttachments[
+    0x00
+  ].sourceRGBBlendFactor = (
+    MTLBlendFactorSourceAlpha
+  );
+  
+  descriptor_pipeline_render.colorAttachments[
+    0x00
+  ].sourceAlphaBlendFactor = (
+    MTLBlendFactorSourceAlpha
+  );
+  
+  descriptor_pipeline_render.colorAttachments[
+    0x00
+  ].destinationRGBBlendFactor = (
+    MTLBlendFactorOneMinusSourceAlpha
+  );
+  
+  descriptor_pipeline_render.colorAttachments[
+    0x00
+  ].destinationAlphaBlendFactor = (
+    MTLBlendFactorOneMinusSourceAlpha
+  );
+
+  descriptor_pipeline_render.depthAttachmentPixelFormat = (
+    format_pixel_depth
+  );
+  
+  descriptor_pipeline_render.stencilAttachmentPixelFormat = (
+    format_pixel_stencil
+  );
 }

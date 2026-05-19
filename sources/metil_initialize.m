@@ -142,14 +142,20 @@ int metil_initialize_with_parameters_with_data(
     metil.rendering_properties
   );
 
-  metil.renderer_on_initialize = metil_renderer_on_initialize_function;
-  metil.renderer_on_initialize_data = metil_renderer_on_initialize_function_data;
+  metil.renderer_on_initialize = (
+    metil_renderer_on_initialize_function
+  );
+  metil.renderer_on_initialize_data = (
+    metil_renderer_on_initialize_function_data
+  );
 
   metil_paths_initialize(
     &metil.paths,
     (
       (char*)
-      metil.parameters.parameters_proxied[0]
+      metil.parameters.parameters_proxied[
+        0x00
+      ]
     ),
     name
   );
@@ -167,7 +173,8 @@ int metil_initialize_with_parameters_with_data(
   );
 
   if (
-    status_configuration_load != 0
+    status_configuration_load !=
+    0x00
   ) {
     char* char_array_status_configuration_load = (
       clic3_char_array_from_unsigned_long_int(
@@ -264,20 +271,38 @@ int metil_initialize_with_parameters_with_data(
     &metil
   );
 
-  metil_application* application = (metil_application*) [metil_application sharedApplication];
+  metil_application* application = (
+    (metil_application*)
+    [
+      metil_application
+      sharedApplication
+    ]
+  );
 
-  application->metil = &metil;
+  application->metil = &(
+    metil
+  );
 
   #if !target_os_ios
-  application.delegate = [metil_application_delegate alloc];
+  application.delegate = [
+    metil_application_delegate
+    alloc
+  ];
   #endif
 
-  metil_application_delegate* _metil_application_delegate = (metil_application_delegate*) application.delegate;
+  metil_application_delegate* _metil_application_delegate = (
+    (metil_application_delegate*)
+    application.delegate
+  );
 
-  _metil_application_delegate->metil = &metil;
+  _metil_application_delegate->metil = &(
+    metil
+  );
 
   #if target_os_ios
-  return 0;
+  return (
+    0x00
+  );
   #else
   return NSApplicationMain(
     metil.parameters.length_parameters_proxied,
