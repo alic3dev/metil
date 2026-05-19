@@ -69,15 +69,15 @@ metil_view_controller_on_view_did_load_function metil_view_controller_on_view_di
   view.delegate = (
     self
   );
-  
+
   view.paused = (
     0x01
   );
-  
+
   view.enableSetNeedsDisplay = (
     0x00
   );
-  
+
   [
     view
     draw

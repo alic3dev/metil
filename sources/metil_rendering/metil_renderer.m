@@ -135,11 +135,11 @@
   self->metil->renderer_interface.renderer = (
     self
   );
-  
+
   self->view = (
     metal_kit_view
   );
-    
+
   self->metil->renderer_interface.metal_device = (
     metal_kit_view.device
   );
@@ -166,22 +166,22 @@
     self
     command_queue_initialize
   ];
-  
+
   [
     self
     data_buffer_frames_initialize
   ];
-  
+
   [
     self
     stencils_depth_initialize
   ];
-  
+
   [
     self
     fps_display_objects_initialize
   ];
-  
+
   [
     self
     descriptor_pipeline_render_initialize
@@ -494,7 +494,6 @@
     );
   }
 
-  
   for (
     unsigned char index_time_frame = (
       0x00
@@ -582,7 +581,7 @@
   MTLRenderPassDescriptor* descriptor_render_pass = (
     metal_kit_view.currentRenderPassDescriptor
   );
-  
+
   descriptor_render_pass.colorAttachments[
     0x00
   ].clearColor = (
@@ -690,7 +689,7 @@
   self->depth_state_disabled = (
     0x00
   );
-  
+
   if (
     (
       self->metil->rendering_properties.disables &
@@ -742,21 +741,21 @@
         self->metil->rendering_properties.count_completed_frames +
         0x01
       );
-    
+
       [
         metal_kit_view
         draw
       ];
     }
   ];
-  
+
   [
     command_buffer
     presentDrawable: (
       metal_kit_view.currentDrawable
     )
   ];
-  
+
   [
     command_buffer
     commit
@@ -885,55 +884,55 @@
   self->command_queue = (
     0x00
   );
-  
+
   self->depth_state = (
     0x00
   );
-  
+
   self->depth_state_disabled = (
     0x00
   );
-  
+
   self->depth_state_writes_disabled = (
     0x00
   );
-  
+
   self->descriptor_pipeline_render = (
     0x00
   );
-  
+
   self->encoder_render = (
     0x00
   );
-  
+
   self->encoder_render_encoding = (
     0x00
   );
-  
+
   self->index_buffer_mesh_current = (
     0x00
   );
-  
+
   self->index_pipelines_render_current = (
     metil_renderer_pipelines_render_index_library
   );
-  
+
   self->pipelines_render = (
     0x00
   );
-  
+
   self->length_pipelines_render = (
     0x03
   );
-  
+
   self->threads = (
     0x00
   );
-  
+
   self->threads_data = (
     0x00
   );
-  
+
   self->length_threads = (
     0x00
   );
@@ -1080,12 +1079,12 @@
     self
     pipeline_render_fps_display_initiliaze
   ];
-  
+
   [
     self
     pipeline_render_library_initiliaze
   ];
-  
+
   [
     self
     pipeline_render_wireframe_initialize
@@ -1794,7 +1793,7 @@
   struct metil_object_buffer* buffer_vertex = (
     0x00
   );
-  
+
   struct metil_object_buffer* buffer_fragment = (
     0x00
   );
@@ -1956,7 +1955,7 @@
   descriptor_stencil_depth.depthCompareFunction = (
     MTLCompareFunctionLessEqual
   );
-  
+
   descriptor_stencil_depth.depthWriteEnabled = (
     0x01
   );

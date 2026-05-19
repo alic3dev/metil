@@ -26,7 +26,7 @@ void metil_text_render_parameters_initialize(
       0x00
     )
   );
-  
+
   [
     string_name_family_font
     release

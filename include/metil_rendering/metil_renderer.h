@@ -30,7 +30,7 @@
 
 @interface metil_renderer : NSObject<MTKViewDelegate> {
   struct metil* metil;
-  
+
   MTKView* view;
 
   id<MTLCommandQueue> command_queue;
