@@ -25,7 +25,7 @@ void metil_camera_initialize(
 
   if (
     metil_camera->initialized !=
-    0x00
+    0x01
   ) {
     metil_camera->height_default = (
       metil_camera_height_default
