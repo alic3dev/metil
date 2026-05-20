@@ -14,7 +14,7 @@ void metil_camera_initialize(
   metil_camera->field_of_view.x = (
     1.45f
   );
-  
+
   metil_camera->field_of_view.y = (
     metil_camera->field_of_view.x *
     (
@@ -43,7 +43,7 @@ void metil_camera_initialize(
   metil_camera->distance_view.near = (
     0.5f
   );
-  
+
   metil_camera->distance_view.far = (
     10000.0f
   );

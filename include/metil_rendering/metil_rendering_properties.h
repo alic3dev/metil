@@ -8,19 +8,20 @@
 
 #include <pthread.h>
 
-#define metil_count_max_frames 1
+#define metil_count_max_frames 0x01
 
-#define metil_count_time_frames 60
+#define metil_count_time_frames 0x3c
 
 enum metil_rendering_properties_mode {
-  metil_rendering_properties_mode_default   = 0b01,
-  metil_rendering_properties_mode_wireframe = 0b10
+  metil_rendering_properties_mode_default        = 0b0001,
+  metil_rendering_properties_mode_wireframe      = 0b0010,
+  metil_rendering_properties_mode_wireframe_full = 0b0100
 };
 
 enum metil_rendering_properties_disables {
-  metil_rendering_properties_disables_none      = 0b00,
-  metil_rendering_properties_disables_polling   = 0b01,
-  metil_rendering_properties_disables_rendering = 0b10
+  metil_rendering_properties_disables_none      = 0b0000,
+  metil_rendering_properties_disables_polling   = 0b0001,
+  metil_rendering_properties_disables_rendering = 0b0010
 };
 
 struct metil_rendering_properties {

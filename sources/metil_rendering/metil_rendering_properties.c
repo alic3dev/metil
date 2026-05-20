@@ -38,15 +38,15 @@ void metil_rendering_properties_initialize(
   metil_rendering_properties->colour_clear.x = (
     0x00
   );
-  
+
   metil_rendering_properties->colour_clear.y = (
     0x00
   );
-  
+
   metil_rendering_properties->colour_clear.z = (
     0x00
   );
-  
+
   metil_rendering_properties->colour_clear.w = (
     0x01
   );

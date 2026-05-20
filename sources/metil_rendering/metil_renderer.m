@@ -201,16 +201,16 @@
     self
     pipelines_initialize
   ];
-  
+
   self->destroying = (
     0x00
   );
-  
+
   pthread_mutex_init(
     &self->mutex_destroying,
     0x00
   );
-  
+
   pthread_mutex_lock(
     &self->mutex_destroying
   );
@@ -316,11 +316,11 @@
   self->destroying = (
     0x01
   );
-  
+
   pthread_mutex_lock(
     &self->mutex_destroying
   );
-  
+
   pthread_mutex_unlock(
     &self->mutex_destroying
   );
@@ -489,12 +489,12 @@
 }
 
 - (void) render_view: (nonnull MTKView*) metal_kit_view {
-  unsigned int _frame = (
+  unsigned int index_frame = (
     self->metil->rendering_properties.frame++
   );
 
   if (
-    _frame ==
+    index_frame ==
     0x00
   ) {
     self->metil->audio.muted = (
@@ -570,9 +570,10 @@
   }
 
   self->metil->rendering_properties.fps = (
-    1000.0f /
+    0x03e8 /
     time_difference_average
   );
+
   self->index_data_buffer_frame = (
     (
       self->index_data_buffer_frame +
@@ -696,6 +697,20 @@
 
   if (
     (
+      metil->rendering_properties.mode &
+      metil_rendering_properties_mode_wireframe_full
+    ) !=
+    0x00  ) {
+    [
+      encoder_render
+      setTriangleFillMode: (
+        MTLTriangleFillModeLines
+      )
+    ];
+  }
+
+  if (
+    (
       self->metil->rendering_properties.disables &
       metil_rendering_properties_disables_rendering
     ) ==
@@ -741,7 +756,7 @@
         self->metil->rendering_properties.count_completed_frames +
         0x01
       );
-      
+
       if (
         self->destroying ==
         0x00
@@ -1121,8 +1136,11 @@
 
     self->pipelines_render[
       index_pipeline_render
-    ] = [self->metil->renderer_interface.metal_device
-      newRenderPipelineStateWithDescriptor: self->descriptor_pipeline_render
+    ] = [
+      self->metil->renderer_interface.metal_device
+      newRenderPipelineStateWithDescriptor: (
+        self->descriptor_pipeline_render
+      )
       error: (
         0x00
       )
@@ -1133,27 +1151,45 @@
 - (void) pipeline_render_library_initiliaze {
   [
     self
-    pipeline_render_initialize: metil_renderer_pipelines_render_index_library
-    function_fragment: self->metil->library.function_fragment
-    function_vertex: self->metil->library.function_vertex
+    pipeline_render_initialize: (
+      metil_renderer_pipelines_render_index_library
+    )
+    function_fragment: (
+      self->metil->library.function_fragment
+    )
+    function_vertex: (
+      self->metil->library.function_vertex
+    )
   ];
 }
 
 - (void) pipeline_render_wireframe_initialize {
   [
     self
-    pipeline_render_initialize: metil_renderer_pipelines_render_index_wireframe
-    function_fragment: self->metil->library.function_fragment_wireframe
-    function_vertex: self->metil->library.function_vertex_wireframe
+    pipeline_render_initialize: (
+      metil_renderer_pipelines_render_index_wireframe
+    )
+    function_fragment: (
+      self->metil->library.function_fragment_wireframe
+    )
+    function_vertex: (
+      self->metil->library.function_vertex_wireframe
+    )
   ];
 }
 
 - (void) pipeline_render_fps_display_initiliaze {
   [
     self
-    pipeline_render_initialize: metil_renderer_pipelines_render_index_fps_display
-    function_fragment: self->metil->library.function_fragment_fps_display
-    function_vertex: self->metil->library.function_vertex_fps_display
+    pipeline_render_initialize: (
+      metil_renderer_pipelines_render_index_fps_display
+    )
+    function_fragment: (
+      self->metil->library.function_fragment_fps_display
+    )
+    function_vertex: (
+      self->metil->library.function_vertex_fps_display
+    )
   ];
 }
 
@@ -1591,7 +1627,8 @@
           );
           ++index_group_renderable
         ) {
-          [self
+          [
+            self
             render_renderable: metil_group->renderables[
               index_group_renderable
             ]
@@ -1607,22 +1644,40 @@
       );
 
       if (
-        self->metil->rendering_properties.mode &
-        metil_rendering_properties_mode_default
-      ) {
+        (
+          self->metil->rendering_properties.mode &
+          (
+            metil_rendering_properties_mode_default
+|
+            metil_rendering_properties_mode_wireframe_full
+          )
+        ) !=
+        0x00      ) {
         [
           self
-          render_object: metil_object
+          render_object: (
+            metil_object
+          )
         ];
       }
 
       if (
-        self->metil->rendering_properties.mode &
-        metil_rendering_properties_mode_wireframe
-      ) {
-        [
+        (
+          self->metil->rendering_properties.mode &
+          metil_rendering_properties_mode_wireframe
+        ) &&
+        (
+          (
+            self->metil->rendering_properties.mode &
+            metil_rendering_properties_mode_wireframe_full
+          ) ==
+          0x00
+        )
+      ) {        [
           self
-          render_object_wireframe: metil_object
+          render_object_wireframe: (
+            metil_object
+          )
         ];
       }
       break;
@@ -1713,7 +1768,9 @@
 
     [
       self
-      render_renderable: metil_renderable
+      render_renderable: (
+        metil_renderable
+      )
     ];
   }
 }

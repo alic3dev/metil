@@ -47,15 +47,15 @@ void metil_destroy(
   struct metil* metil = (
     metil_pointer
   );
-  
+
   metil->renderer_interface.renderer->destroying = (
     0x01
   );
-  
+
   pthread_mutex_lock(
     &metil->renderer_interface.renderer->mutex_destroying
   );
-  
+
   pthread_mutex_unlock(
     &metil->renderer_interface.renderer->mutex_destroying
   );

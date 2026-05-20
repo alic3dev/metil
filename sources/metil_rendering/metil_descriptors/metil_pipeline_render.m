@@ -18,7 +18,7 @@ void metil_rendering_descriptors_pipeline_render_initialize(
   descriptor_pipeline_render.fragmentFunction = (
     function_fragment
   );
-  
+
   descriptor_pipeline_render.vertexFunction = (
     function_vertex
   );
@@ -34,37 +34,37 @@ void metil_rendering_descriptors_pipeline_render_initialize(
   ].blendingEnabled = (
     0x01
   );
-  
+
   descriptor_pipeline_render.colorAttachments[
     0x00
   ].rgbBlendOperation = (
     MTLBlendOperationAdd
   );
-  
+
   descriptor_pipeline_render.colorAttachments[
     0x00
   ].alphaBlendOperation = (
     MTLBlendOperationAdd
   );
-  
+
   descriptor_pipeline_render.colorAttachments[
     0x00
   ].sourceRGBBlendFactor = (
     MTLBlendFactorSourceAlpha
   );
-  
+
   descriptor_pipeline_render.colorAttachments[
     0x00
   ].sourceAlphaBlendFactor = (
     MTLBlendFactorSourceAlpha
   );
-  
+
   descriptor_pipeline_render.colorAttachments[
     0x00
   ].destinationRGBBlendFactor = (
     MTLBlendFactorOneMinusSourceAlpha
   );
-  
+
   descriptor_pipeline_render.colorAttachments[
     0x00
   ].destinationAlphaBlendFactor = (
@@ -74,7 +74,7 @@ void metil_rendering_descriptors_pipeline_render_initialize(
   descriptor_pipeline_render.depthAttachmentPixelFormat = (
     format_pixel_depth
   );
-  
+
   descriptor_pipeline_render.stencilAttachmentPixelFormat = (
     format_pixel_stencil
   );
