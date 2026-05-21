@@ -49,9 +49,11 @@ metil_view_controller_on_view_did_load_function metil_view_controller_on_view_di
     MTLCreateSystemDefaultDevice()
   );
 
+  #if !target_os_ios
   view.device.shouldMaximizeConcurrentCompilation = (
     0x01
   );
+  #endif
 
   renderer = [
     [
