@@ -28,7 +28,7 @@ struct metil_rendering_properties {
   struct metil_camera camera;
 
   unsigned int frame;
-  signed char count_completed_frames;
+  unsigned int count_completed_frames;
   pthread_mutex_t mutex_frame;
 
   float brightness;

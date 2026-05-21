@@ -20,7 +20,7 @@ void metil_rendering_properties_initialize(
   );
 
   metil_rendering_properties->count_completed_frames = (
-    metil_count_max_frames
+    0x00
   );
 
   metil_camera_initialize(
