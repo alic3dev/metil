@@ -234,11 +234,11 @@
     ]
     init
   ];
-  
+
   descriptor_log_state.level = (
     MTLLogLevelDebug
   );
-  
+
   id<MTLLogState> log_state = [
     self->metil->renderer_interface.metal_device
     newLogStateWithDescriptor: (
@@ -248,12 +248,12 @@
       0x00
     )
   ];
-  
+
   [
     descriptor_log_state
     release
   ];
-  
+
   [
     log_state
     addLogHandler: ^(
@@ -265,10 +265,10 @@
       printf("%s\n","sfsf");
     }
   ];
-  
+
   return (
     log_state
-  ); 
+  );
 }
 
 - (void) command_queue_initialize {
@@ -279,21 +279,21 @@
     ]
     init
   ];
-  
+
   descriptor_command_queue.logState = (
     [
       self
       log_state_create
-    ] 
+    ]
   );
-  
+
   self->command_queue = [
     self->metil->renderer_interface.metal_device
     newCommandQueueWithDescriptor: (
       descriptor_command_queue
     )
   ];
-  
+
   [
     descriptor_command_queue
     release
@@ -573,8 +573,8 @@
   unsigned int index_frame = (
     self->metil->rendering_properties.frame++
   );
-  
-  if 
+
+  if
     index_frame ==
     0x00
   ) {
@@ -662,7 +662,7 @@
     ) %
     metil_count_max_frames
   );
-  
+
   MTLCommandBufferDescriptor* descriptor_command_buffer = [
     [
       MTLCommandBufferDescriptor
@@ -670,7 +670,7 @@
     ]
     init
   ];
-  
+
   descriptor_command_buffer.logState = (
     [
       self
@@ -684,7 +684,7 @@
       descriptor_command_buffer
     )
   ];
-  
+
   [
     descriptor_command_buffer
     release
@@ -867,7 +867,7 @@
         self->metil->rendering_properties.count_completed_frames +
         0x01
       );
-      
+
       if (
         self->destroying ==
         0x00
