@@ -574,7 +574,7 @@
     self->metil->rendering_properties.frame++
   );
 
-  if
+  if (
     index_frame ==
     0x00
   ) {
