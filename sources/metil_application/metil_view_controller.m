@@ -49,6 +49,10 @@ metil_view_controller_on_view_did_load_function metil_view_controller_on_view_di
     MTLCreateSystemDefaultDevice()
   );
 
+  view.device.shouldMaximizeConcurrentCompilation = (
+    0x01
+  );
+
   renderer = [
     [
       metil_renderer
