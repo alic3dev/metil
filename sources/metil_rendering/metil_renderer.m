@@ -222,9 +222,81 @@
 
 - (void) after_scene_change {}
 
+- (id<MTLLogState>) log_state_create {
+  return (
+    0x00
+  );
+
+  MTLLogStateDescriptor* descriptor_log_state = [
+    [
+      MTLLogStateDescriptor
+      alloc
+    ]
+    init
+  ];
+  
+  descriptor_log_state.level = (
+    MTLLogLevelDebug
+  );
+  
+  id<MTLLogState> log_state = [
+    self->metil->renderer_interface.metal_device
+    newLogStateWithDescriptor: (
+      descriptor_log_state
+    )
+    error: (
+      0x00
+    )
+  ];
+  
+  [
+    descriptor_log_state
+    release
+  ];
+  
+  [
+    log_state
+    addLogHandler: ^(
+      NSString* subsystem,
+      NSString* category,
+      MTLLogLevel level_log,
+      NSString* log
+    ) {
+      printf("%s\n","sfsf");
+    }
+  ];
+  
+  return (
+    log_state
+  ); 
+}
+
 - (void) command_queue_initialize {
-  self->command_queue = [self->metil->renderer_interface.metal_device
-    newCommandQueue
+  MTLCommandQueueDescriptor* descriptor_command_queue = [
+    [
+      MTLCommandQueueDescriptor
+      alloc
+    ]
+    init
+  ];
+  
+  descriptor_command_queue.logState = (
+    [
+      self
+      log_state_create
+    ] 
+  );
+  
+  self->command_queue = [
+    self->metil->renderer_interface.metal_device
+    newCommandQueueWithDescriptor: (
+      descriptor_command_queue
+    )
+  ];
+  
+  [
+    descriptor_command_queue
+    release
   ];
 }
 
@@ -248,7 +320,9 @@
           struct metil_renderer_data_frame
         )
       )
-      options: MTLResourceStorageModeShared
+      options: (
+        MTLResourceStorageModeShared
+      )
     ];
   }
 }
@@ -489,12 +563,18 @@
 }
 
 - (void) render_view: (nonnull MTKView*) metal_kit_view {
+  if (
+    self->metil->rendering_properties.frame !=
+    self->metil->rendering_properties.count_completed_frames
+  ) {
+    return;
+  }
+
   unsigned int index_frame = (
     self->metil->rendering_properties.frame++
   );
-
-  if (
-    index_frame ==
+  
+  if (    index_frame ==
     0x00
   ) {
     self->metil->audio.muted = (
@@ -581,15 +661,39 @@
     ) %
     metil_count_max_frames
   );
+  
+  MTLCommandBufferDescriptor* descriptor_command_buffer = [
+    [
+      MTLCommandBufferDescriptor
+      alloc
+    ]
+    init
+  ];
+  
+  descriptor_command_buffer.logState = (
+    [
+      self
+      log_state_create
+    ]
+  );
 
   id<MTLCommandBuffer> command_buffer = [
     self->command_queue
-    commandBuffer
+    commandBufferWithDescriptor: (
+      descriptor_command_buffer
+    )
+  ];
+  
+  [
+    descriptor_command_buffer
+    release
   ];
 
   MTLRenderPassDescriptor* descriptor_render_pass = (
     metal_kit_view.currentRenderPassDescriptor
   );
+     
+  // renderTargetWidth
 
   descriptor_render_pass.colorAttachments[
     0x00
@@ -700,11 +804,19 @@
       metil->rendering_properties.mode &
       metil_rendering_properties_mode_wireframe_full
     ) !=
-    0x00  ) {
+    0x00
+  ) {
     [
       encoder_render
       setTriangleFillMode: (
         MTLTriangleFillModeLines
+      )
+    ];
+  } else {
+    [
+      encoder_render
+      setTriangleFillMode: (
+        MTLTriangleFillModeFill
       )
     ];
   }
@@ -756,8 +868,7 @@
         self->metil->rendering_properties.count_completed_frames +
         0x01
       );
-
-      if (
+                  if (
         self->destroying ==
         0x00
       ) {
@@ -1547,7 +1658,8 @@
     self->objects_fps_display[
       index_object_fps_display
     ].position.y = (
-      0.971f +      self->objects_fps_display[
+      0.971f +
+      self->objects_fps_display[
         index_object_fps_display
       ].mesh.size.y /
       0x02
@@ -1835,9 +1947,11 @@
 {
   [
     encoder_render
-    setRenderPipelineState: self->pipelines_render[
-      index_pipeline_render
-    ]
+    setRenderPipelineState: (
+      self->pipelines_render[
+        index_pipeline_render
+      ]
+    )
   ];
 
   if (
@@ -1846,12 +1960,16 @@
   ) {
     [
       encoder_render
-      setDepthStencilState: self->depth_state
+      setDepthStencilState: (
+        self->depth_state
+      )
     ];
   } else {
     [
       encoder_render
-      setDepthStencilState: self->depth_state_writes_disabled
+      setDepthStencilState: (
+        self->depth_state_writes_disabled
+      )
     ];
   }
 
@@ -1870,8 +1988,12 @@
         self->index_data_buffer_frame
       ]
     )
-    offset: 0x00
-    atIndex: metil_renderer_vertex_index_parameter_data_frame
+    offset: (
+      0x00
+    )
+    atIndex: (
+      metil_renderer_vertex_index_parameter_data_frame
+    )
   ];
 
   for (
@@ -1969,7 +2091,8 @@
     metil_object->visible ==
     0x01
   ) {
-    [self
+    [
+      self
       render_encode_draw: metil_object->buffers_vertex
       length_buffers_vertex: metil_object->length_buffers_vertex
       buffers_fragment: metil_object->buffers_fragment
@@ -1991,7 +2114,8 @@
     metil_object->visible ==
     0x01
   ) {
-    [self
+    [
+      self
       render_encode_draw: metil_object->buffers_vertex
       length_buffers_vertex: metil_object->length_buffers_vertex
       buffers_fragment: metil_object->buffers_fragment

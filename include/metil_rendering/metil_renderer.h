@@ -76,6 +76,8 @@
 
 - (void) after_scene_change;
 
+- (id<MTLLogState> _Nullable) log_state_create;
+
 - (void) command_queue_initialize;
 
 - (void) data_buffer_frames_initialize;
