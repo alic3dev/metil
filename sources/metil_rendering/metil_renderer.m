@@ -574,7 +574,8 @@
     self->metil->rendering_properties.frame++
   );
   
-  if (    index_frame ==
+  if 
+    index_frame ==
     0x00
   ) {
     self->metil->audio.muted = (
@@ -692,8 +693,6 @@
   MTLRenderPassDescriptor* descriptor_render_pass = (
     metal_kit_view.currentRenderPassDescriptor
   );
-     
-  // renderTargetWidth
 
   descriptor_render_pass.colorAttachments[
     0x00
@@ -868,7 +867,8 @@
         self->metil->rendering_properties.count_completed_frames +
         0x01
       );
-                  if (
+      
+      if (
         self->destroying ==
         0x00
       ) {
