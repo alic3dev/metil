@@ -1,5 +1,6 @@
 #include <metil_editor_scene.h>
 
+#include <metil_editor_index_pipeline_render.h>
 #include <metil_editor_scene_data.h>
 
 #include <clic3_memory.h>
@@ -20,6 +21,10 @@ void metil_editor_scene_initialize(
   struct metil* metil,
   struct metil_scene* metil_scene
 ) {
+  struct metil_editor_index_pipeline_render* metil_editor_index_pipeline_render = (
+    metil->data
+  );
+
   metil_scene_initialize_with_renderables(
     metil,
     metil_scene,
@@ -55,7 +60,10 @@ void metil_editor_scene_initialize(
     switch (
       index_renderable
     ) {
-      case metil_editor_scene_index_renderable_group_grids: {
+      case metil_editor_scene_index_renderable_group_grids:
+      case metil_editor_scene_index_renderable_group_text_position_cursor:
+      case metil_editor_scene_index_renderable_group_text_position_vertex:
+      case metil_editor_scene_index_renderable_group_text_length_vertices: {
         metil_renderable_initialize_at_index(
           metil_scene->renderables,
           index_renderable,
@@ -82,6 +90,12 @@ void metil_editor_scene_initialize(
     ].renderable
   );
   
+  struct metil_object* metil_object_grid_lines = (
+    metil_scene->renderables[
+      metil_editor_scene_index_renderable_grid_lines
+    ].renderable
+  );
+  
   struct metil_object* metil_object_lines = (
     metil_scene->renderables[
       metil_editor_scene_index_renderable_lines
@@ -91,6 +105,24 @@ void metil_editor_scene_initialize(
   struct metil_object* metil_object_points = (
     metil_scene->renderables[
       metil_editor_scene_index_renderable_points
+    ].renderable
+  );
+  
+  struct metil_group* metil_group_text_position_cursor = (
+    metil_scene->renderables[
+      metil_editor_scene_index_renderable_group_text_position_cursor
+    ].renderable
+  );
+  
+  struct metil_group* metil_group_text_position_vertex = (
+    metil_scene->renderables[
+      metil_editor_scene_index_renderable_group_text_position_vertex
+    ].renderable
+  );
+  
+  struct metil_group* metil_group_text_length_vertices = (
+    metil_scene->renderables[
+      metil_editor_scene_index_renderable_group_text_length_vertices
     ].renderable
   );
   
@@ -175,11 +207,6 @@ void metil_editor_scene_initialize(
       0x02
     ) {
       case 0x00: {
-        metil_object_grid->position.y = (
-          metil_object_grid->mesh.size.y /
-          0x64
-        );
-      
         metil_object_grid->rotation.x = (
           math_c_pi_half
         );
@@ -201,7 +228,116 @@ void metil_editor_scene_initialize(
     metil_object_grid->type_primitive = (
       MTLPrimitiveTypeLine
     );
+    
+    metil_object_grid->depth_disabled = (
+      0x01
+    );
   }
+  
+  metil_mesh_initialize_with_lengths(
+    &metil_object_grid_lines->mesh,
+    0x06,
+    0x06
+  );
+  
+  for (
+    unsigned char index_vertex = (
+      0x00
+    );
+    (
+      index_vertex <
+      metil_object_grid_lines->mesh.length_vertices
+    );
+    ++index_vertex
+  ) {
+    float inverter = (
+      (
+        (
+          index_vertex %
+          0x02
+        ) ==
+        0x00
+      )
+      ?  0x01
+      : -0x01
+    );
+    
+    unsigned char index_axis = (
+      index_vertex /
+      0x02
+    );
+    
+    metil_object_grid_lines->mesh.vertices[
+      index_vertex
+    ].x = (
+      (
+        index_axis == 
+        0x00
+      )
+      ? (
+        0x64 *
+        inverter
+      )
+      : 0x00
+    );
+  
+    metil_object_grid_lines->mesh.vertices[
+      index_vertex
+    ].y = (
+      (
+        index_axis ==
+        0x01
+      )
+      ? (
+        0x64 *
+        inverter
+      )
+      : 0x00
+    );
+  
+    metil_object_grid_lines->mesh.vertices[
+      index_vertex
+    ].z = (
+      (
+        index_axis ==
+        0x02
+      )
+      ? (
+        0x64 *
+        inverter
+      )
+      : 0x00
+    );
+  
+    metil_object_grid_lines->mesh.vertices[
+      index_vertex
+    ].w = (
+      0x01
+    );
+    
+    metil_object_grid_lines->mesh.indices[
+      index_vertex
+    ] = (
+      index_vertex
+    );
+  }
+  
+  metil_object_buffers_initialize(
+    metil_object_grid_lines,
+    metil->renderer_interface.metal_device
+  );
+  
+  metil_object_grid_lines->index_pipeline_render = (
+    metil_editor_index_pipeline_render->grid_lines
+  );
+  
+  metil_object_grid_lines->type_primitive = (
+    MTLPrimitiveTypeLine
+  );
+  
+  metil_object_grid_lines->depth_disabled = (
+    0x01
+  );
   
   metil_mesh_initialize(
     &metil_object_lines->mesh

@@ -74,7 +74,7 @@ file_library_interrupt_handler=${directory_interrupt_handler_library}/interrupt_
 file_library_math_c=${directory_math_c_library}/math_c.${target_version_math_c}.dylib
 file_library_metil=${directory_metil_library}/metil.${target_version_metil}.dylib
 
-file_metil_metallib=${directory_metil_library}/metil.metallib
+file_metil_metalar_colours=${directory_metil_library}/metil_metal_colours.metalar
 file_metil_storyboard=${directory_metil_library}/metil.storyboardc
 
 file_info_plist=${directory_metil_plist}/Info.plist
@@ -91,6 +91,8 @@ files_sources_objective_c=${shell find ${directory_sources} -name "*.m"}
 
 files_objects_c=${patsubst ${directory_sources}/%.c,${directory_objects}/%.o,${files_sources_c}}
 files_objects_objective_c=${patsubst ${directory_sources}/%.m,${directory_objects}/%.o,${files_sources_objective_c}}
+
+files_metil_metalars=${file_metil_metalar_colours}
 
 files_libraries=${file_library_cer0} ${file_library_clic3} ${file_library_interrupt_handler} ${file_library_math_c} ${file_library_metil}
 
@@ -131,7 +133,7 @@ ${file_output}: ${files_objects_c} ${files_objects_objective_c} ${file_output_me
 
 ${file_output_metal}: ${files_air}
 	if [[ ! -d ${dir ${@}} ]]; then mkdir -p ${dir ${@}}; fi
-	${metallib} ${metal_flags_output} ${files_air} ${file_metalar_metil_wireframe} ${file_metalar_metil_fps_display} -o ${@}
+	${metallib} ${metal_flags_output} ${files_air} ${files_metil_metalars} -o ${@}
 		
 ${directory_air}/%.air: ${directory_metal}/%.metal
 	if [[ ! -d ${dir ${@}} ]]; then mkdir -p ${dir ${@}}; fi
