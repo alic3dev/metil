@@ -270,7 +270,7 @@ void metil_editor_scene_initialize(
   );
   
   metil_scene->player.poll_input = (
-    metil_player_poll_input_free_flying_unlocked
+    metil_player_poll_input_free_flying_locked
   );
   
   metil_scene->player.rotation.y = (
