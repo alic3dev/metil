@@ -4,7 +4,9 @@
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
 
 struct data_vertex {
-  float4 position [[position]];
+  float4 position [[
+    position
+  ]];
   float4 colour;
 };
 
@@ -24,64 +26,65 @@ struct data_vertex {
       metil_renderer_vertex_index_parameter_data_object
     )
   ]],
-  unsigned int id_vertex [[vertex_id]]
+  unsigned int index_vertex [[
+    vertex_id
+  ]]
 ) {
   struct data_vertex data_vertex;
 
   data_vertex.position = (
-    data_object->view_model_matrix_projection *
+    (
+      data_object->view_model_matrix_projection +
+      (metal::float4x4) {{
+        { 0x00, 0x00, 0x00, 0x00 },
+        { 0x00, 0x00, 0x00, 0x00 },
+        { 0x00, 0x00, 0x00, 0x00 },
+        { 0x00, 0x00, 0.5f, 0x00 }
+      }}
+    ) *
     vertices[
-      id_vertex
+      index_vertex
     ]
   );
 
-/*
-  float4 normalized = metal::normalize(
-    data_vertex.position
+  float brightness = (
+    0x01 -
+    (
+      (
+        vertices[
+          index_vertex
+        ].z +
+        0.2f
+      ) /
+      0.5f
+    )
   );
-
-  data_object->position_screen[
-    id_vertex
-  ].x = (
-    normalized.x
-  );
-
-  data_object->position_screen[
-    id_vertex
-  ].y = (
-    data_vertex.position.y
-  );
-
-  data_object->position_screen[
-    id_vertex
-  ].z = (
-    data_vertex.position.z
-  );
-
-  data_object->position_screen[
-    id_vertex
-  ].w = (
-    data_vertex.position.w
-  );
-*/
-
-  float brightness = 1.0f - ((
-    vertices[id_vertex].z +
-    0.2
-  ) / 0.5f);
 
   data_vertex.colour = float4(
-    1.0f * brightness,
-    0.98f * brightness,
-    0.9f * brightness,
-    1.0f
+    (
+      0x01 *
+      brightness
+    ),
+    (
+      0.98f *
+      brightness
+    ),
+    (
+      0.9f *
+      brightness
+    ),
+    0x01
   );
 
-  return data_vertex;
+  return (
+    data_vertex
+  );
 }
 
 [[fragment]] float4 face_fragment(
   struct data_vertex data_vertex [[stage_in]]
 ) {
-  return data_vertex.colour;
+  return (
+    data_vertex.colour
+  );
 }

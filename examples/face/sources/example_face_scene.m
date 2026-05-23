@@ -28,60 +28,48 @@ void example_face_scene_initialize(
     2
   );
 
-  scene->player.position.z = -1.0f;
-  scene->player.poll_input = metil_player_poll_input_null;
+  scene->player.position.z = -(
+    0x01
+  );
+  
+  scene->player.poll_input = (
+    metil_player_poll_input_null
+  );
 
-  scene->destroy = example_face_scene_destroy;
+  scene->destroy = (
+    example_face_scene_destroy
+  );
 
-  metil->rendering_properties.camera.height = 0.0f;
+  metil->rendering_properties.camera.height = (
+    0x00
+  );
 
   metil_renderable_initialize_at_index(
     scene->renderables,
-    0,
+    0x00,
     metil_renderable_type_object
   );
 
   metil_renderable_initialize_at_index(
     scene->renderables,
-    1,
+    0x01,
     metil_renderable_type_object
   );
 
   struct metil_object* object = (
     scene->renderables[
-      0
+      0x00
     ].renderable
   );
-
-  metil_mesh_initialize(
-    &object->mesh
-  );
-
+  
   struct metil_mesh* metil_mesh = (
     &object->mesh
   );
 
-  metil_mesh->length_vertices = 33;
-  metil_mesh->length_indices = 156;
-
-  clic3_memory_reallocate_raw(
-    &metil_mesh->indices,
-    (
-      sizeof(
-        unsigned int
-      ) *
-      metil_mesh->length_indices
-    )
-  );
-
-  clic3_memory_reallocate_raw(
-    &metil_mesh->vertices,
-    (
-      sizeof(
-        struct math_c_vector4_float
-      ) *
-      metil_mesh->length_vertices
-    )
+  metil_mesh_initialize_with_lengths(
+    metil_mesh,
+    0x21,
+    0x9c
   );
 
   metil_mesh->vertices[0].x = -0.9f;
@@ -250,13 +238,20 @@ void example_face_scene_initialize(
   metil_mesh->vertices[32].w = 1.0f;
 
   for (
-    unsigned char index_index = 0;
-    index_index < metil_mesh->length_indices;
+    unsigned char index_index = (
+      0x00
+    );
+    (
+      index_index <
+      metil_mesh->length_indices
+    );
     ++index_index
   ) {
     metil_mesh->indices[
       index_index
-    ] = 0;
+    ] = (
+      0x00
+    );
   }
 
   metil_mesh->indices[0] = 0;
@@ -485,14 +480,21 @@ void example_face_scene_initialize(
     ].buffer.contents
   );
 
-  data_object->vertex_hovered = 0;
-  data_object->vertex_held = 0;
+  data_object->vertex_hovered = (
+    0x00
+  );
+  
+  data_object->vertex_held = (
+    0x00
+  );
 
-  object->depth_disabled = 1;
+  object->depth_disabled = (
+    0x01
+  );
 
   struct metil_object* object_points = (
     scene->renderables[
-      1
+      0x01
     ].renderable
   );
 
@@ -500,20 +502,38 @@ void example_face_scene_initialize(
     &object_points->mesh
   );
 
-  object_points->mesh.length_indices = object->mesh.length_indices;
-  object_points->mesh.length_vertices = object->mesh.length_vertices;
+  object_points->mesh.length_indices = (
+    object->mesh.length_indices
+  );
+  
+  object_points->mesh.length_vertices = (
+    object->mesh.length_vertices
+  );
 
-  object_points->depth_disabled = 1;
+  object_points->depth_disabled = (
+    0x01
+  );
 
-  object_points->type_primitive = MTLPrimitiveTypePoint;
+  object_points->type_primitive = (
+    MTLPrimitiveTypePoint
+  );
 
-  object_points->index_pipeline_render = example_face_pipeline_index_face_points;
+  object_points->index_pipeline_render = (
+    example_face_pipeline_index_face_points
+  );
 
-  object_points->indices = object->indices;
+  object_points->indices = (
+    object->indices
+  );
 
   for (
-    unsigned char index_buffer_vertex = 0;
-    index_buffer_vertex < object->length_buffers_vertex;
+    unsigned char index_buffer_vertex = (
+      0x00
+    );
+    (
+      index_buffer_vertex <
+      object->length_buffers_vertex
+    );
     ++index_buffer_vertex
   ) {
     metil_object_buffers_add(
@@ -541,7 +561,9 @@ void example_face_scene_initialize(
     ].offset;
   }
 
-  scene->poll = example_face_scene_poll;
+  scene->poll = (
+    example_face_scene_poll
+  );
 }
 
 void example_face_scene_poll(
@@ -554,7 +576,9 @@ void example_face_scene_poll(
   );
 
   struct metil_object* object = (
-    scene->renderables[0].renderable
+    scene->renderables[
+      0x00
+    ].renderable
   );
 
   struct example_face_renderer_data_object* data_object = (
@@ -569,25 +593,30 @@ void example_face_scene_poll(
     ].buffer.contents
   );
 
-  data_object->vertex_hovered = 0;
+  data_object->vertex_hovered = (
+    0x00
+  );
 
-  float distance_closest = 10000.0f;
+  float distance_closest = (
+    0x2710
+  );
 
   struct math_c_vector2_float position_relative = {
     .x = (
       (
         metil->input.cursor.position_window.x /
         metil->renderer_interface.size.x *
-        2.0f
-      ) - 1.0f
+        0x02
+      ) -
+      0x01
     ),
     .y = (
       (
         metil->input.cursor.position_window.y /
         metil->renderer_interface.size.y *
-        2.0f
-      ) - 1.0f
-    )
+        0x02
+      ) -
+      0x01    )
   };
 
   float aspect_ratio = (
@@ -596,8 +625,13 @@ void example_face_scene_poll(
   );
 
   for (
-    unsigned int index_vertex = 0;
-    index_vertex < object->mesh.length_vertices;
+    unsigned int index_vertex = (
+      0x00
+    );
+    (
+      index_vertex <
+      object->mesh.length_vertices
+    );
     ++index_vertex
   ) {
     struct math_c_vector4_float* vertex = &(
@@ -613,11 +647,12 @@ void example_face_scene_poll(
             (
               vertex->x *
               aspect_ratio * (
-                1.0f - vertex->z
+                0x01 -
+                vertex->z
               )
             ) - position_relative.x
           ),
-          2.0f
+          0x02
         ) +
         math_c_power_float(
           (
@@ -625,18 +660,24 @@ void example_face_scene_poll(
             0.8f -
             position_relative.y
           ),
-          2.0f
+          0x02
         )
       )
     );
 
     if (
-      distance < distance_closest &&
-      distance < 0.1f
+      (
+        distance <
+        distance_closest
+      ) &&
+      (
+        distance <
+        0.1f
+      )
     ) {
       data_object->vertex_hovered = (
         index_vertex +
-        1
+        0x01
       );
 
       distance_closest = distance;
@@ -644,31 +685,51 @@ void example_face_scene_poll(
   }
 
   if (
-    metil->input.cursor.down == 1 &&
-    data_object->vertex_hovered != 0 &&
-    data_object->vertex_held == 0
+    (
+      metil->input.cursor.down ==
+      0x01
+    ) &&
+    (
+      data_object->vertex_hovered !=
+      0x00
+    ) &&
+    (
+      data_object->vertex_held ==
+      0x00
+    )
   ) {
     data_object->vertex_held = (
       data_object->vertex_hovered
     );
   } else if (
-    metil->input.cursor.down != 1
+    metil->input.cursor.down !=
+    0x01
   ) {
-    data_object->vertex_held = 0;
+    data_object->vertex_held = (
+      0x00
+    );
   }
 
   if (
-    data_object->vertex_held != 0
+    data_object->vertex_held !=
+    0x00
   ) {
     struct math_c_vector4_float* vertex = &(
       vertices[
         data_object->vertex_held -
-        1
+        0x01
       ]
     );
 
-    vertex->x = position_relative.x / aspect_ratio;
-    vertex->y = position_relative.y / 0.8f;
+    vertex->x = (
+      position_relative.x /
+      aspect_ratio
+    );
+    
+    vertex->y = (
+      position_relative.y /
+      0.8f
+    );
   }
 }
 
@@ -678,13 +739,17 @@ void example_face_scene_destroy(
 ) {
   struct metil_object* object_points = (
     scene->renderables[
-      1
+      0x01
     ].renderable
   );
 
-  object_points->length_buffers_vertex = 0;
+  object_points->length_buffers_vertex = (
+    0x00
+  );
 
-  object_points->indices = 0;
+  object_points->indices = (
+    0x00
+  );
 
   metil_scene_destroy_default(
     metil,
