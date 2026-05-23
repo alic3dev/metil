@@ -5,10 +5,22 @@ struct data_vertex_basic {
   float4 position [[position]];
 };
 
+struct data_vertex_basic_point {
+  float4 position [[position]];
+  float size_point [[point_size]];
+};
+
 struct data_vertex_basic_coloured {
   float4 position [[position]];
   float4 colour;
   float brightness;
+};
+
+struct data_vertex_basic_point_coloured {
+  float4 position [[position]];
+  float4 colour;
+  float brightness;
+  float size_point [[point_size]];
 };
 
 struct data_vertex_basic_textured_coloured {
