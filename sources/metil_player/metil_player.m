@@ -1209,6 +1209,16 @@ float metil_player_poll_input_movement_y_free_flying_movement_y_get(
           metil_keycode_opening_square_bracket
         ] ==
         0x01
+      ) ||
+      (
+        (
+          metil->input.controller_state.available ==
+          0x01
+        ) &&
+        (
+          metil->input.controller_state.l1 >=
+          0.1f
+        )
       )
     ) +
     (
@@ -1235,7 +1245,7 @@ float metil_player_poll_input_movement_y_free_flying_movement_y_get(
           0x01
         ) &&
         (
-          metil->input.controller_state.cross >=
+          metil->input.controller_state.r1 >=
           0.1f
         )
       )
