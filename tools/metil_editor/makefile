@@ -68,8 +68,8 @@ directory_metil_plist=${directory_metil}/plist
 
 directories_includes=${directory_include} ${directory_cer0_include} ${directory_clic3_include} ${directory_interrupt_handler_include} ${directory_math_c_include} ${directory_metil_include}
 
-file_library_cer0=${directory_cer0_library/cer0.${target_version_cer0}.dylib
-file_library_clic3=${directory_clic3_library/clic3.${target_version_clic3}.dylib
+file_library_cer0=${directory_cer0_library}/cer0.${target_version_cer0}.dylib
+file_library_clic3=${directory_clic3_library}/clic3.${target_version_clic3}.dylib
 file_library_interrupt_handler=${directory_interrupt_handler_library}/interrupt_handler.${target_version_interrupt_handler}.dylib
 file_library_math_c=${directory_math_c_library}/math_c.${target_version_math_c}.dylib
 file_library_metil=${directory_metil_library}/metil.${target_version_metil}.dylib
