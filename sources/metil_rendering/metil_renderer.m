@@ -1409,6 +1409,12 @@
         0x03
       ].y
     );
+  } else {
+    matrix_player_rotation_x.columns[
+      0x03
+    ].z = (
+      0x01
+    );
   }
 
   matrix_float4x4 matrix_player_projection = matrix_multiply(
