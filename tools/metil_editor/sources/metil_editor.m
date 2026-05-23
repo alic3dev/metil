@@ -73,6 +73,14 @@ void metil_editor_renderer_on_initialize(
     0x00
   );
 
+  metil->rendering_properties.camera.distance_view.near = (
+    0.001f
+  );
+
+  metil_camera_normalization_set(
+    &metil->rendering_properties.camera
+  );
+
   metil->rendering_properties.camera.height = (
     metil->rendering_properties.camera.height_default
   );
