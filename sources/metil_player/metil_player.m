@@ -167,13 +167,13 @@ void metil_player_poll_input_with_functions(
   float speed_original = (
     metil_player->speed_movement
   );
-  
+
   float speed_delta = (
     (float)
     time_delta /
     0x03e8
   );
-  
+
   struct math_c_vector2_float ratio_movement = {
     .x = (
       0x00
@@ -191,24 +191,24 @@ void metil_player_poll_input_with_functions(
       0x00
     )
   };
-  
+
   metil_player_poll_input_function_speed_movement(
     metil,
     metil_player,
     speed_delta
   );
-  
+
   metil_player_poll_input_function_rotation(
     metil,
     metil_player
   );
-  
+
   metil_player_poll_input_function_rotation_ratio(
     metil,
     metil_player,
     &ratio_movement,
     &ratio_movement_strafe
-  );  
+  );
 
   metil_player_poll_input_function_movement(
     metil,
@@ -218,7 +218,7 @@ void metil_player_poll_input_with_functions(
     speed_original,
     speed_delta
   );
-  
+
   metil_player_poll_input_function_movement_y(
     metil,
     metil_player,
@@ -227,7 +227,7 @@ void metil_player_poll_input_with_functions(
     speed_original,
     speed_delta
   );
-  
+
   metil_player->speed_movement = (
     speed_original
   );
@@ -317,7 +317,7 @@ void metil_player_poll_input_rotation(
       -math_c_pi_half
     )
   );
-  
+
   if (
     math_c_absolute_float(
       metil_player->rotation.y
@@ -337,13 +337,15 @@ void metil_player_poll_input_rotation(
       math_c_pi_doubled
     );
 
-  }  }
+  }
+}
+
 void metil_player_poll_input_rotation_ratio(
   struct metil* metil,
   struct metil_player* metil_player,
   struct math_c_vector2_float* ratio_movement,
   struct math_c_vector2_float* ratio_movement_strafe
-) { 
+) {
   float ratio_axis = -(
     metil_player->rotation.y /
     math_c_pi_doubled
@@ -640,6 +642,7 @@ void metil_player_poll_input_rotation_ratio(
     );
   }
 }
+
 void metil_player_poll_input_movement(
   struct metil* metil,
   struct metil_player* metil_player,
@@ -788,7 +791,7 @@ void metil_player_poll_input_movement(
       ratio_movement_strafe->y
     );
   }
-  
+
   metil_player->position.x = (
     metil_player->position.x +
     (
@@ -1086,7 +1089,7 @@ void metil_player_poll_input_movement_y_free_flying_locked(
       metil_player
     )
   );
-  
+
   metil_player->position.y = (
     metil_player->position.y +
     math_c_bound_float(
@@ -1097,7 +1100,6 @@ void metil_player_poll_input_movement_y_free_flying_locked(
     metil_player->speed_movement
   );
 }
-
 
 void metil_player_poll_input_movement_y_free_flying_unlocked(
   struct metil* metil,
@@ -1113,26 +1115,27 @@ void metil_player_poll_input_movement_y_free_flying_unlocked(
       metil_player
     )
   );
-  
+
   float movement_y_additional = (
     0x00
-  );    
+  );
   if (
     math_c_absolute_float(
       metil->input.controller_state.left_stick.y
     ) >=
-    metil_player->deadzone_stick      
+    metil_player->deadzone_stick
   ) {
     movement_y_additional = (
       metil->input.controller_state.left_stick.y *
       metil_player->speed_movement *
       metil_player->rotation.x /
       math_c_pi_half
-    );  
+    );
   } else {
     movement_y_additional = (
       (
-        (          metil->input.keydown_map[
+        (
+          metil->input.keydown_map[
             metil_keycode_up_arrow
           ] ||
           metil->input.keydown_map[
@@ -1160,19 +1163,20 @@ void metil_player_poll_input_movement_y_free_flying_unlocked(
       math_c_pi_half
     );
   }
-  
+
   movement_y = (
     movement_y +
     movement_y_additional
   );
-  
+
   metil_player->position.x = (
     metil_player->position.x -
     math_c_absolute_float(
       movement_y_additional
     ) *
-    ratio_movement->x  );     
-                    
+    ratio_movement->x
+  );
+
   metil_player->position.y = (
     metil_player->position.y +
     math_c_bound_float(
@@ -1182,7 +1186,7 @@ void metil_player_poll_input_movement_y_free_flying_unlocked(
     ) *
     metil_player->speed_movement
   );
-  
+
   metil_player->position.z = (
     metil_player->position.z -
     math_c_absolute_float(
@@ -1251,7 +1255,7 @@ float metil_player_poll_input_movement_y_free_flying_movement_y_get(
       )
     )
   );
-  
+
   return (
     movement_y
   );
