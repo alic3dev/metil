@@ -2,6 +2,7 @@
 #define __metil_tools_metil_editor_metil_editor_index_pipeline_render_h
 
 struct metil_editor_index_pipeline_render {
+  unsigned char cursor;
   unsigned char grid_lines;
 };
 

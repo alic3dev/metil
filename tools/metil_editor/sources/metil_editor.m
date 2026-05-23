@@ -45,6 +45,18 @@ void metil_editor_renderer_on_initialize(
     @"metil_editor_vertex"
   );
 
+  metil_editor_index_pipeline_render->cursor = [
+    metil->renderer_interface.renderer
+    pipeline_add: [
+      metil->library.library
+      newFunctionWithName: @"metil_editor_cursor_fragment"
+    ]
+    function_vertex: [
+      metil->library.library
+      newFunctionWithName: @"metil_editor_cursor_vertex"
+    ]
+  ];
+  
   metil_editor_index_pipeline_render->grid_lines = [
     metil->renderer_interface.renderer
     pipeline_add: [
