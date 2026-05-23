@@ -1343,10 +1343,47 @@
     poll_frame
   );
 
+  struct math_c_vector2_float rotation_sine = {
+    .x = (
+      math_c_sine(
+        metil_player->rotation.x,
+        math_c_pi
+      )
+    ),
+    .y = (
+      math_c_sine(
+        metil_player->rotation.y,
+        math_c_pi
+      )
+    )
+  };
+
+  struct math_c_vector2_float rotation_cosine = {
+    .x = (
+      math_c_cosine(
+        metil_player->rotation.x,
+        math_c_pi
+      )
+    ),
+    .y = (
+      math_c_cosine(
+        metil_player->rotation.y,
+        math_c_pi
+      )
+    )
+  };
+
   matrix_float4x4 matrix_player_rotation_x = (matrix_float4x4) {{
     { 0x01, 0x00, 0x00, 0x00 },
-    { 0x00, math_c_cosine(metil_player->rotation.x, math_c_pi), -math_c_sine(metil_player->rotation.x, math_c_pi), 0x00 },
-    { 0x00, math_c_sine(metil_player->rotation.x, math_c_pi), math_c_cosine(metil_player->rotation.x, math_c_pi), 0x00 },
+    { 0x00, rotation_cosine.x, -rotation_sine.x, 0x00 },
+    { 0x00, rotation_sine.x, rotation_cosine.x, 0x00 },
+    { 0x00, 0x00, 0x00, 0x01 }
+  }};
+
+  matrix_float4x4 matrix_player_rotation_y = (matrix_float4x4) {{
+    { rotation_cosine.y, 0x00, rotation_sine.y, 0x00 },
+    { 0x00, 0x01, 0x00, 0x00 },
+    { rotation_sine.y, 0x00, -rotation_cosine.y, 0x00 },
     { 0x00, 0x00, 0x00, 0x01 }
   }};
 
@@ -1372,13 +1409,6 @@
       ].y
     );
   }
-
-  matrix_float4x4 matrix_player_rotation_y = (matrix_float4x4) {{
-    { math_c_cosine(metil_player->rotation.y, math_c_pi), 0x00, math_c_sine(metil_player->rotation.y, math_c_pi), 0x00 },
-    { 0x00, 0x01, 0x00, 0x00 },
-    { math_c_sine(metil_player->rotation.y, math_c_pi), 0x00, -math_c_cosine(metil_player->rotation.y, math_c_pi), 0x00 },
-    { 0x00, 0x00, 0x00, 0x01 }
-  }};
 
   matrix_float4x4 matrix_player_projection = matrix_multiply(
     self->metil->rendering_properties.camera.matrix_viewport_projection,
