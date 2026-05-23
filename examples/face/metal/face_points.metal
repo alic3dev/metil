@@ -4,8 +4,12 @@
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
 
 struct data_vertex {
-  float4 position [[position]];
-  float point_size [[point_size]];
+  float4 position [[
+    position
+  ]];
+  float point_size [[
+    point_size
+  ]];
   float4 colour;
 };
 
@@ -25,53 +29,85 @@ struct data_vertex {
       metil_renderer_vertex_index_parameter_data_object
     )
   ]],
-  unsigned int id_vertex [[vertex_id]]
+  unsigned int index_vertex [[
+    vertex_id
+  ]]
 ) {
   struct data_vertex data_vertex;
 
   data_vertex.position = (
-    data_object->view_model_matrix_projection *
-    vertices[id_vertex]
+    (
+      data_object->view_model_matrix_projection +
+      (metal::float4x4) {{
+        { 0x00, 0x00, 0x00, 0x00 },
+        { 0x00, 0x00, 0x00, 0x00 },
+        { 0x00, 0x00, 0x00, 0x00 },
+        { 0x00, 0x00, 0.5f, 0x00 }
+      }}
+    ) *
+    vertices[
+      index_vertex
+    ]
   );
 
   if (
-    id_vertex + 1 == data_object->vertex_held
+    (
+      index_vertex +
+      0x01
+    ) ==
+    data_object->vertex_held
   ) {
     data_vertex.colour = float4(
-      0.0f,
-      0.0f,
-      1.0f,
-      1.0f
+      0x00,
+      0x00,
+      0x01,
+      0x01
     );
 
-    data_vertex.point_size = 2.0f;
+    data_vertex.point_size = (
+      0x02
+    );
   } else if (
-    id_vertex + 1 == data_object->vertex_hovered
+    (
+      index_vertex +
+      0x01
+    ) ==
+    data_object->vertex_hovered
   ) {
     data_vertex.colour = float4(
-      1.0f,
-      0.0f,
-      1.0f,
-      1.0f
+      0x01,
+      0x00,
+      0x01,
+      0x01
     );
 
-    data_vertex.point_size = 10.0f;
+    data_vertex.point_size = (
+      0x0a
+    );
   } else {
     data_vertex.colour = float4(
-      1.0f,
-      1.0f,
-      1.0f,
-      1.0f
+      0x01,
+      0x01,
+      0x01,
+      0x01
     );
 
-    data_vertex.point_size = 5.0f;
+    data_vertex.point_size = (
+      0x05
+    );
   }
 
-  return data_vertex;
+  return (
+    data_vertex
+  );
 }
 
 [[fragment]] float4 face_points_fragment(
-  struct data_vertex data_vertex [[stage_in]]
+  struct data_vertex data_vertex [[
+    stage_in
+  ]]
 ) {
-  return data_vertex.colour;
+  return (
+    data_vertex.colour
+  );
 }
