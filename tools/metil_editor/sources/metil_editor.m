@@ -33,7 +33,7 @@ void metil_editor_renderer_on_initialize(
       )
     )
   );
-  
+
   struct metil_editor_index_pipeline_render* metil_editor_index_pipeline_render = (
     metil->data
   );
@@ -44,7 +44,7 @@ void metil_editor_renderer_on_initialize(
     @"metil_editor_fragment",
     @"metil_editor_vertex"
   );
-  
+
   metil_editor_index_pipeline_render->grid_lines = [
     metil->renderer_interface.renderer
     pipeline_add: [
@@ -60,7 +60,7 @@ void metil_editor_renderer_on_initialize(
   metil->rendering_properties.camera.height_default = (
     0x00
   );
-  
+
   metil->rendering_properties.camera.height = (
     metil->rendering_properties.camera.height_default
   );

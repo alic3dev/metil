@@ -34,7 +34,7 @@
       index_vertex
     ]
   );
-  
+
   unsigned char index_axis = (
     index_vertex /
     0x02
@@ -45,7 +45,7 @@
       (
         index_axis ==
         0x02
-      ), 
+      ),
       (
         index_axis ==
         0x01
@@ -57,7 +57,7 @@
       data_object->colour.w
     )
   );
-  
+
   data_vertex_basic_coloured.brightness = (
     data_frame->brightness
   );

@@ -43,7 +43,7 @@
       data_object->colour.w
     )
   );
-  
+
   data_vertex_basic_coloured.brightness = (
     data_frame->brightness
   );

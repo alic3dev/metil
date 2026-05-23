@@ -3,11 +3,10 @@
 
 struct metil_editor_scene_data {
   struct math_c_vector3_float position;
-  
+
   struct math_c_vector3_float position_player;
-  
+
   unsigned char movement_free;
 };
 
 #endif
-
