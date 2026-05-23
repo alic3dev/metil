@@ -1394,7 +1394,8 @@
     matrix_player_rotation_x.columns[
       0x03
     ].y = (
-      self->metil->rendering_properties.camera.height * (
+      self->metil->rendering_properties.camera.height *
+      (
         1.0f -
         -metil_player->rotation.x /
         math_c_pi_half
@@ -1794,7 +1795,8 @@
             metil_rendering_properties_mode_wireframe_full
           )
         ) !=
-        0x00      ) {
+        0x00
+      ) {
         [
           self
           render_object: (
@@ -1815,7 +1817,8 @@
           ) ==
           0x00
         )
-      ) {        [
+      ) {
+        [
           self
           render_object_wireframe: (
             metil_object
