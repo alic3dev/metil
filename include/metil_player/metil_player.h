@@ -15,6 +15,42 @@ typedef void (*metil_player_poll_input_function)(
   unsigned long int
 );
 
+typedef void (*metil_player_poll_input_function_rotation)(
+  struct metil* _Nonnull,
+  struct metil_player* _Nonnull
+);
+
+typedef void (*metil_player_poll_input_function_rotation_ratio)(
+  struct metil* _Nonnull,
+  struct metil_player* _Nonnull,
+  struct math_c_vector2_float* _Nonnull,
+  struct math_c_vector2_float* _Nonnull
+);
+
+typedef void (*metil_player_poll_input_function_movement)(
+  struct metil* _Nonnull,
+  struct metil_player* _Nonnull,
+  struct math_c_vector2_float* _Nonnull,
+  struct math_c_vector2_float* _Nonnull,
+  float,
+  float
+);
+
+typedef void (*metil_player_poll_input_function_speed_movement)(
+  struct metil* _Nonnull,
+  struct metil_player* _Nonnull,
+  float
+);
+
+typedef void (*metil_player_poll_input_function_movement_y)(
+  struct metil* _Nonnull,
+  struct metil_player* _Nonnull,
+  struct math_c_vector2_float* _Nonnull,
+  struct math_c_vector2_float* _Nonnull,
+  float,
+  float
+);
+
 typedef void (*metil_player_poll_function)(
   struct metil* _Nonnull,
   struct metil_player* _Nonnull
@@ -55,6 +91,91 @@ void metil_player_poll_input(
   struct metil_player* _Nonnull,
   unsigned long int,
   unsigned long int
+);
+
+void metil_player_poll_input_free_flying_locked(
+  struct metil* _Nonnull,
+  struct metil_player* _Nonnull,
+  unsigned long int,
+  unsigned long int
+);
+
+void metil_player_poll_input_free_flying_unlocked(
+  struct metil* _Nonnull,
+  struct metil_player* _Nonnull,
+  unsigned long int,
+  unsigned long int
+);
+
+void metil_player_poll_input_with_functions(
+  struct metil* _Nonnull,
+  struct metil_player* _Nonnull,
+  unsigned long int,
+  unsigned long int,
+  metil_player_poll_input_function_speed_movement _Nonnull,
+  metil_player_poll_input_function_rotation _Nonnull,
+  metil_player_poll_input_function_rotation_ratio _Nonnull,
+  metil_player_poll_input_function_movement _Nonnull,
+  metil_player_poll_input_function_movement_y _Nonnull
+);
+
+void metil_player_poll_input_rotation(
+  struct metil* _Nonnull,
+  struct metil_player* _Nonnull
+);
+
+void metil_player_poll_input_rotation_ratio(
+  struct metil* _Nonnull,
+  struct metil_player* _Nonnull,
+  struct math_c_vector2_float* _Nonnull,
+  struct math_c_vector2_float* _Nonnull
+);
+
+void metil_player_poll_input_movement(
+  struct metil* _Nonnull,
+  struct metil_player* _Nonnull,
+  struct math_c_vector2_float* _Nonnull,
+  struct math_c_vector2_float* _Nonnull,
+  float,
+  float
+);
+
+void metil_player_poll_input_speed_movement(
+  struct metil* _Nonnull,
+  struct metil_player* _Nonnull,
+  float
+);
+
+void metil_player_poll_input_movement_y_jumpable(
+  struct metil* _Nonnull,
+  struct metil_player* _Nonnull,
+  struct math_c_vector2_float* _Nonnull,
+  struct math_c_vector2_float* _Nonnull,
+  float,
+  float
+);
+
+void metil_player_poll_input_movement_y_free_flying_locked(
+  struct metil* _Nonnull,
+  struct metil_player* _Nonnull,
+  struct math_c_vector2_float* _Nonnull,
+  struct math_c_vector2_float* _Nonnull,
+  float,
+  float
+);
+
+void metil_player_poll_input_movement_y_free_flying_unlocked(
+  struct metil* _Nonnull,
+  struct metil_player* _Nonnull,
+  struct math_c_vector2_float* _Nonnull,
+  struct math_c_vector2_float* _Nonnull,
+  float,
+  float
+);
+
+float metil_player_poll_input_movement_y_free_flying_movement_y_get(
+  struct metil* _Nonnull,
+  struct metil_player* _Nonnull
 );
 
 void metil_player_poll_input_null(

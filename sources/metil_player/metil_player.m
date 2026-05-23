@@ -1,5 +1,6 @@
 #include <metil_player/metil_player.h>
 
+#include <math_c_absolute.h>
 #include <math_c_bound.h>
 #include <math_c_modulus.h>
 #include <math_c_pi.h>
@@ -101,16 +102,715 @@ void metil_player_poll_input(
   unsigned long int time,
   unsigned long int time_delta
 ) {
+  metil_player_poll_input_with_functions(
+    metil,
+    metil_player,
+    time,
+    time_delta,
+    metil_player_poll_input_speed_movement,
+    metil_player_poll_input_rotation,
+    metil_player_poll_input_rotation_ratio,
+    metil_player_poll_input_movement,
+    metil_player_poll_input_movement_y_jumpable
+  );
+}
+
+void metil_player_poll_input_free_flying_locked(
+  struct metil* metil,
+  struct metil_player* metil_player,
+  unsigned long int time,
+  unsigned long int time_delta
+) {
+  metil_player_poll_input_with_functions(
+    metil,
+    metil_player,
+    time,
+    time_delta,
+    metil_player_poll_input_speed_movement,
+    metil_player_poll_input_rotation,
+    metil_player_poll_input_rotation_ratio,
+    metil_player_poll_input_movement,
+    metil_player_poll_input_movement_y_free_flying_locked
+  );
+}
+
+void metil_player_poll_input_free_flying_unlocked(
+  struct metil* metil,
+  struct metil_player* metil_player,
+  unsigned long int time,
+  unsigned long int time_delta
+) {
+  metil_player_poll_input_with_functions(
+    metil,
+    metil_player,
+    time,
+    time_delta,
+    metil_player_poll_input_speed_movement,
+    metil_player_poll_input_rotation,
+    metil_player_poll_input_rotation_ratio,
+    metil_player_poll_input_movement,
+    metil_player_poll_input_movement_y_free_flying_unlocked
+  );
+}
+
+void metil_player_poll_input_with_functions(
+  struct metil* metil,
+  struct metil_player* metil_player,
+  unsigned long int time,
+  unsigned long int time_delta,
+  metil_player_poll_input_function_speed_movement metil_player_poll_input_function_speed_movement,
+  metil_player_poll_input_function_rotation metil_player_poll_input_function_rotation,
+  metil_player_poll_input_function_rotation_ratio metil_player_poll_input_function_rotation_ratio,
+  metil_player_poll_input_function_movement metil_player_poll_input_function_movement,
+  metil_player_poll_input_function_movement_y metil_player_poll_input_function_movement_y
+) {
   float speed_original = (
     metil_player->speed_movement
   );
-
+  
   float speed_delta = (
     (float)
     time_delta /
     0x03e8
   );
+  
+  struct math_c_vector2_float ratio_movement = {
+    .x = (
+      0x00
+    ),
+    .y = (
+      0x00
+    )
+  };
 
+  struct math_c_vector2_float ratio_movement_strafe = {
+    .x = (
+      0x00
+    ),
+    .y = (
+      0x00
+    )
+  };
+  
+  metil_player_poll_input_function_speed_movement(
+    metil,
+    metil_player,
+    speed_delta
+  );
+  
+  metil_player_poll_input_function_rotation(
+    metil,
+    metil_player
+  );
+  
+  metil_player_poll_input_function_rotation_ratio(
+    metil,
+    metil_player,
+    &ratio_movement,
+    &ratio_movement_strafe
+  );  
+
+  metil_player_poll_input_function_movement(
+    metil,
+    metil_player,
+    &ratio_movement,
+    &ratio_movement_strafe,
+    speed_original,
+    speed_delta
+  );
+  
+  metil_player_poll_input_function_movement_y(
+    metil,
+    metil_player,
+    &ratio_movement,
+    &ratio_movement_strafe,
+    speed_original,
+    speed_delta
+  );
+  
+  metil_player->speed_movement = (
+    speed_original
+  );
+}
+
+void metil_player_poll_input_rotation(
+  struct metil* metil,
+  struct metil_player* metil_player
+) {  if (
+    metil->input.cursor.locked ==
+    0x01
+  ) {
+    metil_player->rotation.y = (
+      metil_player->rotation.y -
+      (
+        metil->input.cursor.delta.x /
+        0x32 *
+        metil_player->speed_rotation
+      )
+    );
+
+    metil_player->rotation.x = (
+      metil_player->rotation.x -
+      (
+        metil->input.cursor.delta.y /
+        0x32 *
+        metil_player->speed_rotation
+      )
+    );
+
+    metil->input.cursor.delta.x = (
+      0x00
+    );
+
+    metil->input.cursor.delta.y = (
+      0x00
+    );
+  }
+
+  if (
+    metil->input.controller_state.available ==
+    0x01
+  ) {
+    if (
+      (
+        metil->input.controller_state.right_stick.x >=
+        metil_player->deadzone_stick
+      ) ||
+      (
+        metil->input.controller_state.right_stick.x <=
+        -metil_player->deadzone_stick
+      )
+    ) {
+      metil_player->rotation.y = (
+        metil_player->rotation.y -
+        (
+          metil->input.controller_state.right_stick.x *
+          metil_player->speed_rotation
+        )
+      );
+    }
+
+    if (
+      (
+        metil->input.controller_state.right_stick.y >=
+        metil_player->deadzone_stick
+      ) ||
+      (
+        metil->input.controller_state.right_stick.y <=
+        -metil_player->deadzone_stick
+      )
+    ) {
+      metil_player->rotation.x = (
+        metil_player->rotation.x +
+        (
+          metil->input.controller_state.right_stick.y *
+          metil_player->speed_rotation
+        )
+      );
+    }
+  }
+
+  metil_player->rotation.x = (
+    math_c_bound_float(
+      metil_player->rotation.x,
+      math_c_pi_half,
+      -math_c_pi_half
+    )
+  );
+  
+  if (
+    math_c_absolute_float(
+      metil_player->rotation.y
+    ) >=
+    math_c_pi_doubled
+  ) {
+    metil_player->rotation.y = (
+      metil_player->rotation.y -
+      (float)
+      (
+        (int)
+        (
+          metil_player->rotation.y /
+          math_c_pi_doubled
+        )
+      ) *
+      math_c_pi_doubled
+    );
+
+  }  }
+void metil_player_poll_input_rotation_ratio(
+  struct metil* metil,
+  struct metil_player* metil_player,
+  struct math_c_vector2_float* ratio_movement,
+  struct math_c_vector2_float* ratio_movement_strafe
+) { 
+  float ratio_axis = -(
+    metil_player->rotation.y /
+    math_c_pi_doubled
+  );
+
+  if (
+    (
+      ratio_axis >=
+      0x00
+    ) &&
+    (
+      ratio_axis <=
+      0.25f
+    )
+  ) {
+    ratio_movement->y = (
+      (
+        0.25f -
+        ratio_axis
+      ) /
+      0.25f
+    );
+
+    ratio_movement->x = (
+      ratio_axis /
+      0.25f
+    );
+
+    ratio_movement_strafe->y = -(
+      ratio_axis /
+      0.25f
+    );
+
+    ratio_movement_strafe->x = (
+      (
+        0.25f -
+        ratio_axis
+      ) /
+      0.25f
+    );
+  } else if (
+    (
+      ratio_axis >=
+      0.25f
+    ) &&
+    (
+      ratio_axis <=
+      0.5f
+    )
+  ) {
+    ratio_axis = (
+      ratio_axis -
+      0.25f
+    );
+
+    ratio_movement->y = -(
+      ratio_axis /
+      0.25f
+    );
+
+    ratio_movement->x = (
+      (
+        0.25f -
+        ratio_axis
+      ) /
+      0.25f
+    );
+
+    ratio_movement_strafe->y = -(
+      (
+        0.25f -
+        ratio_axis
+      ) /
+      0.25f
+    );
+
+    ratio_movement_strafe->x = -(
+      ratio_axis /
+      0.25f
+    );
+  } else if (
+    (
+      ratio_axis >=
+      0.5f
+    ) &&
+    (
+      ratio_axis <=
+      0.75f
+    )
+  ) {
+    ratio_axis = (
+      ratio_axis -
+      0.5f
+    );
+
+    ratio_movement->y = -(
+      (
+        0.25f -
+        ratio_axis
+      ) /
+      0.25f
+    );
+
+    ratio_movement->x = -(
+      ratio_axis /
+      0.25f
+    );
+
+    ratio_movement_strafe->y = (
+      ratio_axis /
+      0.25f
+    );
+
+    ratio_movement_strafe->x = -(
+      (
+        0.25f -
+        ratio_axis
+      ) /
+      0.25f
+    );
+  } else if (
+    ratio_axis >
+    0.75f
+  ) {
+    ratio_axis = (
+      ratio_axis -
+      0.75f
+    );
+
+    ratio_movement->y = (
+      ratio_axis /
+      0.25f
+    );
+
+    ratio_movement->x = -(
+      (
+        0.25f -
+        ratio_axis
+      ) /
+      0.25f
+    );
+
+    ratio_movement_strafe->y = (
+      (
+        0.25f -
+        ratio_axis
+      ) /
+      0.25f
+    );
+
+    ratio_movement_strafe->x = (
+      ratio_axis /
+      0.25f
+    );
+  } else if (
+    ratio_axis >=
+    -0.25f
+  ) {
+    ratio_movement->y = (
+      (
+        -0.25f -
+        ratio_axis
+      ) /
+      -0.25f
+    );
+
+    ratio_movement->x = (
+      ratio_axis /
+      0.25f
+    );
+
+    ratio_movement_strafe->y = -(
+      ratio_axis /
+      0.25f
+    );
+
+    ratio_movement_strafe->x = (
+      (
+        -0.25f -
+        ratio_axis
+      ) /
+      -0.25f
+    );
+  } else if (
+    (
+      ratio_axis <=
+      -0.25f
+    ) &&
+    (
+      ratio_axis >=
+      -0.5f
+    )
+  ) {
+    ratio_axis = (
+      ratio_axis +
+      0.25f
+    );
+
+    ratio_movement->y = -(
+      ratio_axis /
+      -0.25f
+    );
+
+    ratio_movement->x = (
+      (
+        -0.25f -
+        ratio_axis
+      ) /
+      0.25f
+    );
+
+    ratio_movement_strafe->y = -(
+      (
+        -0.25f -
+        ratio_axis
+      ) /
+      0.25f
+    );
+
+    ratio_movement_strafe->x = -(
+      ratio_axis /
+      -0.25f
+    );
+  } else if (
+    (
+      ratio_axis <=
+      -0.5f
+    ) &&
+    (
+      ratio_axis >=
+      -0.75f
+    )
+  ) {
+    ratio_axis = (
+      ratio_axis +
+      0.5f
+    );
+
+    ratio_movement->y = -(
+      (
+        -0.25f -
+        ratio_axis
+      ) /
+      -0.25f
+    );
+
+    ratio_movement->x = -(
+      ratio_axis /
+      0.25f
+    );
+
+    ratio_movement_strafe->y = (
+      ratio_axis /
+      0.25f
+    );
+
+    ratio_movement_strafe->x = -(
+      (
+        -0.25f -
+        ratio_axis
+      ) /
+      -0.25f
+    );
+  } else {
+    ratio_axis = (
+      ratio_axis +
+      0.75f
+    );
+
+    ratio_movement->y = (
+      ratio_axis /
+      -0.25f
+    );
+
+    ratio_movement->x = -(
+      (
+        -0.25f -
+        ratio_axis
+      ) /
+      0.25f
+    );
+
+    ratio_movement_strafe->y = (
+      (
+        -0.25f -
+        ratio_axis
+      ) /
+      0.25f
+    );
+
+    ratio_movement_strafe->x = (
+      ratio_axis /
+      -0.25f
+    );
+  }
+}
+void metil_player_poll_input_movement(
+  struct metil* metil,
+  struct metil_player* metil_player,
+  struct math_c_vector2_float* ratio_movement,
+  struct math_c_vector2_float* ratio_movement_strafe,
+  float speed_original,
+  float speed_delta
+) {
+  struct math_c_vector3_float movement = {
+    .x = (
+      0x00
+    ),
+    .y = (
+      0x00
+    )
+  };
+
+  if (
+    (
+      metil->input.controller_state.available ==
+      0x01
+    ) &&
+    (
+      (
+        metil->input.controller_state.left_stick.x >=
+        metil_player->deadzone_stick
+      ) ||
+      (
+        metil->input.controller_state.left_stick.x <=
+        -metil_player->deadzone_stick
+      ) ||
+      (
+        metil->input.controller_state.left_stick.y >=
+        metil_player->deadzone_stick
+      ) ||
+      (
+        metil->input.controller_state.left_stick.y <=
+        -metil_player->deadzone_stick
+      )
+    )
+  ) {
+    movement.x = (
+      (
+        metil->input.controller_state.left_stick.y *
+        ratio_movement->x
+      ) +
+      (
+        metil->input.controller_state.left_stick.x *
+        ratio_movement_strafe->x
+      )
+    );
+
+    movement.y = (
+      (
+        metil->input.controller_state.left_stick.y *
+        ratio_movement->y
+      ) +
+      (
+        metil->input.controller_state.left_stick.x *
+        ratio_movement_strafe->y
+      )
+    );
+  } else {
+    struct math_c_vector2_float direction_arrows = {
+      .x = (
+        (
+          metil->input.keydown_map[
+            metil_keycode_right_arrow
+          ] ||
+          metil->input.keydown_map[
+            metil_keycode_d
+          ] ||
+          metil->input.keydown_map[
+            metil_keycode_single_quote
+          ]
+        ) -
+        (
+          metil->input.keydown_map[
+            metil_keycode_left_arrow
+          ] ||
+          metil->input.keydown_map[
+            metil_keycode_a
+          ] ||
+          metil->input.keydown_map[
+            metil_keycode_l
+          ]
+        )
+      ),
+      .y = (
+        (
+          metil->input.keydown_map[
+            metil_keycode_up_arrow
+          ] ||
+          metil->input.keydown_map[
+            metil_keycode_w
+          ] ||
+          metil->input.keydown_map[
+            metil_keycode_p
+          ]
+        ) - (
+          metil->input.keydown_map[
+            metil_keycode_down_arrow
+          ] ||
+          metil->input.keydown_map[
+            metil_keycode_s
+          ] ||
+          metil->input.keydown_map[
+            metil_keycode_semi_colon
+          ]
+        )
+      )
+    };
+
+    if (
+      (
+        direction_arrows.x !=
+        0x00
+      ) &&
+      (
+        direction_arrows.y !=
+        0x00
+      )
+    ) {
+      direction_arrows.x = (
+        direction_arrows.x *
+        0.82f
+      );
+
+      direction_arrows.y = (
+        direction_arrows.y *
+        0.82f
+      );
+    }
+
+    movement.x = (
+      direction_arrows.y *
+      ratio_movement->x +
+      direction_arrows.x *
+      ratio_movement_strafe->x
+    );
+
+    movement.y = (
+      direction_arrows.y *
+      ratio_movement->y +
+      direction_arrows.x *
+      ratio_movement_strafe->y
+    );
+  }
+  
+  metil_player->position.x = (
+    metil_player->position.x +
+    (
+      movement.x *
+      metil_player->speed_movement
+    )
+  );
+
+  metil_player->position.z = (
+    metil_player->position.z +
+    (
+      movement.y *
+      metil_player->speed_movement
+    )
+  );
+}
+
+void metil_player_poll_input_speed_movement(
+  struct metil* metil,
+  struct metil_player* metil_player,
+  float speed_delta
+) {
   metil_player->speed_movement = (
     metil_player->speed_movement *
     speed_delta
@@ -225,553 +925,19 @@ void metil_player_poll_input(
       0x02
     );
   }
+}
 
-  struct math_c_vector3_float movement = {
-    .x = (
-      0x00
-    ),
-    .y = (
-      0x00
-    ),
-    .z = (
-      0x00
-    )
-  };
-
-  struct math_c_vector2_float ratio_movement = {
-    .x = (
-      0x00
-    ),
-    .y = (
-      0x00
-    )
-  };
-
-  struct math_c_vector2_float ratio_movement_strafe = {
-    .x = (
-      0x00
-    ),
-    .y = (
-      0x00
-    )
-  };
-
-  if (
-    metil->input.cursor.locked ==
-    0x01
-  ) {
-    metil_player->rotation.y = (
-      metil_player->rotation.y -
-      (
-        metil->input.cursor.delta.x /
-        0x32 *
-        metil_player->speed_rotation
-      )
-    );
-
-    metil_player->rotation.x = (
-      metil_player->rotation.x -
-      (
-        metil->input.cursor.delta.y /
-        0x32 *
-        metil_player->speed_rotation
-      )
-    );
-
-    metil->input.cursor.delta.x = (
-      0x00
-    );
-
-    metil->input.cursor.delta.y = (
-      0x00
-    );
-  }
-
-  if (
-    metil->input.controller_state.available ==
-    0x01
-  ) {
-    if (
-      (
-        metil->input.controller_state.right_stick.x >=
-        metil_player->deadzone_stick
-      ) ||
-      (
-        metil->input.controller_state.right_stick.x <=
-        -metil_player->deadzone_stick
-      )
-    ) {
-      metil_player->rotation.y = (
-        metil_player->rotation.y -
-        (
-          metil->input.controller_state.right_stick.x *
-          metil_player->speed_rotation
-        )
-      );
-    }
-
-    if (
-      (
-        metil->input.controller_state.right_stick.y >=
-        metil_player->deadzone_stick
-      ) ||
-      (
-        metil->input.controller_state.right_stick.y <=
-        -metil_player->deadzone_stick
-      )
-    ) {
-      metil_player->rotation.x = (
-        metil_player->rotation.x +
-        (
-          metil->input.controller_state.right_stick.y *
-          metil_player->speed_rotation
-        )
-      );
-    }
-  }
-
-  metil_player->rotation.x = (
-    math_c_bound_float(
-      metil_player->rotation.x,
-      math_c_pi_half,
-      -math_c_pi_half
-    )
+void metil_player_poll_input_movement_y_jumpable(
+  struct metil* metil,
+  struct metil_player* metil_player,
+  struct math_c_vector2_float* ratio_movement,
+  struct math_c_vector2_float* ratio_movement_strafe,
+  float speed_original,
+  float speed_delta
+) {
+  float movement_y = (
+    0x00
   );
-
-  metil_player->rotation.y = (
-    math_c_modulus_float(
-      metil_player->rotation.y,
-      math_c_pi_doubled
-    )
-  );
-
-  float ratio_axis = -(
-    metil_player->rotation.y /
-    math_c_pi_doubled
-  );
-
-  if (
-    (
-      ratio_axis >=
-      0x00
-    ) &&
-    (
-      ratio_axis <=
-      0.25f
-    )
-  ) {
-    ratio_movement.y = (
-      (
-        0.25f -
-        ratio_axis
-      ) /
-      0.25f
-    );
-
-    ratio_movement.x = (
-      ratio_axis /
-      0.25f
-    );
-
-    ratio_movement_strafe.y = -(
-      ratio_axis /
-      0.25f
-    );
-
-    ratio_movement_strafe.x = (
-      (
-        0.25f -
-        ratio_axis
-      ) /
-      0.25f
-    );
-  } else if (
-    (
-      ratio_axis >=
-      0.25f
-    ) &&
-    (
-      ratio_axis <=
-      0.5f
-    )
-  ) {
-    ratio_axis = (
-      ratio_axis -
-      0.25f
-    );
-
-    ratio_movement.y = -(
-      ratio_axis /
-      0.25f
-    );
-
-    ratio_movement.x = (
-      (
-        0.25f -
-        ratio_axis
-      ) /
-      0.25f
-    );
-
-    ratio_movement_strafe.y = -(
-      (
-        0.25f -
-        ratio_axis
-      ) /
-      0.25f
-    );
-
-    ratio_movement_strafe.x = -(
-      ratio_axis /
-      0.25f
-    );
-  } else if (
-    (
-      ratio_axis >=
-      0.5f
-    ) &&
-    (
-      ratio_axis <=
-      0.75f
-    )
-  ) {
-    ratio_axis = (
-      ratio_axis -
-      0.5f
-    );
-
-    ratio_movement.y = -(
-      (
-        0.25f -
-        ratio_axis
-      ) /
-      0.25f
-    );
-
-    ratio_movement.x = -(
-      ratio_axis /
-      0.25f
-    );
-
-    ratio_movement_strafe.y = (
-      ratio_axis /
-      0.25f
-    );
-
-    ratio_movement_strafe.x = -(
-      (
-        0.25f -
-        ratio_axis
-      ) /
-      0.25f
-    );
-  } else if (
-    ratio_axis >
-    0.75f
-  ) {
-    ratio_axis = (
-      ratio_axis -
-      0.75f
-    );
-
-    ratio_movement.y = (
-      ratio_axis /
-      0.25f
-    );
-
-    ratio_movement.x = -(
-      (
-        0.25f -
-        ratio_axis
-      ) /
-      0.25f
-    );
-
-    ratio_movement_strafe.y = (
-      (
-        0.25f -
-        ratio_axis
-      ) /
-      0.25f
-    );
-
-    ratio_movement_strafe.x = (
-      ratio_axis /
-      0.25f
-    );
-  } else if (
-    ratio_axis >=
-    -0.25f
-  ) {
-    ratio_movement.y = (
-      (
-        -0.25f -
-        ratio_axis
-      ) /
-      -0.25f
-    );
-
-    ratio_movement.x = (
-      ratio_axis /
-      0.25f
-    );
-
-    ratio_movement_strafe.y = -(
-      ratio_axis /
-      0.25f
-    );
-
-    ratio_movement_strafe.x = (
-      (
-        -0.25f -
-        ratio_axis
-      ) /
-      -0.25f
-    );
-  } else if (
-    (
-      ratio_axis <=
-      -0.25f
-    ) &&
-    (
-      ratio_axis >=
-      -0.5f
-    )
-  ) {
-    ratio_axis = (
-      ratio_axis +
-      0.25f
-    );
-
-    ratio_movement.y = -(
-      ratio_axis /
-      -0.25f
-    );
-
-    ratio_movement.x = (
-      (
-        -0.25f -
-        ratio_axis
-      ) /
-      0.25f
-    );
-
-    ratio_movement_strafe.y = -(
-      (
-        -0.25f -
-        ratio_axis
-      ) /
-      0.25f
-    );
-
-    ratio_movement_strafe.x = -(
-      ratio_axis /
-      -0.25f
-    );
-  } else if (
-    (
-      ratio_axis <=
-      -0.5f
-    ) &&
-    (
-      ratio_axis >=
-      -0.75f
-    )
-  ) {
-    ratio_axis = (
-      ratio_axis +
-      0.5f
-    );
-
-    ratio_movement.y = -(
-      (
-        -0.25f -
-        ratio_axis
-      ) /
-      -0.25f
-    );
-
-    ratio_movement.x = -(
-      ratio_axis /
-      0.25f
-    );
-
-    ratio_movement_strafe.y = (
-      ratio_axis /
-      0.25f
-    );
-
-    ratio_movement_strafe.x = -(
-      (
-        -0.25f -
-        ratio_axis
-      ) /
-      -0.25f
-    );
-  } else {
-    ratio_axis = (
-      ratio_axis +
-      0.75f
-    );
-
-    ratio_movement.y = (
-      ratio_axis /
-      -0.25f
-    );
-
-    ratio_movement.x = -(
-      (
-        -0.25f -
-        ratio_axis
-      ) /
-      0.25f
-    );
-
-    ratio_movement_strafe.y = (
-      (
-        -0.25f -
-        ratio_axis
-      ) /
-      0.25f
-    );
-
-    ratio_movement_strafe.x = (
-      ratio_axis /
-      -0.25f
-    );
-  }
-
-  if (
-    (
-      metil->input.controller_state.available ==
-      0x01
-    ) &&
-    (
-      (
-        metil->input.controller_state.left_stick.x >=
-        metil_player->deadzone_stick
-      ) ||
-      (
-        metil->input.controller_state.left_stick.x <=
-        -metil_player->deadzone_stick
-      ) ||
-      (
-        metil->input.controller_state.left_stick.y >=
-        metil_player->deadzone_stick
-      ) ||
-      (
-        metil->input.controller_state.left_stick.y <=
-        -metil_player->deadzone_stick
-      )
-    )
-  ) {
-    movement.x = (
-      (
-        metil->input.controller_state.left_stick.y *
-        ratio_movement.x
-      ) +
-      (
-        metil->input.controller_state.left_stick.x *
-        ratio_movement_strafe.x
-      )
-    );
-
-    movement.z = (
-      (
-        metil->input.controller_state.left_stick.y *
-        ratio_movement.y
-      ) +
-      (
-        metil->input.controller_state.left_stick.x *
-        ratio_movement_strafe.y
-      )
-    );
-  } else {
-    struct math_c_vector2_float direction_arrows = {
-      .x = (
-        (
-          metil->input.keydown_map[
-            metil_keycode_right_arrow
-          ] ||
-          metil->input.keydown_map[
-            metil_keycode_d
-          ] ||
-          metil->input.keydown_map[
-            metil_keycode_single_quote
-          ]
-        ) -
-        (
-          metil->input.keydown_map[
-            metil_keycode_left_arrow
-          ] ||
-          metil->input.keydown_map[
-            metil_keycode_a
-          ] ||
-          metil->input.keydown_map[
-            metil_keycode_l
-          ]
-        )
-      ),
-      .y = (
-        (
-          metil->input.keydown_map[
-            metil_keycode_up_arrow
-          ] ||
-          metil->input.keydown_map[
-            metil_keycode_w
-          ] ||
-          metil->input.keydown_map[
-            metil_keycode_p
-          ]
-        ) - (
-          metil->input.keydown_map[
-            metil_keycode_down_arrow
-          ] ||
-          metil->input.keydown_map[
-            metil_keycode_s
-          ] ||
-          metil->input.keydown_map[
-            metil_keycode_semi_colon
-          ]
-        )
-      )
-    };
-
-    if (
-      (
-        direction_arrows.x !=
-        0x00
-      ) &&
-      (
-        direction_arrows.y !=
-        0x00
-      )
-    ) {
-      direction_arrows.x = (
-        direction_arrows.x *
-        0.82f
-      );
-
-      direction_arrows.y = (
-        direction_arrows.y *
-        0.82f
-      );
-    }
-
-    movement.x = (
-      direction_arrows.y *
-      ratio_movement.x +
-      direction_arrows.x *
-      ratio_movement_strafe.x
-    );
-
-    movement.z = (
-      direction_arrows.y *
-      ratio_movement.y +
-      direction_arrows.x *
-      ratio_movement_strafe.y
-    );
-  }
 
   if (
     (
@@ -799,7 +965,7 @@ void metil_player_poll_input(
       0x01
     )
   ) {
-    movement.y = (
+    movement_y = (
       -(
         (
           metil->input.keydown_map[
@@ -830,9 +996,9 @@ void metil_player_poll_input(
       )
     );
 
-    movement.y = (
+    movement_y = (
       math_c_bound_float(
-        movement.y,
+        movement_y,
         0x01,
         -0x01
       )
@@ -868,31 +1034,15 @@ void metil_player_poll_input(
     );
   }
 
-  metil_player->position.x = (
-    metil_player->position.x +
-    (
-      movement.x *
-      metil_player->speed_movement
-    )
-  );
-
   metil_player->position.y = (
     metil_player->position.y +
     (
-      movement.y *
+      movement_y *
       metil_player->speed_movement
     ) +
     (
       metil_player->velocity.y *
       speed_delta
-    )
-  );
-
-  metil_player->position.z = (
-    metil_player->position.z +
-    (
-      movement.z *
-      metil_player->speed_movement
     )
   );
 
@@ -920,9 +1070,180 @@ void metil_player_poll_input(
       0x00
     );
   }
+}
 
-  metil_player->speed_movement = (
-    speed_original
+void metil_player_poll_input_movement_y_free_flying_locked(
+  struct metil* metil,
+  struct metil_player* metil_player,
+  struct math_c_vector2_float* ratio_movement,
+  struct math_c_vector2_float* ratio_movement_strafe,
+  float speed_original,
+  float speed_delta
+) {
+  float movement_y = (
+    metil_player_poll_input_movement_y_free_flying_movement_y_get(
+      metil,
+      metil_player
+    )
+  );
+  
+  metil_player->position.y = (
+    metil_player->position.y +
+    math_c_bound_float(
+      movement_y,
+      0x01,
+      -0x01
+    ) *
+    metil_player->speed_movement
+  );
+}
+
+
+void metil_player_poll_input_movement_y_free_flying_unlocked(
+  struct metil* metil,
+  struct metil_player* metil_player,
+  struct math_c_vector2_float* ratio_movement,
+  struct math_c_vector2_float* ratio_movement_strafe,
+  float speed_original,
+  float speed_delta
+) {
+  float movement_y = (
+    metil_player_poll_input_movement_y_free_flying_movement_y_get(
+      metil,
+      metil_player
+    )
+  );
+  
+  float movement_y_additional = (
+    0x00
+  );    
+  if (
+    math_c_absolute_float(
+      metil->input.controller_state.left_stick.y
+    ) >=
+    metil_player->deadzone_stick      
+  ) {
+    movement_y_additional = (
+      metil->input.controller_state.left_stick.y *
+      metil_player->speed_movement *
+      metil_player->rotation.x /
+      math_c_pi_half
+    );  
+  } else {
+    movement_y_additional = (
+      (
+        (          metil->input.keydown_map[
+            metil_keycode_up_arrow
+          ] ||
+          metil->input.keydown_map[
+            metil_keycode_w
+          ] ||
+          metil->input.keydown_map[
+            metil_keycode_p
+          ]
+        ) -
+        (
+          metil->input.keydown_map[
+            metil_keycode_down_arrow
+          ] ||
+          metil->input.keydown_map[
+            metil_keycode_s
+          ] ||
+          metil->input.keydown_map[
+            metil_keycode_semi_colon
+          ]
+        )
+      ) *
+      0.82f *
+      metil_player->speed_movement *
+      metil_player->rotation.x /
+      math_c_pi_half
+    );
+  }
+  
+  movement_y = (
+    movement_y +
+    movement_y_additional
+  );
+  
+  metil_player->position.x = (
+    metil_player->position.x -
+    math_c_absolute_float(
+      movement_y_additional
+    ) *
+    ratio_movement->x  );     
+                    
+  metil_player->position.y = (
+    metil_player->position.y +
+    math_c_bound_float(
+      movement_y,
+      0x01,
+      -0x01
+    ) *
+    metil_player->speed_movement
+  );
+  
+  metil_player->position.z = (
+    metil_player->position.z -
+    math_c_absolute_float(
+      movement_y_additional
+    ) *
+    ratio_movement->y
+  );
+}
+
+float metil_player_poll_input_movement_y_free_flying_movement_y_get(
+  struct metil* metil,
+  struct metil_player* metil_player
+)
+{  float movement_y = (
+    -(
+      (
+        metil->input.keydown_map[
+          metil_keycode_q
+        ] ==
+        0x01
+      ) ||
+      (
+        metil->input.keydown_map[
+          metil_keycode_opening_square_bracket
+        ] ==
+        0x01
+      )
+    ) +
+    (
+      (
+        metil->input.keydown_map[
+          metil_keycode_e
+        ] ==
+        0x01
+      ) ||
+      (
+        metil->input.keydown_map[
+          metil_keycode_o
+        ] ==
+        0x01
+      ) ||
+      (
+        metil->input.keydown_map[
+          metil_keycode_space
+        ] == 0x01
+      ) ||
+      (
+        (
+          metil->input.controller_state.available ==
+          0x01
+        ) &&
+        (
+          metil->input.controller_state.cross >=
+          0.1f
+        )
+      )
+    )
+  );
+  
+  return (
+    movement_y
   );
 }
 
