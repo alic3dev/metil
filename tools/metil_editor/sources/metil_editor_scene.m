@@ -460,14 +460,16 @@ void metil_editor_scene_poll(
     metil_object_lines->visible = (
       0x00
     ); 
-  } else {    metil_object_lines->visible = (
+  } else {
+    metil_object_lines->visible = (
       0x01
     );
   }
   
   metil_object_points->visible = (
     metil_object_lines->visible
-  );}
+  );
+}
 
 void metil_editor_scene_destroy(
   struct metil* metil,
