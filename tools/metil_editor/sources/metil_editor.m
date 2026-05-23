@@ -60,13 +60,9 @@ void metil_editor_renderer_on_initialize(
   metil->rendering_properties.camera.height_default = (
     0x00
   );
-
+  
   metil->rendering_properties.camera.height = (
-    0x00
-  );
-
-  metil->rendering_properties.camera.mode = (
-    metil_camera_mode_first_person
+    metil->rendering_properties.camera.height_default
   );
 
   struct metil_scene_controller* metil_scene_controller = (
