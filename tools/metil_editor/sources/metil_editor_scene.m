@@ -210,8 +210,8 @@ void metil_editor_scene_initialize(
         subgrid ==
         0x00
       )
-      ? 0.25f
-      : 0.025f
+      ? 0.025f
+      : 0.0125f
     );
     
     switch (
@@ -502,6 +502,12 @@ void metil_editor_scene_poll(
     metil_scene->data
   );
   
+  struct metil_group* metil_group_grids = (
+    metil_scene->renderables[
+      metil_editor_scene_index_renderable_group_grids
+    ].renderable
+  );
+  
   struct metil_object* metil_object_lines = (
     metil_scene->renderables[
       metil_editor_scene_index_renderable_lines
@@ -519,6 +525,126 @@ void metil_editor_scene_poll(
       metil_editor_scene_index_renderable_cursor
     ].renderable
   );
+  
+  if (
+    metil->input.keydown_map[
+      metil_keycode_g
+    ] !=
+    0x00
+  ) {
+    if (
+      metil->input.keydown_map[
+        metil_keycode_x
+      ] !=
+      0x00
+    ) {
+      struct metil_object* metil_object_grid_x = (
+        metil_group_grids->renderables[
+          0x00
+        ]->renderable
+      );
+      
+      struct metil_object* metil_object_grid_sub_x = (
+        metil_group_grids->renderables[
+          0x01
+        ]->renderable
+      );
+      
+      metil_object_grid_x->visible = (
+        (
+          metil_object_grid_x->visible ==
+          0x00
+        )
+        ? 0x01
+        : 0x00
+      );
+      
+      metil_object_grid_sub_x->visible = (
+        metil_object_grid_x->visible
+      );
+      
+      metil->input.keydown_map[
+        metil_keycode_x
+      ] = (
+        0x00
+      );
+    }    
+    if (
+      metil->input.keydown_map[
+        metil_keycode_y
+      ] !=
+      0x00
+    ) {
+      struct metil_object* metil_object_grid_y = (
+        metil_group_grids->renderables[
+          0x02
+        ]->renderable
+      );
+      
+      struct metil_object* metil_object_grid_sub_y = (
+        metil_group_grids->renderables[
+          0x03
+        ]->renderable
+      );
+      
+      metil_object_grid_y->visible = (
+        (
+          metil_object_grid_y->visible ==
+          0x00
+        )
+        ? 0x01
+        : 0x00
+      );
+      
+      metil_object_grid_sub_y->visible = (
+        metil_object_grid_y->visible
+      );
+      
+      metil->input.keydown_map[
+        metil_keycode_y
+      ] = (
+        0x00
+      );
+    }
+    
+    if (
+      metil->input.keydown_map[
+        metil_keycode_z
+      ] !=
+      0x00
+    ) {
+      struct metil_object* metil_object_grid_z = (
+        metil_group_grids->renderables[
+          0x04
+        ]->renderable
+      );
+      
+      struct metil_object* metil_object_grid_sub_z = (
+        metil_group_grids->renderables[
+          0x05
+        ]->renderable
+      );
+      
+      metil_object_grid_z->visible = (
+        (
+          metil_object_grid_z->visible ==
+          0x00
+        )
+        ? 0x01
+        : 0x00
+      );
+      
+      metil_object_grid_sub_z->visible = (
+        metil_object_grid_z->visible
+      );
+      
+      metil->input.keydown_map[
+        metil_keycode_z
+      ] = (
+        0x00
+      );
+    }
+  }
   
   if (
     metil->input.keydown_map[
