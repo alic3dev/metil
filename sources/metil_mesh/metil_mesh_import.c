@@ -157,6 +157,13 @@ metil_status metil_mesh_import_parse(
     )
   );
   
+  index_buffer = (
+    index_buffer +
+    sizeof(
+      unsigned int
+    )
+  );
+  
   if (
     length_buffer <
     (
@@ -191,7 +198,9 @@ metil_status metil_mesh_import_parse(
   );
   
   metil_mesh->indices = (
-    clic3_memory_allocate_raw(      sizeof(        unsigned int
+    clic3_memory_allocate_raw(
+      sizeof(
+        unsigned int
       ) *
       metil_mesh->length_indices
     )
@@ -253,7 +262,7 @@ metil_status metil_mesh_import_parse(
       ],
       (
         buffer +
-        index_vertex
+        index_buffer
       ),
       sizeof(
         struct math_c_vector4_float
@@ -278,7 +287,7 @@ metil_status metil_mesh_import_parse(
       struct math_c_vector3_float
     )
   );
-
+  
   return (
     metil_status_success
   );
