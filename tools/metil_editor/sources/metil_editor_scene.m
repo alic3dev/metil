@@ -14,6 +14,7 @@
 #include <metil.h>
 #include <metil_group.h>
 #include <metil_mesh/metil_mesh_2d/metil_mesh_grid.h>
+#include <metil_mesh/metil_mesh_export.h>
 #include <metil_object/metil_object.h>
 #include <metil_rendering/metil_renderable.h>
 #include <metil_rendering/metil_renderable_type.h>
@@ -674,8 +675,75 @@ void metil_editor_scene_poll(
       metil_editor_scene_index_renderable_cursor
     ].renderable
   );
-
+  
   if (
+    (
+      metil->input.keydown_map[
+        metil_keycode_command_left
+      ] !=
+      0x00
+    ) ||
+    (
+      metil->input.keydown_map[
+        metil_keycode_command_right
+      ] !=
+      0x00
+    )
+  ) {
+    if (
+      (
+        metil->input.keydown_map[
+          metil_keycode_s
+        ] !=
+        0x00
+      ) &&
+      (
+        metil_object_lines->mesh.length_vertices >
+        0x00
+      )
+    ) {
+      unsigned int* indices;
+      unsigned int length_indices;
+      
+      if (
+        metil_object_triangles->mesh.length_indices >
+        0x02
+      ) {
+        indices = (
+          metil_object_triangles->indices.contents
+        );
+        
+        length_indices = (
+          metil_object_triangles->mesh.length_indices
+        );
+      } else {
+        indices = (
+          metil_object_points->indices.contents
+        );
+        
+        length_indices = (
+          metil_object_points->mesh.length_indices
+        );
+      }
+    
+      metil_mesh_export_raw(
+        length_indices,
+        metil_object_lines->mesh.length_vertices,
+        indices,
+        metil_object_lines->buffers_vertex[
+          metil_object_buffer_default_index_vertices
+        ].buffer.contents,
+        &metil_object_lines->mesh.size,
+        "first_mesh_export.metil_mesh"  
+      );
+      
+      metil->input.keydown_map[
+        metil_keycode_s
+      ] = (
+        0x00
+      );
+    }
+  } else if (
     metil->input.keydown_map[
       metil_keycode_g
     ] !=
@@ -718,6 +786,7 @@ void metil_editor_scene_poll(
         0x00
       );
     }
+    
     if (
       metil->input.keydown_map[
         metil_keycode_y
@@ -956,7 +1025,8 @@ void metil_editor_scene_poll(
         );
         ++index_vertex
       ) {
-        position_vertex.x = (          vertices[
+        position_vertex.x = (
+          vertices[
             index_vertex
           ].x
         );
