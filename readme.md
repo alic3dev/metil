@@ -1317,6 +1317,12 @@ make metil disable_metal_fast_options=1 target_device_version=26.1
 make target_device=iphone
 ```
 
+## tools
+
+### [`metil_editor`](/tools/metil_editor)
+
+`metil_editor`: a tool to edit `metil_mesh`s
+
 ## usage
 
 ## projects
