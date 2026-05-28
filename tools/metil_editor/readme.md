@@ -13,6 +13,7 @@ metil_editor [?path_to_import_and_or_export]
 ## keybindings
 
 | keybinding | action |
+|-|-|
 | `tab` | toggle movement mode (camera|cursor) |
 | `period` | add vertex |
 | `slash` | add index (index value of closest vertex index) |
