@@ -1331,7 +1331,7 @@
     );
   }
 
-  struct metil_renderer_data_frame* data_frame = (
+  void* data_frame = (
     data_buffer_frame[
       self->index_data_buffer_frame
     ].contents
@@ -1417,14 +1417,18 @@
     );
   }
 
-  matrix_float4x4 matrix_player_projection = matrix_multiply(
-    self->metil->rendering_properties.camera.matrix_viewport_projection,
-    matrix_player_rotation_x
+  matrix_float4x4 matrix_player_projection = (
+    matrix_multiply(
+      self->metil->rendering_properties.camera.matrix_viewport_projection,
+      matrix_player_rotation_x
+    )
   );
 
-  matrix_float4x4 matrix_object_projection = matrix_multiply(
-    matrix_player_projection,
-    matrix_player_rotation_y
+  matrix_float4x4 matrix_object_projection = (
+    matrix_multiply(
+      matrix_player_projection,
+      matrix_player_rotation_y
+    )
   );
 
   unsigned char _index_data_buffer_frame = (
