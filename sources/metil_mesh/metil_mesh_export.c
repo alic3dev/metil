@@ -210,8 +210,6 @@ metil_status metil_mesh_export_raw(
     )
   );
   
-  printf("i: %i\n,l: %i\n",index_buffer, length_buffer);
-  
   fwrite(
     buffer,
     length_buffer,
