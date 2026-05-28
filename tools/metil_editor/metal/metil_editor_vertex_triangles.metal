@@ -40,7 +40,8 @@
       data_object->colour.x,
       data_object->colour.y,
       data_object->colour.z,
-      data_object->colour.w
+      data_object->colour.w *
+      0.1f
     )
   );
 

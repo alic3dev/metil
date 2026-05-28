@@ -3,6 +3,7 @@
 #include <metil_editor_index_pipeline_render.h>
 #include <metil_editor_scene_data.h>
 
+#include <clic3_bytes.h>
 #include <clic3_memory.h>
 
 #include <math_c_maximum.h>
@@ -111,6 +112,12 @@ void metil_editor_scene_initialize(
   struct metil_object* metil_object_points = (
     metil_scene->renderables[
       metil_editor_scene_index_renderable_points
+    ].renderable
+  );
+  
+  struct metil_object* metil_object_triangles = (
+    metil_scene->renderables[
+      metil_editor_scene_index_renderable_triangles
     ].renderable
   );
 
@@ -358,6 +365,10 @@ void metil_editor_scene_initialize(
   metil_mesh_initialize(
     &metil_object_points->mesh
   );
+  
+  metil_mesh_initialize(
+    &metil_object_triangles->mesh
+  );
 
   metil_object_buffers_add(
     metil_object_lines,
@@ -367,6 +378,30 @@ void metil_editor_scene_initialize(
 
   metil_object_buffers_add(
     metil_object_lines,
+    metil->renderer_interface.metal_device,
+    metil_object_buffer_type_vertex
+  );
+  
+  metil_object_buffers_add(
+    metil_object_points,
+    metil->renderer_interface.metal_device,
+    metil_object_buffer_type_vertex
+  );
+
+  metil_object_buffers_add(
+    metil_object_points,
+    metil->renderer_interface.metal_device,
+    metil_object_buffer_type_vertex
+  );
+  
+  metil_object_buffers_add(
+    metil_object_triangles,
+    metil->renderer_interface.metal_device,
+    metil_object_buffer_type_vertex
+  );
+
+  metil_object_buffers_add(
+    metil_object_triangles,
     metil->renderer_interface.metal_device,
     metil_object_buffer_type_vertex
   );
@@ -385,6 +420,10 @@ void metil_editor_scene_initialize(
 
   metil_object_points->index_pipeline_render = (
     metil_editor_index_pipeline_render->vertex_points
+  );
+  
+  metil_object_triangles->index_pipeline_render = (
+    metil_editor_index_pipeline_render->vertex_triangles
   );
   
   metil_object_lines->indices = [
@@ -434,17 +473,31 @@ void metil_editor_scene_initialize(
     ].buffer.contents
   );
   
-  metil_object_buffers_add(
-    metil_object_points,
-    metil->renderer_interface.metal_device,
-    metil_object_buffer_type_vertex
-  );
-
-  metil_object_buffers_add(
-    metil_object_points,
-    metil->renderer_interface.metal_device,
-    metil_object_buffer_type_vertex
-  );
+  metil_object_points->indices = [
+    metil->renderer_interface.metal_device
+    newBufferWithLength: (
+      sizeof(
+        unsigned int
+      ) *
+      0xffff
+    )
+    options: (
+      MTLResourceStorageModeShared
+    )
+  ];
+  
+  metil_object_triangles->indices = [
+    metil->renderer_interface.metal_device
+    newBufferWithLength: (
+      sizeof(
+        unsigned int
+      ) *
+      0xffff
+    )
+    options: (
+      MTLResourceStorageModeShared
+    )
+  ];
 
   metil_object_points->buffers_vertex[
     0x00
@@ -461,19 +514,34 @@ void metil_editor_scene_initialize(
       0x01
     ].buffer
   );
+  
+  metil_object_triangles->buffers_vertex[
+    0x00
+  ].buffer = (
+    metil_object_lines->buffers_vertex[
+      0x00
+    ].buffer
+  );
 
-  metil_object_points->indices = [
-    metil->renderer_interface.metal_device
-    newBufferWithLength: (
-      sizeof(
-        unsigned int
-      ) *
-      0xffff
-    )
-    options: (
-      MTLResourceStorageModeShared
-    )
-  ];
+  metil_object_triangles->buffers_vertex[
+    0x01
+  ].buffer = (
+    metil_object_lines->buffers_vertex[
+      0x01
+    ].buffer
+  );
+  
+  metil_object_lines->visible = (
+    0x00
+  );
+
+  metil_object_points->visible = (
+    0x00
+  );
+  
+  metil_object_triangles->visible = (
+    0x00
+  );
 
   metil_mesh_initialize_with_lengths(
     &metil_object_cursor->mesh,
@@ -510,7 +578,8 @@ void metil_editor_scene_initialize(
   ] = (
     0x00
   );
-      metil_object_buffers_initialize(
+  
+  metil_object_buffers_initialize(
     metil_object_cursor,
     metil->renderer_interface.metal_device
   );
@@ -531,14 +600,6 @@ void metil_editor_scene_initialize(
 
   metil_object_cursor->index_pipeline_render = (
     metil_editor_index_pipeline_render->cursor
-  );
-
-  metil_object_lines->visible = (
-    0x00
-  );
-
-  metil_object_points->visible = (
-    0x00
   );
 
   metil_scene->player.position.x = (
@@ -599,6 +660,12 @@ void metil_editor_scene_poll(
   struct metil_object* metil_object_points = (
     metil_scene->renderables[
       metil_editor_scene_index_renderable_points
+    ].renderable
+  );
+  
+  struct metil_object* metil_object_triangles = (
+    metil_scene->renderables[
+      metil_editor_scene_index_renderable_triangles
     ].renderable
   );
 
@@ -726,7 +793,8 @@ void metil_editor_scene_poll(
         0x00
       );
     }
-  } else if (    metil->input.keydown_map[
+  } else if (
+    metil->input.keydown_map[
       metil_keycode_tab
     ] !=
     0x00
@@ -764,10 +832,11 @@ void metil_editor_scene_poll(
         metil_object_lines->mesh.length_indices +
         0x01
       );
+      
       metil_object_points->mesh.length_indices = (
         metil_object_points->mesh.length_indices +
         0x01
-      );
+      );      
 
       struct math_c_vector4_float* vertices_lines = (
         metil_object_lines->buffers_vertex[
@@ -787,7 +856,8 @@ void metil_editor_scene_poll(
           .y = (
             metil_object_cursor->position.y
           ),
-          .z = (            metil_object_cursor->position.z
+          .z = (
+            metil_object_cursor->position.z
           ),
           .w = (
             0x01
@@ -798,7 +868,8 @@ void metil_editor_scene_poll(
       unsigned int* indices_lines = (
         metil_object_lines->indices.contents
       );
-                           unsigned int* indices_points = (
+      
+      unsigned int* indices_points = (
         metil_object_points->indices.contents
       );
 
@@ -810,32 +881,132 @@ void metil_editor_scene_poll(
         0x01
       );
 
-      /*if (
-        metil_object_lines->mesh.length_vertices %
-        0x02
-      ) {
-        metil_object_lines->mesh.length_indices = (
-          metil_object_lines->mesh.length_indices +
-          0x01
-        );
-
-        indices_lines[
-          metil_object_lines->mesh.length_indices -
-          0x01
-        ] = (
-          metil_object_lines->mesh.length_vertices -
-          0x01
-        );
-      }*/
-                  indices_points[
+      indices_points[
         metil_object_points->mesh.length_indices -
         0x01
       ] = (
         metil_object_points->mesh.length_indices -
         0x01
       );
-                  metil->input.keydown_map[
+      
+      metil->input.keydown_map[
         metil_keycode_period
+      ] = (
+        0x00
+      );
+    } else if (
+      (
+        metil_object_lines->mesh.length_vertices >
+        0x00
+      ) &&
+      (
+        metil->input.keydown_map[
+          metil_keycode_slash
+        ] !=
+        0x00
+      )
+    ) {
+      metil_object_triangles->mesh.length_indices = (
+        metil_object_triangles->mesh.length_indices +
+        0x01
+      );
+      
+      unsigned int index_vertex_closest = (
+        0x00
+      );
+      
+      struct math_c_vector4_float* vertices = (
+        metil_object_lines->buffers_vertex[
+          metil_object_buffer_default_index_vertices
+        ].buffer.contents
+      );
+     
+      struct math_c_vector3_float position_vertex = {
+        .x = (
+          vertices[
+            0x00
+          ].x
+        ),
+        .y = (
+          vertices[
+            0x00
+          ].y
+        ),
+        .z = (
+          vertices[
+            0x00
+          ].z
+        )
+      };
+      
+      float distance = (
+        math_c_vector3_distance_float(
+          &metil_object_cursor->position,
+          &position_vertex
+        )
+      );
+                  
+      for (
+        unsigned int index_vertex = (
+          0x01
+        );
+        (
+          index_vertex <
+          metil_object_lines->mesh.length_vertices
+        );
+        ++index_vertex
+      ) {
+        position_vertex.x = (          vertices[
+            index_vertex
+          ].x
+        );
+        
+        position_vertex.y = (
+          vertices[
+            index_vertex
+          ].y
+        );
+        
+        position_vertex.z = (
+          vertices[
+            index_vertex
+          ].z
+        );
+        
+        float distance_vertex = (
+          math_c_vector3_distance_float(
+            &metil_object_cursor->position,
+            &position_vertex
+          )
+        );        
+        
+        if (
+          distance_vertex <=
+          distance
+        ) {
+          index_vertex_closest = (
+            index_vertex
+          );
+          
+          distance = (
+            distance_vertex
+          );
+        }
+      }
+      
+      unsigned int* indices_triangles = (
+        metil_object_triangles->indices.contents
+      );
+      
+      indices_triangles[
+        metil_object_triangles->mesh.length_indices -
+        0x01
+      ] = (
+        index_vertex_closest
+      );
+      
+      metil->input.keydown_map[
+        metil_keycode_slash
       ] = (
         0x00
       );
@@ -924,6 +1095,19 @@ void metil_editor_scene_poll(
       0x01
     );
   }
+  
+  if (
+    metil_object_triangles->mesh.length_indices <
+    0x03
+  ) {
+    metil_object_triangles->visible = (
+      0x00
+    );
+  } else {
+    metil_object_triangles->visible = (
+      0x01
+    );
+  }
 }
 
 void metil_editor_scene_destroy(
@@ -935,6 +1119,12 @@ void metil_editor_scene_destroy(
       metil_editor_scene_index_renderable_points
     ].renderable
   );
+  
+  struct metil_object* metil_object_triangles = (
+    metil_scene->renderables[
+      metil_editor_scene_index_renderable_triangles
+    ].renderable
+  );
 
   metil_object_points->buffers_vertex[
     0x00
@@ -943,6 +1133,18 @@ void metil_editor_scene_destroy(
   );
 
   metil_object_points->buffers_vertex[
+    0x01
+  ].buffer = (
+    0x00
+  );
+  
+  metil_object_triangles->buffers_vertex[
+    0x00
+  ].buffer = (
+    0x00
+  );
+
+  metil_object_triangles->buffers_vertex[
     0x01
   ].buffer = (
     0x00
