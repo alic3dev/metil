@@ -14,7 +14,7 @@ metil_editor [?path_to_import_and_or_export]
 
 | keybinding | action |
 |-|-|
-| `tab` | toggle movement mode (camera|cursor) |
+| `tab` | toggle movement mode (camera\|cursor) |
 | `period` | add vertex |
 | `slash` | add index (index value of closest vertex index) |
 | `command`+`s` | export file (exports to first parameter provided to `metil_editor`) |
