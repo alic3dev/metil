@@ -359,10 +359,6 @@ void metil_editor_scene_initialize(
     &metil_object_points->mesh
   );
 
-  metil_object_points->mesh.size.x = (
-    0x0a
-  );
-
   metil_object_buffers_add(
     metil_object_lines,
     metil->renderer_interface.metal_device,
@@ -382,11 +378,17 @@ void metil_editor_scene_initialize(
   metil_object_points->type_primitive = (
     MTLPrimitiveTypePoint
   );
+  
+  metil_object_lines->index_pipeline_render = (
+    metil_editor_index_pipeline_render->vertex_lines
+  );
 
   metil_object_points->index_pipeline_render = (
-    metil_editor_index_pipeline_render->cursor
+    metil_editor_index_pipeline_render->vertex_points
   );
-  metil_object_lines->indices = [    metil->renderer_interface.metal_device
+  
+  metil_object_lines->indices = [
+    metil->renderer_interface.metal_device
     newBufferWithLength: (
       sizeof(
         unsigned int
@@ -431,6 +433,7 @@ void metil_editor_scene_initialize(
       metil_object_buffer_default_index_data
     ].buffer.contents
   );
+  
   metil_object_buffers_add(
     metil_object_points,
     metil->renderer_interface.metal_device,
@@ -459,7 +462,8 @@ void metil_editor_scene_initialize(
     ].buffer
   );
 
-  metil_object_points->indices = [    metil->renderer_interface.metal_device
+  metil_object_points->indices = [
+    metil->renderer_interface.metal_device
     newBufferWithLength: (
       sizeof(
         unsigned int
