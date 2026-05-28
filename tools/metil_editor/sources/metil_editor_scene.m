@@ -15,6 +15,7 @@
 #include <metil_group.h>
 #include <metil_mesh/metil_mesh_2d/metil_mesh_grid.h>
 #include <metil_mesh/metil_mesh_export.h>
+#include <metil_mesh/metil_mesh_import.h>
 #include <metil_object/metil_object.h>
 #include <metil_rendering/metil_renderable.h>
 #include <metil_rendering/metil_renderable_type.h>
@@ -641,8 +642,7 @@ void metil_editor_scene_poll(
     metil,
     metil_scene
   );
-
-  struct metil_editor_scene_data* metil_editor_scene_data = (
+      struct metil_editor_scene_data* metil_editor_scene_data = (
     metil_scene->data
   );
 
@@ -675,6 +675,116 @@ void metil_editor_scene_poll(
       metil_editor_scene_index_renderable_cursor
     ].renderable
   );
+  
+  if (
+    metil->rendering_properties.frame ==
+    0x02
+  ) {
+    struct metil_mesh metil_mesh_temporary;
+    
+    unsigned char status_import = (
+      metil_mesh_import(
+        &metil_mesh_temporary,
+        "first_mesh_export.metil_mesh"
+      )
+    );
+    
+    if (
+      status_import ==
+      metil_status_success
+    ) {          metil_object_lines->mesh.length_vertices = (
+        metil_mesh_temporary.length_vertices
+      );
+    
+      metil_object_lines->mesh.length_indices = (
+        metil_mesh_temporary.length_vertices
+      );
+    
+      metil_object_points->mesh.length_indices = (
+        metil_mesh_temporary.length_vertices
+      );
+    
+      metil_object_triangles->mesh.length_indices = (
+        metil_mesh_temporary.length_indices
+      );
+    
+      unsigned int* indices_lines = (
+        metil_object_lines->indices.contents
+      );
+    
+      unsigned int* indices_points = (
+        metil_object_points->indices.contents
+      );
+    
+      unsigned int* indices_triangles = (
+        metil_object_triangles->indices.contents
+      );
+    
+      struct math_c_vector4_float* vertices = (
+        metil_object_lines->buffers_vertex[
+          metil_object_buffer_default_index_vertices
+        ].buffer.contents
+      );
+      
+      for (
+        unsigned int index_index = (
+          0x00
+        );
+        (
+          index_index <
+          metil_object_triangles->mesh.length_indices
+        );
+        ++index_index
+      ) {
+        indices_triangles[
+          index_index
+        ] = (
+          metil_mesh_temporary.indices[
+            index_index
+          ]
+        );  
+      }
+    
+      for (
+        unsigned int index_vertex = (
+          0x00
+        );
+        (
+          index_vertex <
+          metil_mesh_temporary.length_vertices
+        );
+        ++index_vertex
+      ) {
+        clic3_bytes_copy(
+          &vertices[
+            index_vertex
+          ],
+          &metil_mesh_temporary.vertices[
+            index_vertex
+          ],
+          sizeof(
+            struct math_c_vector4_float
+          )
+        );
+      
+        indices_lines[
+          index_vertex
+        ] = (
+          index_vertex
+        );  
+      
+        indices_points[
+          index_vertex
+        ] = (
+          index_vertex
+        );    
+      }
+    
+      metil_mesh_destroy(
+        &metil_mesh_temporary
+      );
+    }
+  }
   
   if (
     (
