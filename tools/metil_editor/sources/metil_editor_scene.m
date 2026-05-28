@@ -12,6 +12,7 @@
 #include <math_c_vector_distance.h>
 
 #include <metil.h>
+#include <metil_debug/metil_debug_log.h>
 #include <metil_group.h>
 #include <metil_mesh/metil_mesh_2d/metil_mesh_grid.h>
 #include <metil_mesh/metil_mesh_export.h>
@@ -21,6 +22,8 @@
 #include <metil_rendering/metil_renderable_type.h>
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_scenes/metil_scene.h>
+
+#include <sys/stat.h>
 
 void metil_editor_scene_initialize(
   struct metil* metil,
@@ -47,7 +50,22 @@ void metil_editor_scene_initialize(
   struct metil_editor_scene_data* metil_editor_scene_data = (
     metil_scene->data
   );
-
+  
+  if (
+    metil->parameters.length_parameters >=
+    0x02
+  ) {
+    metil_editor_scene_data->path_export = (
+      (char*)
+      metil->parameters.parameters[
+        0x01
+      ]
+    );
+  } else {
+    metil_editor_scene_data->path_export = (
+      0x00
+    );
+  }
   metil_scene->poll = (
     metil_editor_scene_poll
   );
@@ -632,67 +650,47 @@ void metil_editor_scene_initialize(
   metil_editor_scene_data->mode = (
     metil_editor_mode_vertices
   );
-}
-
-void metil_editor_scene_poll(
-  struct metil* metil,
-  struct metil_scene* metil_scene
-) {
-  metil_scene_poll_default(
-    metil,
-    metil_scene
-  );
-      struct metil_editor_scene_data* metil_editor_scene_data = (
-    metil_scene->data
-  );
-
-  struct metil_group* metil_group_grids = (
-    metil_scene->renderables[
-      metil_editor_scene_index_renderable_group_grids
-    ].renderable
-  );
-
-  struct metil_object* metil_object_lines = (
-    metil_scene->renderables[
-      metil_editor_scene_index_renderable_lines
-    ].renderable
-  );
-
-  struct metil_object* metil_object_points = (
-    metil_scene->renderables[
-      metil_editor_scene_index_renderable_points
-    ].renderable
-  );
-  
-  struct metil_object* metil_object_triangles = (
-    metil_scene->renderables[
-      metil_editor_scene_index_renderable_triangles
-    ].renderable
-  );
-
-  struct metil_object* metil_object_cursor = (
-    metil_scene->renderables[
-      metil_editor_scene_index_renderable_cursor
-    ].renderable
-  );
   
   if (
-    metil->rendering_properties.frame ==
-    0x02
+    metil_editor_scene_data->path_export !=
+    0x00
   ) {
     struct metil_mesh metil_mesh_temporary;
     
-    unsigned char status_import = (
-      metil_mesh_import(
-        &metil_mesh_temporary,
-        "first_mesh_export.metil_mesh"
+    unsigned char status_import;
+    
+    struct stat stat_file_import;
+    
+    int status_stat_file_import = (
+      stat(
+        metil_editor_scene_data->path_export,
+        &stat_file_import
       )
     );
     
     if (
-      status_import ==
-      metil_status_success
-    ) {          metil_object_lines->mesh.length_vertices = (
+      status_stat_file_import ==
+      0x00
+    ) {  
+      status_import = (
+        metil_mesh_import(
+          &metil_mesh_temporary,
+          metil_editor_scene_data->path_export
+        )
+      );
+    }
+    
+    if (
+      (
+        status_import ==
+        metil_status_success
+      ) &&
+      (
+        status_stat_file_import ==
+        0x00
+      )  
+    ) {
+      metil_object_lines->mesh.length_vertices = (
         metil_mesh_temporary.length_vertices
       );
     
@@ -783,10 +781,60 @@ void metil_editor_scene_poll(
       metil_mesh_destroy(
         &metil_mesh_temporary
       );
+    } else if (
+      status_stat_file_import ==
+      0x00
+    ) {
+      metil_debug_log_error(
+        metil_debug_log_level_error,
+        "failed_to_load_mesh_file"
+      );
     }
   }
+}
+
+void metil_editor_scene_poll(
+  struct metil* metil,
+  struct metil_scene* metil_scene
+) {
+  metil_scene_poll_default(
+    metil,
+    metil_scene
+  );
+      struct metil_editor_scene_data* metil_editor_scene_data = (
+    metil_scene->data
+  );
+
+  struct metil_group* metil_group_grids = (
+    metil_scene->renderables[
+      metil_editor_scene_index_renderable_group_grids
+    ].renderable
+  );
+
+  struct metil_object* metil_object_lines = (
+    metil_scene->renderables[
+      metil_editor_scene_index_renderable_lines
+    ].renderable
+  );
+
+  struct metil_object* metil_object_points = (
+    metil_scene->renderables[
+      metil_editor_scene_index_renderable_points
+    ].renderable
+  );
   
-  if (
+  struct metil_object* metil_object_triangles = (
+    metil_scene->renderables[
+      metil_editor_scene_index_renderable_triangles
+    ].renderable
+  );
+
+  struct metil_object* metil_object_cursor = (
+    metil_scene->renderables[
+      metil_editor_scene_index_renderable_cursor
+    ].renderable
+  );
+      if (
     (
       metil->input.keydown_map[
         metil_keycode_command_left
@@ -809,6 +857,10 @@ void metil_editor_scene_poll(
       ) &&
       (
         metil_object_lines->mesh.length_vertices >
+        0x00
+      ) &&
+      (
+        metil_editor_scene_data->path_export !=
         0x00
       )
     ) {
@@ -844,7 +896,7 @@ void metil_editor_scene_poll(
           metil_object_buffer_default_index_vertices
         ].buffer.contents,
         &metil_object_lines->mesh.size,
-        "first_mesh_export.metil_mesh"  
+        metil_editor_scene_data->path_export 
       );
       
       metil->input.keydown_map[
