@@ -12,7 +12,11 @@ struct metil_editor_scene_data {
 
   unsigned char mode;
 
+  char* name_export;
+
   char* path_export;
+  char* path_export_c;
+  char* path_export_h;
 };
 
 #endif
