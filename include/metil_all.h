@@ -24,6 +24,7 @@
 #include <metil_debug/metil_debug_log_level.h>
 #include <metil_debug/metil_debug_log.h>
 #include <metil_direction.h>
+#include <metil_file.h>
 #include <metil_group.h>
 #include <metil_image/metil_image_brightness.h>
 #include <metil_image/metil_image_offsets.h>
@@ -32,12 +33,14 @@
 #include <metil_image/metil_image_type.h>
 #include <metil_image/metil_image.h>
 #include <metil_initialize.h>
+#include <metil_initialize/metil_initialization_parameters.h>
 #include <metil_input/metil_controller_state.h>
 #include <metil_input/metil_controller.h>
 #include <metil_input/metil_cursor.h>
 #include <metil_input/metil_input_map.h>
 #include <metil_input/metil_input.h>
 #include <metil_input/metil_keycodes.h>
+#include <metil_input/metil_touch.h>
 #include <metil_joint/metil_joint_id_offset.h>
 #include <metil_joint/metil_joint.h>
 #include <metil_library.h>
@@ -52,10 +55,11 @@
 #include <metil_mesh/metil_mesh_ball.h>
 #include <metil_mesh/metil_mesh_box.h>
 #include <metil_mesh/metil_mesh_dollop.h>
+#include <metil_mesh/metil_mesh_export.h>
 #include <metil_mesh/metil_mesh_gem.h>
+#include <metil_mesh/metil_mesh_import.h>
 #include <metil_mesh/metil_mesh_line.h>
 #include <metil_mesh/metil_mesh_mushroom.h>
-#include <metil_mesh/metil_mesh_parse.h>
 #include <metil_mesh/metil_mesh_ring.h>
 #include <metil_mesh/metil_mesh_shuttle.h>
 #include <metil_mesh/metil_mesh_sphere.h>
@@ -65,6 +69,7 @@
 #include <metil_metal/basic_2d_shaders.h>
 #include <metil_metal/basic_3d_shaders.h>
 #include <metil_metal/metil_fps_display.h>
+#include <metil_metal/metil_metal_colours.h>
 #include <metil_metal/metil_metal_data_vertex.h>
 #include <metil_metal/metil_metal_joint.h>
 #include <metil_metal/metil_metal_model_object.h>
