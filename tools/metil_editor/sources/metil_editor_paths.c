@@ -187,6 +187,42 @@ void metil_editor_paths_parse(
     '\0'
   );
 
+  unsigned int length_path_without_extension = (
+    length_path -
+    (
+      (
+        (
+          status &
+          0b10000000
+        ) ==
+        0x00
+      )
+      ? 0x00
+      : (
+        length_path -
+        index_extension
+      )
+    )
+  );
+
+  char* path_without_extension = (
+    clic3_memory_allocate_raw(
+      length_path_without_extension +
+      0x01
+    )  );
+
+  clic3_bytes_copy(
+    path_without_extension,
+    path,
+    length_path_without_extension
+  );
+
+  path_without_extension[
+    length_path_without_extension
+  ] = (
+    '\0'
+  );
+
   if (
     (
       status &
@@ -196,18 +232,13 @@ void metil_editor_paths_parse(
   ) {
     *path_metil_mesh = (
       clic3_char_arrays_concatenate(
-        *name,
-        ".metil_mesh"
+        path,
+        ""
       )
     );
   } else {
     unsigned int length_path_metil_mesh = (
-      length_path -
-      index_slash -
-      (
-        status &
-        0b00000001
-      )
+      length_path
     );
 
     *path_metil_mesh = (
@@ -236,15 +267,19 @@ void metil_editor_paths_parse(
 
   *path_c = (
     clic3_char_arrays_concatenate(
-      *name,
+      path_without_extension,
       ".c"
     )
   );
 
   *path_h = (
     clic3_char_arrays_concatenate(
-      *name,
+      path_without_extension,
       ".h"
     )
+  );
+
+  clic3_memory_free_raw(
+    path_without_extension
   );
 }
