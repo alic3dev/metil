@@ -144,9 +144,14 @@ void metil_renderer_poll_object(
   struct metil_renderable* _Nonnull
 );
 
+void* _Nullable metil_renderer_thread_draw(
+  void* _Nonnull
+);
+
 void* _Nullable metil_renderer_thread_poll_object(
   void* _Nonnull
 );
+
 void metil_renderer_after_scene_change(
   struct metil* _Nonnull,
   int,

@@ -1,5 +1,6 @@
 #include <metil_rendering/metil_renderer.h>
 
+#include <metil_application/metil_application.h>
 #include <metil_audio/metil_audio.h>
 #include <metil_audio/metil_audio_data.h>
 #include <metil_configuration/metil_configuration.h>
@@ -262,7 +263,7 @@
       MTLLogLevel level_log,
       NSString* log
     ) {
-      printf("%s\n","sfsf");
+      // printf("%s\n",log);
     }
   ];
 
@@ -553,6 +554,69 @@
       self->metil->rendering_properties.frame
     )
   ];
+
+  #if target_os_ios
+  metil_application* metil_ui_application = (
+    (metil_application*)
+    [
+      UIApplication
+      sharedApplication
+    ]
+  );
+
+  unsigned char state_application = [
+    metil_ui_application
+    applicationState
+  ];
+
+  if (
+    state_application >
+    0x01
+  ) {
+    if (
+      self->destroying ==
+      0x00
+    ) {
+      struct timespec time_sleep = {
+        .tv_sec = (
+          0x00
+        ),
+        .tv_nsec = (
+          0x05f5e100
+        )
+      };
+
+      struct timespec time_remaining = {
+        .tv_sec = (
+          0x00
+        ),
+        .tv_nsec = (
+          0x00
+        )
+      };
+
+      nanosleep(
+        &time_sleep,
+        &time_remaining
+      );
+
+      pthread_t thread_draw;
+
+      pthread_create(
+        &thread_draw,
+        0x00,
+        metil_renderer_thread_draw,
+        metal_kit_view
+      );
+    } else {
+      pthread_mutex_unlock(
+        &self->mutex_destroying
+      );
+    }
+
+    return;
+  }
+  #endif
 
   [
     self
@@ -1897,8 +1961,7 @@
 }
 
 - (void) render {
-  struct metil_scene_controller* metil_scene_controller = (
-    self->metil->scene_controller
+  struct metil_scene_controller* metil_scene_controller = (    self->metil->scene_controller
   );
 
   struct metil_scene* metil_scene = &(
@@ -2293,6 +2356,24 @@ void metil_renderer_poll_object(
     }
   }
 }
+
+#if target_os_ios
+void* _Nullable metil_renderer_thread_draw(
+  void* reference
+) {
+  MTKView*
+metal_kit_view = (    reference
+  );
+  [
+    metal_kit_view
+    draw
+  ];
+
+  return (
+    0x00
+  );
+}
+#endif
 
 void* metil_renderer_thread_poll_object(
   void* data
