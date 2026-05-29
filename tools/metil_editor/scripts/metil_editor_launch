@@ -1,0 +1,50 @@
+#!/bin/zsh
+
+metil_editor_launch() {
+  local index_parameter;
+  
+  local path_metil_editor_launch="$(realpath ${@[0x01]})";
+  local path_directory_metil_editor_scripts="$(dirname "${path_metil_editor_launch}")";
+  local path_directory_metil_editor_output="$(realpath "${path_directory_metil_editor_scripts}/../output/release/metil_editor.app/Contents/MacOS")";
+  
+  local parameters=();
+  
+  for ((
+    index_parameter = 0x02;
+    index_parameter <= ${#};
+    ++index_parameter
+  )) {
+    local parameter="${@[${index_parameter}]}";
+    
+    if [[
+      "${parameter[0x01]}" ==
+      "-"
+    ]] {
+      parameters+=("${parameter}");
+      
+      continue;
+    }
+  
+    local path_parameter;
+    
+    if [[
+      -f "${parameter}"
+    ]] {
+      path_parameter="$(realpath "${parameter}")";
+    } elif [[
+      "${parameter[0x01]}" ==
+      "/"
+    ]] {
+      path_parameter="${parameter}";
+    } else {
+      path_parameter="$(pwd)/${parameter}";
+    }
+  
+    parameters+=("${path_parameter}");
+  }
+  
+  ${path_directory_metil_editor_output}/metil_editor ${parameters[@]}
+}
+
+metil_editor_launch ${0} ${@};
+
