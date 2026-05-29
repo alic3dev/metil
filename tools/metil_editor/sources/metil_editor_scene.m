@@ -1,6 +1,7 @@
 #include <metil_editor_scene.h>
 
 #include <metil_editor_index_pipeline_render.h>
+#include <metil_editor_paths.h>
 #include <metil_editor_scene_data.h>
 
 #include <clic3_bytes.h>
@@ -55,17 +56,36 @@ void metil_editor_scene_initialize(
     metil->parameters.length_parameters >=
     0x02
   ) {
-    metil_editor_scene_data->path_export = (
-      (char*)
-      metil->parameters.parameters[
-        0x01
-      ]
+    metil_editor_paths_parse(
+      (
+        (char*)
+        metil->parameters.parameters[
+          0x01
+        ]
+      ),
+      &metil_editor_scene_data->name_export,
+      &metil_editor_scene_data->path_export,
+      &metil_editor_scene_data->path_export_c,
+      &metil_editor_scene_data->path_export_h
     );
   } else {
+    metil_editor_scene_data->name_export = (
+      0x00
+    );
+
     metil_editor_scene_data->path_export = (
       0x00
     );
+
+    metil_editor_scene_data->path_export_c = (
+      0x00
+    );
+
+    metil_editor_scene_data->path_export_h = (
+      0x00
+    );
   }
+
   metil_scene->poll = (
     metil_editor_scene_poll
   );
@@ -888,16 +908,44 @@ void metil_editor_scene_poll(
         );
       }
 
-      metil_mesh_export_raw(
-        length_indices,
-        metil_object_lines->mesh.length_vertices,
-        indices,
-        metil_object_lines->buffers_vertex[
-          metil_object_buffer_default_index_vertices
-        ].buffer.contents,
-        &metil_object_lines->mesh.size,
-        metil_editor_scene_data->path_export
-      );
+      if (
+        (
+          metil->input.keydown_map[
+            metil_keycode_shift_left
+          ] !=
+          0x00
+        ) ||
+        (
+          metil->input.keydown_map[
+            metil_keycode_shift_right
+          ] !=
+          0x00
+        )
+      ) {
+        metil_mesh_export_source_raw(
+          length_indices,
+          metil_object_lines->mesh.length_vertices,
+          indices,
+          metil_object_lines->buffers_vertex[
+            metil_object_buffer_default_index_vertices
+          ].buffer.contents,
+          &metil_object_lines->mesh.size,
+          metil_editor_scene_data->name_export,
+          metil_editor_scene_data->path_export_c,
+          metil_editor_scene_data->path_export_h
+        );
+      } else {
+        metil_mesh_export_raw(
+          length_indices,
+          metil_object_lines->mesh.length_vertices,
+          indices,
+          metil_object_lines->buffers_vertex[
+            metil_object_buffer_default_index_vertices
+          ].buffer.contents,
+          &metil_object_lines->mesh.size,
+          metil_editor_scene_data->path_export
+        );
+      }
 
       metil->input.keydown_map[
         metil_keycode_s
@@ -1346,6 +1394,26 @@ void metil_editor_scene_destroy(
   struct metil* metil,
   struct metil_scene* metil_scene
 ) {
+  struct metil_editor_scene_data* metil_editor_scene_data = (
+    metil_scene->data
+  );
+
+  clic3_memory_free(
+    metil_editor_scene_data->name_export
+  );
+
+  clic3_memory_free(
+    metil_editor_scene_data->path_export
+  );
+
+  clic3_memory_free(
+    metil_editor_scene_data->path_export_c
+  );
+
+  clic3_memory_free(
+    metil_editor_scene_data->path_export_h
+  );
+
   struct metil_object* metil_object_points = (
     metil_scene->renderables[
       metil_editor_scene_index_renderable_points
