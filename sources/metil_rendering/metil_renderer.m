@@ -1961,7 +1961,8 @@
 }
 
 - (void) render {
-  struct metil_scene_controller* metil_scene_controller = (    self->metil->scene_controller
+  struct metil_scene_controller* metil_scene_controller = (
+    self->metil->scene_controller
   );
 
   struct metil_scene* metil_scene = &(
@@ -2361,9 +2362,9 @@ void metil_renderer_poll_object(
 void* _Nullable metil_renderer_thread_draw(
   void* reference
 ) {
-  MTKView*
-metal_kit_view = (    reference
+  MTKView* metal_kit_view = (    reference
   );
+
   [
     metal_kit_view
     draw

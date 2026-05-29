@@ -144,9 +144,11 @@ void metil_renderer_poll_object(
   struct metil_renderable* _Nonnull
 );
 
+#if target_os_ios
 void* _Nullable metil_renderer_thread_draw(
   void* _Nonnull
 );
+#endif
 
 void* _Nullable metil_renderer_thread_poll_object(
   void* _Nonnull
