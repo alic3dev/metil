@@ -20,4 +20,23 @@ metil_status metil_mesh_export_raw(
   char*
 );
 
+metil_status metil_mesh_export_source(
+  struct metil_mesh*,
+  char*,
+  char*,
+  char*
+);
+
+metil_status metil_mesh_export_source_raw(
+  unsigned int,
+  unsigned int,
+  unsigned int*,
+  struct math_c_vector4_float*,
+  struct math_c_vector3_float*,
+  char*,
+  char*,
+  char*
+);
+  
+
 #endif

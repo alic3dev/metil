@@ -229,3 +229,231 @@ metil_status metil_mesh_export_raw(
     metil_status_success
   );
 }
+
+metil_status metil_mesh_export_source(
+  struct metil_mesh* metil_mesh,
+  char* name_mesh,
+  char* path_file_export_c,
+  char* path_file_export_h
+) {
+  return (
+    metil_mesh_export_source_raw(
+      metil_mesh->length_indices,
+      metil_mesh->length_vertices,
+      metil_mesh->indices,
+      metil_mesh->vertices,
+      &metil_mesh->size,
+      name_mesh,
+      path_file_export_c,
+      path_file_export_h
+    )
+  );
+}
+
+metil_status metil_mesh_export_source_raw(
+  unsigned int length_indices,
+  unsigned int length_vertices,
+  unsigned int* indices,
+  struct math_c_vector4_float* vertices,
+  struct math_c_vector3_float* size,
+  char* name_mesh,
+  char* path_file_export_c,
+  char* path_file_export_h  
+) {
+  FILE* file_export_c = (
+    fopen(
+      path_file_export_c,
+      "wb"
+    )
+  );
+  
+  if (
+    file_export_c ==
+    0x00
+  ) {
+    return (
+      metil_status_error
+    );
+  }
+  
+  FILE* file_export_h = (
+    fopen(
+      path_file_export_h,
+      "wb"
+    )
+  );
+  
+  if (
+    file_export_h ==
+    0x00
+  ) {
+    fclose(
+      file_export_c
+    );
+    
+    return (
+      metil_status_error
+    );
+  }
+
+  fprintf(
+    file_export_c,
+    "#include <%s.h>\n"
+    "\n"
+    "#include <metil_mesh/metil_mesh.h>\n"
+    "\n"
+    "void %s_initialize(\n"
+    "  struct metil_mesh* %s\n"
+    ") {\n"
+    "  metil_mesh_initialize_with_lengths(\n"
+    "    %s,\n"
+    "    0x%.2x,\n"
+    "    0x%.2x\n"
+    "  );\n"
+    "\n"
+    "  %s->size.x = (\n"
+    "    %ff\n"
+    "  );\n"
+    "\n"
+    "  %s->size.y = (\n"
+    "    %ff\n"
+    "  );\n"
+    "\n"
+    "  %s->size.z = (\n"
+    "    %ff\n"
+    "  );\n"
+    "\n",
+    name_mesh,
+    name_mesh,
+    name_mesh,
+    name_mesh,
+    length_vertices,
+    length_indices,
+    name_mesh,
+    size->x,
+    name_mesh,
+    size->y,
+    name_mesh,
+    size->z
+  );
+  
+  for (
+    unsigned int index_vertex = (
+      0x00
+    );
+    (
+      index_vertex <
+      length_vertices
+    );
+    ++index_vertex
+  ) {
+    fprintf(
+      file_export_c,
+      "  %s->vertices[\n"
+      "    0x%.2x\n"
+      "  ].x = (\n"
+      "    %ff\n"
+      "  );\n"
+      "\n"
+      "  %s->vertices[\n"
+      "    0x%.2x\n"
+      "  ].y = (\n"
+      "    %ff\n"
+      "  );\n"
+      "\n"
+      "  %s->vertices[\n"
+      "    0x%.2x\n"
+      "  ].z = (\n"
+      "    %ff\n"
+      "  );\n"
+      "\n"
+      "  %s->vertices[\n"
+      "    0x%.2x\n"
+      "  ].w = (\n"
+      "    %ff\n"
+      "  );\n"
+      "\n",
+      name_mesh,
+      index_vertex,
+      vertices[
+        index_vertex
+      ].x,
+      name_mesh,
+      index_vertex,
+      vertices[
+        index_vertex
+      ].y,
+      name_mesh,
+      index_vertex,
+      vertices[
+        index_vertex
+      ].z,
+      name_mesh,
+      index_vertex,
+      vertices[
+        index_vertex
+      ].w
+    );
+  }
+  
+  for (
+    unsigned int index_index = (
+      0x00
+    );
+    (
+      index_index <
+      length_indices
+    );
+    ++index_index
+  ) {
+    fprintf(
+      file_export_c,
+      "  %s->indices[\n"
+      "    0x%.2x\n"
+      "  ] = (\n"
+      "    0x%.2x\n"
+      "  );\n"
+      "\n",
+      name_mesh,
+      index_index,
+      indices[
+        index_index
+      ]
+    );
+  }
+  
+  fprintf(
+    file_export_c,
+    "}\n"
+    "\n"
+  );
+
+  fprintf(
+    file_export_h,
+    "#ifndef __%s_h\n"
+    "#define __%s_h\n"
+    "\n"
+    "#include <metil_mesh/metil_mesh.h>\n"
+    "\n"
+    "void %s_initialize(\n"
+    "  struct metil_mesh*\n"
+    ");\n"
+    "\n"
+    "#endif\n"
+    "\n",
+    name_mesh,
+    name_mesh,
+    name_mesh
+  );
+  fclose(
+    file_export_c
+  );
+  
+  fclose(
+    file_export_h
+  );
+      
+  return (
+    metil_status_success
+  );
+}
