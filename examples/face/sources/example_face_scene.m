@@ -31,7 +31,7 @@ void example_face_scene_initialize(
   scene->player.position.z = -(
     0x01
   );
-  
+
   scene->player.poll_input = (
     metil_player_poll_input_null
   );
@@ -61,7 +61,7 @@ void example_face_scene_initialize(
       0x00
     ].renderable
   );
-  
+
   struct metil_mesh* metil_mesh = (
     &object->mesh
   );
@@ -483,7 +483,7 @@ void example_face_scene_initialize(
   data_object->vertex_hovered = (
     0x00
   );
-  
+
   data_object->vertex_held = (
     0x00
   );
@@ -505,7 +505,7 @@ void example_face_scene_initialize(
   object_points->mesh.length_indices = (
     object->mesh.length_indices
   );
-  
+
   object_points->mesh.length_vertices = (
     object->mesh.length_vertices
   );
@@ -725,7 +725,7 @@ void example_face_scene_poll(
       position_relative.x /
       aspect_ratio
     );
-    
+
     vertex->y = (
       position_relative.y /
       0.8f

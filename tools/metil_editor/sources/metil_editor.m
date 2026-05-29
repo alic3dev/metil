@@ -68,7 +68,7 @@ void metil_editor_renderer_on_initialize(
       newFunctionWithName: @"metil_editor_grid_lines_vertex"
     ]
   ];
-  
+
   metil_editor_index_pipeline_render->vertex_lines = [
     metil->renderer_interface.renderer
     pipeline_add: [
@@ -80,7 +80,7 @@ void metil_editor_renderer_on_initialize(
       newFunctionWithName: @"metil_editor_vertex_lines_vertex"
     ]
   ];
-  
+
   metil_editor_index_pipeline_render->vertex_points = [
     metil->renderer_interface.renderer
     pipeline_add: [
@@ -92,7 +92,7 @@ void metil_editor_renderer_on_initialize(
       newFunctionWithName: @"metil_editor_vertex_points_vertex"
     ]
   ];
-  
+
   metil_editor_index_pipeline_render->vertex_triangles = [
     metil->renderer_interface.renderer
     pipeline_add: [

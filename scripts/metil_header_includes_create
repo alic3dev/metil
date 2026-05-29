@@ -8,7 +8,7 @@ metil_header_includes_create() {
   )/../include")
   local path_metil_header="${path_metil_include}/metil_all.h"
 
-  if [[ 
+  if [[
     -f "${path_metil_header}"
   ]] {
     rm "${path_metil_header}"

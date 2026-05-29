@@ -41,7 +41,7 @@ metil_status metil_mesh_export_raw(
       "wb"
     )
   );
-  
+
   if (
     file_export ==
     0x00
@@ -50,11 +50,11 @@ metil_status metil_mesh_export_raw(
       metil_status_error
     );
   }
-    
+
   unsigned char metil_file_type = (
     metil_file_type_mesh
   );
-  
+
   unsigned int length_buffer = (
     0x01 +
     sizeof(
@@ -72,28 +72,28 @@ metil_status metil_mesh_export_raw(
       struct math_c_vector3_float
     )
   );
-  
+
   unsigned char* buffer = (
     clic3_memory_allocate_raw(
       length_buffer
     )
   );
-  
+
   unsigned int index_buffer = (
     0x00
   );
-  
+
   buffer[
     index_buffer
   ] = (
     metil_file_type
   );
-  
+
   index_buffer = (
     index_buffer +
     0x01
   );
-  
+
   clic3_bytes_copy(
     (
       buffer +
@@ -104,14 +104,14 @@ metil_status metil_mesh_export_raw(
       unsigned int
     )
   );
-  
+
   index_buffer = (
     index_buffer +
     sizeof(
       unsigned int
     )
   );
-  
+
   clic3_bytes_copy(
     (
       buffer +
@@ -122,14 +122,14 @@ metil_status metil_mesh_export_raw(
       unsigned int
     )
   );
-  
+
   index_buffer = (
     index_buffer +
     sizeof(
       unsigned int
     )
   );
-  
+
   for (
     unsigned int index_index = (
       0x00
@@ -152,7 +152,7 @@ metil_status metil_mesh_export_raw(
         unsigned int
       )
     );
-    
+
     index_buffer = (
       index_buffer +
       sizeof(
@@ -160,7 +160,7 @@ metil_status metil_mesh_export_raw(
       )
     );
   }
-  
+
   for (
     unsigned int index_vertex = (
       0x00
@@ -183,7 +183,7 @@ metil_status metil_mesh_export_raw(
         struct math_c_vector4_float
       )
     );
-    
+
     index_buffer = (
       index_buffer +
       sizeof(
@@ -191,7 +191,7 @@ metil_status metil_mesh_export_raw(
       )
     );
   }
-  
+
   clic3_bytes_copy(
     (
       buffer +
@@ -202,28 +202,28 @@ metil_status metil_mesh_export_raw(
       struct math_c_vector3_float
     )
   );
-  
+
   index_buffer = (
     index_buffer +
     sizeof(
       struct math_c_vector3_float
     )
   );
-  
+
   fwrite(
     buffer,
     length_buffer,
     0x01,
     file_export
   );
-  
+
   clic3_memory_free_raw(
     buffer
   );
-    
+
   fclose(
     file_export
-  );  
+  );
 
   return (
     metil_status_success

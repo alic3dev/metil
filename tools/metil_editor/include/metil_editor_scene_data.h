@@ -11,7 +11,7 @@ struct metil_editor_scene_data {
   unsigned char movement_free;
 
   unsigned char mode;
-  
+
   char* path_export;
 };
 

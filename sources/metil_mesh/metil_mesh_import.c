@@ -19,7 +19,7 @@ metil_status metil_mesh_import(
       "rb"
     )
   );
-  
+
   if (
     file_import ==
     0x00
@@ -28,7 +28,7 @@ metil_status metil_mesh_import(
       metil_status_error
     );
   }
-  
+
   fseek(
     file_import,
     0x00,
@@ -40,17 +40,17 @@ metil_status metil_mesh_import(
       file_import
     )
   );
-  
+
   rewind(
     file_import
   );
-  
+
   unsigned char* buffer = (
     clic3_memory_allocate_raw(
       length_buffer
     )
   );
-  
+
   fread(
     buffer,
     length_buffer,
@@ -65,11 +65,11 @@ metil_status metil_mesh_import(
       length_buffer
     )
   );
-  
+
   clic3_memory_free_raw(
     buffer
   );
-  
+
   return (
     metil_status_import
   );
@@ -92,7 +92,7 @@ metil_status metil_mesh_import_parse(
       ) +
       sizeof(
         struct math_c_vector3_float
-      )  
+      )
     )
   ) {
     return (
@@ -103,7 +103,7 @@ metil_status metil_mesh_import_parse(
   unsigned int index_buffer = (
     0x00
   );
-  
+
   if (
     buffer[
       index_buffer
@@ -114,20 +114,20 @@ metil_status metil_mesh_import_parse(
       metil_status_error
     );
   }
-  
+
   index_buffer = (
     index_buffer +
     0x01
   );
-  
+
   unsigned int length_indices = (
     0x00
   );
-  
+
   unsigned int length_vertices = (
     0x00
   );
-  
+
   clic3_bytes_copy(
     &length_indices,
     (
@@ -138,14 +138,14 @@ metil_status metil_mesh_import_parse(
       unsigned int
     )
   );
-  
+
   index_buffer = (
     index_buffer +
     sizeof(
       unsigned int
     )
   );
-  
+
   clic3_bytes_copy(
     &length_vertices,
     (
@@ -156,14 +156,14 @@ metil_status metil_mesh_import_parse(
       unsigned int
     )
   );
-  
+
   index_buffer = (
     index_buffer +
     sizeof(
       unsigned int
     )
   );
-  
+
   if (
     length_buffer <
     (
@@ -188,15 +188,15 @@ metil_status metil_mesh_import_parse(
       metil_status_error
     );
   }
-  
+
   metil_mesh->length_indices = (
     length_indices
   );
-  
+
   metil_mesh->length_vertices = (
     length_vertices
   );
-  
+
   metil_mesh->indices = (
     clic3_memory_allocate_raw(
       sizeof(
@@ -205,7 +205,7 @@ metil_status metil_mesh_import_parse(
       metil_mesh->length_indices
     )
   );
-  
+
   metil_mesh->vertices = (
     clic3_memory_allocate_raw(
       sizeof(
@@ -214,7 +214,7 @@ metil_status metil_mesh_import_parse(
       metil_mesh->length_vertices
     )
   );
-  
+
   for (
     unsigned int index_index = (
       0x00
@@ -237,7 +237,7 @@ metil_status metil_mesh_import_parse(
         unsigned int
       )
     );
-    
+
     index_buffer = (
       index_buffer +
       sizeof(
@@ -245,7 +245,7 @@ metil_status metil_mesh_import_parse(
       )
     );
   }
-  
+
   for (
     unsigned int index_vertex = (
       0x00
@@ -268,7 +268,7 @@ metil_status metil_mesh_import_parse(
         struct math_c_vector4_float
       )
     );
-    
+
     index_buffer = (
       index_buffer +
       sizeof(
@@ -276,7 +276,7 @@ metil_status metil_mesh_import_parse(
       )
     );
   }
-  
+
   clic3_bytes_copy(
     &metil_mesh->size,
     (
@@ -287,7 +287,7 @@ metil_status metil_mesh_import_parse(
       struct math_c_vector3_float
     )
   );
-  
+
   return (
     metil_status_success
   );

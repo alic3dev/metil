@@ -34,7 +34,7 @@
       index_vertex
     ]
   );
-  
+
   data_vertex_basic_point_coloured.colour = (
     float4(
       data_object->colour.x,
@@ -47,7 +47,7 @@
   data_vertex_basic_point_coloured.brightness = (
     data_frame->brightness
   );
-  
+
   data_vertex_basic_point_coloured.size_point = (
     0x06
   );
