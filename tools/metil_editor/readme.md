@@ -18,7 +18,9 @@ metil_editor [?path_to_import_and_or_export]
 | `period` | add vertex |
 | `slash` | add index (index value of closest vertex index) |
 | `command`+`s` | export file (exports to first parameter provided to `metil_editor`) |
+| `command`+`shift`+`s` | export mesh source files (`%.c`\|`%.h`) |
 | `g`+`[xyz]` | toggle grid axis visibility |
 
 ## copyright|copyleft
+
 > © [copyright|copyleft]:alic3dev(2026)->{all_lefts_reserved|all_rights_reserved};
