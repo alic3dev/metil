@@ -16,6 +16,7 @@
 #include <metil_termination/metil_termination.h>
 #include <metil_text/metil_text_characters.h>
 #include <metil_text/metil_text_defaults.h>
+#include <metil_texture_store.h>
 
 struct metil;
 
@@ -40,6 +41,8 @@ struct metil {
   struct metil_player_defaults player_defaults;
   struct metil_text_characters text_characters_default;
   struct metil_text_defaults text_defaults;
+  
+  struct metil_texture_store texture_store;
 
   void* _Nullable data;
 

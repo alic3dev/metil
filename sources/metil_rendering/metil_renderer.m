@@ -187,6 +187,13 @@
     self
     descriptor_pipeline_render_initialize
   ];
+  
+  metil_texture_store_initialize(
+    &metil->texture_store,
+    metil->paths.directory_textures,
+    &metil->configuration.debug_log_level,
+    metil->renderer_interface.metal_device
+  );
 
   if (
     self->metil->renderer_on_initialize !=

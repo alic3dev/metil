@@ -8,6 +8,7 @@
 #include <metil_rendering/metil_renderer.h>
 #include <metil_scenes/metil_scene_controller.h>
 #include <metil_text/metil_text.h>
+#include <metil_texture_store.h>
 
 #include <clic3_memory.h>
 
@@ -91,6 +92,10 @@ void metil_destroy(
 
   metil_parameters_destroy(
     &metil->parameters
+  );
+  
+  metil_texture_store_destroy(
+    &metil->texture_store
   );
 
   if (

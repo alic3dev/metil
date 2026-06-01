@@ -19,6 +19,7 @@
 #include <metil_termination/metil_terminate_on_signal.h>
 #include <metil_text/metil_text.h>
 #include <metil_text/metil_text_defaults.h>
+#include <metil_texture_store.h>
 #include <metil_utilities/metil_time.h>
 
 #include <clic3_char_arrays.h>
@@ -145,6 +146,7 @@ int metil_initialize_with_parameters_with_data(
   metil.renderer_on_initialize = (
     metil_renderer_on_initialize_function
   );
+  
   metil.renderer_on_initialize_data = (
     metil_renderer_on_initialize_function_data
   );
