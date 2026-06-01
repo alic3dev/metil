@@ -2,8 +2,10 @@
   --colour_black: #000000;
   --colour_blue: #3065ff;
   --colour_grass: #10ff40;
-  --colour_one_o_one: #101101;
+  --colour_one_o_one: #011110;
   --colour_sky: #5582ff;
+  --colour_sky_bright: #75a2ff;
+  --colour_sky_dark: #3562ff;
   --colour_white: #ffffff;
 }
 
@@ -81,6 +83,30 @@ body::before {
   );
 
   z-index: -1;
+}
+
+a,
+a:visited,
+a:link {
+  color: var(
+    --colour_sky
+  );
+
+  text-decoration: none;
+
+  transition: 250ms ease-in-out color;
+}
+
+a:hover {
+  color: var(
+    --colour_sky_bright
+  );
+}
+
+a:active {
+  color: var(
+    --colour_sky_dark
+  );
 }
 
 #title {
@@ -189,11 +215,11 @@ code {
   background: var(
     --colour_white
   );
-  
+
   border: 1px solid var(
     --colour_black
   );
-  
+
   color: var(
     --colour_black
   );
@@ -247,13 +273,14 @@ footer::before {
   z-index: -1;
 }
 
-footer a {
+footer a,
+footer a:link,
+footer a:visited {
   color: var(
-    --colour_white
+    --colour_one_o_one
   );
 
   text-decoration: none;
   text-shadow: 1px 0px 1px var(
-    --colour_one_o_one
+    --colour_sky
   );
-}
