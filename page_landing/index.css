@@ -1,4 +1,5 @@
 :root {
+  --colour_black: #000000;
   --colour_blue: #3065ff;
   --colour_grass: #10ff40;
   --colour_one_o_one: #101101;
@@ -179,6 +180,23 @@ h2 + ul > li {
 
 h2 + ul > li:first-of-type {
   margin-top: 0;
+}
+
+code {
+  margin: 0px 2px;
+  padding: 4px;
+
+  background: var(
+    --colour_white
+  );
+  
+  border: 1px solid var(
+    --colour_black
+  );
+  
+  color: var(
+    --colour_black
+  );
 }
 
 footer {
