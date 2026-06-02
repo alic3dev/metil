@@ -22,7 +22,8 @@ void metil_texture_image_get_from_region_with_offsets(
   );
 
   if (
-    length_pixel_bytes_row != 0
+    length_pixel_bytes_row !=
+    0x00
   ) {
     *length_pixel_bytes_row = (
       value_length_pixel_bytes_row

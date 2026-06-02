@@ -4,23 +4,23 @@
 #include <metil_image/metil_image_type.h>
 
 enum metil_image_offset {
-  metil_image_offset_rgba_8_bytes = 4,
-  metil_image_offset_rgba_8_r = 0,
-  metil_image_offset_rgba_8_g = 1,
-  metil_image_offset_rgba_8_b = 2,
-  metil_image_offset_rgba_8_a = 3,
+  metil_image_offset_rgba_8_bytes  = 0x04,
+  metil_image_offset_rgba_8_r      = 0x00,
+  metil_image_offset_rgba_8_g      = 0x01,
+  metil_image_offset_rgba_8_b      = 0x02,
+  metil_image_offset_rgba_8_a      = 0x03,
 
-  metil_image_offset_bgra_8_bytes = 4,
-  metil_image_offset_bgra_8_r = 2,
-  metil_image_offset_bgra_8_g = 1,
-  metil_image_offset_bgra_8_b = 0,
-  metil_image_offset_bgra_8_a = 3,
+  metil_image_offset_bgra_8_bytes  = 0x04,
+  metil_image_offset_bgra_8_r      = 0x02,
+  metil_image_offset_bgra_8_g      = 0x01,
+  metil_image_offset_bgra_8_b      = 0x00,
+  metil_image_offset_bgra_8_a      = 0x03,
 
-  metil_image_offset_unknown_bytes = 1,
-  metil_image_offset_unknown_r = 0,
-  metil_image_offset_unknown_g = 0,
-  metil_image_offset_unknown_b = 0,
-  metil_image_offset_unknown_a = 0
+  metil_image_offset_unknown_bytes = 0x01,
+  metil_image_offset_unknown_r     = 0x00,
+  metil_image_offset_unknown_g     = 0x00,
+  metil_image_offset_unknown_b     = 0x00,
+  metil_image_offset_unknown_a     = 0x00
 };
 
 struct metil_image_offsets {
