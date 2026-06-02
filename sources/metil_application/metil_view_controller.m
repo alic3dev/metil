@@ -1,6 +1,7 @@
 #include <metil_application/metil_view_controller.h>
 
 #include <metil_application/metil_application.h>
+#include <metil_application/metil_application_mapping.h>
 #include <metil_application/metil_view.h>
 #include <metil_application/metil_window.h>
 #include <metil_rendering/metil_renderer.h>
@@ -54,6 +55,18 @@ metil_view_controller_on_view_did_load_function metil_view_controller_on_view_di
     0x01
   );
   #endif
+  
+  struct metil_application_mapping* metil_application_mapping = (
+    self->metil->application_mapping
+  );
+  
+  metil_application_mapping->view = (
+    view
+  );
+  
+  metil_application_mapping->view_controller = (
+    self
+  );
 
   renderer = [
     [
