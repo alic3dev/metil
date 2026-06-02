@@ -12,14 +12,29 @@ void metil_paths_initialize(
   char* directory_root,
   char* file_configuration
 ) {
-  metil_paths->length_directory_root = 0;
-  metil_paths->length_directory_home = 0;
+  metil_paths->length_directory_root = (
+    0x00
+  );
+  
+  metil_paths->length_directory_home = (
+    0x00
+  );
 
-  metil_paths->length_directory_configuration = 0;
-  metil_paths->length_directory_resources = 0;
-  metil_paths->length_directory_textures = 0;
+  metil_paths->length_directory_configuration = (
+    0x00
+  );
+  
+  metil_paths->length_directory_resources = (
+    0x00
+  );
+  
+  metil_paths->length_directory_textures = (
+    0x00
+  );
 
-  metil_paths->length_file_configuration = 0;
+  metil_paths->length_file_configuration = (
+    0x00
+  );
 
   metil_paths_directory_root_set(
     metil_paths,
@@ -48,30 +63,40 @@ void metil_paths_directory_root_set(
   struct metil_paths* metil_paths,
   char* directory_root
 ) {
-  unsigned int index_slash = 0;
+  unsigned int index_slash = (
+    0x00
+  );
 
   while (
     directory_root[
       metil_paths->length_directory_root
-    ] != '\0'
+    ] !=
+    '\0'
   ) {
     if (
       directory_root[
         metil_paths->length_directory_root
-      ] == '/'
+      ] ==
+      '/'
     ) {
-      index_slash = metil_paths->length_directory_root;
+      index_slash = (
+        metil_paths->length_directory_root
+      );
     }
 
     metil_paths->length_directory_root = (
-      metil_paths->length_directory_root + 1
+      metil_paths->length_directory_root +
+      0x01
     );
   }
 
   if (
-    index_slash < 2
+    index_slash <
+    0x02
   ) {
-    metil_paths->length_directory_root = 3;
+    metil_paths->length_directory_root = (
+      0x03
+    );
 
     metil_paths->directory_root = (
       clic3_memory_allocate_raw(
@@ -79,11 +104,28 @@ void metil_paths_directory_root_set(
       )
     );
 
-    metil_paths->directory_root[0] = '.';
-    metil_paths->directory_root[1] = '/';
-    metil_paths->directory_root[2] = '\0';
+    metil_paths->directory_root[
+      0x00
+    ] = (
+      '.'
+    );
+    
+    metil_paths->directory_root[
+      0x01
+    ] = (
+      '/'
+    );
+    
+    metil_paths->directory_root[
+      0x02
+    ] = (
+      '\0'
+    );
   } else {
-    metil_paths->length_directory_root = index_slash + 2;
+    metil_paths->length_directory_root = (
+      index_slash +
+      0x02
+    );
 
     metil_paths->directory_root = (
       clic3_memory_allocate_raw(
@@ -94,12 +136,18 @@ void metil_paths_directory_root_set(
     clic3_bytes_copy(
       metil_paths->directory_root,
       directory_root,
-      metil_paths->length_directory_root - 1
+      (
+        metil_paths->length_directory_root -
+        0x01
+      )
     );
 
     metil_paths->directory_root[
-      metil_paths->length_directory_root - 1
-    ] = '\0';
+      metil_paths->length_directory_root -
+      0x01
+    ] = (
+      '\0'
+    );
   }
 }
 
@@ -108,7 +156,9 @@ void metil_paths_directory_home_set(
 ) {
   metil_paths->directory_home = (
     clic3_char_arrays_concatenate(
-      getenv("HOME"),
+      getenv(
+        "HOME"
+      ),
       "/"
     )
   );
