@@ -26,6 +26,7 @@ typedef void (*metil_destroy_function)(
 );
 
 struct metil {
+  void* _Nonnull application_mapping;
   struct metil_audio_data audio;
   struct metil_configuration configuration;
   struct metil_initialization_parameters initialization_parameters;

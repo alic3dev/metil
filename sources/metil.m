@@ -1,5 +1,6 @@
 #include <metil.h>
 
+#include <metil_application/metil_application_mapping.h>
 #include <metil_audio/metil_audio.h>
 #include <metil_configuration/metil_configuration.h>
 #include <metil_parameters.h>
@@ -24,6 +25,14 @@ void metil_structure_initialize(
 
   metil_player_defaults_initialize(
     &metil->player_defaults
+  );
+  
+  metil->application_mapping = (
+    clic3_memory_allocate_raw(
+      sizeof(
+        struct metil_application_mapping
+      )
+    )
   );
 
   metil->scene_controller = (
@@ -111,6 +120,10 @@ void metil_destroy(
       metil
     );
   }
+  
+  clic3_memory_free_raw(
+    metil->application_mapping
+  );
 
   clic3_memory_free_raw(
     metil->scene_controller
