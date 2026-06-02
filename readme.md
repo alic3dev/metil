@@ -246,6 +246,7 @@ by default these are the configuration keys and values that `metil` parses for
 - `rendering_properties:colour_fps_display_g`: floating point value greater than or equal to `0.0f` and less than or equal to `1.0f`
 - `rendering_properties:colour_fps_display_b`: floating point value greater than or equal to `0.0f` and less than or equal to `1.0f`
 - `rendering_properties:colour_fps_display_a`: floating point value greater than or equal to `0.0f` and less than or equal to `1.0f`
+- `rendering_properties:display_sync`: integer value (`0`: unlock display sync, `1`: lock display sync)::defaults_to->{`1`};
 
 #### key_value_pair_format
 
@@ -271,6 +272,7 @@ rendering_properties:colour_fps_display_r->{0.923f};
 rendering_properties:colour_fps_display_g->{0.843f};
 rendering_properties:colour_fps_display_b->{0.114f};
 rendering_properties:colour_fps_display_a->{1.0f};
+rendering_properties:display_sync->{1};
 ```
 
 ### input
