@@ -11,8 +11,13 @@ void metil_scene_controller_initialize(
   struct metil* metil,
   struct metil_scene_controller* metil_scene_controller
 ) {
-  metil_scene_controller->length_on_scene_change = 0;
-  metil_scene_controller->length_after_scene_change = 0;
+  metil_scene_controller->length_on_scene_change = (
+    0x00
+  );
+  
+  metil_scene_controller->length_after_scene_change = (
+    0x00
+  );
 
   metil_scene_initialize(
     metil,
@@ -21,25 +26,25 @@ void metil_scene_controller_initialize(
 
   metil_scene_controller->on_scene_change = (
     clic3_memory_allocate_raw(
-      0
+      0x00
     )
   );
 
   metil_scene_controller->on_scene_change_data = (
     clic3_memory_allocate_raw(
-      0
+      0x00
     )
   );
 
   metil_scene_controller->after_scene_change = (
     clic3_memory_allocate_raw(
-      0
+      0x00
     )
   );
 
   metil_scene_controller->after_scene_change_data = (
     clic3_memory_allocate_raw(
-      0
+      0x00
     )
   );
 }
@@ -50,8 +55,13 @@ void metil_scene_controller_scene_change(
   int scene_id
 ) {
   for (
-    unsigned short int index_on_scene_change = 0;
-    index_on_scene_change < metil_scene_controller->length_on_scene_change;
+    unsigned short int index_on_scene_change = (
+      0x00
+    );
+    (
+      index_on_scene_change <
+      metil_scene_controller->length_on_scene_change
+    );
     ++index_on_scene_change
   ) {
     metil_scene_controller->on_scene_change[
@@ -66,8 +76,13 @@ void metil_scene_controller_scene_change(
   }
 
   for (
-    unsigned short int index_after_scene_change = 0;
-    index_after_scene_change < metil_scene_controller->length_after_scene_change;
+    unsigned short int index_after_scene_change = (
+      0x00
+    );
+    (
+      index_after_scene_change <
+      metil_scene_controller->length_after_scene_change
+    );
     ++index_after_scene_change
   ) {
     metil_scene_controller->after_scene_change[
@@ -89,7 +104,7 @@ void metil_scene_controller_on_scene_change_add(
 ) {
   metil_scene_controller->length_on_scene_change = (
     metil_scene_controller->length_on_scene_change +
-    1
+    0x01
   );
 
   clic3_memory_reallocate_raw(
@@ -113,12 +128,18 @@ void metil_scene_controller_on_scene_change_add(
   );
 
   metil_scene_controller->on_scene_change[
-    metil_scene_controller->length_on_scene_change - 1
-  ] = on_scene_change;
+    metil_scene_controller->length_on_scene_change -
+    0x01
+  ] = (
+    on_scene_change
+  );
 
   metil_scene_controller->on_scene_change_data[
-    metil_scene_controller->length_on_scene_change - 1
-  ] = on_scene_change_data;
+    metil_scene_controller->length_on_scene_change -
+    0x01
+  ] = (
+    on_scene_change_data
+  );
 }
 
 void metil_scene_controller_after_scene_change_add(
@@ -127,7 +148,8 @@ void metil_scene_controller_after_scene_change_add(
   void* after_scene_change_data
 ) {
   metil_scene_controller->length_after_scene_change = (
-    metil_scene_controller->length_after_scene_change + 1
+    metil_scene_controller->length_after_scene_change +
+    0x01
   );
 
   clic3_memory_reallocate_raw(
@@ -151,12 +173,18 @@ void metil_scene_controller_after_scene_change_add(
   );
 
   metil_scene_controller->after_scene_change[
-    metil_scene_controller->length_after_scene_change - 1
-  ] = after_scene_change;
+    metil_scene_controller->length_after_scene_change -
+    0x01
+  ] = (
+    after_scene_change
+  );
 
   metil_scene_controller->after_scene_change_data[
-    metil_scene_controller->length_after_scene_change - 1
-  ] = after_scene_change_data;
+    metil_scene_controller->length_after_scene_change -
+    0x01
+  ] = (
+    after_scene_change_data
+  );
 }
 
 void metil_scene_controller_destroy(
