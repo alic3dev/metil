@@ -340,6 +340,17 @@
   self->metil = _metil;
 }
 
+- (void) allow_recording {
+  self.sharingType = (
+    NSWindowSharingReadOnly
+  );
+}
+
+- (void) prevent_recording {
+  self.sharingType = (
+    NSWindowSharingNone
+  );}
+
 @end
 
 #endif
