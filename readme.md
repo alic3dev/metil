@@ -246,6 +246,7 @@ by default these are the configuration keys and values that `metil` parses for
 - `rendering_properties:colour_fps_display_g`: floating point value greater than or equal to `0.0f` and less than or equal to `1.0f`
 - `rendering_properties:colour_fps_display_b`: floating point value greater than or equal to `0.0f` and less than or equal to `1.0f`
 - `rendering_properties:colour_fps_display_a`: floating point value greater than or equal to `0.0f` and less than or equal to `1.0f`
+- `rendering_properties:display_sync`: integer value (`0`: unlock display sync, `1`: lock display sync`)::defaults_to->{`1`};
 
 #### key_value_pair_format
 
@@ -271,6 +272,7 @@ rendering_properties:colour_fps_display_r->{0.923f};
 rendering_properties:colour_fps_display_g->{0.843f};
 rendering_properties:colour_fps_display_b->{0.114f};
 rendering_properties:colour_fps_display_a->{1.0f};
+rendering_properties:display_sync->{1};
 ```
 
 ### input
@@ -447,6 +449,7 @@ after the vertex joint mapping is initialized then specific joints can be attach
 when you update the rotation of `metil_joint` you can propagate any changes to attached joints using `metil_joint_propagate` (this function should be used from the topmost joint otherwise translation and rotation values will be lost)
 
 during model polling these joints and their values are set within a `metal` buffer assigned to `metil_renderer_vertex_index_parameter_joints` mapped as `([position, rotation, translation])[id_joint]` (all joint indexes within this buffer are offset by 1 as `metil_model` creates a default joint with values set to `0.0f` for vertices to use as an `unattached` state value during calculations; if a vertex is set to a joint at index `0` on a model then the vertex joint map will have a value of `1`, this is something internal to `metil_model` which if using the standard functionality isn't something to concern yourself with unless your calculations within the vertex function require the value of the index of a specified joint)
+his is something internal to `metil_model` which if using the standard functionality isn't something to concern yourself with unless your calculations within the vertex function require the value of the index of a specified joint)
 
 vertex rendering functions then takes the buffer values from `metil_renderer_vertex_index_parameter_vertex_joint_map` and `metil_renderer_vertex_index_parameter_joints` to perform lookups to obtain the `position` `rotation` and `translation` values of any attached joints to then be applied to the `vertex` position
 
@@ -1359,4 +1362,3 @@ make target_device=iphone
 
 ## copyright|copyleft
 
-> © [copyleft|copyright]->{alic3dev(2025|2026)}:[all_rights_reserved|all_lefts_reserved]
