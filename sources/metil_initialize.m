@@ -161,6 +161,11 @@ int metil_initialize_with_parameters_with_data(
     ),
     name
   );
+  
+  metil_paths_foundation_initialize(
+    &metil.paths_foundation,
+    &metil.paths
+  );
 
   #if target_os_ios
   metil_configuration_initialize(
