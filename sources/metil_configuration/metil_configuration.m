@@ -236,7 +236,11 @@ unsigned char metil_configuration_load(
 
         int index_parameter = clic3_char_arrays_within(
           buffer_parameter,
+          #if !target_os_ios
           0x09,
+          #else
+          0x08,
+          #endif
           "audio:volume",
           "rendering_properties:brightness",
           "rendering_properties:brightness_text",
@@ -244,8 +248,11 @@ unsigned char metil_configuration_load(
           "rendering_properties:colour_fps_display_r",
           "rendering_properties:colour_fps_display_g",
           "rendering_properties:colour_fps_display_b",
-          "rendering_properties:colour_fps_display_a",
+          "rendering_properties:colour_fps_display_a"
+          #if !target_os_ios
+          ,
           "rendering_properties:display_sync"
+          #endif
         );
 
         switch (
@@ -506,6 +513,7 @@ unsigned char metil_configuration_load(
 
             break;
           }
+          #if !target_os_ios
           case 0x08: {
             int display_sync = (
               metil_configuration_value_int_parse(
@@ -537,6 +545,7 @@ unsigned char metil_configuration_load(
 
             break;
           }
+          #endif
         }
 
         clic3_memory_free_raw(

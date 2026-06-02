@@ -13,7 +13,9 @@
 #define metil_configuration_rendering_properties_default_colour_fps_display_z 0x01
 #define metil_configuration_rendering_properties_default_colour_fps_display_w 0x01
 
+#if !target_os_ios
 #define metil_configuration_rendering_properties_default_display_sync 0x01
+#endif
 
 struct metil_configuration_rendering_properties_defaults {
   float brightness;
@@ -22,7 +24,9 @@ struct metil_configuration_rendering_properties_defaults {
   unsigned char fps_display;
   struct math_c_vector4_float colour_fps_display;
   
+  #if !target_os_ios
   unsigned char display_sync;
+  #endif
 
   unsigned char initialized;
 };

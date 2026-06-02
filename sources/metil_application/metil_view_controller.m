@@ -112,6 +112,7 @@ metil_view_controller_on_view_did_load_function metil_view_controller_on_view_di
     layer
   );
   
+  #if !target_os_ios
   if (
     self->metil->configuration.rendering_properties.display_sync ==
     0x00
@@ -124,6 +125,7 @@ metil_view_controller_on_view_did_load_function metil_view_controller_on_view_di
       layer
     );
   }
+  #endif
         
   [
     view

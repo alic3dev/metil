@@ -31,9 +31,11 @@ void metil_configuration_rendering_properties_defaults_initialize(
     metil_configuration_rendering_properties_default_colour_fps_display_w
   );
   
+  #if !target_os_ios
   metil_configuration_rendering_properties_defaults->display_sync = (
     metil_configuration_rendering_properties_default_display_sync
   );
+  #endif
 
   metil_configuration_rendering_properties_defaults->initialized = (
     0x01
