@@ -6,6 +6,8 @@
 #include <metil_application/metil_window.h>
 #include <metil_rendering/metil_renderer.h>
 
+#include <QuartzCore/CAMetalLayer.h>
+
 metil_view_controller_on_view_did_load_function metil_view_controller_on_view_did_load = 0;
 
 @implementation metil_view_controller {
@@ -99,7 +101,16 @@ metil_view_controller_on_view_did_load_function metil_view_controller_on_view_di
   view.enableSetNeedsDisplay = (
     0x00
   );
-
+  
+  CAMetalLayer* layer = (
+    (CAMetalLayer*)
+    view.layer
+  );
+  
+  metil_application_mapping->layer = (
+    layer
+  );
+        
   [
     view
     draw
