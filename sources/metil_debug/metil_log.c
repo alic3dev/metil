@@ -17,12 +17,12 @@ void metil_debug_log(
       return;
     }
   }
-  
+
   metil_debug_log_print(
     stdout,
     buffer_output
   );
-}  
+}
 
 void metil_debug_log_parameters(
   unsigned char metil_debug_log_level,
@@ -41,20 +41,20 @@ void metil_debug_log_parameters(
       return;
     }
   }
-  
+
   va_list parameters;
 
   va_start(
     parameters,
     length_parameters
   );
-  
+
   metil_debug_log_print_parameters(
     stdout,
     format,
     parameters
   );
-  
+
   va_end(
     parameters
   );
@@ -75,12 +75,12 @@ void metil_debug_log_error(
       return;
     }
   }
-  
+
   metil_debug_log_print(
     stdout,
     buffer_output
   );
-}  
+}
 
 void metil_debug_log_parameters_error(
   unsigned char metil_debug_log_level,
@@ -94,20 +94,20 @@ void metil_debug_log_parameters_error(
   ) {
     return;
   }
-  
+
   va_list parameters;
 
   va_start(
     parameters,
     length_parameters
   );
-  
+
   metil_debug_log_print_parameters(
     stderr,
     format,
     parameters
   );
-  
+
   va_end(
     parameters
   );
@@ -133,5 +133,5 @@ void metil_debug_log_print_parameters(
    stream_output,
    format,
    parameters
- ); 
+ );
 }

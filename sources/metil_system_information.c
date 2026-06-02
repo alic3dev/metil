@@ -10,7 +10,7 @@ void metil_system_information_initialize(
   struct metil_configuration* metil_configuration
 ) {
   unsigned int count_cores_cpu;
-  
+
   unsigned long length_count_cores_cpu = (
     sizeof(
       unsigned int

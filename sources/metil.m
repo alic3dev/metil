@@ -72,7 +72,7 @@ void metil_destroy(
   metil_paths_destroy(
     &metil->paths
   );
-  
+
   metil_paths_foundation_destroy(
     &metil->paths_foundation
   );
@@ -98,7 +98,7 @@ void metil_destroy(
   metil_parameters_destroy(
     &metil->parameters
   );
-  
+
   metil_texture_store_destroy(
     &metil->texture_store
   );

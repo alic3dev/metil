@@ -14,7 +14,7 @@ void metil_paths_foundation_initialize(
     initWithUTF8String: (
       metil_paths->directory_textures
     )
-  ];    
+  ];
   metil_paths_foundation->url_directory_textures = [
     NSURL
     fileURLWithPath: (
@@ -23,17 +23,17 @@ void metil_paths_foundation_initialize(
     isDirectory: (
       0x01
     )
-  ]; 
-  
+  ];
+
   [
     metil_paths_foundation->string_directory_textures
     retain
   ];
-  
+
   [
     metil_paths_foundation->url_directory_textures
     retain
-  ]; 
+  ];
 }
 
 void metil_paths_foundation_destroy(
@@ -43,7 +43,7 @@ void metil_paths_foundation_destroy(
     metil_paths_foundation->string_directory_textures
     release
   ];
-  
+
   [
     metil_paths_foundation->url_directory_textures
     release

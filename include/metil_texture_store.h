@@ -12,11 +12,11 @@
 struct metil_texture_store {
   id<MTLTexture>* textures;
   unsigned int length_textures;
-  
+
   MTKTextureLoader* loader;
-  
+
   NSURL* url_directory_textures;
-  
+
   enum metil_debug_log_level* debug_log_level;
 };
 

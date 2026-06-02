@@ -187,7 +187,7 @@
     self
     descriptor_pipeline_render_initialize
   ];
-  
+
   metil_texture_store_initialize(
     &metil->texture_store,
     metil->paths_foundation.url_directory_textures,

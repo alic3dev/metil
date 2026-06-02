@@ -37,6 +37,5 @@ metil_status metil_mesh_export_source_raw(
   char*,
   char*
 );
-  
 
 #endif

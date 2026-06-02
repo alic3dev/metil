@@ -14,7 +14,7 @@ void metil_scene_controller_initialize(
   metil_scene_controller->length_on_scene_change = (
     0x00
   );
-  
+
   metil_scene_controller->length_after_scene_change = (
     0x00
   );

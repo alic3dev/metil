@@ -146,7 +146,7 @@ int metil_initialize_with_parameters_with_data(
   metil.renderer_on_initialize = (
     metil_renderer_on_initialize_function
   );
-  
+
   metil.renderer_on_initialize_data = (
     metil_renderer_on_initialize_function_data
   );
@@ -161,7 +161,7 @@ int metil_initialize_with_parameters_with_data(
     ),
     name
   );
-  
+
   metil_paths_foundation_initialize(
     &metil.paths_foundation,
     &metil.paths

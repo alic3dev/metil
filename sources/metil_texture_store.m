@@ -19,13 +19,13 @@ void metil_texture_store_initialize(
   metil_texture_store->length_textures = (
     0x00
   );
-  
+
   metil_texture_store->textures = (
     clic3_memory_allocate_raw(
       0x00
     )
   );
-  
+
   metil_texture_store->loader = [
     [
       MTKTextureLoader
@@ -35,14 +35,14 @@ void metil_texture_store_initialize(
       metal_device
     )
   ];
-  
+
   metil_texture_store->url_directory_textures = (
     url_directory_textures
   );
-  
+
   metil_texture_store->debug_log_level = (
     metil_debug_log_level
-  );  
+  );
 }
 
 void metil_texture_store_add(
@@ -58,7 +58,7 @@ void metil_texture_store_add(
     metil_texture_store->length_textures +
     length_textures
   );
-  
+
   clic3_memory_reallocate_raw(
     &metil_texture_store->textures,
     (
@@ -70,14 +70,14 @@ void metil_texture_store_add(
   );
 
   va_list textures;
-  
+
   va_start(
     textures,
     length_textures
   );
-  
+
   char* texture_path;
-  
+
   for (
     unsigned int index_texture = (
       0x00
@@ -94,11 +94,11 @@ void metil_texture_store_add(
         char*
       )
     );
-    
+
     NSError* error = (
       0x00
     );
-    
+
     NSString* texture_path_string = [
       [
         NSString
@@ -108,7 +108,7 @@ void metil_texture_store_add(
         texture_path
       )
     ];
-    
+
     NSURL* url_texture = [
       NSURL
       fileURLWithPath: (
@@ -121,12 +121,12 @@ void metil_texture_store_add(
         metil_texture_store->url_directory_textures
       )
     ];
-    
+
     [
       url_texture
       retain
-    ]; 
-    
+    ];
+
     id<MTLTexture> texture = [
       metil_texture_store->loader
       newTextureWithContentsOfURL: (
@@ -139,12 +139,12 @@ void metil_texture_store_add(
         error
       )
     ];
-    
+
     [
       texture_path_string
       release
     ];
-    
+
     if (
       error !=
       0x00
@@ -155,7 +155,7 @@ void metil_texture_store_add(
       ] = (
         0x00
       );
-      
+
       NSString* string_url = (
         url_texture.path
       );
@@ -176,16 +176,16 @@ void metil_texture_store_add(
         texture
       );
     }
-    
+
     [
       url_texture
       release
     ];
   }
-  
+
   va_end(
     textures
-  );  
+  );
 }
 
 void metil_texture_store_destroy(
@@ -208,11 +208,11 @@ void metil_texture_store_destroy(
       release
     ];
   }
-  
+
   clic3_memory_free_raw(
     metil_texture_store->textures
   );
-  
+
   [
     metil_texture_store->loader
     release

@@ -15,7 +15,7 @@ void metil_paths_initialize(
   metil_paths->length_directory_root = (
     0x00
   );
-  
+
   metil_paths->length_directory_home = (
     0x00
   );
@@ -23,11 +23,11 @@ void metil_paths_initialize(
   metil_paths->length_directory_configuration = (
     0x00
   );
-  
+
   metil_paths->length_directory_resources = (
     0x00
   );
-  
+
   metil_paths->length_directory_textures = (
     0x00
   );
@@ -109,13 +109,13 @@ void metil_paths_directory_root_set(
     ] = (
       '.'
     );
-    
+
     metil_paths->directory_root[
       0x01
     ] = (
       '/'
     );
-    
+
     metil_paths->directory_root[
       0x02
     ] = (

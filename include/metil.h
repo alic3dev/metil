@@ -43,7 +43,7 @@ struct metil {
   struct metil_player_defaults player_defaults;
   struct metil_text_characters text_characters_default;
   struct metil_text_defaults text_defaults;
-  
+
   struct metil_texture_store texture_store;
 
   void* _Nullable data;

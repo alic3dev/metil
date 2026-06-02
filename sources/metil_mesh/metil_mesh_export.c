@@ -258,7 +258,7 @@ metil_status metil_mesh_export_source_raw(
   struct math_c_vector3_float* size,
   char* name_mesh,
   char* path_file_export_c,
-  char* path_file_export_h  
+  char* path_file_export_h
 ) {
   FILE* file_export_c = (
     fopen(
@@ -266,7 +266,7 @@ metil_status metil_mesh_export_source_raw(
       "wb"
     )
   );
-  
+
   if (
     file_export_c ==
     0x00
@@ -275,14 +275,14 @@ metil_status metil_mesh_export_source_raw(
       metil_status_error
     );
   }
-  
+
   FILE* file_export_h = (
     fopen(
       path_file_export_h,
       "wb"
     )
   );
-  
+
   if (
     file_export_h ==
     0x00
@@ -290,7 +290,7 @@ metil_status metil_mesh_export_source_raw(
     fclose(
       file_export_c
     );
-    
+
     return (
       metil_status_error
     );
@@ -336,7 +336,7 @@ metil_status metil_mesh_export_source_raw(
     name_mesh,
     size->z
   );
-  
+
   for (
     unsigned int index_vertex = (
       0x00
@@ -395,7 +395,7 @@ metil_status metil_mesh_export_source_raw(
       ].w
     );
   }
-  
+
   for (
     unsigned int index_index = (
       0x00
@@ -421,7 +421,7 @@ metil_status metil_mesh_export_source_raw(
       ]
     );
   }
-  
+
   fprintf(
     file_export_c,
     "}\n"
@@ -448,11 +448,11 @@ metil_status metil_mesh_export_source_raw(
   fclose(
     file_export_c
   );
-  
+
   fclose(
     file_export_h
   );
-      
+
   return (
     metil_status_success
   );
