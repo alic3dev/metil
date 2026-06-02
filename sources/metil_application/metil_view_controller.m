@@ -1,6 +1,7 @@
 #include <metil_application/metil_view_controller.h>
 
 #include <metil_application/metil_application.h>
+#include <metil_application/metil_application_functions.h>
 #include <metil_application/metil_application_mapping.h>
 #include <metil_application/metil_view.h>
 #include <metil_application/metil_window.h>
@@ -110,6 +111,19 @@ metil_view_controller_on_view_did_load_function metil_view_controller_on_view_di
   metil_application_mapping->layer = (
     layer
   );
+  
+  if (
+    self->metil->configuration.rendering_properties.display_sync ==
+    0x00
+  ) {
+    metil_application_function_display_sync_unlock_raw(
+      layer
+    );  
+  } else {
+    metil_application_function_display_sync_lock_raw(
+      layer
+    );
+  }
         
   [
     view
