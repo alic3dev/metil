@@ -168,7 +168,11 @@ void metil_texture_store_add(
         texture
       );
     }
-  }  
+  }
+  
+  va_end(
+    textures
+  );  
 }
 
 void metil_texture_store_destroy(
