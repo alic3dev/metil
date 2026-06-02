@@ -34,6 +34,10 @@ void metil_structure_initialize(
       )
     )
   );
+  
+  metil_application_mapping_initialize(
+    metil->application_mapping
+  );
 
   metil->scene_controller = (
     clic3_memory_allocate_raw(
