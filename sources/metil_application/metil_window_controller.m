@@ -1,6 +1,7 @@
 #include <metil_application/metil_window_controller.h>
 
 #include <metil_application/metil_application.h>
+#include <metil_application/metil_application_mapping.h>
 #include <metil_application/metil_window.h>
 
 #if !target_os_ios
@@ -28,6 +29,18 @@
       metil_application_shared->metil
     )
   ];
+  
+  struct metil_application_mapping* metil_application_mapping = (
+    metil_application_shared->metil->application_mapping
+  );
+  
+  metil_application_mapping->window = (
+    _window
+  );
+  
+  metil_application_mapping->window_controller = (
+    self
+  );
 }
 
 @end
