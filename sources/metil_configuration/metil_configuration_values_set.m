@@ -4,5 +4,7 @@ void metil_configuration_values_set(
   struct metil* metil,
   struct metil_configuration* metil_configuration
 ) {
-  metil->audio.volume = metil_configuration->audio.volume;
+  metil->audio.volume = (
+    metil_configuration->audio.volume
+  );
 }

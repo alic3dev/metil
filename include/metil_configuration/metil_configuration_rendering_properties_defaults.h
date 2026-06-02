@@ -3,15 +3,17 @@
 
 #include <math_c_vector.h>
 
-#define metil_configuration_rendering_properties_default_brightness 1.0
-#define metil_configuration_rendering_properties_default_brightness_text 1.0
+#define metil_configuration_rendering_properties_default_brightness 0x01
+#define metil_configuration_rendering_properties_default_brightness_text 0x01
 
-#define metil_configuration_rendering_properties_default_fps_display 0
+#define metil_configuration_rendering_properties_default_fps_display 0x00
 
-#define metil_configuration_rendering_properties_default_colour_fps_display_x 1.0f
-#define metil_configuration_rendering_properties_default_colour_fps_display_y 1.0f
-#define metil_configuration_rendering_properties_default_colour_fps_display_z 1.0f
-#define metil_configuration_rendering_properties_default_colour_fps_display_w 1.0f
+#define metil_configuration_rendering_properties_default_colour_fps_display_x 0x01
+#define metil_configuration_rendering_properties_default_colour_fps_display_y 0x01
+#define metil_configuration_rendering_properties_default_colour_fps_display_z 0x01
+#define metil_configuration_rendering_properties_default_colour_fps_display_w 0x01
+
+#define metil_configuration_rendering_properties_default_display_sync 0x01
 
 struct metil_configuration_rendering_properties_defaults {
   float brightness;
@@ -19,6 +21,8 @@ struct metil_configuration_rendering_properties_defaults {
 
   unsigned char fps_display;
   struct math_c_vector4_float colour_fps_display;
+  
+  unsigned char display_sync;
 
   unsigned char initialized;
 };

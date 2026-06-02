@@ -4,7 +4,8 @@ void metil_configuration_rendering_properties_initialize(
   struct metil_configuration_rendering_properties* metil_configuration_rendering_properties
 ) {
   if (
-    metil_configuration_rendering_properties->defaults.initialized != 1
+    metil_configuration_rendering_properties->defaults.initialized !=
+    0x01
   ) {
     metil_configuration_rendering_properties_defaults_initialize(
       &metil_configuration_rendering_properties->defaults
@@ -37,5 +38,9 @@ void metil_configuration_rendering_properties_initialize(
 
   metil_configuration_rendering_properties->colour_fps_display.w = (
     metil_configuration_rendering_properties->defaults.colour_fps_display.w
+  );
+  
+  metil_configuration_rendering_properties->display_sync = (
+    metil_configuration_rendering_properties->defaults.display_sync
   );
 }
