@@ -4,6 +4,7 @@
 
 #include <QuartzCore/CAMetalLayer.h>
 
+#if !target_os_ios
 unsigned char metil_application_function_display_sync_get(
   struct metil_application_mapping* metil_application_mapping
 ) {
@@ -53,3 +54,4 @@ void metil_application_function_display_sync_unlock_raw(
     0x00
   );
 }
+#endif
