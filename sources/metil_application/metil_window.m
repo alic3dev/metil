@@ -349,7 +349,8 @@
 - (void) prevent_recording {
   self.sharingType = (
     NSWindowSharingNone
-  );}
+  );
+}
 
 @end
 
