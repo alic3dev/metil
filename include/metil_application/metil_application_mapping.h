@@ -15,8 +15,11 @@ struct metil_application_mapping {
   metil_application_delegate* application_delegate;
   metil_view* view;
   metil_view_controller* view_controller;
+  
+  #if !target_os_ios
   metil_window* window;
   metil_window_controller* window_controller;
+  #endif
   
   CAMetalLayer* layer;
 };  
