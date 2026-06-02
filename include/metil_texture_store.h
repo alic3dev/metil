@@ -3,6 +3,8 @@
 
 #include <metil_debug/metil_debug_log_level.h>
 
+#include <Foundation/NSURL.h>
+
 #include <Metal/MTLDevice.h>
 #include <Metal/MTLTexture.h>
 #include <MetalKit/MTKTextureLoader.h>
@@ -13,14 +15,14 @@ struct metil_texture_store {
   
   MTKTextureLoader* loader;
   
-  char* path_directory_textures;
+  NSURL* url_directory_textures;
   
   enum metil_debug_log_level* debug_log_level;
 };
 
 void metil_texture_store_initialize(
   struct metil_texture_store*,
-  char*,
+  NSURL*,
   enum metil_debug_log_level*,
   id<MTLDevice>
 );

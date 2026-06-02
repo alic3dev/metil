@@ -190,7 +190,7 @@
   
   metil_texture_store_initialize(
     &metil->texture_store,
-    metil->paths.directory_textures,
+    metil->paths_foundation.url_directory_textures,
     &metil->configuration.debug_log_level,
     metil->renderer_interface.metal_device
   );

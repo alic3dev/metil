@@ -12,7 +12,7 @@
 
 void metil_texture_store_initialize(
   struct metil_texture_store* metil_texture_store,
-  char* path_directory_textures,
+  NSURL* url_directory_textures,
   enum metil_debug_log_level* metil_debug_log_level,
   id<MTLDevice> metal_device
 ) {
@@ -36,8 +36,8 @@ void metil_texture_store_initialize(
     )
   ];
   
-  metil_texture_store->path_directory_textures = (
-    path_directory_textures
+  metil_texture_store->url_directory_textures = (
+    url_directory_textures
   );
   
   metil_texture_store->debug_log_level = (
@@ -107,31 +107,31 @@ void metil_texture_store_add(
       initWithUTF8String: (
         texture_path
       )
+    ];
+    
+    NSURL* url_texture = [
+      NSURL
+      fileURLWithPath: (
+        texture_path_string
+      )
+      isDirectory: (
+        0x00
+      )
+      relativeToURL: (
+        metil_texture_store->url_directory_textures
+      )
+    ];
+    
+    [
+      url_texture
+      retain
     ]; 
     
     id<MTLTexture> texture = [
       metil_texture_store->loader
-      newTextureWithContentsOfURL: [
-        NSURL
-        fileURLWithPath: (
-          texture_path_string
-        )
-        isDirectory: (
-          0x00
-        )
-        relativeToURL: [
-          NSURL
-          fileURLWithPath:[
-            NSString
-            stringWithUTF8String: (
-              metil_texture_store->path_directory_textures
-            )
-          ]
-          isDirectory: (
-            0x01
-          )
-        ]
-      ]
+      newTextureWithContentsOfURL: (
+        url_texture
+      )
       options: (
         0x00
       )
@@ -156,9 +156,17 @@ void metil_texture_store_add(
         0x00
       );
       
-      metil_debug_log_error(
+      NSString* string_url = (
+        url_texture.path
+      );
+                  metil_debug_log_parameters_error(
         *metil_texture_store->debug_log_level,
-        "failed_to_load_texture"
+        "failed_to_load_texture->{%s}\n",
+        0x01,
+        [
+          string_url
+          UTF8String
+        ]
       );
     } else {
       metil_texture_store->textures[
@@ -168,6 +176,11 @@ void metil_texture_store_add(
         texture
       );
     }
+    
+    [
+      url_texture
+      release
+    ];
   }
   
   va_end(
