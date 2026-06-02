@@ -8,6 +8,7 @@
 #include <metil_library.h>
 #include <metil_parameters.h>
 #include <metil_paths/metil_paths.h>
+#include <metil_paths/metil_paths_foundation.h>
 #include <metil_player/metil_player_defaults.h>
 #include <metil_rendering/metil_renderer_interface.h>
 #include <metil_rendering/metil_renderer_on_initialize.h>
@@ -32,6 +33,7 @@ struct metil {
   struct metil_library library;
   struct metil_parameters parameters;
   struct metil_paths paths;
+  struct metil_paths_foundation paths_foundation;
   struct metil_renderer_interface renderer_interface;
   struct metil_rendering_properties rendering_properties;
   void* _Nonnull scene_controller;

@@ -4,6 +4,7 @@
 #include <metil_configuration/metil_configuration.h>
 #include <metil_parameters.h>
 #include <metil_paths/metil_paths.h>
+#include <metil_paths/metil_paths_foundation.h>
 #include <metil_player/metil_player_defaults.h>
 #include <metil_rendering/metil_renderer.h>
 #include <metil_scenes/metil_scene_controller.h>
@@ -70,6 +71,10 @@ void metil_destroy(
 
   metil_paths_destroy(
     &metil->paths
+  );
+  
+  metil_paths_foundation_destroy(
+    &metil->paths_foundation
   );
 
   if (
