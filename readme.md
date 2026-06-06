@@ -101,8 +101,8 @@ otherwise individual header files can be included as such
 
 ### intialization
 
-- [macos] `metil_initialize`: must be called within your `main` function and it's value returned as the exit status code.
-- [ios] `metil_initialize`: must be called after `UIApplicationMain` and before `metil_renderer` initialization
+- [macos] [`metil_initialize`](include/metil_initialize.h): must be called within your `main` function and it's value returned as the exit status code.
+- [ios] [`metil_initialize`](include/metil_initialize.h): must be called after `UIApplicationMain` and before `metil_renderer` initialization
 - - `metil_view_controller`: `viewDidLoad` is a spot in between these two that can be tapped into using `metil_view_controller_on_view_did_load`
 - `metil->library`: must be initialized (`metil_library_initialize`) within the `metil_renderer_on_initialize_function` passed to `metil_initialize`
 - - `metil->library.library`: must be set to an instance of a `metal` library (`id<MTLLibrary>`)
@@ -216,23 +216,23 @@ void renderer_on_initialize(
 }
 ```
 
-## `metil`
+## [`metil`](include/metil.h)
 
 `metil` is a structure found within [include/metil.h](include/metil.h) which encapsulates `metil` and its required structures into a singular self contained structure
 
-### audio
+### `audio`
 
-`metil` stores audio data within `metil->audio`
+`metil` stores audio data within [`metil->audio`](include/metil_audio/metil_audio.h)
 
 this structure contains the attached audio_device as well as any io_procs that are set along with their data values
 
 also is a place to set the volume
 
-### configuration
+### `configuration`
 
 `metil` loads configuration files from `~/.config/${name}` during `metil_initialize`
 
-- `metil->configuration`:the_configuration_structure
+- [`metil->configuration`](include/metil_configuration/metil_configuration.h):the_configuration_structure
 
 #### key_value_pairs
 
@@ -275,37 +275,38 @@ rendering_properties:colour_fps_display_a->{1.0f};
 rendering_properties:display_sync->{1};
 ```
 
-### input
+### `input`
 
 `metil` polls input every render frame.
 use `delta` time values in any functionalities which handle input for proper input handling
 
-- `metil->input`
-- - `controller_state`:state_of_the_currently_attached_controller(`metil->input.controller`)
-- - `cursor`:state_of_the_cursor
-- - `keydown_map`:a_map_of_key_values_and_whether_they_are_held_down_or_not
+- [`metil->input`](include/metil_input/metil_input.h)
+- - [`controller_state`](include/metil_input/metil_controller_state.h):state_of_the_currently_attached_controller([`metil->input.controller`](include/metil_input/metil_controller.h))
+- - [`cursor`](include/metil_input/metil_cursor.h):state_of_the_cursor
+- - [`keydown_map`](include/metil_input/metil_input_map.h):a map of [`metil_keycodes`](include/metil_input/metil_keycodes.h) and whether they are held down or not
+- - [`touch`](include/metil_input/metil_touch.h):used for touch states and values on ios
 
-### library
+### `library`
 
-- `metil-library`:a_library_structure_which_houses_metal_libraries_and_default_fragment_and_vertex_functions
+- [`metil-library`](include/metil_library.h):a_library_structure_which_houses_metal_libraries_and_default_fragment_and_vertex_functions
 
-### paths
+### `paths`
 
-`metil->paths` is used to store path information about various locations commonly used by `metil` for loading resources
+[`metil->paths`](include/metil_paths/metil_paths.h) is used to store path information about various locations commonly used by `metil` for loading resources
 
-### renderer_interface
+### `renderer_interface`
 
-`metil->renderer_interface` stores the currently used `MTLDevice`, the `metil_renderer`, and the `size` of the viewport.
+[`metil->renderer_interface`](include/metil_rendering/metil_renderer_interface.h) stores the currently used `MTLDevice`, the `metil_renderer`, and the `size` of the viewport.
 this structure is used to interact more closely with the graphics device and the rendering pipeline
 
-### rendering_properties
+### `rendering_properties`
 
-`metil->rendering_properties` is a more high level way to interact with the graphical pipeline
-here you can set the rendering mode, change camera (`metil_camera`) settings, toggle fps display, set the brightness, or change the clear colour!
+[`metil->rendering_properties`](include/metil_rendering/metil_rendering_properties.h) is a more high level way to interact with the graphical pipeline
+here you can set the rendering mode, change camera (`metil_camera`) settings, toggle fps display, set the brightness, or change the clear colour
 
-### scene_controller
+### `scene_controller`
 
-`metil->scene_controller` is the standard way to interact with scenes within `metil`.
+[`metil->scene_controller`](include/metil_scenes/metil_scene_controller.h) is the standard way to interact with scenes within `metil`.
 
 note that the type is set to `void*` so to use this structure directly you will need to cast it to `struct metil_scene_controller*` and treat it as a pointer to aforementioned structure
 
@@ -316,10 +317,12 @@ struct metil_scene_controller* metil_scene_controller = (
 
 // get the scene
 struct metil_scene* metil_scene = &(
-    metil_scene_controller->scene
+  metil_scene_controller->scene
 );
 
-int identifier_scene = 1;
+int identifier_scene = (
+  0x01
+);
 
 // change the scene
 metil_scene_controller_scene_change(
@@ -329,17 +332,17 @@ metil_scene_controller_scene_change(
 );
 ```
 
-### system_information
+### `system_information`
 
-`metil->system_information` stores information about the system it is running on.
+[`metil->system_information`](include/metil_system_information.h) stores information about the system it is running on.
 
 currently this only contains the number of cpu cores which is then used to maximize multi-threading performance by creating threads spread evenly amongst the count of available cores.
 
 setting this value post-configuration will change the number of threads which are spawned during multi-threaded operations
 
-### termination
+### `termination`
 
-`metil->termination` is used to store procedures to be executed during termination of `metil` which can occur through various means such as user input, programatically, or signal interruption.
+[`metil->termination`](include/metil_termination/metil_termination.h) is used to store procedures to be executed during termination of `metil` which can occur through various means such as user input, programatically, or signal interruption.
 
 note that `metil` does not catch or handle any form of segmentation faults or similar, any termination or cleanup functions you have will not run if your program encounters an error
 
@@ -363,28 +366,33 @@ these properties on the `metil` structure aren't required but may be utilized if
 
 ## renderables
 
-`metil_renderable` is the standard way to render things within `metil` and is typically used through `metil_scene->renderables`
+[`metil_renderable`](include/metil_rendering/metil_renderable.h) is the standard way to render things within `metil` and is typically used through `metil_scene->renderables`
 
-- renderable_types
+- [`metil_renderable_type`](include/metil_rendering/metil_renderable_type.h)
 - - `metil_model`: multiple objects through one base model with `metil_joint` calculations
 - - `metil_object`: a singular object
 - - `metil_group`: a collection of renderables (useful to group renderables together in one location)
 
-### `metil_object`
+### [`metil_object`](include/metil_object/metil_object.h)
 
-`metil_object`s contain a `metil_mesh` (`mesh`) which stores raw vertices and indices data as well as `size`. this mesh then gets used as the basis for `metal` gpu accesiible buffer objects set on `metil_object` through `buffers_vertex` and `indices`
+- `metil_object`s contain a [`metil_mesh`](include/metil_mesh/metil_mesh.h) (`mesh`) which stores raw vertices and indices data as well as `size`
+- - this mesh then gets used as the basis for `metal` gpu accesiible buffer objects set on `metil_object` through `buffers_vertex` and `indices`
+- `buffers_fragment` is used to set buffers passed to fragment functions during rendering of the object- `buffers_vertex` is used to set buffers passed to vertex functions during rendering of the object
+- `textures` is used to set textures for fragment functions, the position of the `MTLTexture` within the fragment is according to its own index within the array
 
-`buffers_fragment` is used to set buffers passed to fragment functions during rendering of the object
-similiarly `buffers_vertex` is used to set buffers passed to vertex functions during rendering of the object
-`textures` is used to set textures for fragment functions, the position of the `MTLTexture` within the fragment is according to its own index within the array
+`buffers_fragment` and `buffers_vertex` are both arrays of [`metil_object_buffer`](include/metil_object/metil_object_buffer.h) structures 
 
-the process of settings `metal` buffers for gpu usage is simplified through `metil_object_buffers_initialize` which will automatically set vertex and indices buffers for you according to the data within `mesh` as well as initializing a `metil_renderer_data_object` as a vertex buffer which stores information such as `view_model_matrix_projection` which is used to transform and render coordinates of vertices relative to the objects position rotation, player position, viewport sizes, etc.
+- the process of settings `metal` buffers for gpu usage is simplified through `metil_object_buffers_initialize`
+- - creats and sets vertex and indices buffers for you according to the data within `mesh`
+- - initializes a [`metil_renderer_data_object`](include/metil_rendering/metil_renderer_data_object.h) as a vertex buffer which stores information such as `view_model_matrix_projection` which is used to transform and render vertices with applied object position rotation, player position, viewport sizes, etc.
 
-the standard way to render an objects position within a vertex function is
+the standard way to render an objects position within a vertex function is to multiply the `view_model_matrix_projection` on `metil_renderer_data_object` by the object
 
 ```metal
 struct data_vertex {
-  float4 position [[position]];
+  float4 position [[
+    position
+  ]];
 };
 
 [[vertex]] struct data_vertex standard_vertex_rendering_vertex(
@@ -403,30 +411,36 @@ struct data_vertex {
       metil_renderer_vertex_index_parameter_data_object
     )
   ]],
-  unsigned int id_vertex [[vertex_id]]
+  unsigned int index_vertex [[
+    vertex_id
+  ]]
 ) {
   struct data_vertex data_vertex;
 
   data_vertex.position = (
     data_object->view_model_matrix_projection *
     vertices[
-      id_vertex
+      index_vertex
     ]
   );
 
-  return data_vertex;
+  return (
+    data_vertex
+  );
 }
 ```
 
 `view_model_matrix_projection` is set for you through the default `metil_object_poll`
 
-specialized buffer allocation can be done through usage of `metil_object_buffers_initialize_with_data_size` which allocates the same buffers mentioned above but with a specified data size passed in as the last parameter. this will allow you to use custom structures instead of just the default `metil_renderer_data_object`
+buffer allocation of different structures can be done through usage of `metil_object_buffers_initialize_with_data_size` which allocates the same buffers mentioned above but with a specified data size passed in as the last parameter
+a `poll` function will need to be set to handle the differing structure otherwise the default function will cast contents of the data buffer as a `metil_renderer_data_object`
+you can also create the buffers manually by adding additional buffers to an object with `metil_object_buffers_add` then setting `buffer` to the result of a buffer creation function on an `MTLDevice`
 
-note that you will need to add a custom `poll` function to make sure some form of `view_model_matrix_projection` is set correctly within your custom structure in order to render vertices correctly
+another useful way to reduce resource allocation and increase performance for objects with shared data is to simply set `buffer` for a buffer on `metil_object` to the same `id` as as the `buffer` parameter on another `metil_object`s buffer  
+if doing so you will need to either set the `buffer` parameter to `0x00` during `destroy` or dealloate the specific memory addressing for that `metil_buffer` within the `metil_object` 
 
-you can also create the buffers manually once you are more aware of what you are doing and how this system works and interacts with itself
+### [`metil_group`](include/metil_group.h)
 
-### metil_group
 a group of renderables. useful for segmenting a section of renderables together as one group.
 
 ### [`metil_model`](include/metil_model/metil_model.h)
@@ -836,42 +850,61 @@ then set the pipelines for specific objects to change their default renderings
 ```obj-c
 struct metil_object* metil_object = &(
   metil_scene->renderables[
-    0
+    0x00
   ].renderable
 );
 
-metil_object->index_pipeline_render = pipeline_index_object;
+metil_object->index_pipeline_render = (
+  pipeline_index_object
+);
 
 metil_object = &(
   metil_scene->renderables[
-    1
+    0x01
   ].renderable
 );
 
-metil_object->index_pipeline_render = pipeline_index_text;
+metil_object->index_pipeline_render = (
+  pipeline_index_text
+);
 ```
 
 ## rendering text
 
-text rendering is a bit of convoluted process which can be simplified through the usage of `metil_object_text_initialize` as such
+text rendering can be simplified through the usage of [`metil_object_text`](include/metil_object/metil_object_text.h)
 
-```c
+`metil_object_text_initialize` can be used to render text using the default [`metil_text_render_parameters`](include/metil_text/metil_text_render_parameters.h)
+
+```obj-c
 metil_object_text_initialize(
   metil,
   metil_object,
+  "Example default text rendering::metil"
+);
+```
+
+which renders text using the default font/size (`Monaco 48px`) to a texture, allocates buffers, sets textures, sets vertices/indices as a square the size of the text
+
+`metil_object_text_initialize_with_parameters` can be used to render a text object with `metil_text_render_parameters` different from the default
+
+```obj-c
+metil_object_text_initialize_with_parameters(
+  metil,
+  metil_object,
+  metil_text_render_parameters,
   "Example text rendering::metil"
 );
 ```
 
-which renders text using the default font/size (`monospace 48px`) to a texture, allocates buffers, sets textures, sets vertices/indices as a square the size of the text
-
 [`metil_text`](sources/metil_text/metil_text.m) itself can be utilized for more specific renditions of text by passing specific render properties containing font information, colour spaces, sizes, and then utilizing glyph encoding and text image rendering to create textures to be stored in metal buffers for gpu access
 
-the size of text rendering does not correspond to it's displayed size of resolution but does however set the quality and scale of the text. The higher the initial `size` of text rendering the higher the quality of the font displayed, the actual size however is left up to the scaling factors of the renderer.
+the size of text rendering does not correspond to it's displayed size of resolution but does however set the quality and scale of the text
+the higher the initial `size` of text rendering the higher the quality of the font displayed, the actual size however is left up to the scaling factors of the renderer
 
-for example you can render a font at 10px but display it as 50% of the viewport, and you can also render a font at 100px but display it as 50% of the viewport, in both cases the actual size of the display of the font is the same but the quality of render is drastically different with the `10px` font rendering in a lower quality comparatively to the `100px` font. In essence, font size is nearly equivalent to font quality rather than displayed/percieved sizes.
-
-## audio
+for example you can render a font at 10px but display it as 50% of the viewport, and you can also render a font at 100px but display it as 50% of the viewport
+in both cases the actual size of the display of the font is the same but the quality of render is drastically different with the `10px` font rendering in a lower quality comparatively to the `100px` font
+font size is nearly equivalent to font quality rather than displayed/percieved sizes
+## [`metil_audio`](include/metil_audio/metil_audio.h)
 
 `metil` makes use of [`cer0`](https://github.com/alic3dev/cer0) for audio output
 
@@ -887,9 +920,9 @@ macos and ios require two different frameworks for audio output, macos requiring
 because of this the type definition of the io_procs is slightly different and can be conditionally set using the preprocessor macro `target_os_ios`
 
 the current channel can be obtained using a modulus operator on the index of the output buffer frame by the number of channels
-a stereo configuration would have the left channel as channel `0` and the right channel as `1`
+a stereo configuration would have the left channel as channel `0x00` and the right channel as `0x01`
 
-every io_proc gets passed a pointer to a `metil_audio_io_proc_data` structure which contains a property for a pointer to `metil` and a parameter `data` for whatever data was passed in using `metil_audio_io_proc_add_with_data` (if `metil_audio_io_proc_add` was used instead then the `data` property is `0`)
+every io_proc gets passed a pointer to a `metil_audio_io_proc_data` structure which contains a property for a pointer to `metil` and a parameter `data` for whatever data was passed in using `metil_audio_io_proc_add_with_data` (if `metil_audio_io_proc_add` was used instead then the `data` property is `0x00`)
 
 ```obj-c
 void io_proc_set(
@@ -1091,15 +1124,54 @@ OSStatus io_proc(
 #endif
 ```
 
+this can be reduced using macros provided by `metil` within [`metil_audio_io_proc`](include/metil_audio/metil_audio_io_proc.h)
+
+```obj-c
+#ifndef __audio_io_proc_macros_example_h
+#define __audio_io_proc_macros_example_h
+
+#include <metil_audio/metil_audio_io_proc.h>
+
+metil_audio_io_proc_macro_type(
+  audio_io_proc_example
+);
+
+#endif
+```
+
+```obj-c
+#include <metil.h>
+#include <metil_audio/metil_audio_io_proc.h>
+#include <metil_audio/metil_audio_io_proc_data.h>
+
+metil_audio_io_proc_macro_definition(
+  audio_io_proc_example
+) {
+  metil_audio_io_proc_macro_definition_initializer;
+
+  struct io_proc_data* io_proc_data = (
+    metil_audio_io_proc_data->data
+  );
+
+  metil_audio_io_proc_macro_definition_frame_loop {
+    metil_audio_io_proc_macro_definition_frame_set(
+      0x00
+    );
+  }
+
+  metil_audio_io_proc_macro_definition_return;
+}
+```
+
 ## units
 
 `metil` presupposes that 10 units is equivalent to 1 metre
 
 ## coordinates
 
-- `x` values go from left to right as `-1.0f` to `1.0f`
-- `y` values go from bottom to top as `-1.0f` to `1.0f`
-- `z` values go from front to back as `-1.0f` to `1.0f`
+- `x` values go from left to right as `-0x01` to `0x01`
+- `y` values go from bottom to top as `-0x01` to `0x01`
+- `z` values go from front to back as `-0x01` to `0x01`
 
 ```
      y +1.0  ^
@@ -1263,7 +1335,7 @@ viewport rotations are set via `scene_controller.scene.player.rotation`
 0.0   0.25 0.5 0.75 1.0
 ```
 
-## `metil_positioning`
+## [`metil_positioning`](include/metil_positioning.h)
 
 `metil_positioning` is an enumeration that can be set for `metil_object`s with the parameter `positioning`
 
@@ -1282,19 +1354,25 @@ viewport rotations are set via `scene_controller.scene.player.rotation`
 
 - `metil_rendering_properties_mode_default`: normal rendering
 - `metil_rendering_properties_mode_wireframe`: renders wireframes (requires `metil_library.function_[fragment|vertex]_wireframe` to be set)
+- `metil_rendering_properties_mode_wireframe_full`: renders triangle wireframes and uses the same render pipeline as would be used in default mode
 
 any combination of rendering mode flags may be set using `|` operators
 
 ```c
-// Enable wireframe rendering overtop of default rendering
+// render wireframes overtop default rendering
 metil_rendering_properties->mode = (
   metil_rendering_properties_mode_default |
   metil_rendering_properties_mode_wireframe
 );
 
-// Only render wireframes
+// render wireframes
 metil_rendering_properties->mode = (
   metil_rendering_properties_mode_wireframe
+);
+
+// render triangle wireframes
+metil->rendering_properties->mode = (
+  metil_rendering_properties_mode_wireframe_full
 );
 ```
 
@@ -1440,9 +1518,9 @@ make metil disable_metal_fast_options=1 target_device_version=26.1
 make target_device=iphone
 ```
 
-## tools
+## [`tools`](tools/)
 
-### [`metil_editor`](/tools/metil_editor)
+### [`metil_editor`](tools/metil_editor)
 
 `metil_editor`: a tool to edit `metil_mesh`s
 
@@ -1466,7 +1544,7 @@ make target_device=iphone
 |---|
 | <img width="295" height="639" alt="metil_ff_ios" src="https://github.com/user-attachments/assets/aaf3ac4e-e2dc-41e8-b306-663cc238ea83" /> |
 
-## examples
+## [`examples`](examples/)
 
 | [2d_rendering](examples/2d_rendering/) | [3d_rendering](examples/3d_rendering/) | [animation](examples/animation/) |
 |---|---|---|
