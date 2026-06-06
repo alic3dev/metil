@@ -613,7 +613,7 @@ struct data_vertex {
       metil_renderer_vertex_index_parameter_joints
     )
   ]],
-  unsigned int inexd_vertex [[
+  unsigned int index_vertex [[
     vertex_id
   ]]
 ) {
