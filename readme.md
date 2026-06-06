@@ -426,21 +426,20 @@ note that you will need to add a custom `poll` function to make sure some form o
 
 you can also create the buffers manually once you are more aware of what you are doing and how this system works and interacts with itself
 
-### metil_model
-
-`metil_model` is a collection of objects which get translations and rotations applied to them from the `metil_model` as well as from any attached `metil_joint` structures contained within the `metil_model`.
-
 ### metil_group
-
 a group of renderables. useful for segmenting a section of renderables together as one group.
 
-## metil_joint
+### [`metil_model`](include/metil_model/metil_model.h)
+
+`metil_model` is a collection of objects which get translations and rotations applied to them from the base `metil_model` as well as from any attached `metil_joint` structures contained within the `metil_model`
+
+## [`metil_joint`](include/metil_joint/metil_joint.h)
 
 `metil_joint` is a system of attached joint structures typically used through `metil_model`
 
 these joints have a position value which is then used to apply rotations/translations to any attached joints
 
-`metil_model` has functionality in place to handle most of this by default.
+`metil_model` has functionality in place to handle most of this by default
 
 joints are added to a model using `metil_model_joints_add_length`
 once all joints are added to a model then the vertex joint map should be initialized using `metil_model_vertex_joint_maps_initialize` which sets a `metal` buffer at the index of `metil_renderer_vertex_index_parameter_vertex_joint_map`
@@ -448,24 +447,32 @@ after the vertex joint mapping is initialized then specific joints can be attach
 
 when you update the rotation of `metil_joint` you can propagate any changes to attached joints using `metil_joint_propagate` (this function should be used from the topmost joint otherwise translation and rotation values will be lost)
 
-during model polling these joints and their values are set within a `metal` buffer assigned to `metil_renderer_vertex_index_parameter_joints` mapped as `([position, rotation, translation])[id_joint]` (all joint indexes within this buffer are offset by 1 as `metil_model` creates a default joint with values set to `0.0f` for vertices to use as an `unattached` state value during calculations; if a vertex is set to a joint at index `0` on a model then the vertex joint map will have a value of `1`, this is something internal to `metil_model` which if using the standard functionality isn't something to concern yourself with unless your calculations within the vertex function require the value of the index of a specified joint)
-
+during model polling these joints and their values are set within a `metal` buffer assigned to `metil_renderer_vertex_index_parameter_joints` mapped as `([position, rotation, translation])[index_joint]`
+all joint indexes within this buffer are offset by 1 as `metil_model` creates a default joint with values set to `0.0f` for vertices to use as an `unattached` state value during calculations; if a vertex is set to a joint at index `0` on a model then the vertex joint map will have a value of `1`
+this is something internal to `metil_model` which if using the standard functionality isn't something to concern yourself with unless your calculations within the vertex function require the value of the index of a specified joint)
 vertex rendering functions then takes the buffer values from `metil_renderer_vertex_index_parameter_vertex_joint_map` and `metil_renderer_vertex_index_parameter_joints` to perform lookups to obtain the `position` `rotation` and `translation` values of any attached joints to then be applied to the `vertex` position
 
-the following example shows how to create and attach joints within a metil model
+### `metil_joint`:example
 
-it first create 3 joints, attaches them from 0 to 1 to 2, attaches each object vertex to a specified joint based on the object index, then applies and propagates an `x` rotation of `0.1f` radians and a `y` rotation of `0.2f` radians from the first joint down to the last joint
+this example shows how to create and attach joints within a `metil_model` as well as how to render them with `metal`
 
 see [`examples/model`](examples/model) for further examples of how to utilize `metil_joint`
+#### `metil_joint`:example:initialization
 
-#### metil_joint_vertex.m
+##### `metil_joint_vertex.m`
+
+1. it first creates `0x03` `metil_joint`s
+2. attaches them from `0x00` to `0x01` to `0x02`
+3. attaches each `metil_object` vertex to a specified `metil_joint` based on the `metil_object` index within the `metil_model`
+4. then applies and propagates an `x` rotation of `0.1f` radians and a `y` rotation of `0.2f` radians from the first `metil_joint` down to the last `metil_joint`
+
 ```obj-c
 void metil_joint_vertex_example(
   struct metil_model* metil_model
 ) {
   metil_model_joints_add_length(
     metil_model,
-    3
+    0x03
   );
 
   metil_model_vertex_joint_maps_initialize(
@@ -473,15 +480,20 @@ void metil_joint_vertex_example(
   );
 
   for (
-    unsigned char index_joint = 1;
-    index_joint < metil_model->length_joints;
+    unsigned char index_joint = (
+      0x01
+    );
+    (
+      index_joint <
+      metil_model->length_joints
+    );
     ++index_joint
   ) {
     metil_joint_attach(
       &(
         metil_model->joints[
           index_joint -
-          1
+          0x01
         ]
       ),
       &(
@@ -493,8 +505,13 @@ void metil_joint_vertex_example(
   }
 
   for (
-    unsigned int index_object = 0;
-    index_object < metil_model->length_objects;
+    unsigned int index_object = (
+      0x00
+    );
+    (
+      index_object <
+      metil_model->length_objects
+    );
     ++index_object
   ) {
     struct metil_object* metil_object = (
@@ -504,14 +521,20 @@ void metil_joint_vertex_example(
     );
 
     for (
-      unsigned int index_vertex = 0;
-      index_vertex < metil_object->mesh.length_vertices;
+      unsigned int index_vertex = (
+        0x00
+      );
+      (
+        index_vertex <
+        metil_object->mesh.length_vertices
+      );
       ++index_vertex
     ) {
       metil_model_vertex_joint_attach(
         metil_model,
         index_object,
-        index_vertex, (
+        index_vertex,
+        (
           index_object %
           metil_model->length_joints
         )
@@ -521,7 +544,7 @@ void metil_joint_vertex_example(
 
   struct metil_joint* metil_joint = &(
     metil_model->joints[
-      0
+      0x00
     ]
   );
 
@@ -541,16 +564,27 @@ void metil_joint_vertex_example(
 }
 ```
 
-#### metil_joint_vertex.metal
+#### `metil_joint`:example:rendering
+
+there are two main ways to render vertices within a `metil_model` with attached `metil_joint`s
+
+- the easier and more straight forward way is to use `metil_model_object_position_calclulate` from [`metil_metal/metil_metal_model_object`](include/metil_metal/metil_metal_model_object.h)
+- - this will require `metil_metal_joint.metalar` and `metil_metal_model_object.metalar` to be included within the output `.metallib` file
+- the other option is to perform the calcluations within the `vertex` function itself
+
+##### `metil_joint_vertex.metal`
 
 ```metal
 #include <metil_joint/metil_joint_id_offset.h>
+#include <metil_metal/metil_metal_model_object.h>
 #include <metil_rendering/metil_renderer_data_frame.h>
 #include <metil_rendering/metil_renderer_vertex_index_parameter.h>
 #include <metil_rendering/metil_renderer_data_model_object.h>
 
 struct data_vertex {
-  float4 position [[position]];
+  float4 position [[
+    position
+  ]];
 };
 
 [[vertex]] struct data_vertex model_vertex(
@@ -579,29 +613,100 @@ struct data_vertex {
       metil_renderer_vertex_index_parameter_joints
     )
   ]],
-  unsigned int id_vertex [[vertex_id]]
+  unsigned int inexd_vertex [[
+    vertex_id
+  ]]
 ) {
   struct data_vertex data_vertex;
 
-  unsigned int id_joint = (
+  float4 position_vertex = (
+    metil_model_object_position_calclulate(
+      index_vertex,
+      &vertices[
+        index_vertex
+      ],
+      &data_object->position,
+      vertex_joint_map,
+      joints
+    )
+  );
+  
+  data_vertex.position = (
+    data_object->view_model_matrix_projection *
+    position_vertex
+  );
+
+  return (
+    data_vertex
+  );
+}
+```
+
+#@a### `metil_joint_vertex_calculations.metal`
+
+```metal
+#include <metil_joint/metil_joint_id_offset.h>
+#include <metil_rendering/metil_renderer_data_frame.h>
+#include <metil_rendering/metil_renderer_vertex_index_parameter.h>
+#include <metil_rendering/metil_renderer_data_model_object.h>
+
+struct data_vertex {
+  float4 position [[
+    position
+  ]];
+};
+
+[[vertex]] struct data_vertex model_vertex(
+  const device simd_float4* vertices [[
+    buffer(
+      metil_renderer_vertex_index_parameter_vertices
+    )
+  ]],
+  constant struct metil_renderer_data_frame* data_frame [[
+    buffer(
+      metil_renderer_vertex_index_parameter_data_frame
+    )
+  ]],
+  constant struct metil_renderer_data_model_object* data_object [[
+    buffer(
+      metil_renderer_vertex_index_parameter_data_object
+    )
+  ]],
+  constant unsigned int* vertex_joint_map [[
+    buffer(
+      metil_renderer_vertex_index_parameter_vertex_joint_map
+    )
+  ]],
+  constant struct math_c_vector3_float* joints [[
+    buffer(
+      metil_renderer_vertex_index_parameter_joints
+    )
+  ]],
+  unsigned int index_vertex [[
+    vertex_id
+  ]]
+) {
+  struct data_vertex data_vertex;
+
+  unsigned int index_joint = (
     vertex_joint_map[
-      id_vertex
+      index_vertex
     ] *
     metil_joint_id_offset_length
   );
 
   unsigned int id_joint_position = (
-    id_joint +
+    index_joint +
     metil_joint_id_offset_position
   );
 
   unsigned int id_joint_rotation = (
-    id_joint +
+    index_joint +
     metil_joint_id_offset_rotation
   );
 
-  unsigned int id_joint_translation = (
-    id_joint +
+  unsigned int index_joint_translation = (
+    index_joint +
     metil_joint_id_offset_translation
   );
 
@@ -630,26 +735,40 @@ struct data_vertex {
     data_object->position.x,
     data_object->position.y,
     data_object->position.z,
-    0.0f
+    0x00
   };
 
   float4 position_vertex_object_relation = (
-    vertices[id_vertex] +
+    vertices[
+      index_vertex
+    ] +
     position_object
   );
 
   float4 position_joint = {
-    joints[id_joint_position].x,
-    joints[id_joint_position].y,
-    joints[id_joint_position].z,
-    0.0f
+    joints[
+      id_joint_position
+    ].x,
+    joints[
+      id_joint_position
+    ].y,
+    joints[
+      id_joint_position
+    ].z,
+    0x00
   };
 
   float4 position_joint_translation = {
-    joints[id_joint_translation].x,
-    joints[id_joint_translation].y,
-    joints[id_joint_translation].z,
-    0.0f
+    joints[
+      id_joint_translation
+    ].x,
+    joints[
+      id_joint_translation
+    ].y,
+    joints[
+      id_joint_translation
+    ].z,
+    0x00
   };
 
   float4 position_vertex_object_relation_offset_joint_origin = (
@@ -674,7 +793,9 @@ struct data_vertex {
     position_vertex
   );
 
-  return data_vertex;
+  return (
+    data_vertex
+  );
 }
 ```
 
@@ -1360,5 +1481,3 @@ make target_device=iphone
 | <img width="1966" height="1250" alt="metil_example_meshes" src="https://github.com/user-attachments/assets/6c14ae47-90c3-4071-8386-3d5e7be20c38" /> | <img width="1966" height="1250" alt="metil_example_model" src="https://github.com/user-attachments/assets/bcc73a50-8853-4fe8-8e4c-c054b3623ff6" /> | |
 
 ## copyright|copyleft
-
-> © [copyleft|copyright]->{alic3dev(2025|2026)}:[all_rights_reserved|all_lefts_reserved]
