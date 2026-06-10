@@ -47,32 +47,70 @@ void metil_text_characters_initialize(
     )
   );
 
-  char character_array[2] = { 0, '\0' };
+  char character_array[
+    0x02
+  ] = {
+    0x00,
+    '\0'
+  };
 
   struct metil_text_render_parameters text_render_parameters = {
-    .font = metil_text_render_parameters->font,
-    .letter_width_style = metil_text_render_parameters_letter_width_style_fixed,
-    .letter_width = 30.0f,
-    .letter_spacing = 0.0f,
+    .font = (
+      metil_text_render_parameters->font
+    ),
+    .letter_width_style = (
+      metil_text_render_parameters_letter_width_style_fixed
+    ),
+    .letter_width = (
+      0x1e
+    ),
+    .letter_spacing = (
+      0x00
+    ),
     .padding = {
-      .x = 0.0f,
-      .y = 8.0f
+      .x = (
+        0x00
+      ),
+      .y = (
+        0x08
+      )
     },
-    .scale = 0.0005f
+    .scale = (
+      0.0005f
+    )
   };
 
   for (
-    unsigned char index_character = 0;
-    index_character < metil_text_characters_default->length_characters;
+    unsigned char index_character = (
+      0x00
+    );
+    (
+      index_character <
+      metil_text_characters_default->length_characters
+    );
     ++index_character
   ) {
     if (
-      index_character < ' ' ||
-      index_character > '~'
+      (
+        index_character <
+        ' '
+      ) ||
+      (
+        index_character >
+        '~'
+      )
     ) {
-      character_array[0] = ' ';
+      character_array[
+        0x00
+      ] = (
+        ' '
+      );
     } else {
-      character_array[0] = index_character;
+      character_array[
+        0x00
+      ] = (
+        index_character
+      );
     }
 
     metil_text_characters_default->textures[
@@ -91,7 +129,8 @@ void metil_text_characters_initialize(
 
     metil_text_characters_default->vertices[
       index_character
-    ] = [metal_device
+    ] = [
+      metal_device
       newBufferWithBytes: (
         metil_text_characters_default->meshes[
           index_character
@@ -105,19 +144,30 @@ void metil_text_characters_initialize(
           struct math_c_vector4_float
         )
       )
-      options: MTLResourceStorageModeShared
+      options: (
+        MTLResourceStorageModeShared
+      )
     ];
   }
 
-  metil_text_characters_default->indices = [metal_device
-    newBufferWithBytes: metil_text_characters_default->meshes[0].indices
+  metil_text_characters_default->indices = [
+    metal_device
+    newBufferWithBytes: (
+      metil_text_characters_default->meshes[
+        0x00
+      ].indices
+    )
     length: (
       sizeof(
         unsigned int
       ) *
-      metil_text_characters_default->meshes[0].length_indices
+      metil_text_characters_default->meshes[
+        0x00
+      ].length_indices
     )
-    options: MTLResourceStorageModeShared
+    options: (
+      MTLResourceStorageModeShared
+    )
   ];
 }
 
@@ -129,8 +179,13 @@ void metil_text_characters_destroy(
   );
 
   for (
-    unsigned char index_character = 0;
-    index_character < metil_text_characters_default->length_characters;
+    unsigned char index_character = (
+      0x00
+    );
+    (
+      index_character <
+      metil_text_characters_default->length_characters
+    );
     ++index_character
   ) {
     metil_mesh_destroy(

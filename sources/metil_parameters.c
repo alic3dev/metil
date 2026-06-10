@@ -22,7 +22,7 @@ void metil_parameters_initialize(
   );
 
   metil_parameters->length_parameters_proxied = (
-    1
+    0x01
   );
 
   metil_parameters->parameters_proxied = (
@@ -36,15 +36,16 @@ void metil_parameters_initialize(
 
   unsigned int length_parameter_entry_point = (
     clic3_char_array_length(
-      (char*) metil_parameters->parameters[
-        0
+      (char*)
+      metil_parameters->parameters[
+        0x00
       ]
     ) +
-    1
+    0x01
   );
 
   metil_parameters->parameters_proxied[
-    0
+    0x00
   ] = (
     clic3_memory_allocate_raw(
       length_parameter_entry_point
@@ -55,13 +56,13 @@ void metil_parameters_initialize(
     (
       (void*)
       metil_parameters->parameters_proxied[
-        0
+        0x00
       ]
     ),
     (
       (void*)
       metil_parameters->parameters[
-        0
+        0x00
       ]
     ),
     length_parameter_entry_point
@@ -72,8 +73,13 @@ void metil_parameters_destroy(
   struct metil_parameters* metil_parameters
 ) {
   for (
-    unsigned int index_parameter_proxied = 0;
-    index_parameter_proxied < metil_parameters->length_parameters_proxied;
+    unsigned int index_parameter_proxied = (
+      0x00
+    );
+    (
+      index_parameter_proxied <
+      metil_parameters->length_parameters_proxied
+    );
     ++index_parameter_proxied
   ) {
     clic3_memory_free_raw(

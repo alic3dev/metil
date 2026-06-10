@@ -21,21 +21,34 @@ int metil_audio_output_io_proc(
   );
 
   if (
-    metil->audio.muted == 1
+    metil->audio.muted ==
+    0x01
   ) {
     for (
-      unsigned int index_frame = 0;
-      index_frame < frame_count;
+      unsigned int index_frame = (
+        0x00
+      );
+      (
+        index_frame <
+        frame_count
+      );
       ++index_frame
     ) {
       for (
-        unsigned long int index_buffer = 0;
-        index_buffer < output_data->mNumberBuffers;
+        unsigned long int index_buffer = (
+          0x00
+        );
+        (
+          index_buffer <
+          output_data->mNumberBuffers
+        );
         ++index_buffer
       ) {
-        AudioBuffer audio_buffer_current = output_data->mBuffers[
-          index_buffer
-        ];
+        AudioBuffer audio_buffer_current = (
+          output_data->mBuffers[
+            index_buffer
+          ]
+        );
 
         float* buffer_out = (
           audio_buffer_current.mData
@@ -44,22 +57,33 @@ int metil_audio_output_io_proc(
         buffer_out[
           index_frame
         ] = (
-          0.0f
+          0x00
         );
       }
     }
 
-    return 0;
+    return (
+      0x00
+    );
   }
 
   struct metil_audio_io_proc_data metil_audio_io_proc_data = {
-    .metil = metil,
-    .data = 0
+    .metil = (
+      metil
+    ),
+    .data = (
+      0x00
+    )
   };
 
   for (
-    unsigned char index_io_proc = 0;
-    index_io_proc < metil->audio.length_io_procs;
+    unsigned char index_io_proc = (
+      0x00
+    );
+    (
+      index_io_proc <
+      metil->audio.length_io_procs
+    );
     ++index_io_proc
   ) {
     metil_audio_io_proc_data.data = (
@@ -68,36 +92,53 @@ int metil_audio_output_io_proc(
       ]
     );
 
-    OSStatus status_io_proc = metil->audio.io_procs[
-      index_io_proc
-    ](
-      silence,
-      timestamp,
-      frame_count,
-      output_data,
-      &metil_audio_io_proc_data
+    OSStatus status_io_proc = (
+      metil->audio.io_procs[
+        index_io_proc
+      ](
+        silence,
+        timestamp,
+        frame_count,
+        output_data,
+        &metil_audio_io_proc_data
+      )
     );
 
     if (
-      status_io_proc != 0
+      status_io_proc !=
+      0x00
     ) {
-      return status_io_proc;
+      return (
+        status_io_proc
+      );
     }
   }
 
   for (
-    unsigned int index_frame = 0;
-    index_frame < frame_count;
+    unsigned int index_frame = (
+      0x00
+    );
+    (
+      index_frame <
+      frame_count
+    );
     ++index_frame
   ) {
     for (
-      unsigned long int index_buffer = 0;
-      index_buffer < output_data->mNumberBuffers;
+      unsigned long int index_buffer = (
+        0x00
+      );
+      (
+        index_buffer <
+        output_data->mNumberBuffers
+      );
       ++index_buffer
     ) {
-      AudioBuffer audio_buffer_current = output_data->mBuffers[
-        index_buffer
-      ];
+      AudioBuffer audio_buffer_current = (
+        output_data->mBuffers[
+          index_buffer
+        ]
+      );
 
       float* buffer_out = (
         audio_buffer_current.mData
@@ -114,7 +155,9 @@ int metil_audio_output_io_proc(
     }
   }
 
-  return 0;
+  return (
+    0x00
+  );
 }
 
 #endif

@@ -10,15 +10,25 @@ void metil_image_initialize(
 ) {
   metil_image->data = (
     clic3_memory_allocate_raw(
-      0
+      0x00
     )
   );
 
-  metil_image->size.x = 0;
-  metil_image->size.y = 0;
+  metil_image->size.x = (
+    0x00
+  );
+  
+  metil_image->size.y = (
+    0x00
+  );
 
-  metil_image->length_row = 0;
-  metil_image->length = 0;
+  metil_image->length_row = (
+    0x00
+  );
+  
+  metil_image->length = (
+    0x00
+  );
 
   metil_image->offsets = (
     &metil_image_offsets_unknown

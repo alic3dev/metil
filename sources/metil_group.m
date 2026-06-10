@@ -9,16 +9,21 @@
 void metil_group_initialize(
   struct metil_group* metil_group
 ) {
-  metil_group->length = 0;
+  metil_group->length = (
+    0x00
+  );
 
   metil_group->renderables = (
     clic3_memory_allocate_raw(
-      0
+      metil_group->length *
+      sizeof(
+        struct metil_renderable*
+      )
     )
   );
 
   metil_group->visible = (
-    1
+    0x01
   );
 }
 
@@ -48,13 +53,12 @@ void metil_group_add_length_with_renderable_function(
       metil_group->length -
       length
     );
-    index_group_renderable < metil_group->length;
+    (
+      index_group_renderable <
+      metil_group->length
+    );
     ++index_group_renderable
   ) {
-    metil_group->renderables[
-      index_group_renderable
-    ] = 0;
-
     metil_group->renderables[
       index_group_renderable
     ] = (
@@ -80,7 +84,7 @@ void metil_group_allocate(
 ) {
   metil_group_allocate_length(
     metil_group,
-    1,
+    0x01,
     metil_renderable_type
   );
 }
@@ -104,7 +108,7 @@ void metil_group_add_initialize(
 ) {
   metil_group_add_length_initialize(
     metil_group,
-    1,
+    0x01,
     metil_renderable_type
   );
 }
@@ -173,7 +177,7 @@ void metil_group_add(
 ) {
   metil_group->length = (
     metil_group->length +
-    1
+    0x01
   );
 
   clic3_memory_reallocate_raw(
@@ -188,7 +192,7 @@ void metil_group_add(
 
   metil_group->renderables[
     metil_group->length -
-    1
+    0x01
   ] = (
     metil_renderable
   );
@@ -199,14 +203,20 @@ void metil_group_remove(
   struct metil_renderable* metil_renderable
 ) {
   for (
-    unsigned int index_renderable = 0;
-    index_renderable < metil_group->length;
+    unsigned int index_renderable = (
+      0x00
+    );
+    (
+      index_renderable <
+      metil_group->length
+    );
     ++index_renderable
   ) {
     if (
       metil_group->renderables[
         index_renderable
-      ] == metil_renderable
+      ] ==
+      metil_renderable
     ) {
       metil_group_remove_at_index(
         metil_group,
@@ -223,21 +233,29 @@ void metil_group_remove_at_index(
   unsigned int index_renderable_removal
 ) {
   for (
-    unsigned int index_renderable = index_renderable_removal;
-    index_renderable < metil_group->length - 1;
+    unsigned int index_renderable = (
+      index_renderable_removal
+    );
+    (
+      index_renderable <
+      (
+        metil_group->length -
+        0x01
+      )
+    );
     ++index_renderable
   ) {
     metil_group[
       index_renderable
     ] = metil_group[
       index_renderable +
-      1
+      0x01
     ];
   }
 
   metil_group->length = (
     metil_group->length -
-    1
+    0x01
   );
 
   clic3_memory_reallocate_raw(
@@ -257,14 +275,20 @@ void metil_group_destroy_renderable(
   struct metil_renderable* metil_renderable
 ) {
   for (
-    unsigned int index_renderable = 0;
-    index_renderable < metil_group->length;
+    unsigned int index_renderable = (
+      0x00
+    );
+    (
+      index_renderable <
+      metil_group->length
+    );
     ++index_renderable
   ) {
     if (
       metil_group->renderables[
         index_renderable
-      ] == metil_renderable
+      ] ==
+      metil_renderable
     ) {
       metil_group_destroy_renderable_at_index(
         metil,
@@ -290,21 +314,31 @@ void metil_group_destroy_renderable_at_index(
   );
 
   for (
-    unsigned int index_renderable = index_renderable_removal;
-    index_renderable < metil_group->length - 1;
+    unsigned int index_renderable = (
+      index_renderable_removal
+    );
+    (
+      index_renderable <
+      (
+        metil_group->length -
+        0x01
+      )
+    );
     ++index_renderable
   ) {
     metil_group->renderables[
       index_renderable
-    ] = metil_group->renderables[
-      index_renderable +
-      1
-    ];
+    ] = (
+      metil_group->renderables[
+        index_renderable +
+        0x01
+      ]
+    );
   }
 
   metil_group->length = (
     metil_group->length -
-    1
+    0x01
   );
 
   clic3_memory_reallocate_raw(
@@ -323,8 +357,13 @@ void metil_group_destroy(
   struct metil_group* metil_group
 ) {
   for (
-    unsigned int index_renderable = 0;
-    index_renderable < metil_group->length;
+    unsigned int index_renderable = (
+      0x00
+    );
+    (
+      index_renderable <
+      metil_group->length
+    );
     ++index_renderable
   ) {
     metil_renderable_destroy(

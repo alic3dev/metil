@@ -88,13 +88,14 @@ void metil_termination_on_function_remove(
     ++index_termination_on
   ) {
     if (
-      on == metil_termination->on_functions[
+      on ==
+      metil_termination->on_functions[
         index_termination_on
       ]
     ) {
       metil_termination->length_on_functions = (
         metil_termination->length_on_functions -
-        1
+        0x01
       );
 
       for (
@@ -109,17 +110,21 @@ void metil_termination_on_function_remove(
       ) {
         metil_termination->on_functions[
           index_termination_on_offset
-        ] = metil_termination->on_functions[
-          index_termination_on_offset +
-          0x01
-        ];
+        ] = (
+          metil_termination->on_functions[
+            index_termination_on_offset +
+            0x01
+          ]
+        );
 
         metil_termination->on_functions_data[
           index_termination_on_offset
-        ] = metil_termination->on_functions_data[
-          index_termination_on_offset +
-          0x01
-        ];
+        ] = (
+          metil_termination->on_functions_data[
+            index_termination_on_offset +
+            0x01
+          ]
+        );
       }
 
       clic3_memory_reallocate_raw(

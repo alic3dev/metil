@@ -11,11 +11,15 @@
 @implementation metil_window {}
 
 - (char) acceptsMouseMovedEvents {
-  return 1;
+  return (
+    0x01
+  );
 }
 
 - (char) canBecomeKeyWindow {
-  return 1;
+  return (
+    0x01
+  );
 }
 
 - (void) center_mouse {
@@ -39,7 +43,7 @@
       frame_window.origin.x +
       (
         frame_window.size.width /
-        2.0f
+        0x02
       )
     ),
     .y = (
@@ -48,7 +52,7 @@
         frame_window.origin.y +
         (
           frame_window.size.height /
-          2.0f
+          0x02
         )
       )
     )
@@ -149,7 +153,8 @@
           metil_keycode_shift_right
         ] = (
           0x00
-        );      }
+        );
+      }
       break;
     }
     case metil_keycode_option_left:
@@ -227,94 +232,190 @@
 }
 
 - (void) keyDown: (NSEvent*) event {
-  unsigned short int code_key = event.keyCode;
+  unsigned short int code_key = (
+    event.keyCode
+  );
 
   if (
-    event.keyCode < metil_input_map_keydown_length
+    event.keyCode <
+    metil_input_map_keydown_length
   ) {
     self->metil->input.keydown_map[
       code_key
-    ] = 1;
+    ] = (
+      0x01
+    );
   }
 }
 
 - (void) keyUp: (NSEvent*) event {
   if (
-    event.keyCode < metil_input_map_keydown_length
+    event.keyCode <
+    metil_input_map_keydown_length
   ) {
     self->metil->input.keydown_map[
       event.keyCode
-    ] = 0;
+    ] = (
+      0x00
+    );
   }
   if (
-    event.keyCode == metil_keycode_esc &&
-    self->metil->input.cursor.lockable == 1
+    (
+      event.keyCode ==
+      metil_keycode_esc
+    ) &&
+    (
+      self->metil->input.cursor.lockable ==
+      0x01
+    )
   ) {
-    self->metil->input.cursor.locked = 0;
+    self->metil->input.cursor.locked = (
+      0x00
+    );
 
-    [NSCursor unhide];
+    [
+      NSCursor
+      unhide
+    ];
   }
 }
 
 - (void) mouseDown: (NSEvent*) event {
-  self->metil->input.cursor.down = 1;
+  self->metil->input.cursor.down = (
+    0x01
+  );
 
-  self->metil->input.cursor.position_down_screen.x = NSEvent.mouseLocation.x;
-  self->metil->input.cursor.position_down_screen.y = NSEvent.mouseLocation.y;
+  self->metil->input.cursor.position_down_screen.x = (
+    NSEvent.mouseLocation.x
+  );
+  
+  self->metil->input.cursor.position_down_screen.y = (
+    NSEvent.mouseLocation.y
+  );
 
-  self->metil->input.cursor.position_down_window.x = event.locationInWindow.x;
-  self->metil->input.cursor.position_down_window.y = event.locationInWindow.y;
+  self->metil->input.cursor.position_down_window.x = (
+    event.locationInWindow.x
+  );
+  
+  self->metil->input.cursor.position_down_window.y = (
+    event.locationInWindow.y
+  );
 
-  self->metil->input.cursor.delta_down.x = event.deltaX;
-  self->metil->input.cursor.delta_down.y = event.deltaY;
+  self->metil->input.cursor.delta_down.x = (
+    event.deltaX
+  );
+  
+  self->metil->input.cursor.delta_down.y = (
+    event.deltaY
+  );
 
-  [self process_mouse_movement_event: event];
+  [
+    self
+    process_mouse_movement_event: (
+      event
+    )
+  ];
 
   if (
-    self->metil->input.cursor.lockable == 1 &&
-    self->metil->input.cursor.locked != 1
+    (
+      self->metil->input.cursor.lockable ==
+      0x01
+    ) &&
+    (
+      self->metil->input.cursor.locked !=
+      0x01
+    )
   ) {
-    self->metil->input.cursor.locked = 1;
+    self->metil->input.cursor.locked = (
+      0x01
+    );
 
-    self->metil->input.cursor.delta.x = 0;
-    self->metil->input.cursor.delta.y = 0;
+    self->metil->input.cursor.delta.x = (
+      0x00
+    );
+    
+    self->metil->input.cursor.delta.y = (
+      0x00
+    );
 
-    moved_after_lock = 0;
+    moved_after_lock = (
+      0x00
+    );
 
-    [NSCursor hide];
+    [
+      NSCursor
+      hide
+    ];
 
-    [self center_mouse];
+    [
+      self
+      center_mouse
+    ];
   }
 }
 
 - (void) mouseDragged: (NSEvent*) event {
-  self->metil->input.cursor.dragging = 1;
+  self->metil->input.cursor.dragging = (
+    0x01
+  );
 
-  [self process_mouse_movement_event: event];
+  [
+    self
+    process_mouse_movement_event: (
+      event
+    )
+  ];
 }
 
 - (void) mouseMoved: (NSEvent*) event {
-  [self process_mouse_movement_event: event];
+  [
+    self
+    process_mouse_movement_event: (
+      event
+    )
+  ];
 }
 
 - (void) mouseUp: (NSEvent*) event {
-  self->metil->input.cursor.down = 0;
-  self->metil->input.cursor.dragging = 0;
+  self->metil->input.cursor.down = (
+    0x00
+  );
+  
+  self->metil->input.cursor.dragging = (
+    0x00
+  );
 }
 
 - (void) process_mouse_movement_event: (NSEvent*) event {
-  self->metil->input.cursor.position_screen.x = NSEvent.mouseLocation.x;
-  self->metil->input.cursor.position_screen.y = NSEvent.mouseLocation.y;
+  self->metil->input.cursor.position_screen.x = (
+    NSEvent.mouseLocation.x
+  );
+  
+  self->metil->input.cursor.position_screen.y = (
+    NSEvent.mouseLocation.y
+  );
 
-  self->metil->input.cursor.position_window.x = event.locationInWindow.x;
-  self->metil->input.cursor.position_window.y = event.locationInWindow.y;
+  self->metil->input.cursor.position_window.x = (
+    event.locationInWindow.x
+  );
+  
+  self->metil->input.cursor.position_window.y = (
+    event.locationInWindow.y
+  );
 
   if (
-    self->metil->input.cursor.lockable == 1 &&
-    self->metil->input.cursor.locked == 1
+    (
+      self->metil->input.cursor.lockable ==
+      0x01
+    ) &&
+    (
+      self->metil->input.cursor.locked ==
+      0x01
+    )
   ) {
     if (
-      moved_after_lock == 2
+      moved_after_lock ==
+      0x02
     ) {
       self->metil->input.cursor.delta.x = (
         self->metil->input.cursor.delta.x +
@@ -328,16 +429,21 @@
     } else {
       moved_after_lock = (
         moved_after_lock +
-        1
+        0x01
       );
     }
 
-    [self center_mouse];
+    [
+      self
+      center_mouse
+    ];
   }
 }
 
 - (void) metil_set: (struct metil*) _metil {
-  self->metil = _metil;
+  self->metil = (
+    _metil
+  );
 }
 
 - (void) allow_recording {

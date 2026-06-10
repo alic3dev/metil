@@ -6,12 +6,19 @@ void metil_input_keydown_map_initialize(
   unsigned char* metil_input_keydown_map
 ) {
   for (
-    unsigned char index_keycode = 0;
-    index_keycode <= metil_keycode_max_value;
+    unsigned char index_keycode = (
+      0x00
+    );
+    (
+      index_keycode <=
+      metil_keycode_max_value
+    );
     ++index_keycode
   ) {
     metil_input_keydown_map[
       index_keycode
-    ] = 0;
+    ] = (
+      0x00
+    );
   }
 }

@@ -4,16 +4,19 @@ void metil_controller_initialize(
   struct metil_controller* metil_controller
 ) {
   metil_controller->controller = (
-    0
+    0x00
   );
 
   metil_controller->profile = (
-    0
+    0x00
   );
 };
 
 void metil_controller_poll(
   struct metil_controller* metil_controller
 ) {
-  metil_controller->controller = [GCController current];
+  metil_controller->controller = [
+    GCController
+    current
+  ];
 }

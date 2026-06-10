@@ -19,8 +19,18 @@ void metil_terminate_on_signal(
   metil_termination_terminate(
     &metil->termination
   );
-  exit(0);
+  exit(
+    0x00
+  );
   #else
-  [[NSApplication sharedApplication] terminate: 0];
+  [
+    [
+      NSApplication
+      sharedApplication
+    ]
+    terminate: (
+      0x00
+    )
+  ];
   #endif
 }

@@ -38,7 +38,7 @@ void metil_image_with_region_from_texture(
   );
 
   metil_image->data = (
-    0
+    0x00
   );
 
   metil_texture_image_region_get(

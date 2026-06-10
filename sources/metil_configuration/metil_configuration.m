@@ -60,10 +60,12 @@ unsigned char metil_configuration_load(
 
     status_configuration_load = (
       status_configuration_load +
-      1
+      0x01
     );
 
-    return status_configuration_load;
+    return (
+      status_configuration_load
+    );
   }
 
   unsigned int length_buffer = (
@@ -157,12 +159,45 @@ unsigned char metil_configuration_load(
         }
 
         if (
-          index_pointer == 0x00 ||
-          index_pointer + 0x05 >= length_buffer ||
-          buffer[index_pointer + 0x01] != '>' ||
-          buffer[index_pointer + 0x02] != '{' ||
-          buffer[length_buffer - 0x02] != '}' ||
-          buffer[length_buffer - 0x01] != ';'
+          (
+            index_pointer ==
+            0x00
+          ) ||
+          (
+            (
+              index_pointer +
+              0x05
+            ) >=
+            length_buffer
+          ) ||
+          (
+            buffer[
+              index_pointer +
+              0x01
+            ] !=
+            '>'
+          ) ||
+          (
+            buffer[
+              index_pointer +
+              0x02
+            ] !=
+            '{'
+          ) ||
+          (
+            buffer[
+              length_buffer -
+              0x02
+            ] !=
+            '}'
+          ) ||
+          (
+            buffer[
+              length_buffer -
+              0x01
+            ] !=
+            ';'
+          )
         ) {
           metil_debug_log_error(
             metil_configuration->debug_log_level,
@@ -600,15 +635,26 @@ int metil_configuration_value_int_parse(
 ) {
   int value_int;
 
-  unsigned char valid_parameter = clic3_char_array_to_int(
-    value,
-    &value_int
+  unsigned char valid_parameter = (
+    clic3_char_array_to_int(
+      value,
+      &value_int
+    )
   );
 
   if (
-    valid_parameter != 0x00 ||
-    value_int != 0x00 &&
-    value_int != 0x01
+    (
+      valid_parameter !=
+      0x00
+    ) ||
+    (
+      value_int !=
+      0x00
+    ) &&
+    (
+      value_int !=
+      0x01
+    )
   ) {
     metil_configuration_debug_log_parameter_invalid(
       metil_configuration,
@@ -641,8 +687,14 @@ float metil_configuration_value_float_parse(
   );
 
   if (
-    valid_parameter != 0x00 ||
-    value_float < 0x00
+    (
+      valid_parameter !=
+      0x00
+    ) ||
+    (
+      value_float <
+      0x00
+    )
   ) {
     metil_configuration_debug_log_parameter_invalid(
       metil_configuration,
@@ -665,24 +717,32 @@ void metil_configuration_debug_log_parameter_invalid(
   char* parameter,
   char* value
 ) {
-  char* message_debug_log_error_prefix = clic3_char_arrays_concatenate(
-    "invalid_configuration_value->{",
-    parameter
+  char* message_debug_log_error_prefix = (
+    clic3_char_arrays_concatenate(
+      "invalid_configuration_value->{",
+      parameter
+    )
   );
 
-  char* message_debug_log_error_split = clic3_char_arrays_concatenate(
-    message_debug_log_error_prefix,
-    ":"
+  char* message_debug_log_error_split = (
+    clic3_char_arrays_concatenate(
+      message_debug_log_error_prefix,
+      ":"
+    )
   );
 
-  char* message_debug_log_error_value = clic3_char_arrays_concatenate(
-    message_debug_log_error_split,
-    value
+  char* message_debug_log_error_value = (
+    clic3_char_arrays_concatenate(
+      message_debug_log_error_split,
+      value
+    )
   );
 
-  char* message_debug_log_error = clic3_char_arrays_concatenate(
-    message_debug_log_error_value,
-    "};\n"
+  char* message_debug_log_error = (
+    clic3_char_arrays_concatenate(
+      message_debug_log_error_value,
+      "};\n"
+    )
   );
 
   metil_debug_log_error(
@@ -709,4 +769,5 @@ void metil_configuration_debug_log_parameter_invalid(
 
 void metil_configuration_destroy(
   struct metil_configuration* metil_configuration
-) {}
+) {
+}

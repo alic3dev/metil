@@ -5,8 +5,13 @@
 void metil_audio_data_initialize(
   struct metil_audio_data* metil_audio_data
 ) {
-  metil_audio_data->muted = 1;
-  metil_audio_data->volume = 1.0f;
+  metil_audio_data->muted = (
+    0x01
+  );
+  
+  metil_audio_data->volume = (
+    0x01
+  );
 
   metil_io_proc_initialize(
     metil_audio_data

@@ -59,11 +59,11 @@
   );
 
   self->metil->input.touch.delta.x = (
-    0.0f
+    0x00
   );
 
   self->metil->input.touch.delta.y = (
-    0.0f
+    0x00
   );
 
   unsigned char length_touches = (

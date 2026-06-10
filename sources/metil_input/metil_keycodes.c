@@ -28,7 +28,7 @@ unsigned char metil_keycode_from_char_shift_required(
     case '>':
     case '?': {
       return (
-        1
+        0x01
       );
     }
     default: {
@@ -37,16 +37,22 @@ unsigned char metil_keycode_from_char_shift_required(
   }
 
   if (
-    character >= 'A' &&
-    character <= 'Z'
+    (
+      character >=
+      'A'
+    ) &&
+    (
+      character <=
+      'Z'
+    )
   ) {
     return (
-      1
+      0x01
     );
   }
 
   return (
-    0
+    0x00
   );
 }
 

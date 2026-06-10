@@ -48,12 +48,35 @@ void metil_camera_initialize(
     10000.0f
   );
 
-  metil_camera->matrix_viewport_projection = (simd_float4x4) {{
-    { 0x01, 0x00, 0x00,  0x00 },
-    { 0x00, 0x01, 0x00,  0x00 },
-    { 0x00, 0x00, 0x01, -0x01 },
-    { 0x00, 0x00, 0x00,  0x01 }
-  }};
+  metil_camera->matrix_viewport_projection = (
+    (matrix_float4x4)
+    {{
+      {
+        0x01,
+        0x00,
+        0x00, 
+        0x00
+      },
+      {
+        0x00,
+        0x01,
+        0x00, 
+        0x00
+      },
+      {
+        0x00,
+        0x00,
+        0x01,
+        -0x01
+      },
+      {
+        0x00,
+        0x00,
+        0x00,
+        0x01
+      }
+    }}
+  );
 }
 
 void metil_camera_ratio_aspect_set(

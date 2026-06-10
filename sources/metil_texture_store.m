@@ -159,7 +159,8 @@ void metil_texture_store_add(
       NSString* string_url = (
         url_texture.path
       );
-                  metil_debug_log_parameters_error(
+      
+      metil_debug_log_parameters_error(
         *metil_texture_store->debug_log_level,
         "failed_to_load_texture->{%s}\n",
         0x01,

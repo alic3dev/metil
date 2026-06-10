@@ -28,10 +28,18 @@ void metil_texture_brightness_linear(
 
   [
     mtl_texture
-    replaceRegion: mtl_region
-    mipmapLevel: 0x00
-    withBytes: metil_image.data
-    bytesPerRow: metil_image.length_row
+    replaceRegion: (
+      mtl_region
+    )
+    mipmapLevel: (
+      0x00
+    )
+    withBytes: (
+      metil_image.data
+    )
+    bytesPerRow: (
+      metil_image.length_row
+    )
   ];
 
   metil_image_destroy(

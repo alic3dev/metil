@@ -42,10 +42,18 @@ void metil_texture_image_get_from_region_with_offsets(
 
   [
     texture
-    getBytes: *pixel_bytes
-    bytesPerRow: value_length_pixel_bytes_row
-    fromRegion: *mtl_region
-    mipmapLevel: 0x00
+    getBytes: (
+      *pixel_bytes
+    )
+    bytesPerRow: (
+      value_length_pixel_bytes_row
+    )
+    fromRegion: (
+      *mtl_region
+    )
+    mipmapLevel: (
+      0x00
+    )
   ];
 }
 

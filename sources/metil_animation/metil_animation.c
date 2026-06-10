@@ -5,9 +5,17 @@
 void metil_animation_initialize(
   struct metil_animation* metil_animation
 ) {
-  metil_animation->start = 0;
-  metil_animation->poll = 0;
-  metil_animation->end = 0;
+  metil_animation->start = (
+    0x00
+  );
+  
+  metil_animation->poll = (
+    0x00
+  );
+  
+  metil_animation->end = (
+    0x00
+  );
 
   metil_animation->direction = (
     metil_animation_direction_forwards
@@ -22,10 +30,12 @@ void metil_animation_initialize(
   );
 
   metil_animation->length = (
-    1000
+    0x03e8
   );
 
-  metil_animation->data = 0;
+  metil_animation->data = (
+    0x00
+  );
 }
 
 void metil_animation_start(
@@ -38,7 +48,8 @@ void metil_animation_start(
   );
 
   if (
-    metil_animation->start != 0
+    metil_animation->start !=
+    0x00
   ) {
     metil_animation->start(
       metil_animation,
@@ -57,7 +68,6 @@ void metil_animation_poll(
   enum metil_renderable_type metil_renderable_type,
   void* metil_renderable
 ) {
-
   switch (
     metil_animation->state
   ) {
@@ -97,11 +107,13 @@ void metil_animation_poll(
     (float) metil_stopwatch_elapsed(
       &metil_animation->stopwatch
     ) /
-    (float) metil_animation->length
+    (float)
+    metil_animation->length
   );
 
   if (
-    percentage_complete >= 1.0f
+    percentage_complete >=
+    0x01
   ) {
     metil_animation_end(
       metil_animation,
@@ -109,13 +121,14 @@ void metil_animation_poll(
       metil_renderable
     );
   } else if (
-    metil_animation->poll != 0
+    metil_animation->poll !=
+    0x00
   ) {
     if (
       metil_animation->direction == metil_animation_direction_backwards
     ) {
       percentage_complete = (
-        1.0f -
+        0x01 -
         percentage_complete
       );
     }
@@ -135,7 +148,8 @@ void metil_animation_end(
   void* metil_renderable
 ) {
   if (
-    metil_animation->end != 0
+    metil_animation->end !=
+    0x00
   ) {
     metil_animation->end(
       metil_animation,
@@ -145,7 +159,8 @@ void metil_animation_end(
   }
 
   if (
-    metil_animation->loops == metil_animation_loop_none
+    metil_animation->loops ==
+    metil_animation_loop_none
   ) {
     metil_animation->state = (
       metil_animation_state_complete
@@ -154,7 +169,8 @@ void metil_animation_end(
     (
       metil_animation->loops &
       metil_animation_loop_loops
-    ) != 0
+    ) !=
+    0x00
   ) {
     metil_animation->state = (
       metil_animation_state_restarting
@@ -169,7 +185,8 @@ void metil_animation_end(
       )
     ) {
       metil_animation->direction = (
-        metil_animation->direction ^ 0xff
+        metil_animation->direction ^
+        0xff
       );
     }
 

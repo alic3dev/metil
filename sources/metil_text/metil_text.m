@@ -21,6 +21,7 @@ CGGlyph* metil_text_glyphs_encode(
   struct metil_configuration* metil_configuration
 ) {
   static CGGlyph* glyphs;
+  
   glyphs = (
     clic3_memory_allocate_raw(
       sizeof(
@@ -35,15 +36,22 @@ CGGlyph* metil_text_glyphs_encode(
   ];
 
   for (
-    unsigned int index_character = 0;
-    index_character < length_characters;
+    unsigned int index_character = (
+      0x00
+    );
+    (
+      index_character <
+      length_characters
+    );
     ++index_character
   ) {
     characters_unicode[
       index_character
-    ] = characters[
-      index_character
-    ];
+    ] = (
+      characters[
+        index_character
+      ]
+    );
   }
 
   unsigned char status_glyphs = (
@@ -55,7 +63,10 @@ CGGlyph* metil_text_glyphs_encode(
     )
   );
 
-  if (!status_glyphs) {
+  if (
+    status_glyphs ==
+    0x00
+  ) {
     char* message_debug_log_error = (
       clic3_char_arrays_concatenate(
         "failed:encode_glyphs->{",
@@ -88,7 +99,7 @@ CGGlyph* metil_text_glyphs_encode(
     );
 
     return (
-      0
+      0x00
     );
   }
 
@@ -102,8 +113,10 @@ struct metil_text_image* metil_text_render(
   struct metil_text_render_parameters* metil_text_render_parameters,
   struct metil_configuration* metil_configuration
 ) {
-  unsigned int length_characters = clic3_char_array_length(
-    characters
+  unsigned int length_characters = (
+    clic3_char_array_length(
+      characters
+    )
   );
 
   CGGlyph* glyphs = (
@@ -116,9 +129,12 @@ struct metil_text_image* metil_text_render(
   );
 
   if (
-    glyphs == 0
+    glyphs ==
+    0x00
   ) {
-    return 0;
+    return (
+      0x00
+    );
   }
 
   CGRect bounding_box_glyphs[
@@ -151,17 +167,26 @@ struct metil_text_image* metil_text_render(
     metil_text_render_parameters->padding.x
   );
 
-  text_image->size.y = 0;
+  text_image->size.y = (
+    0x00
+  );
 
-  float spacing_width_maximum = 0;
+  float spacing_width_maximum = (
+    0x00
+  );
 
   if (
     metil_text_render_parameters->letter_width_style ==
     metil_text_render_parameters_letter_width_style_maximum
   ) {
     for (
-      unsigned int index_glyph = 0;
-      index_glyph < length_characters;
+      unsigned int index_glyph = (
+        0x00
+      );
+      (
+        index_glyph <
+        length_characters
+      );
       ++index_glyph
     ) {
       float width_glyph = (
@@ -171,7 +196,8 @@ struct metil_text_image* metil_text_render(
       );
 
       if (
-        width_glyph > spacing_width_maximum
+        width_glyph >
+        spacing_width_maximum
       ) {
         spacing_width_maximum = (
           width_glyph
@@ -181,8 +207,13 @@ struct metil_text_image* metil_text_render(
   }
 
   for (
-    unsigned int index_glyph = 0;
-    index_glyph < length_characters;
+    unsigned int index_glyph = (
+      0x00
+    );
+    (
+      index_glyph <
+      length_characters
+    );
     ++index_glyph
   ) {
     positions_glyphs[
@@ -197,7 +228,9 @@ struct metil_text_image* metil_text_render(
       metil_text_render_parameters->padding.y
     );
 
-    unsigned short int spacing_width = 0;
+    unsigned short int spacing_width = (
+      0x00
+    );
 
     switch (
       metil_text_render_parameters->letter_width_style
@@ -231,7 +264,8 @@ struct metil_text_image* metil_text_render(
       }
       case metil_text_render_parameters_letter_width_style_fixed: {
         spacing_width = (
-          (float) metil_text_render_parameters->letter_width
+          (float)
+          metil_text_render_parameters->letter_width
         );
 
         positions_glyphs[
@@ -298,15 +332,21 @@ struct metil_text_image* metil_text_render(
   );
 
   if (
-    text_image->size.x == 0.0f
+    text_image->size.x ==
+    0x00
   ) {
-    text_image->size.x = 1.0f;
+    text_image->size.x = (
+      0x01
+    );
   }
 
   if (
-    text_image->size.y == 0.0f
+    text_image->size.y ==
+    0x00
   ) {
-    text_image->size.y = 1.0f;
+    text_image->size.y = (
+      0x01
+    );
   }
 
   if (
@@ -317,7 +357,7 @@ struct metil_text_image* metil_text_render(
     text_image->size.x = (
       (unsigned int)
       text_image->size.x +
-      1
+      0x01
     );
   }
 
@@ -329,12 +369,12 @@ struct metil_text_image* metil_text_render(
     text_image->size.y = (
       (unsigned int)
       text_image->size.y +
-      1
+      0x01
     );
   }
 
   unsigned int length_text_image_data = (
-    4 *
+    0x04 *
     text_image->size.x *
     text_image->size.y
   );
@@ -346,24 +386,59 @@ struct metil_text_image* metil_text_render(
   );
 
   for (
-    unsigned int index_pixel = 0;
-    index_pixel < length_text_image_data;
-    index_pixel = index_pixel + 4
+    unsigned int index_pixel = (
+      0x00
+    );
+    (
+      index_pixel <
+      length_text_image_data
+    );
+    index_pixel = (
+      index_pixel +
+      0x04
+    )
   ) {
-    unsigned char value = 0;
+    unsigned char value = (
+      0x00
+    );
 
-    text_image->data[index_pixel] = value;
-    text_image->data[index_pixel + 1] = value;
-    text_image->data[index_pixel + 2] = value;
-    text_image->data[index_pixel + 3] = value;
+    text_image->data[
+      index_pixel
+    ] = (
+      value
+    );
+    
+    text_image->data[
+      index_pixel +
+      0x01
+    ] = (
+      value
+    );
+    
+    text_image->data[
+      index_pixel +
+      0x02
+    ] = (
+      value
+    );
+    
+    text_image->data[
+      index_pixel +
+      0x03
+    ] = (
+      value
+    );
   }
 
-  CGColorSpaceRef colour_space = CGColorSpaceCreateWithName(
-    kCGColorSpaceSRGB
+  CGColorSpaceRef colour_space = (
+    CGColorSpaceCreateWithName(
+      kCGColorSpaceSRGB
+    )
   );
 
   if (
-    colour_space == 0
+    colour_space ==
+    0x00
   ) {
     metil_debug_log_error(
       metil_configuration->debug_log_level,
@@ -382,24 +457,30 @@ struct metil_text_image* metil_text_render(
       glyphs
     );
 
-    return 0;
+    return (
+      0x00
+    );
   }
 
   CGContextRef context_bitmap = CGBitmapContextCreate(
     text_image->data,
     text_image->size.x,
     text_image->size.y,
-    8,
+    0x08,
     (
-      4 *
+      0x04 *
       text_image->size.x
     ),
     colour_space,
-    0x0 | kCGImageAlphaNoneSkipFirst
+    (
+      (enum CGBitmapInfo)
+      kCGImageAlphaNoneSkipFirst
+    )
   );
 
   if (
-    context_bitmap == 0
+    context_bitmap ==
+    0x00
   ) {
     metil_debug_log_error(
       metil_configuration->debug_log_level,
@@ -422,7 +503,9 @@ struct metil_text_image* metil_text_render(
       glyphs
     );
 
-    return 0;
+    return (
+      0x00
+    );
   }
 
   CTFontDrawGlyphs(
@@ -446,9 +529,17 @@ struct metil_text_image* metil_text_render(
   );
 
   for (
-    unsigned int index_pixel = 0;
-    index_pixel < length_text_image_data;
-    index_pixel = index_pixel + 4
+    unsigned int index_pixel = (
+      0x00
+    );
+    (
+      index_pixel <
+      length_text_image_data
+    );
+    index_pixel = (
+      index_pixel +
+      0x04
+    )
   ) {
     unsigned char value = (
       text_image->data[
@@ -460,13 +551,13 @@ struct metil_text_image* metil_text_render(
       value <
       text_image->data[
         index_pixel +
-        1
+        0x01
       ]
     ) {
       value = (
         text_image->data[
           index_pixel +
-          1
+          0x01
         ]
       );
     }
@@ -475,24 +566,48 @@ struct metil_text_image* metil_text_render(
       value <
       text_image->data[
         index_pixel +
-        2
+        0x02
       ]
     ) {
       value = (
         text_image->data[
           index_pixel +
-          2
+          0x02
         ]
       );
     }
 
-    text_image->data[index_pixel] = value;
-    text_image->data[index_pixel + 1] = value;
-    text_image->data[index_pixel + 2] = value;
-    text_image->data[index_pixel + 3] = value;
+    text_image->data[
+      index_pixel
+    ] = (
+      value
+    );
+    
+    text_image->data[
+      index_pixel +
+      0x01
+    ] = (
+      value
+    );
+    
+    text_image->data[
+      index_pixel +
+      0x02
+    ] = (
+      value
+    );
+    
+    text_image->data[
+      index_pixel +
+      0x03
+    ] = (
+      value
+    );
   }
 
-  return text_image;
+  return (
+    text_image
+  );
 }
 
 id<MTLTexture> metil_text_texture_render(
@@ -500,32 +615,71 @@ id<MTLTexture> metil_text_texture_render(
   struct metil_text_image* text_image,
   struct metil_configuration* metil_configuration
 ) {
-  MTLTextureDescriptor* texture_descriptor = [[MTLTextureDescriptor alloc] init];
-
-  texture_descriptor.pixelFormat = MTLPixelFormatBGRA8Unorm;
-
-  texture_descriptor.width = text_image->size.x;
-  texture_descriptor.height = text_image->size.y;
-
-  id<MTLTexture> texture = [metal_device
-    newTextureWithDescriptor: texture_descriptor
+  MTLTextureDescriptor* texture_descriptor = [
+    [
+      MTLTextureDescriptor
+      alloc
+    ]
+    init
   ];
 
-  [texture_descriptor release];
+  texture_descriptor.pixelFormat = (
+    MTLPixelFormatBGRA8Unorm
+  );
+
+  texture_descriptor.width = (
+    text_image->size.x
+  );
+  
+  texture_descriptor.height = (
+    text_image->size.y
+  );
+
+  id<MTLTexture> texture = [
+    metal_device
+    newTextureWithDescriptor: (
+      texture_descriptor
+    )
+  ];
+
+  [
+    texture_descriptor
+    release
+  ];
 
   MTLRegion region = {
-    {0, 0, 0},
-    {text_image->size.x, text_image->size.y, 1}
+    {
+      0x00,
+      0x00,
+      0x00
+    },
+    {
+      text_image->size.x,
+      text_image->size.y,
+      0x01
+    }
   };
 
-  [texture
-    replaceRegion: region
-    mipmapLevel: 0
-    withBytes: text_image->data
-    bytesPerRow: 4 * (text_image->size.x)
+  [
+    texture
+    replaceRegion: (
+      region
+    )
+    mipmapLevel: (
+      0x00
+    )
+    withBytes: (
+      text_image->data
+    )
+    bytesPerRow: (
+      0x04 *
+      text_image->size.x
+    )
   ];
 
-  return texture;
+  return (
+    texture
+  );
 }
 
 id<MTLTexture> metil_text_mesh_with_texture_initialize(
@@ -542,14 +696,17 @@ id<MTLTexture> metil_text_mesh_with_texture_initialize(
   );
 
   if (
-    text_image == 0
+    text_image ==
+    0x00
   ) {
     metil_debug_log_error(
       metil_configuration->debug_log_level,
       "failed_to_render_text_image\n"
     );
 
-    return 0;
+    return (
+      0x00
+    );
   }
 
   metil_mesh_text_initialize(
@@ -559,17 +716,21 @@ id<MTLTexture> metil_text_mesh_with_texture_initialize(
     metil_text_render_parameters->scale
   );
 
-  id<MTLTexture> texture = metil_text_texture_render(
-    metal_device,
-    text_image,
-    metil_configuration
+  id<MTLTexture> texture = (
+    metil_text_texture_render(
+      metal_device,
+      text_image,
+      metil_configuration
+    )
   );
 
   metil_text_image_destroy(
     text_image
   );
 
-  return texture;
+  return (
+    texture
+  );
 }
 
 void metil_text_image_destroy(

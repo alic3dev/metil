@@ -37,16 +37,26 @@ id<MTLTexture> metil_texture_concrete_generate(
 
   texture = [
     metal_device
-    newTextureWithDescriptor: texture_descriptor
+    newTextureWithDescriptor: (
+      texture_descriptor
+    )
   ];
 
   MTLRegion region = {
-    {0, 0, 0},
-    {texture_descriptor.width, texture_descriptor.height, 1}
+    {
+      0x00,
+      0x00,
+      0x00
+    },
+    {
+      texture_descriptor.width,
+      texture_descriptor.height,
+      0x01
+    }
   };
 
   unsigned int length_bytes_texture_row = (
-    4 *
+    0x04 *
     texture_descriptor.width
   );
 

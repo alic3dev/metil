@@ -30,7 +30,8 @@ metil_view_controller_on_view_did_load_function metil_view_controller_on_view_di
   }
 
   metil_application* metil_application_shared = (
-    (metil_application*) [
+    (metil_application*)
+    [
       metil_application
       sharedApplication
     ]

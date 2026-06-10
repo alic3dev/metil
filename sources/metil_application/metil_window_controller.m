@@ -17,7 +17,8 @@
   );
 
   metil_application* metil_application_shared = (
-    (metil_application*) [
+    (metil_application*)
+    [
       metil_application
       sharedApplication
     ]

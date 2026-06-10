@@ -33,13 +33,19 @@ MTLPixelFormat metil_image_type_bridge_reverse_mtl_pixel_format(
     metil_image_type
   ) {
     case metil_image_type_bgra_8: {
-      return MTLPixelFormatBGRA8Unorm;
+      return (
+        MTLPixelFormatBGRA8Unorm
+      );
     }
     case metil_image_type_rgba_8: {
-      return MTLPixelFormatRGBA8Unorm;
+      return (
+        MTLPixelFormatRGBA8Unorm
+      );
     }
     default: {
-      return MTLPixelFormatInvalid;
+      return (
+        MTLPixelFormatInvalid
+      );
     }
   }
 }

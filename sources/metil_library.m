@@ -5,17 +5,41 @@
 void metil_library_pre_initialize(
   struct metil_library* metil_library
 ) {
-  metil_library->library = 0;
-  metil_library->function_fragment = 0;
-  metil_library->function_vertex = 0;
+  metil_library->library = (
+    0x00
+  );
+  
+  metil_library->function_fragment = (
+    0x00
+  );
+  
+  metil_library->function_vertex = (
+    0x00
+  );
 
-  metil_library->library_fps_display = 0;
-  metil_library->function_fragment_fps_display = 0;
-  metil_library->function_vertex_fps_display = 0;
+  metil_library->library_fps_display = (
+    0x00
+  );
+  
+  metil_library->function_fragment_fps_display = (
+    0x00
+  );
+  
+  metil_library->function_vertex_fps_display = (
+    0x00
+  );
 
-  metil_library->library_wireframe = 0;
-  metil_library->function_fragment_wireframe = 0;
-  metil_library->function_vertex_wireframe = 0;
+  metil_library->library_wireframe = (
+    0x00
+  );
+  
+  metil_library->function_fragment_wireframe = (
+    0x00
+  );
+  
+  metil_library->function_vertex_wireframe = (
+    0x00
+  );
 }
 
 void metil_library_initialize(
@@ -25,9 +49,13 @@ void metil_library_initialize(
   NSString* name_function_vertex
 ) {
   if (
-    metil_library->library == 0
+    metil_library->library ==
+    0x00
   ) {
-    metil_library->library = [metal_device newDefaultLibrary];
+    metil_library->library = [
+      metal_device
+      newDefaultLibrary
+    ];
   }
 
   metil_library->function_fragment = [
@@ -59,27 +87,38 @@ void metil_library_fps_display_initialize(
   id<MTLLibrary> library_fps_display
 ) {
   if (
-    library_fps_display != 0
+    library_fps_display !=
+    0x00
   ) {
-    metil_library->library_fps_display = library_fps_display;
+    metil_library->library_fps_display = (
+      library_fps_display
+    );
   } else if (
-    metil_library->library != 0
+    metil_library->library !=
+    0x00
   ) {
     metil_library->library_fps_display = (
       metil_library->library
     );
   } else {
-    metil_library->library_fps_display = [metal_device newDefaultLibrary];
+    metil_library->library_fps_display = [
+      metal_device
+      newDefaultLibrary
+    ];
   }
 
   metil_library->function_fragment_fps_display = [
     metil_library->library_fps_display
-    newFunctionWithName: @"metil_fps_display_fragment"
+    newFunctionWithName: (
+      @"metil_fps_display_fragment"
+    )
   ];
 
   metil_library->function_vertex_fps_display = [
     metil_library->library_fps_display
-    newFunctionWithName: @"metil_fps_display_vertex"
+    newFunctionWithName: (
+      @"metil_fps_display_vertex"
+    )
   ];
 }
 
@@ -89,26 +128,37 @@ void metil_library_wireframe_initialize(
   id<MTLLibrary> library_wireframe
 ) {
   if (
-    library_wireframe != 0
+    library_wireframe !=
+    0x00
   ) {
-    metil_library->library_wireframe = library_wireframe;
+    metil_library->library_wireframe = (
+      library_wireframe
+    );
   } else if (
-    metil_library->library != 0
+    metil_library->library !=
+    0x00
   ) {
     metil_library->library_wireframe = (
       metil_library->library
     );
   } else {
-    metil_library->library_wireframe = [metal_device newDefaultLibrary];
+    metil_library->library_wireframe = [
+      metal_device
+      newDefaultLibrary
+    ];
   }
 
   metil_library->function_fragment_wireframe = [
     metil_library->library_wireframe
-    newFunctionWithName: @"metil_wireframe_fragment"
+    newFunctionWithName: (
+      @"metil_wireframe_fragment"
+    )
   ];
 
   metil_library->function_vertex_wireframe = [
     metil_library->library_wireframe
-    newFunctionWithName: @"metil_wireframe_vertex"
+    newFunctionWithName: (
+      @"metil_wireframe_vertex"
+    )
   ];
 }

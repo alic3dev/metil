@@ -23,11 +23,17 @@ OSStatus metil_audio_output_io_proc(
   );
 
   if (
-    metil->audio.muted == 1
+    metil->audio.muted ==
+    0x01
   ) {
     for (
-      unsigned long int index_buffer = 0;
-      index_buffer < list_buffer_audio_out->mNumberBuffers;
+      unsigned long int index_buffer = (
+        0x00
+      );
+      (
+        index_buffer <
+        list_buffer_audio_out->mNumberBuffers
+      );
       ++index_buffer
     ) {
       AudioBuffer audio_buffer_current = (
@@ -48,29 +54,45 @@ OSStatus metil_audio_output_io_proc(
       );
 
       for (
-        unsigned long int index_buffer_out = 0;
-        index_buffer_out < size_buffer_out;
+        unsigned long int index_buffer_out = (
+          0x00
+        );
+        (
+          index_buffer_out <
+          size_buffer_out
+        );
         ++index_buffer_out
       ) {
         buffer_out[
           index_buffer_out
         ] = (
-          0.0f
+          0x00
         );
       }
     }
 
-    return 0;
+    return (
+      0x00
+    );
   }
 
   struct metil_audio_io_proc_data metil_audio_io_proc_data = {
-    .metil = metil,
-    .data = 0
+    .metil = (
+      metil
+    ),
+    .data = (
+      0x00
+    )
   };
 
   for (
-    unsigned char index_io_proc = 0;
-    index_io_proc < metil->audio.length_io_procs;
+    unsigned char index_io_proc = (
+      0x00
+    );
+    (
+      index_io_proc <
+      metil->audio.length_io_procs
+    );
     ++index_io_proc
   ) {
     metil_audio_io_proc_data.data = (
@@ -79,28 +101,38 @@ OSStatus metil_audio_output_io_proc(
       ]
     );
 
-    OSStatus status_io_proc = metil->audio.io_procs[
-      index_io_proc
-    ](
-      id_audio_object,
-      time_stamp_audio,
-      list_buffer_audio_in,
-      time_stamp_audio_in,
-      list_buffer_audio_out,
-      time_stamp_audio_out,
-      &metil_audio_io_proc_data
+    OSStatus status_io_proc = (
+      metil->audio.io_procs[
+        index_io_proc
+      ](
+        id_audio_object,
+        time_stamp_audio,
+        list_buffer_audio_in,
+        time_stamp_audio_in,
+        list_buffer_audio_out,
+        time_stamp_audio_out,
+        &metil_audio_io_proc_data
+      )
     );
 
     if (
-      status_io_proc != 0
+      status_io_proc !=
+      0x00
     ) {
-      return status_io_proc;
+      return (
+        status_io_proc
+      );
     }
   }
 
   for (
-    unsigned long int index_buffer = 0;
-    index_buffer < list_buffer_audio_out->mNumberBuffers;
+    unsigned long int index_buffer = (
+      0x00
+    );
+    (
+      index_buffer <
+      list_buffer_audio_out->mNumberBuffers
+    );
     ++index_buffer
   ) {
     AudioBuffer audio_buffer_current = (
@@ -121,8 +153,13 @@ OSStatus metil_audio_output_io_proc(
     );
 
     for (
-      unsigned long int index_buffer_out = 0;
-      index_buffer_out < size_buffer_out;
+      unsigned long int index_buffer_out = (
+        0x00
+      );
+      (
+        index_buffer_out <
+        size_buffer_out
+      );
       ++index_buffer_out
     ) {
       buffer_out[
@@ -136,7 +173,9 @@ OSStatus metil_audio_output_io_proc(
     }
   }
 
-  return 0;
+  return (
+    0x00
+  );
 }
 
 #endif

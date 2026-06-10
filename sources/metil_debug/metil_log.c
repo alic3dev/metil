@@ -12,7 +12,8 @@ void metil_debug_log(
   ) {
     case metil_debug_log_level_all:
     case metil_debug_log_level_info: {
-      break;    }
+      break;
+    }
     default: {
       return;
     }

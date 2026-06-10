@@ -129,7 +129,10 @@ void metil_model_objects_add_length(
       metil_model->length_objects -
       length
     );
-    index_object < metil_model->length_objects;
+    (
+      index_object <
+      metil_model->length_objects
+    );
     ++index_object
   ) {
     struct metil_object* metil_object = (
@@ -142,7 +145,9 @@ void metil_model_objects_add_length(
       metil_object
     );
 
-    metil_object->poll = metil_model_object_poll;
+    metil_object->poll = (
+      metil_model_object_poll
+    );
   }
 }
 
@@ -179,7 +184,10 @@ void metil_model_joints_add_length(
       metil_model->length_joints -
       length_metil_joints
     );
-    index_joint < length_metil_joints;
+    (
+      index_joint <
+      length_metil_joints
+    );
     ++index_joint
   ) {
     metil_joint_initialize(
@@ -287,7 +295,9 @@ void metil_model_buffers_initialize(
       ) *
       0x03
     )
-    options: MTLResourceStorageModeShared
+    options: (
+      MTLResourceStorageModeShared
+    )
   ];
 
   struct math_c_vector3_float* buffer_joints_contents_joint = &(
@@ -409,7 +419,9 @@ void metil_model_buffers_initialize(
         ) *
         metil_object->mesh.length_vertices
       )
-      options: MTLResourceStorageModeShared
+      options: (
+        MTLResourceStorageModeShared
+      )
     ];
 
     metil_object->buffers_vertex[
@@ -481,7 +493,8 @@ void metil_model_buffer_add(
 void metil_model_texture_add(
   struct metil_model* metil_model,
   id<MTLTexture> texture
-) {}
+) {
+}
 
 void metil_model_poll(
   struct metil* metil,

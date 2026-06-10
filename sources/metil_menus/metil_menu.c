@@ -10,20 +10,34 @@
 void metil_menu_initialize(
   struct metil_menu* menu
 ) {
-  menu->index_current = 0;
+  menu->index_current = (
+    0x00
+  );
 
-  menu->length_items = 0;
+  menu->length_items = (
+    0x00
+  );
 
   menu->items = (
     clic3_memory_allocate_raw(
-      0
+      sizeof(
+        struct metil_menu_item
+      ) *
+      menu->length_items
     )
   );
 
-  menu->index_selected = -1;
-  menu->handled = 0;
+  menu->index_selected = -(
+    0x01
+  );
+  
+  menu->handled = (
+    0x00
+  );
 
-  menu->wrap = 1;
+  menu->wrap = (
+    0x01
+  );
 
   metil_stopwatch_start(
     &menu->stopwatch_input
@@ -37,7 +51,8 @@ void metil_menu_item_add(
   void* data
 ) {
   menu->length_items = (
-    menu->length_items + 1
+    menu->length_items +
+    0x01
   );
 
   clic3_memory_reallocate_raw(
@@ -52,7 +67,8 @@ void metil_menu_item_add(
 
   metil_menu_item_initialize(
     &menu->items[
-      menu->length_items - 1
+      menu->length_items -
+      0x01
     ],
     type,
     action,
@@ -64,11 +80,20 @@ void metil_menu_select(
   struct metil_menu* menu
 ) {
   if (
-    menu->length_items == 0 ||
-    menu->index_current > menu->length_items ||
-    menu->items[
-      menu->index_current
-    ].action != metil_menu_item_action_select
+    (
+      menu->length_items ==
+      0x00
+    ) ||
+    (
+      menu->index_current >
+      menu->length_items
+    ) ||
+    (
+      menu->items[
+        menu->index_current
+      ].action !=
+      metil_menu_item_action_select
+    )
   ) {
     return;
   }
@@ -82,54 +107,79 @@ unsigned char metil_menu_next(
   struct metil_menu* menu
 ) {
   if (
-    menu->index_current == menu->length_items - 1
+    menu->index_current ==
+    (
+      menu->length_items -
+      0x01
+    )
   ) {
     if (
-      menu->wrap == 0
+      menu->wrap ==
+      0x00
     ) {
-      return 1;
+      return (
+        0x01
+      );
     }
 
-    menu->index_current = 0;
+    menu->index_current = (
+      0x00
+    );
   } else {
     menu->index_current = (
-      menu->index_current + 1
+      menu->index_current +
+      0x01
     );
   }
 
-  return 0;
+  return (
+    0x00
+  );
 }
 
 unsigned char metil_menu_previous(
   struct metil_menu* menu
 ) {
   if (
-    menu->index_current == 0
+    menu->index_current ==
+    0x00
   ) {
     if (
-      menu->wrap == 0
+      menu->wrap ==
+      0x00
     ) {
-      return 1;
+      return (
+        0x01
+      );
     }
 
     menu->index_current = (
-      menu->length_items - 1
+      menu->length_items -
+      0x01
     );
   } else {
     menu->index_current = (
-      menu->index_current - 1
+      menu->index_current -
+      0x01
     );
   }
 
-  return 0;
+  return (
+    0x00
+  );
 }
 
 void metil_menu_destroy(
   struct metil_menu* metil_menu
 ) {
   for (
-    unsigned char index_metil_menu_item = 0;
-    index_metil_menu_item < metil_menu->length_items;
+    unsigned char index_metil_menu_item = (
+      0x00
+    );
+    (
+      index_metil_menu_item <
+      metil_menu->length_items
+    );
     ++index_metil_menu_item
   ) {
     metil_menu_item_destroy(

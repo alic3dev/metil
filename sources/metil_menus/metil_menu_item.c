@@ -17,7 +17,7 @@ void metil_menu_item_initialize(
   );
 
   metil_menu_item->data_menu_item = (
-    0
+    0x00
   );
 
   switch (
@@ -36,9 +36,17 @@ void metil_menu_item_initialize(
         metil_menu_item->data_menu_item
       );
 
-      metil_menu_item_data_scroll->index = 0;
-      metil_menu_item_data_scroll->length = 1;
-      metil_menu_item_data_scroll->wrap = 1;
+      metil_menu_item_data_scroll->index = (
+        0x00
+      );
+      
+      metil_menu_item_data_scroll->length = (
+        0x01
+      );
+      
+      metil_menu_item_data_scroll->wrap = (
+        0x01
+      );
 
       break;
     }
@@ -60,22 +68,34 @@ unsigned char metil_menu_item_scroll_next(
   );
 
   if (
-    metil_menu_item_data_scroll->index == metil_menu_item_data_scroll->length - 1
+    metil_menu_item_data_scroll->index ==
+    (
+      metil_menu_item_data_scroll->length -
+      0x01
+    )
   ) {
     if (
-      metil_menu_item_data_scroll->wrap == 0
+      metil_menu_item_data_scroll->wrap ==
+      0x00
     ) {
-      return 1;
+      return (
+        0x01
+      );
     }
 
-    metil_menu_item_data_scroll->index = 0;
+    metil_menu_item_data_scroll->index = (
+      0x00
+    );
   } else {
     metil_menu_item_data_scroll->index = (
-      metil_menu_item_data_scroll->index + 1
+      metil_menu_item_data_scroll->index +
+      0x01
     );
   }
 
-  return 0;
+  return (
+    0x00
+  );
 }
 
 unsigned char metil_menu_item_scroll_previous(
@@ -86,24 +106,32 @@ unsigned char metil_menu_item_scroll_previous(
   );
 
   if (
-    metil_menu_item_data_scroll->index == 0
+    metil_menu_item_data_scroll->index ==
+    0x00
   ) {
     if (
-      metil_menu_item_data_scroll->wrap == 0
+      metil_menu_item_data_scroll->wrap ==
+      0x00
     ) {
-      return 1;
+      return (
+        0x01
+      );
     }
 
     metil_menu_item_data_scroll->index = (
-      metil_menu_item_data_scroll->length - 1
+      metil_menu_item_data_scroll->length -
+      0x01
     );
   } else {
     metil_menu_item_data_scroll->index = (
-      metil_menu_item_data_scroll->index - 1
+      metil_menu_item_data_scroll->index -
+      0x01
     );
   }
 
-  return 0;
+  return (
+    0x00
+  );
 }
 
 void metil_menu_item_destroy(

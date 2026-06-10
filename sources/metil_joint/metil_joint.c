@@ -10,27 +10,64 @@
 void metil_joint_initialize(
   struct metil_joint* metil_joint
 ) {
-  metil_joint->position.x = 0.0f;
-  metil_joint->position.y = 0.0f;
-  metil_joint->position.z = 0.0f;
+  metil_joint->position.x = (
+    0x00
+  );
+  
+  metil_joint->position.y = (
+    0x00
+  );
+  
+  metil_joint->position.z = (
+    0x00
+  );
 
-  metil_joint->rotation.x = 0.0f;
-  metil_joint->rotation.y = 0.0f;
-  metil_joint->rotation.z = 0.0f;
+  metil_joint->rotation.x = (
+    0x00
+  );
+  
+  metil_joint->rotation.y = (
+    0x00
+  );
+  
+  metil_joint->rotation.z = (
+    0x00
+  );
 
-  metil_joint->rotation_applied.x = 0.0f;
-  metil_joint->rotation_applied.y = 0.0f;
-  metil_joint->rotation_applied.z = 0.0f;
+  metil_joint->rotation_applied.x = (
+    0x00
+  );
+  
+  metil_joint->rotation_applied.y = (
+    0x00
+  );
+  
+  metil_joint->rotation_applied.z = (
+    0x00
+  );
 
-  metil_joint->translation.x = 0.0f;
-  metil_joint->translation.y = 0.0f;
-  metil_joint->translation.z = 0.0f;
+  metil_joint->translation.x = (
+    0x00
+  );
+  
+  metil_joint->translation.y = (
+    0x00
+  );
+  
+  metil_joint->translation.z = (
+    0x00
+  );
 
-  metil_joint->length_joints = 0;
+  metil_joint->length_joints = (
+    0x00
+  );
 
   metil_joint->joints = (
     clic3_memory_allocate_raw(
-      0
+      sizeof(
+        struct metil_joint*
+      ) *
+      metil_joint->length_joints
     )
   );
 }
@@ -41,7 +78,7 @@ void metil_joint_attach(
 ) {
   metil_joint->length_joints = (
     metil_joint->length_joints +
-    1
+    0x01
   );
 
   clic3_memory_reallocate_raw(
@@ -56,7 +93,7 @@ void metil_joint_attach(
 
   metil_joint->joints[
     metil_joint->length_joints -
-    1
+    0x01
   ] = (
     metil_joint_attaching
   );
@@ -123,8 +160,13 @@ void metil_joint_propagate(
   struct metil_joint* metil_joint
 ) {
   for (
-    unsigned char index_joint = 0;
-    index_joint < metil_joint->length_joints;
+    unsigned char index_joint = (
+      0x00
+    );
+    (
+      index_joint <
+      metil_joint->length_joints
+    );
     ++index_joint
   ) {
     struct metil_joint* metil_joint_propagation_selection = (
@@ -150,17 +192,83 @@ void metil_joint_propagate(
 
     matrix_float4x4 matrix_metil_joint_propagation_selection_rotation = (
       matrix_multiply(
-        (matrix_float4x4) {{
-          { math_c_cosine(metil_joint_propagation_selection->rotation_applied.y, math_c_pi), 0.0f, -math_c_sine(metil_joint_propagation_selection->rotation_applied.y, math_c_pi), 0.0f },
-          { 0.0f, 1.0f, 0.0f, 0.0f },
-          { math_c_sine(metil_joint_propagation_selection->rotation_applied.y, math_c_pi), 0.0f, math_c_cosine(metil_joint_propagation_selection->rotation_applied.y, math_c_pi), 0.0f },
-          { 0.0f, 0.0f, 0.0f, 1.0f }
+        (matrix_float4x4)
+        {{
+          {
+            math_c_cosine(
+              metil_joint_propagation_selection->rotation_applied.y,
+              math_c_pi
+            ),
+            0x00,
+            -math_c_sine(
+              metil_joint_propagation_selection->rotation_applied.y,
+              math_c_pi
+            ),
+            0x00
+          },
+          {
+            0x00,
+            0x01,
+            0x00,
+            0x00
+          },
+          {
+            math_c_sine(
+              metil_joint_propagation_selection->rotation_applied.y,
+              math_c_pi
+            ),
+            0x00,
+            math_c_cosine(
+              metil_joint_propagation_selection->rotation_applied.y,
+              math_c_pi
+            ),
+            0x00
+          },
+          {
+            0x00,
+            0x00,
+            0x00,
+            0x01
+          }
         }},
-        (matrix_float4x4) {{
-          { 1.0f, 0.0f, 0.0f, 0.0f },
-          { 0.0f, math_c_cosine(metil_joint_propagation_selection->rotation_applied.x, math_c_pi), -math_c_sine(metil_joint_propagation_selection->rotation_applied.x, math_c_pi), 0.0f },
-          { 0.0f, math_c_sine(metil_joint_propagation_selection->rotation_applied.x, math_c_pi), math_c_cosine(metil_joint_propagation_selection->rotation_applied.x, math_c_pi), 0.0f },
-          { 0.0f, 0.0f, 0.0f, 1.0f }
+        (matrix_float4x4)
+        {{
+          {
+            0x01,
+            0x00,
+            0x00,
+            0x00
+          },
+          {
+            0x00,
+            math_c_cosine(
+              metil_joint_propagation_selection->rotation_applied.x,
+              math_c_pi
+            ),
+            -math_c_sine(
+              metil_joint_propagation_selection->rotation_applied.x,
+              math_c_pi
+            ),
+            0x00
+          },
+          {
+            0x00,
+            math_c_sine(
+              metil_joint_propagation_selection->rotation_applied.x,
+              math_c_pi
+            ),
+            math_c_cosine(
+              metil_joint_propagation_selection->rotation_applied.x,
+              math_c_pi
+            ),
+            0x00
+          },
+          {
+            0x00,
+            0x00,
+            0x00,
+            0x01
+          }
         }}
       )
     );
@@ -168,11 +276,44 @@ void metil_joint_propagate(
     matrix_metil_joint_propagation_selection_rotation = (
       matrix_multiply(
         matrix_metil_joint_propagation_selection_rotation,
-        (matrix_float4x4) {{
-          { math_c_cosine(metil_joint_propagation_selection->rotation_applied.z, math_c_pi), -math_c_sine(metil_joint_propagation_selection->rotation_applied.z, math_c_pi), 0.0f, 0.0f },
-          { math_c_sine(metil_joint_propagation_selection->rotation_applied.z, math_c_pi), math_c_cosine(metil_joint_propagation_selection->rotation_applied.z, math_c_pi), 0.0f, 0.0f },
-          { 0.0f, 0.0f, 1.0f, 0.0f },
-          { 0.0f, 0.0f, 0.0f, 1.0f }
+        (matrix_float4x4)
+        {{
+          {
+            math_c_cosine(
+              metil_joint_propagation_selection->rotation_applied.z,
+              math_c_pi
+            ),
+            -math_c_sine(
+              metil_joint_propagation_selection->rotation_applied.z,
+              math_c_pi
+            ),
+            0x00,
+            0x00
+          },
+          {
+            math_c_sine(
+              metil_joint_propagation_selection->rotation_applied.z,
+              math_c_pi
+            ),
+            math_c_cosine(
+              metil_joint_propagation_selection->rotation_applied.z,
+              math_c_pi
+            ),
+            0x00,
+            0x00
+          },
+          {
+            0x00,
+            0x00,
+            0x01,
+            0x00
+          },
+          {
+            0x00,
+            0x00,
+            0x00,
+            0x01
+          }
         }}
       )
     );
@@ -181,21 +322,21 @@ void metil_joint_propagate(
       metil_joint->position.x,
       metil_joint->position.y,
       metil_joint->position.z,
-      0.0f
+      0x00
     };
 
     simd_float4 position_joint_translation = {
       metil_joint->translation.x,
       metil_joint->translation.y,
       metil_joint->translation.z,
-      0.0f
+      0x00
     };
 
     simd_float4 position_joint_propagation_selection = {
       metil_joint_propagation_selection->position.x,
       metil_joint_propagation_selection->position.y,
       metil_joint_propagation_selection->position.z,
-      1.0f
+      0x01
     };
 
     simd_float4 position_joint_origin_offset = (
