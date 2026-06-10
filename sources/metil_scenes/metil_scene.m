@@ -16,9 +16,10 @@ void metil_scene_initialize(
   struct metil* metil,
   struct metil_scene* scene
 ) {
-  metil_scene_initialize_with_renderables(
+  metil_scene_initialize_with_renderables_textures(
     metil,
     scene,
+    0x00,
     0x00
   );
 }
@@ -27,6 +28,33 @@ void metil_scene_initialize_with_renderables(
   struct metil* metil,
   struct metil_scene* scene,
   unsigned int length_renderables
+) {
+  metil_scene_initialize_with_renderables_textures(
+    metil,
+    scene,
+    length_renderables,
+    0x00
+  );
+}
+
+void metil_scene_initialize_with_textures(
+  struct metil* metil,
+  struct metil_scene* scene,
+  unsigned int length_textures
+) {
+  metil_scene_initialize_with_renderables_textures(
+    metil,
+    scene,
+    0x00,
+    length_textures
+  );
+}
+
+void metil_scene_initialize_with_renderables_textures(
+  struct metil* metil,
+  struct metil_scene* scene,
+  unsigned int length_renderables,
+  unsigned int length_textures
 ) {
   metil_player_initialize(
     &scene->player,
@@ -47,7 +75,7 @@ void metil_scene_initialize_with_renderables(
   );
 
   scene->length_textures = (
-    0x00
+    length_textures
   );
 
   scene->textures = (

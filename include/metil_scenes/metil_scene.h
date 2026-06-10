@@ -68,6 +68,19 @@ void metil_scene_initialize_with_renderables(
   unsigned int
 );
 
+void metil_scene_initialize_with_textures(
+  struct metil* _Nonnull,
+  struct metil_scene* _Nonnull,
+  unsigned int
+);
+
+void metil_scene_initialize_with_renderables_textures(
+  struct metil* _Nonnull,
+  struct metil_scene* _Nonnull,
+  unsigned int,
+  unsigned int
+);
+
 void metil_scene_renderables_set_length(
   struct metil_scene* _Nonnull,
   unsigned int
