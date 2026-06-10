@@ -59,15 +59,15 @@ metil_view_controller_on_view_did_load_function metil_view_controller_on_view_di
     0x01
   );
   #endif
-  
+
   struct metil_application_mapping* metil_application_mapping = (
     self->metil->application_mapping
   );
-  
+
   metil_application_mapping->view = (
     view
   );
-  
+
   metil_application_mapping->view_controller = (
     self
   );
@@ -103,16 +103,16 @@ metil_view_controller_on_view_did_load_function metil_view_controller_on_view_di
   view.enableSetNeedsDisplay = (
     0x00
   );
-  
+
   CAMetalLayer* layer = (
     (CAMetalLayer*)
     view.layer
   );
-  
+
   metil_application_mapping->layer = (
     layer
   );
-  
+
   #if !target_os_ios
   if (
     self->metil->configuration.rendering_properties.display_sync ==
@@ -120,14 +120,14 @@ metil_view_controller_on_view_did_load_function metil_view_controller_on_view_di
   ) {
     metil_application_function_display_sync_unlock_raw(
       layer
-    );  
+    );
   } else {
     metil_application_function_display_sync_lock_raw(
       layer
     );
   }
   #endif
-        
+
   [
     view
     draw

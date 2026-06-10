@@ -30,7 +30,7 @@ void metil_menu_initialize(
   menu->index_selected = -(
     0x01
   );
-  
+
   menu->handled = (
     0x00
   );

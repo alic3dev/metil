@@ -21,7 +21,7 @@ CGGlyph* metil_text_glyphs_encode(
   struct metil_configuration* metil_configuration
 ) {
   static CGGlyph* glyphs;
-  
+
   glyphs = (
     clic3_memory_allocate_raw(
       sizeof(
@@ -407,21 +407,21 @@ struct metil_text_image* metil_text_render(
     ] = (
       value
     );
-    
+
     text_image->data[
       index_pixel +
       0x01
     ] = (
       value
     );
-    
+
     text_image->data[
       index_pixel +
       0x02
     ] = (
       value
     );
-    
+
     text_image->data[
       index_pixel +
       0x03
@@ -582,21 +582,21 @@ struct metil_text_image* metil_text_render(
     ] = (
       value
     );
-    
+
     text_image->data[
       index_pixel +
       0x01
     ] = (
       value
     );
-    
+
     text_image->data[
       index_pixel +
       0x02
     ] = (
       value
     );
-    
+
     text_image->data[
       index_pixel +
       0x03
@@ -630,7 +630,7 @@ id<MTLTexture> metil_text_texture_render(
   texture_descriptor.width = (
     text_image->size.x
   );
-  
+
   texture_descriptor.height = (
     text_image->size.y
   );

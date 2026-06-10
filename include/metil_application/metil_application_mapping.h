@@ -15,14 +15,14 @@ struct metil_application_mapping {
   metil_application_delegate* _Nonnull application_delegate;
   metil_view* _Nonnull view;
   metil_view_controller* _Nonnull view_controller;
-  
+
   #if !target_os_ios
   metil_window* _Nonnull window;
   metil_window_controller* _Nonnull window_controller;
   #endif
-  
+
   CAMetalLayer* _Nonnull layer;
-};  
+};
 
 void metil_application_mapping_initialize(
   struct metil_application_mapping* _Nonnull

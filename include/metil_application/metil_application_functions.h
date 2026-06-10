@@ -30,6 +30,5 @@ void metil_application_function_display_sync_unlock_raw(
   CAMetalLayer* _Nonnull
 );
 #endif
-    
-#endif
 
+#endif

@@ -8,11 +8,11 @@ void metil_animation_initialize(
   metil_animation->start = (
     0x00
   );
-  
+
   metil_animation->poll = (
     0x00
   );
-  
+
   metil_animation->end = (
     0x00
   );

@@ -30,15 +30,15 @@
       metil_application_shared->metil
     )
   ];
-  
+
   struct metil_application_mapping* metil_application_mapping = (
     metil_application_shared->metil->application_mapping
   );
-  
+
   metil_application_mapping->window = (
     _window
   );
-  
+
   metil_application_mapping->window_controller = (
     self
   );

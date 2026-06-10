@@ -70,7 +70,7 @@ void metil_audio_io_proc_add_with_data(
       metil_audio_data->length_io_procs
     )
   );
-  
+
   metil_audio_data->io_procs[
     metil_audio_data->length_io_procs -
     0x01
@@ -113,7 +113,7 @@ unsigned char metil_audio_io_proc_remove(
       index_io_proc_remove = (
         index_io_proc
       );
-      
+
       break;
     }
   }

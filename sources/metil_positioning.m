@@ -211,12 +211,12 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
       position_translated.x = -(
         position_player->x
       );
-      
+
       position_translated.y = (
         -position_player->y -
         metil_camera->height
       );
-      
+
       position_translated.z = -(
         position_player->z
       );
@@ -317,7 +317,7 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
         {{
           {
             0x01,
-            0x00, 
+            0x00,
             0x00,
             0x00
           },
@@ -488,7 +488,7 @@ void metil_positioning_view_model_matrix_projection_with_offsets_set(
               0x00
             },
             {
-              0x00, 
+              0x00,
               math_c_cosine(
                 rotation_offset->x,
                 math_c_pi

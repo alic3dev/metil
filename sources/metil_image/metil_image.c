@@ -17,7 +17,7 @@ void metil_image_initialize(
   metil_image->size.x = (
     0x00
   );
-  
+
   metil_image->size.y = (
     0x00
   );
@@ -25,7 +25,7 @@ void metil_image_initialize(
   metil_image->length_row = (
     0x00
   );
-  
+
   metil_image->length = (
     0x00
   );

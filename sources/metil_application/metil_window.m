@@ -288,7 +288,7 @@
   self->metil->input.cursor.position_down_screen.x = (
     NSEvent.mouseLocation.x
   );
-  
+
   self->metil->input.cursor.position_down_screen.y = (
     NSEvent.mouseLocation.y
   );
@@ -296,7 +296,7 @@
   self->metil->input.cursor.position_down_window.x = (
     event.locationInWindow.x
   );
-  
+
   self->metil->input.cursor.position_down_window.y = (
     event.locationInWindow.y
   );
@@ -304,7 +304,7 @@
   self->metil->input.cursor.delta_down.x = (
     event.deltaX
   );
-  
+
   self->metil->input.cursor.delta_down.y = (
     event.deltaY
   );
@@ -333,7 +333,7 @@
     self->metil->input.cursor.delta.x = (
       0x00
     );
-    
+
     self->metil->input.cursor.delta.y = (
       0x00
     );
@@ -380,7 +380,7 @@
   self->metil->input.cursor.down = (
     0x00
   );
-  
+
   self->metil->input.cursor.dragging = (
     0x00
   );
@@ -390,7 +390,7 @@
   self->metil->input.cursor.position_screen.x = (
     NSEvent.mouseLocation.x
   );
-  
+
   self->metil->input.cursor.position_screen.y = (
     NSEvent.mouseLocation.y
   );
@@ -398,7 +398,7 @@
   self->metil->input.cursor.position_window.x = (
     event.locationInWindow.x
   );
-  
+
   self->metil->input.cursor.position_window.y = (
     event.locationInWindow.y
   );

@@ -164,7 +164,7 @@ void metil_renderable_destroy(
         metil,
         metil_renderable->renderable
       );
-      
+
       break;
     }
     case metil_renderable_type_object: {
@@ -176,7 +176,7 @@ void metil_renderable_destroy(
         metil,
         metil_object
       );
-      
+
       break;
     }
     case metil_renderable_type_menu: {
@@ -191,7 +191,7 @@ void metil_renderable_destroy(
         metil,
         metil_model
       );
-      
+
       break;
     }
     default: {

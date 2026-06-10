@@ -8,7 +8,7 @@ void metil_audio_data_initialize(
   metil_audio_data->muted = (
     0x01
   );
-  
+
   metil_audio_data->volume = (
     0x01
   );

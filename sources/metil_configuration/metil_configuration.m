@@ -153,7 +153,7 @@ unsigned char metil_configuration_load(
             index_pointer = (
               index_buffer
             );
-            
+
             break;
           }
         }

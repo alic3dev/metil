@@ -21,7 +21,7 @@ void metil_object_initialize(
   metil_object->length_buffers_fragment = (
     0x00
   );
-  
+
   metil_object->length_buffers_vertex = (
     0x00
   );
@@ -45,7 +45,7 @@ void metil_object_initialize(
   metil_object->type_primitive = (
     MTLPrimitiveTypeTriangle
   );
-  
+
   metil_object->type_index = (
     MTLIndexTypeUInt32
   );
@@ -63,11 +63,11 @@ void metil_object_initialize(
   metil_object->position.x = (
     0x00
   );
-  
+
   metil_object->position.y = (
     0x00
   );
-  
+
   metil_object->position.z = (
     0x00
   );
@@ -75,11 +75,11 @@ void metil_object_initialize(
   metil_object->rotation.x = (
     0x00
   );
-  
+
   metil_object->rotation.y = (
     0x00
   );
-  
+
   metil_object->rotation.z = (
     0x00
   );
@@ -87,11 +87,11 @@ void metil_object_initialize(
   metil_object->depth_disabled = (
     0x00
   );
-  
+
   metil_object->index_pipeline_render = (
     0x00
   );
-  
+
   metil_object->visible = (
     0x01
   );
@@ -103,7 +103,7 @@ void metil_object_initialize(
   metil_object->poll = (
     metil_object_poll
   );
-  
+
   metil_object->destroy = (
     metil_object_destroy
   );
@@ -230,7 +230,7 @@ void metil_object_buffers_add(
   struct metil_object_buffer** buffers = (
     0x00
   );
-  
+
   unsigned char* length_buffers = (
     0x00
   );
@@ -346,11 +346,11 @@ void metil_object_poll(
   data->position.x = (
     metil_object->position.x
   );
-  
+
   data->position.y = (
     metil_object->position.y
   );
-  
+
   data->position.z = (
     metil_object->position.z
   );
@@ -375,11 +375,11 @@ void metil_object_poll(
   data->size.x = (
     metil_object->mesh.size.x
   );
-  
+
   data->size.y = (
     metil_object->mesh.size.y
   );
-  
+
   data->size.z = (
     metil_object->mesh.size.z
   );

@@ -10,15 +10,15 @@ void metil_cursor_initialize(
   metil_cursor->clicked = (
     0x00
   );
-  
+
   metil_cursor->down = (
     0x00
   );
-  
+
   metil_cursor->delta.x = (
     0x00
   );
-  
+
   metil_cursor->delta.y = (
     0x00
   );
@@ -26,7 +26,7 @@ void metil_cursor_initialize(
   metil_cursor->delta_down.x = (
     0x00
   );
-  
+
   metil_cursor->delta_down.y = (
     0x00
   );
@@ -34,7 +34,7 @@ void metil_cursor_initialize(
   metil_cursor->lockable = (
     0x01
   );
-  
+
   metil_cursor->locked = (
     0x00
   );
@@ -42,7 +42,7 @@ void metil_cursor_initialize(
   metil_cursor->position_down_screen.x = (
     0x00
   );
-  
+
   metil_cursor->position_down_screen.y = (
     0x00
   );
@@ -50,7 +50,7 @@ void metil_cursor_initialize(
   metil_cursor->position_down_window.x = (
     0x00
   );
-  
+
   metil_cursor->position_down_window.y = (
     0x00
   );
@@ -58,7 +58,7 @@ void metil_cursor_initialize(
   metil_cursor->position_screen.x = (
     0x00
   );
-  
+
   metil_cursor->position_screen.y = (
     0x00
   );
@@ -66,7 +66,7 @@ void metil_cursor_initialize(
   metil_cursor->position_window.x = (
     0x00
   );
-  
+
   metil_cursor->position_window.y = (
     0x00
   );
@@ -88,7 +88,7 @@ void metil_cursor_lockable_unset(
   metil_cursor->lockable = (
     0x00
   );
-  
+
   metil_cursor->locked = (
     0x00
   );
@@ -96,7 +96,7 @@ void metil_cursor_lockable_unset(
   metil_cursor->delta.x = (
     0x00
   );
-  
+
   metil_cursor->delta.y = (
     0x00
   );

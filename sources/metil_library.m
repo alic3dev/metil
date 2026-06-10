@@ -8,11 +8,11 @@ void metil_library_pre_initialize(
   metil_library->library = (
     0x00
   );
-  
+
   metil_library->function_fragment = (
     0x00
   );
-  
+
   metil_library->function_vertex = (
     0x00
   );
@@ -20,11 +20,11 @@ void metil_library_pre_initialize(
   metil_library->library_fps_display = (
     0x00
   );
-  
+
   metil_library->function_fragment_fps_display = (
     0x00
   );
-  
+
   metil_library->function_vertex_fps_display = (
     0x00
   );
@@ -32,11 +32,11 @@ void metil_library_pre_initialize(
   metil_library->library_wireframe = (
     0x00
   );
-  
+
   metil_library->function_fragment_wireframe = (
     0x00
   );
-  
+
   metil_library->function_vertex_wireframe = (
     0x00
   );

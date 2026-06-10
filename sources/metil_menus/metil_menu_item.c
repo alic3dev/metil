@@ -39,11 +39,11 @@ void metil_menu_item_initialize(
       metil_menu_item_data_scroll->index = (
         0x00
       );
-      
+
       metil_menu_item_data_scroll->length = (
         0x01
       );
-      
+
       metil_menu_item_data_scroll->wrap = (
         0x01
       );

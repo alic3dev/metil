@@ -33,7 +33,7 @@ void metil_text_defaults_initialize(
   metil_text_defaults->render_parameters.padding.x = (
     0x14
   );
-  
+
   metil_text_defaults->render_parameters.padding.y = (
     0x14
   );

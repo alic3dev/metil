@@ -10,11 +10,11 @@ void metil_controller_state_initialize(
   metil_controller_state->l1 = (
     0x00
   );
-  
+
   metil_controller_state->l2 = (
     0x00
   );
-  
+
   metil_controller_state->l3 = (
     0x00
   );
@@ -22,11 +22,11 @@ void metil_controller_state_initialize(
   metil_controller_state->r1 = (
     0x00
   );
-  
+
   metil_controller_state->r2 = (
     0x00
   );
-  
+
   metil_controller_state->r3 = (
     0x00
   );
@@ -34,7 +34,7 @@ void metil_controller_state_initialize(
   metil_controller_state->create = (
     0x00
   );
-  
+
   metil_controller_state->options = (
     0x00
   );
@@ -42,7 +42,7 @@ void metil_controller_state_initialize(
   metil_controller_state->left_stick.x = (
     0x00
   );
-  
+
   metil_controller_state->left_stick.y = (
     0x00
   );
@@ -50,7 +50,7 @@ void metil_controller_state_initialize(
   metil_controller_state->right_stick.x = (
     0x00
   );
-  
+
   metil_controller_state->right_stick.y = (
     0x00
   );
@@ -58,15 +58,15 @@ void metil_controller_state_initialize(
   metil_controller_state->directional_down = (
     0x00
   );
-  
+
   metil_controller_state->directional_right = (
     0x00
   );
-  
+
   metil_controller_state->directional_left = (
     0x00
   );
-  
+
   metil_controller_state->directional_up = (
     0x00
   );
@@ -74,15 +74,15 @@ void metil_controller_state_initialize(
   metil_controller_state->cross = (
     0x00
   );
-  
+
   metil_controller_state->circle = (
     0x00
   );
-  
+
   metil_controller_state->square = (
     0x00
   );
-  
+
   metil_controller_state->triangle = (
     0x00
   );
@@ -101,7 +101,7 @@ void metil_controller_state_poll(
   );
 
   if (
-    metil_controller->controller == 
+    metil_controller->controller ==
     0x00
   ) {
     metil_controller->profile = (
@@ -113,7 +113,7 @@ void metil_controller_state_poll(
     metil_controller_state->l2 = (
       0x00
     );
-    
+
     metil_controller_state->l3 = (
       0x00
     );
@@ -121,11 +121,11 @@ void metil_controller_state_poll(
     metil_controller_state->r1 = (
       0x00
     );
-    
+
     metil_controller_state->r2 = (
       0x00
     );
-    
+
     metil_controller_state->r3 = (
       0x00
     );
@@ -133,7 +133,7 @@ void metil_controller_state_poll(
     metil_controller_state->create = (
       0x00
     );
-    
+
     metil_controller_state->options = (
       0x00
     );
@@ -141,7 +141,7 @@ void metil_controller_state_poll(
     metil_controller_state->left_stick.x = (
       0x00
     );
-    
+
     metil_controller_state->left_stick.y = (
       0x00
     );
@@ -149,7 +149,7 @@ void metil_controller_state_poll(
     metil_controller_state->right_stick.x = (
       0x00
     );
-    
+
     metil_controller_state->right_stick.y = (
       0x00
     );
@@ -157,15 +157,15 @@ void metil_controller_state_poll(
     metil_controller_state->directional_down = (
       0x00
     );
-    
+
     metil_controller_state->directional_right = (
       0x00
     );
-    
+
     metil_controller_state->directional_left = (
       0x00
     );
-    
+
     metil_controller_state->directional_up = (
       0x00
     );
@@ -173,15 +173,15 @@ void metil_controller_state_poll(
     metil_controller_state->cross = (
       0x00
     );
-    
+
     metil_controller_state->circle = (
       0x00
     );
-    
+
     metil_controller_state->square = (
       0x00
     );
-    
+
     metil_controller_state->triangle = (
       0x00
     );
@@ -237,7 +237,7 @@ void metil_controller_state_poll(
   metil_controller_state->left_stick.x = (
     stick_left.xAxis.value
   );
-  
+
   metil_controller_state->left_stick.y = (
     stick_left.yAxis.value
   );
@@ -249,7 +249,7 @@ void metil_controller_state_poll(
   metil_controller_state->right_stick.x = (
     stick_right.xAxis.value
   );
-  
+
   metil_controller_state->right_stick.y = (
     stick_right.yAxis.value
   );
@@ -261,15 +261,15 @@ void metil_controller_state_poll(
   metil_controller_state->directional_down = (
     directional_pad.down.value
   );
-  
+
   metil_controller_state->directional_right = (
     directional_pad.right.value
   );
-  
+
   metil_controller_state->directional_left = (
     directional_pad.left.value
   );
-  
+
   metil_controller_state->directional_up = (
     directional_pad.up.value
   );

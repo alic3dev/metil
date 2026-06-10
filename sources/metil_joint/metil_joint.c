@@ -13,11 +13,11 @@ void metil_joint_initialize(
   metil_joint->position.x = (
     0x00
   );
-  
+
   metil_joint->position.y = (
     0x00
   );
-  
+
   metil_joint->position.z = (
     0x00
   );
@@ -25,11 +25,11 @@ void metil_joint_initialize(
   metil_joint->rotation.x = (
     0x00
   );
-  
+
   metil_joint->rotation.y = (
     0x00
   );
-  
+
   metil_joint->rotation.z = (
     0x00
   );
@@ -37,11 +37,11 @@ void metil_joint_initialize(
   metil_joint->rotation_applied.x = (
     0x00
   );
-  
+
   metil_joint->rotation_applied.y = (
     0x00
   );
-  
+
   metil_joint->rotation_applied.z = (
     0x00
   );
@@ -49,11 +49,11 @@ void metil_joint_initialize(
   metil_joint->translation.x = (
     0x00
   );
-  
+
   metil_joint->translation.y = (
     0x00
   );
-  
+
   metil_joint->translation.z = (
     0x00
   );

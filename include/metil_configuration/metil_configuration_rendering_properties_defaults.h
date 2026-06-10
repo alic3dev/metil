@@ -23,7 +23,7 @@ struct metil_configuration_rendering_properties_defaults {
 
   unsigned char fps_display;
   struct math_c_vector4_float colour_fps_display;
-  
+
   #if !target_os_ios
   unsigned char display_sync;
   #endif

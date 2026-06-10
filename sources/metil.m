@@ -26,7 +26,7 @@ void metil_structure_initialize(
   metil_player_defaults_initialize(
     &metil->player_defaults
   );
-  
+
   metil->application_mapping = (
     clic3_memory_allocate_raw(
       sizeof(
@@ -34,7 +34,7 @@ void metil_structure_initialize(
       )
     )
   );
-  
+
   metil_application_mapping_initialize(
     metil->application_mapping
   );
@@ -124,7 +124,7 @@ void metil_destroy(
       metil
     );
   }
-  
+
   clic3_memory_free_raw(
     metil->application_mapping
   );
