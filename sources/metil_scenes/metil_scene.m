@@ -10,6 +10,8 @@
 
 #include <clic3_memory.h>
 
+#include <Metal/MTLTexture.h>
+
 void metil_scene_initialize(
   struct metil* metil,
   struct metil_scene* scene
@@ -17,7 +19,7 @@ void metil_scene_initialize(
   metil_scene_initialize_with_renderables(
     metil,
     scene,
-    0
+    0x00
   );
 }
 
@@ -44,45 +46,102 @@ void metil_scene_initialize_with_renderables(
     )
   );
 
-  scene->length_textures = 0;
+  scene->length_textures = (
+    0x00
+  );
 
   scene->textures = (
     clic3_memory_allocate_raw(
-      0
+      scene->length_textures *
+      sizeof(
+        id<MTLTexture>
+      )
     )
   );
 
-  scene->player.position.x = 0.0f;
-  scene->player.position.y = 0.0f;
-  scene->player.position.z = 0.0f;
+  scene->player.position.x = (
+    0x00
+  );
 
-  scene->player.rotation.x = 0.0f;
-  scene->player.rotation.y = 0.0f;
-  scene->player.rotation.z = 0.0f;
+  scene->player.position.y = (
+    0x00
+  );
 
-  metil->input.cursor.delta.x = 0.0f;
-  metil->input.cursor.delta.y = 0.0f;
+  scene->player.position.z = (
+    0x00
+  );
 
-  scene->poll = metil_scene_poll_default;
-  scene->poll_input = metil_scene_poll_input_default;
-  scene->destroy = metil_scene_destroy_default;
+  scene->player.rotation.x = (
+    0x00
+  );
+
+  scene->player.rotation.y = (
+    0x00
+  );
+
+  scene->player.rotation.z = (
+    0x00
+  );
+
+  metil->input.cursor.delta.x = (
+    0x00
+  );
+
+  metil->input.cursor.delta.y = (
+    0x00
+  );
+
+  scene->poll = (
+    metil_scene_poll_default
+  );
+
+  scene->poll_input = (
+    metil_scene_poll_input_default
+  );
+
+  scene->destroy = (
+    metil_scene_destroy_default
+  );
 
   scene->time_initial = (
     metil_time_milliseconds_get()
   );
 
-  scene->time = 0;
-  scene->time_previous = 0;
-  scene->time_delta = 0;
-  scene->time_elapsed = 0;
+  scene->time = (
+    0x00
+  );
 
-  scene->time_input = 0;
-  scene->time_input_delta = 0;
-  scene->time_input_previous = 0;
+  scene->time_previous = (
+    0x00
+  );
 
-  scene->loading = 0;
+  scene->time_delta = (
+    0x00
+  );
 
-  scene->data = 0;
+  scene->time_elapsed = (
+    0x00
+  );
+
+  scene->time_input = (
+    0x00
+  );
+
+  scene->time_input_delta = (
+    0x00
+  );
+
+  scene->time_input_previous = (
+    0x00
+  );
+
+  scene->loading = (
+    0x00
+  );
+
+  scene->data = (
+    0x00
+  );
 }
 
 void metil_scene_renderables_set_length(
@@ -124,8 +183,11 @@ void metil_scene_poll_input(
   metil_scene->time_input = time;
 
   metil_scene->time_input_delta = (
-    metil_scene->time_input_previous == 0
-    ? 0
+    (
+      metil_scene->time_input_previous ==
+      0x00
+    )
+    ? 0x00
     : (
       metil_scene->time_input -
       metil_scene->time_input_previous
@@ -164,11 +226,16 @@ void metil_scene_poll(
     metil_scene->time
   );
 
-  metil_scene->time = time;
+  metil_scene->time = (
+    time
+  );
 
   metil_scene->time_delta = (
-    metil_scene->time_previous == 0
-    ? 0
+    (
+      metil_scene->time_previous ==
+      0x00
+    )
+    ? 0x00
     : (
       metil_scene->time -
       metil_scene->time_previous
@@ -218,8 +285,13 @@ void metil_scene_destroy_default(
   struct metil_scene* scene
 ) {
   for (
-    unsigned int index_renderable = 0;
-    index_renderable < scene->length_renderables;
+    unsigned int index_renderable = (
+      0x00
+    );
+    (
+      index_renderable <
+      scene->length_renderables
+    );
     ++index_renderable
   ) {
     metil_renderable_destroy(
@@ -237,8 +309,13 @@ void metil_scene_destroy_default(
   );
 
   for (
-    unsigned int index_texture = 0;
-    index_texture < scene->length_textures;
+    unsigned int index_texture = (
+      0x00
+    );
+    (
+      index_texture <
+      scene->length_textures
+    );
     ++index_texture
   ) {
     [
