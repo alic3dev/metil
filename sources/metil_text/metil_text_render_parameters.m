@@ -18,10 +18,13 @@ void metil_text_render_parameters_initialize(
       name_family_font
     )
   ];
-
+ 
   metil_text_render_parameters->font = (
     CTFontCreateWithName(
-      string_name_family_font,
+      (
+        (CFStringRef)
+        string_name_family_font
+      ),
       size,
       0x00
     )
