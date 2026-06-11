@@ -28,6 +28,9 @@
 
 #include <clic3_memory.h>
 
+#include <math_c_absolute.h>
+#include <math_c_angles.h>
+#include <math_c_modulus.h>
 #include <math_c_pi.h>
 #include <math_c_sine.h>
 #include <math_c_vector.h>
@@ -41,7 +44,7 @@ void example_meshes_scene_initialize(
     metil,
     metil_scene,
     14,
-    0x01
+    0x03
   );
   
   MTLTextureDescriptor* descriptor_texture_lighting = [
@@ -92,10 +95,25 @@ void example_meshes_scene_initialize(
   );
   
   descriptor_texture_lighting.usage = (
-    MTLTextureUsageShaderRead
+    MTLTextureUsageShaderRead |
+    MTLTextureUsageShaderWrite
   );
   
   id<MTLTexture> texture_lighting = [
+    metil->renderer_interface.metal_device
+    newTextureWithDescriptor: (
+      descriptor_texture_lighting
+    )
+  ];
+  
+  id<MTLTexture> texture_shadows = [
+    metil->renderer_interface.metal_device
+    newTextureWithDescriptor: (
+      descriptor_texture_lighting
+    )
+  ];
+  
+  id<MTLTexture> texture_shadows_base = [
     metil->renderer_interface.metal_device
     newTextureWithDescriptor: (
       descriptor_texture_lighting
@@ -107,10 +125,20 @@ void example_meshes_scene_initialize(
     retain
   ];
   
+  [
+    texture_shadows
+    retain
+  ];
+  
+  [
+    texture_shadows_base
+    retain
+  ];
+  
   unsigned long int bytesPerRow = (
     texture_lighting.width *
-    //texture_lighting.depth *
-    0x04  ); 
+    0x04
+  ); 
   
   unsigned int length_bytes = (
     texture_lighting.width *
@@ -125,12 +153,18 @@ void example_meshes_scene_initialize(
     )
   );
   
+  unsigned char* bytes_texture_shadows = (
+    clic3_memory_allocate_raw(
+      length_bytes
+    )
+  );
+  
   struct math_c_vector3_float center = {
     .x = 0x00,
     .y = 0x00,
     .z = 0x00
   };
-float max;  
+  
     for (
       unsigned int index_byte = (
         0x00
@@ -231,6 +265,33 @@ float max;
       ] = (
         0xff
       );
+      
+      bytes_texture_shadows[
+        index_byte
+      ] = (
+        0xff
+      );
+    
+      bytes_texture_shadows[
+        index_byte +
+        0x01
+      ] = (
+        0xff
+      );
+      
+      bytes_texture_shadows[
+        index_byte +
+        0x02
+      ] = (
+        0xff
+      );
+    
+      bytes_texture_shadows[
+        index_byte +
+        0x03
+      ] = (
+        0xff
+      );
     }
   
   for (
@@ -263,16 +324,48 @@ float max;
       withBytes: (bytes_texture_lighting + index_z * 0x64 * 0x64 * 0x04)
       bytesPerRow: bytesPerRow
     ];
+    
+    [
+      texture_shadows
+      replaceRegion: region_texture_lighting
+      mipmapLevel: 0x00
+      withBytes: (bytes_texture_lighting + index_z * 0x64 * 0x64 * 0x04)
+      bytesPerRow: bytesPerRow
+    ];
+    
+    [
+      texture_shadows_base
+      replaceRegion: region_texture_lighting
+      mipmapLevel: 0x00
+      withBytes: (bytes_texture_lighting + index_z * 0x64 * 0x64 * 0x04)
+      bytesPerRow: bytesPerRow
+    ];
   }
   
   clic3_memory_free_raw(
     bytes_texture_lighting
   );
   
+  clic3_memory_free_raw(
+    bytes_texture_shadows
+  );
+  
   metil_scene->textures[
     0x00
   ] = (
     texture_lighting
+  );
+  
+  metil_scene->textures[
+    0x01
+  ] = (
+    texture_shadows
+  );
+  
+  metil_scene->textures[
+    0x02
+  ] = (
+    texture_shadows_base
   );
   
   [
@@ -552,6 +645,11 @@ float max;
       metil_object,
       texture_lighting
     );
+    
+    metil_object_texture_add(
+      metil_object,
+      texture_shadows
+    );
 
     struct metil_renderer_data_object* data_object = (
       metil_object->buffers_vertex[
@@ -609,6 +707,11 @@ float max;
     texture_lighting
   );
   
+  metil_object_texture_add(
+    metil_object_room,
+    texture_shadows
+  );
+  
   struct metil_renderer_data_object* data_object = (
     metil_object_room->buffers_vertex[
       metil_object_buffer_default_index_data
@@ -621,7 +724,8 @@ float max;
   
   data_object->colour.z = (
     0.8f
-  );}
+  );
+}
 
 void example_meshes_scene_poll(
   struct metil* metil,
@@ -631,6 +735,66 @@ void example_meshes_scene_poll(
     metil,
     metil_scene
   );
+  
+  id<MTLTexture> texture_shadows = (
+    metil_scene->textures[
+      0x01
+    ]
+  );
+  
+  id<MTLTexture> texture_shadows_base = (
+    metil_scene->textures[
+      0x02
+    ]
+  );
+  
+  unsigned char* bytes_texture_shadows_base = (
+      clic3_memory_allocate_raw(
+        texture_shadows.height *
+        texture_shadows.width *
+        texture_shadows.depth *
+        0x04
+      )
+    );
+  
+  unsigned int bytesPerRow = (
+    texture_shadows.width *
+    0x04
+  ); 
+  
+   MTLRegion region_texture_shadows = {
+      .origin = {
+        .x = 0x00,
+        .y = 0x00,
+        .z = 0x00
+      },
+      .size = {
+        .height = texture_shadows.height,
+        .width = texture_shadows.width,
+        .depth = 0x01
+      }
+    }; 
+  
+  for (
+    unsigned int index_z = (
+      0x00
+    );
+    (
+      index_z <
+      texture_shadows.depth
+    );
+    ++index_z
+  ) {
+    region_texture_shadows.origin.z = index_z;
+    
+    [
+      texture_shadows_base
+      getBytes: (bytes_texture_shadows_base + index_z * 0x64 * 0x64 * 0x04)
+      bytesPerRow: bytesPerRow
+      fromRegion: region_texture_shadows
+      mipmapLevel: 0x00
+    ];  
+  }
 
   for (
     unsigned int index_renderable = (
@@ -672,6 +836,170 @@ void example_meshes_scene_poll(
         0x10 + 0x398) / 0x02 * math_c_pi_doubled
         ,math_c_pi) * 0x20
     );
+    
+    struct math_c_vector4_float* vertices[
+      0x03
+    ];
+    
+    struct math_c_vector3_float position_texture[
+      0x03
+    ];
+    
+    struct math_c_vector4_float position;
+    
+    struct math_c_vector2_float angles[
+      0x03
+    ];
+    
+    struct math_c_vector3_float center = {
+      .x = 0x32,
+      .y = 0x32,
+      .z = 0x32
+    };
+    
+    for (
+      unsigned int index_index = (
+        0x00
+      );
+      (
+        index_index <
+        metil_object->mesh.length_vertices
+        //metil_object->mesh.length_indices
+      );
+      index_index = (
+        index_index +
+        0x01
+      )
+    ) {
+      vertices[0x00] = &metil_object->mesh.vertices[index_index];//metil_object->mesh.indices[index_index]];
+      //vertices[0x01] = &metil_object->mesh.vertices[metil_object->mesh.indices[index_index + 0x01]];
+      //vertices[0x02] = &metil_object->mesh.vertices[metil_object->mesh.indices[index_index + 0x02]];
+      
+      position_texture[0x00].x = (((
+        metil_object->position.x + vertices[0x00]->x
+      ) / 0x31 + 0x01) / 0x02) * texture_shadows.width;
+      
+      position_texture[0x00].y = (((
+        metil_object->position.y + vertices[0x00]->y
+      ) / 0x31 + 0x01) / 0x02) * texture_shadows.height;
+      
+      position_texture[0x00].z = (((
+        metil_object->position.z + vertices[0x00]->z
+      ) / 0x31 + 0x01) / 0x02) * texture_shadows.depth;
+      
+      /*position_texture[0x01].x = (((
+        metil_object->position.x + vertices[0x01]->x
+      ) / 0x31 + 0x01) / 0x02) * texture_shadows.width;
+      
+      position_texture[0x01].y = (((
+        metil_object->position.y + vertices[0x01]->y
+      ) / 0x31 + 0x01) / 0x02) * texture_shadows.height;
+      
+      position_texture[0x01].z = (((
+        metil_object->position.z + vertices[0x01]->z
+      ) / 0x31 + 0x01) / 0x02) * texture_shadows.depth;
+      
+      position_texture[0x02].x = (((
+        metil_object->position.x + vertices[0x02]->x
+      ) / 0x31 + 0x01) / 0x02) * texture_shadows.width;
+      
+      position_texture[0x02].y = (((
+        metil_object->position.y + vertices[0x02]->y
+      ) / 0x31 + 0x01) / 0x02) * texture_shadows.height;
+      
+      position_texture[0x02].z = (((
+        metil_object->position.z + vertices[0x02]->z
+      ) / 0x31 + 0x01) / 0x02) * texture_shadows.depth;*/
+      
+      if (
+        bytes_texture_shadows_base[
+          (unsigned int) (position_texture[0x00].x + position_texture[0x00].y * 0x64 + position_texture[0x00].z * 0x64 * 0x64) * 0x04
+        ] == 0x00
+        /*&&
+        bytes_texture_shadows_base[
+          (unsigned int) (position_texture[0x01].x + position_texture[0x01].y * 0x64 + position_texture[0x01].z * 0x64 * 0x64) * 0x04
+        ] == 0x00
+        &&
+        bytes_texture_shadows_base[
+          (unsigned int) (position_texture[0x02].x + position_texture[0x02].y * 0x64 + position_texture[0x02].z * 0x64 * 0x64) * 0x04
+        ] == 0x00*/
+      ) {
+        continue;
+      }
+      
+      angles[0x00].y = (
+        math_c_angle_from_vector3_float_xz(
+          &position_texture[
+            0x00
+          ],
+          &center
+        ) /
+        math_c_pi
+      );
+  
+                   /*angles[0x01].y = (
+        math_c_angle_from_vector3_float_xz(
+          &position_texture[
+            0x01
+          ],
+          &center
+        )
+      );
+      
+      angles[0x02].y = (
+        math_c_angle_from_vector3_float_xz(
+          &position_texture[
+            0x02
+          ],
+          &center
+        )
+      );*/  
+      
+      position.x = position_texture[0x00].x;      position.y = position_texture[0x00].y;
+      
+       position.z = position_texture[0x00].z;
+      position.w = 0x00;
+             
+      while (
+        position.x >= 0x00 &&
+        position.y >= 0x00 &&
+        position.z >= 0x00 &&
+        position.x < 0x64 &&
+        position.y < 0x64 &&
+        position.z < 0x64
+      ) {
+        unsigned int index_byte = (
+          ((unsigned int) position.x + (unsigned int) position.y * 0x64 + (unsigned int) position.z * 0x64 * 0x64) * 0x04                  );
+      
+        bytes_texture_shadows_base[
+          index_byte
+        ] = (
+          0x00
+        );
+      
+        bytes_texture_shadows_base[
+          index_byte +
+          0x01
+        ] = (
+          0x00
+        );
+      
+        bytes_texture_shadows_base[
+          index_byte +
+          0x02
+        ] = (
+          0x00
+        );
+        
+        position.x = position.x + angles[0x00].y;
+        
+        float z = (
+          (math_c_absolute_float(angles[0x00].y) - 0.5f) * 0x02
+        );
+        
+        position.z = position.z - z;        
+      }
+    }
 
     /*metil_object->rotation.x = (
       metil_object->rotation.x +
@@ -683,4 +1011,29 @@ void example_meshes_scene_poll(
       0.01
     );*/
   }
+  
+  for (
+    unsigned int index_z = (
+      0x00
+    );
+    (
+      index_z <
+      texture_shadows.depth
+    );
+    ++index_z
+  ) {
+    region_texture_shadows.origin.z = index_z;
+    
+    [
+      texture_shadows
+      replaceRegion: region_texture_shadows
+      mipmapLevel: 0x00
+      withBytes: (bytes_texture_shadows_base + index_z * 0x64 * 0x64 * 0x04)
+      bytesPerRow: bytesPerRow
+    ];
+  }
+  
+  clic3_memory_free_raw(
+    bytes_texture_shadows_base
+  );
 }

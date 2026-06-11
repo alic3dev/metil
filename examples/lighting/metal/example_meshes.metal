@@ -64,7 +64,7 @@ struct data_vertex {
   data_vertex.position_raw.x = data_object->position.x + vertices[index_vertex].x;
   data_vertex.position_raw.y = data_object->position.y + vertices[index_vertex].y;
   data_vertex.position_raw.z = data_object->position.z + vertices[index_vertex].z;
-
+ 
   return (
     data_vertex
   );
@@ -77,6 +77,11 @@ struct data_vertex {
   metal::texture3d<float> texture_lighting [[
     texture(
       0x00
+    )
+  ]],
+  metal::texture3d<float> texture_shadows [[
+    texture(
+      0x01
     )
   ]]
 ) {
@@ -114,6 +119,10 @@ struct data_vertex {
   } else {  return (
     data_vertex.colour *
     texture_lighting.sample(
+      sampler,
+      position_texture
+    ) *
+    texture_shadows.sample(
       sampler,
       position_texture
     )
