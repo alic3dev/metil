@@ -29,7 +29,7 @@ void metil_rendering_descriptors_pipeline_render_initialize(
     format_pixel_colour_attachment
   );
 
-      descriptor_pipeline_render.colorAttachments[
+  descriptor_pipeline_render.colorAttachments[
     0x00
   ].blendingEnabled = (
     0x01
