@@ -1,4 +1,4 @@
-name=example_meshes
+name=example_lighting
 
 directory_objects_base=objects
 directory_output_base=output
