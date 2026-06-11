@@ -580,63 +580,47 @@
     state_application >
     0x01
   ) {
-    unsigned long int time_since_last_draw = (      (
-        metil_time_milliseconds_get() -
-        0x019be2bf087f
-      ) -
-      self->metil->rendering_properties.time_frames[
-        metil_count_time_frames -
-        0x01
-      ]
-    );
-
-    if (
-      time_since_last_draw <
-      0x0186a0
+    if (      self->destroying ==
+      0x00
     ) {
-      if (
-        self->destroying ==
-        0x00
-      ) {
-        struct timespec time_sleep = {
-          .tv_sec = (
-            0x00
-          ),
-          .tv_nsec = (
-            0x05f5e100
-          )
-        };
+      struct timespec time_sleep = {
+        .tv_sec = (
+          0x00
+        ),
+        .tv_nsec = (
+          0x05f5e100
+        )
+      };
 
-        struct timespec time_remaining = {
-          .tv_sec = (
-            0x00
-          ),
-          .tv_nsec = (
-            0x00
-          )
-        };
+      struct timespec time_remaining = {
+        .tv_sec = (
+          0x00
+        ),
+        .tv_nsec = (
+          0x00
+        )
+      };
 
-        nanosleep(
-          &time_sleep,
-          &time_remaining
-        );
+      nanosleep(
+        &time_sleep,
+        &time_remaining
+      );
 
-        pthread_t thread_draw;
+      pthread_t thread_draw;
 
-        pthread_create(
-          &thread_draw,
-          0x00,
-          metil_renderer_thread_draw,
-          metal_kit_view
-        );
-      } else {
-        pthread_mutex_unlock(
-          &self->mutex_destroying
-        );
-      }
-
-      return;
+      pthread_create(
+        &thread_draw,
+        0x00,
+        metil_renderer_thread_draw,
+        metal_kit_view
+      );
+    } else {
+      pthread_mutex_unlock(
+        &self->mutex_destroying
+      );
     }
+
+    return;
   }
   #endif
 

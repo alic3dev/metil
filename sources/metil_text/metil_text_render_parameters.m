@@ -18,7 +18,7 @@ void metil_text_render_parameters_initialize(
       name_family_font
     )
   ];
- 
+
   metil_text_render_parameters->font = (
     CTFontCreateWithName(
       (

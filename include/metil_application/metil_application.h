@@ -17,6 +17,10 @@
   @public struct metil* metil;
 }
 
+#if target_os_ios
+- (char) isIdleTimerDisabled;
+#endif
+
 @end
 
 #endif
