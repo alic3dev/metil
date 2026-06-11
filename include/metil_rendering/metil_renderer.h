@@ -45,6 +45,7 @@
   unsigned char depth_state_disabled;
 
   MTLRenderPipelineDescriptor* descriptor_pipeline_render;
+  MTLRenderPassDescriptor* descriptor_render_pass;
 
   id<MTLRenderCommandEncoder> encoder_render;
 
@@ -84,6 +85,7 @@
 - (void) data_buffer_frames_length_buffer_set: (unsigned int) length_buffer;
 
 - (void) descriptor_pipeline_render_initialize;
+- (void) descriptor_render_pass_initialize;
 
 - (void) destroy;
 
