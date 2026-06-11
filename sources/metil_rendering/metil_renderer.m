@@ -565,68 +565,6 @@
     )
   ];
 
-  #if target_os_ios
-  metil_application* metil_ui_application = (
-    (metil_application*)
-    [
-      UIApplication
-      sharedApplication
-    ]
-  );
-
-  unsigned char state_application = [
-    metil_ui_application
-    applicationState
-  ];
-
-  if (
-    state_application >
-    0x01
-  ) {
-    if (      self->destroying ==
-      0x00
-    ) {
-      struct timespec time_sleep = {
-        .tv_sec = (
-          0x00
-        ),
-        .tv_nsec = (
-          0x05f5e100
-        )
-      };
-
-      struct timespec time_remaining = {
-        .tv_sec = (
-          0x00
-        ),
-        .tv_nsec = (
-          0x00
-        )
-      };
-
-      nanosleep(
-        &time_sleep,
-        &time_remaining
-      );
-
-      pthread_t thread_draw;
-
-      pthread_create(
-        &thread_draw,
-        0x00,
-        metil_renderer_thread_draw,
-        metal_kit_view
-      );
-    } else {
-      pthread_mutex_unlock(
-        &self->mutex_destroying
-      );
-    }
-
-    return;
-  }
-  #endif
-
   [
     self
     render_view: (
@@ -763,30 +701,30 @@
     release
   ];
 
-  MTLRenderPassDescriptor* descriptor_render_pass = (
+  self->descriptor_render_pass = (
     metal_kit_view.currentRenderPassDescriptor
   );
-
-  descriptor_render_pass.colorAttachments[
-    0x00
-  ].clearColor = (
-    MTLClearColorMake(
-      (
-        self->metil->rendering_properties.colour_clear.x *
-        self->metil->rendering_properties.brightness
-      ),
-      (
-        self->metil->rendering_properties.colour_clear.y *
-        self->metil->rendering_properties.brightness
-      ),
-      (
-        self->metil->rendering_properties.colour_clear.z *
-        self->metil->rendering_properties.brightness
-      ),
-      self->metil->rendering_properties.colour_clear.w
-    )
+      
+  
+  #if target_os_ios
+  metil_application* metil_ui_application = (
+    (metil_application*)
+    [
+      UIApplication
+      sharedApplication
+    ]
   );
 
+  unsigned char state_application = [
+    metil_ui_application
+    applicationState
+  ];
+  
+  if (
+    state_application ==
+    0x00
+  ) {
+  #endif
   if (
     (
       self->metil->rendering_properties.disables &
@@ -794,6 +732,29 @@
     ) ==
     0x00
   ) {
+    descriptor_render_pass.colorAttachments[
+      0x00
+    ].clearColor = (
+      (MTLClearColor)
+      {
+        .red = (
+          self->metil->rendering_properties.colour_clear.x *
+          self->metil->rendering_properties.brightness
+        ),
+        .green = (
+          self->metil->rendering_properties.colour_clear.y *
+          self->metil->rendering_properties.brightness
+        ),
+        .blue = (
+          self->metil->rendering_properties.colour_clear.z *
+          self->metil->rendering_properties.brightness
+        ),
+        .alpha = (
+          self->metil->rendering_properties.colour_clear.w
+        )
+      }
+    );
+  
     descriptor_render_pass.colorAttachments[
       0x00
     ].loadAction = (
@@ -806,6 +767,15 @@
       MTLLoadActionLoad
     );
   }
+  #if target_os_ios
+  } else {
+    descriptor_render_pass.colorAttachments[
+      0x00
+    ].loadAction = (
+      MTLLoadActionLoad
+    );
+  }
+  #endif
 
   descriptor_render_pass.colorAttachments[
     0x00
@@ -892,6 +862,13 @@
       )
     ];
   }
+  
+  #if target_os_ios
+  if (
+    state_application ==
+    0x00
+  ) {  
+  #endif
 
   if (
     (
@@ -927,6 +904,10 @@
       render_fps_display
     ];
   }
+  
+  #if target_os_ios
+  }
+  #endif
 
   [
     encoder_render
