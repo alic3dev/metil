@@ -2,6 +2,7 @@
 
 #include <metil_example_audio_output_io_proc.h>
 #include <metil_example_audio_output_io_proc_data.h>
+#include <metil_example_audio_output_object.h>
 
 #include <cer0_effects/cer0_effect_delay.h>
 #include <cer0_frequency_root.h>
@@ -170,6 +171,10 @@ d->colour.w = 0.23f;
     0x01
   ].buffer = (
     buffer_audio
+  );
+  
+  metil_object_floor->destroy = (
+    metil_example_audio_output_object_destroy
   );
   
   metil_scene->data = (
@@ -473,10 +478,7 @@ metil->audio.audio_output.sample_rate
       );
       
       if (data->colour.w < 0x00) {
-      ((struct metil_object*) group->renderables[index_renderable]->renderable)->buffers_vertex[
-       ((struct metil_object*) group->renderables[index_renderable]->renderable)->length_buffers_vertex -
-       0x01
-     ].buffer = 0x00;
+      
 
       
         metil_group_destroy_renderable_at_index(
@@ -593,6 +595,10 @@ synthesizer->length_attack_sustain_decay_release = 0xffff;
     
     struct metil_object* object = group->renderables[group->length - 0x01]->renderable;
     
+    object->destroy = (
+    metil_example_audio_output_object_destroy
+  );
+    
     metil_mesh_sphere_initialize(
       &object->mesh,
       0x32 * ((float) (metil->rendering_properties.frame % 0x07) /0x03),
@@ -682,11 +688,7 @@ struct metil_renderer_data_object* data = object->buffers_vertex[metil_object_bu
   );
       
                 while (group->length > 0xffff) {
-                
-       ((struct metil_object*) group->renderables[0x00]->renderable)->buffers_vertex[
-       ((struct metil_object*) group->renderables[0x00]->renderable)->length_buffers_vertex -
-       0x01
-     ].buffer = 0x00;
+             
       metil_group_destroy_renderable_at_index(
         metil,
         group,
@@ -704,15 +706,23 @@ void metil_example_audio_output_scene_destroy(
   struct metil_example_audio_output_io_proc_data* metil_example_audio_output_io_proc_data = (
     metil_scene->data
   );
+  
   pthread_mutex_lock(
-  &metil_example_audio_output_io_proc_data->mutex
+    &metil_example_audio_output_io_proc_data->mutex
   );
   
-metil_example_audio_output_io_proc_data->exiting = 0x01;
+  metil_example_audio_output_io_proc_data->exiting = (
+    0x01
+  );
 
-pthread_mutex_lock(&metil_example_audio_output_io_proc_data->mutex);
+  pthread_mutex_lock(
+    &metil_example_audio_output_io_proc_data->mutex
+  );
 
-pthread_mutex_destroy(&metil_example_audio_output_io_proc_data->mutex);
+  pthread_mutex_destroy(
+    &metil_example_audio_output_io_proc_data->mutex
+  );
+  
   cer0_synthesizer_destroy(
     &metil_example_audio_output_io_proc_data->synthesizer
   );
@@ -721,43 +731,33 @@ pthread_mutex_destroy(&metil_example_audio_output_io_proc_data->mutex);
     &metil_example_audio_output_io_proc_data->synthesizer_secondary
   );
   
-  for (unsigned int index_synth = 0; index_synth < metil_example_audio_output_io_proc_data->length_synthesizers; ++index_synth) {
-   
-  cer0_synthesizer_destroy(
-    &metil_example_audio_output_io_proc_data->synthesizers[index_synth]  );  }
-
+  for (
+    unsigned int index_synth = (
+      0x00
+    );
+    (
+      index_synth <
+      metil_example_audio_output_io_proc_data->length_synthesizers
+    );
+    ++index_synth
+  ) {
+    cer0_synthesizer_destroy(
+      &metil_example_audio_output_io_proc_data->synthesizers[
+        index_synth
+      ]
+    );
+  }
   
-clic3_memory_free_raw(
-  metil_example_audio_output_io_proc_data->synthesizers);  
+  clic3_memory_free_raw(
+    metil_example_audio_output_io_proc_data->synthesizers
+  );  
+  
   clic3_memory_free_raw(
     metil_example_audio_output_io_proc_data->note_table
   );
-  
-  for (unsigned int ind = 0;ind <((struct metil_group*) metil_scene->renderables[
-  metil_example_audio_output_scene_index_renderable_floaties
-  ].renderable)->length;++ind) {
-    ((struct metil_object*) ((struct metil_group*)metil_scene->renderables[
-    metil_example_audio_output_scene_index_renderable_floaties
-    ].renderable)->renderables[ind]->renderable)->buffers_vertex[
-  ((struct metil_object*) ((struct metil_group*)metil_scene->renderables[
-  metil_example_audio_output_scene_index_renderable_floaties
-  ].renderable)->renderables[ind]->renderable)->length_buffers_vertex -
-    0x01
-    ].buffer = 0x00;  }
-  
-((struct metil_object*)metil_scene->renderables[metil_example_audio_output_scene_index_renderable_floor].renderable)->buffers_vertex[
-((struct metil_object*)metil_scene->renderables[metil_example_audio_output_scene_index_renderable_floor].renderable)->length_buffers_vertex -
-0x01
-].buffer = 0x00;
 
-[((struct metil_object*)metil_scene->renderables[metil_example_audio_output_scene_index_renderable_flower].renderable)->buffers_vertex[
-((struct metil_object*)metil_scene->renderables[metil_example_audio_output_scene_index_renderable_flower].renderable)->length_buffers_vertex -
-0x01
-].buffer release];
-
-((struct metil_object*)metil_scene->renderables[metil_example_audio_output_scene_index_renderable_flower].renderable)->buffers_vertex[
-((struct metil_object*)metil_scene->renderables[metil_example_audio_output_scene_index_renderable_flower].renderable)->length_buffers_vertex -
-0x01
-].buffer = 0x00;
-  metil_scene_destroy_default(metil,metil_scene);
+  metil_scene_destroy_default(
+    metil,
+    metil_scene
+  );
 }
