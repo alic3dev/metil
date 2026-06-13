@@ -1554,7 +1554,7 @@ make target_device=iphone
 |---|---|---|
 | <img width="1966" height="1250" alt="metil_example_audio_output" src="https://github.com/user-attachments/assets/4f40d132-5555-49bf-b009-573ac68a88e9" /> | <img width="1966" height="1250" alt="metil_example_collision" src="https://github.com/user-attachments/assets/8c4bd97a-df91-439b-abd6-04b7edfdae77" /> | <img width="1966" height="1250" alt="metil_example_face" src="https://github.com/user-attachments/assets/466184c5-c724-4f80-b0c7-fa34aa55e7c2" /> |
 
-| [fog](examples/fog/) | [meshes](examples/meshes) | [model](examples/model) | |
+| [fog](examples/fog/) | [meshes](examples/meshes) | [model](examples/model) |
 |---|---|---|
 | <img width="1966" height="1250" alt="metil_example_fog" src="https://github.com/user-attachments/assets/a1714803-94a4-4047-9108-d4e33cff4715" /> | <img width="1966" height="1250" alt="metil_example_meshes" src="https://github.com/user-attachments/assets/6c14ae47-90c3-4071-8386-3d5e7be20c38" /> | <img width="1966" height="1250" alt="metil_example_model" src="https://github.com/user-attachments/assets/bcc73a50-8853-4fe8-8e4c-c054b3623ff6" /> | |
 
