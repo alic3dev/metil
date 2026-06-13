@@ -3,7 +3,16 @@
 #include <metil_example_audio_output_io_proc.h>
 #include <metil_example_audio_output_io_proc_data.h>
 
+#include <cer0_effects/cer0_effect_delay.h>
+#include <cer0_frequency_root.h>
+#include <cer0_note_table.h>
+#include <cer0_synthesizer.h>
+
+#include <clic3_memory.h>
+
 #include <math_c_modulus.h>
+#include <math_c_pi.h>
+#include <math_c_vector.h>
 
 #include <metil.h>
 #include <metil_audio/metil_audio.h>
@@ -16,16 +25,6 @@
 #include <metil_rendering/metil_renderable_type.h>
 #include <metil_rendering/metil_renderer_data_object.h>
 #include <metil_scenes/metil_scene.h>
-
-#include <cer0_effects/cer0_effect_delay.h>
-#include <cer0_frequency_root.h>
-#include <cer0_note_table.h>
-#include <cer0_synthesizer.h>
-
-#include <clic3_memory.h>
-
-#include <math_c_pi.h>
-#include <math_c_vector.h>
 
 void metil_example_audio_output_scene_initialize(
   struct metil* metil,
