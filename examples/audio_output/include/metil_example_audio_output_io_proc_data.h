@@ -3,8 +3,6 @@
 
 #include <cer0_synthesizer.h>
 
-#include <math_c_vector.h>
-
 #include <pthread.h>
 
 struct metil_example_audio_output_io_proc_data {
@@ -18,14 +16,16 @@ struct metil_example_audio_output_io_proc_data {
   unsigned char length_synthesizers;
   unsigned int index_synth;
   
-  unsigned char* buffer;
-  
   float frequency_last;
   
-  unsigned int length_buffer;  unsigned short int index_buffer;
+  unsigned char* buffer;
+  
+  unsigned int length_buffer;
+  unsigned short int index_buffer;
   
   unsigned char exiting;
   
-pthread_mutex_t mutex;};
+  pthread_mutex_t mutex;
+};
 
 #endif
