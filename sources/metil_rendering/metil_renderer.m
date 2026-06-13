@@ -394,6 +394,9 @@
   }
 }
 
+- (void) descriptor_render_pass_initialize {
+}
+
 - (void) destroy {
   self->destroying = (
     0x01
