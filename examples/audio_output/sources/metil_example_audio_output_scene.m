@@ -34,7 +34,7 @@ void metil_example_audio_output_scene_initialize(
   metil_scene_initialize_with_renderables(
     metil,
     metil_scene,
-    0x03
+    metil_example_audio_output_scene_length_renderables
   );
 
   metil_scene->poll = (
