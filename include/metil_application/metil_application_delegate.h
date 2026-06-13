@@ -22,6 +22,7 @@
 #endif
 
 - (void) applicationWillTerminate: (NSNotification*) notification;
+- (void) applicationDidResignActive: (NSNotification*) notification;
 
 @end
 

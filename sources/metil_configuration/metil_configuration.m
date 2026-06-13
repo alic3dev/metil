@@ -2,6 +2,9 @@
 
 #include <metil.h>
 #include <metil_audio/metil_audio_data.h>
+#include <metil_configuration/metil_configuration_application.h>
+#include <metil_configuration/metil_configuration_audio.h>
+#include <metil_configuration/metil_configuration_rendering_properties.h>
 #include <metil_debug/metil_debug_log.h>
 #include <metil_paths/metil_paths.h>
 
@@ -15,12 +18,16 @@
 void metil_configuration_initialize(
   struct metil_configuration* metil_configuration
 ) {
-  metil_configuration->audio.volume = (
-    metil_configuration_default_audio_volume
-  );
-
   metil_configuration->debug_log_level = (
     metil_debug_log_level_error
+  );
+
+  metil_configuration_application_initialize(
+    &metil_configuration->application
+  );
+
+  metil_configuration_audio_initialize(
+    &metil_configuration->audio
   );
 
   metil_configuration_rendering_properties_initialize(
