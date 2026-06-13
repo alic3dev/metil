@@ -64,11 +64,11 @@ metil_audio_io_proc_macro_definition(metil_example_audio_output_io_proc) {
           synthesizer_secondary
         )
       );
-         
+
       float value_synthesizers = (
         0x00
       );
-         
+
       for (
        unsigned int index_synthesizer = (
          0x00
@@ -88,7 +88,7 @@ metil_audio_io_proc_macro_definition(metil_example_audio_output_io_proc) {
           )
         );
       }
-          
+
       value_frame = (
         value_synthesizer /
         0x02 *
@@ -98,9 +98,9 @@ metil_audio_io_proc_macro_definition(metil_example_audio_output_io_proc) {
           metil_example_audio_output_io_proc_data->length_synthesizers,
           0x01
         ) *
-        0.4f 
+        0.4f
       );
-        
+
       metil_example_audio_output_io_proc_data->buffer[
         metil_example_audio_output_io_proc_data->index_buffer
       ] = (
@@ -120,8 +120,8 @@ metil_audio_io_proc_macro_definition(metil_example_audio_output_io_proc) {
         ) %
         metil_example_audio_output_io_proc_data->length_buffer
       );
-    } 
-      
+    }
+
     metil_audio_io_proc_macro_definition_frame_set(
       value_frame
     );

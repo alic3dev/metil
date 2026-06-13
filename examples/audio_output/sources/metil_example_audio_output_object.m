@@ -13,7 +13,7 @@ void metil_example_audio_output_object_destroy(
   ].buffer = (
     0x00
   );
-  
+
   metil_object_destroy(
     metil,
     metil_object

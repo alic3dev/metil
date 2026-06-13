@@ -31,13 +31,13 @@
       metil_renderer_vertex_index_parameter_data_object +
       0x01
     )
-  ]], 
+  ]],
   unsigned int index_vertex [[
     vertex_id
   ]]
 ) {
   struct data_vertex_basic_coloured data_vertex_basic_coloured;
-  
+
   float audio = (
     (float)
     buffer_audio[
@@ -60,7 +60,7 @@
       0.1f
     )
   );
-  
+
   vertex_current.w = (
     vertices[
       index_vertex

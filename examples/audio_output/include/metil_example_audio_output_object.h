@@ -9,4 +9,4 @@ void metil_example_audio_output_object_destroy(
   struct metil_object* _Nonnull
 );
 
-#endif 
+#endif
