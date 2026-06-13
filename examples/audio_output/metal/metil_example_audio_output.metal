@@ -40,13 +40,14 @@
   
   float audio = (
     (float)
-      buffer_audio[
-        (
-          index_vertex +
-          data_frame->frame
-        ) %
-        0x09c4      ] /
-      0xff
+    buffer_audio[
+      (
+        index_vertex +
+        data_frame->frame
+      ) %
+      0x09c4
+    ] /
+    0xff
   );
 
   float4 vertex_current = (
@@ -54,7 +55,8 @@
       index_vertex
     ] *
     (
-      audio *      0.9f +
+      audio *
+      0.9f +
       0.1f
     )
   );
@@ -74,22 +76,30 @@
     float4(
       (
         data_object->colour.x *
-        data_frame->brightness *
         (
-          1.0f -
+          0x01 -
           audio
-        )
+        ) *
+        data_frame->brightness
       ),
-      audio * data_object->colour.y,
+      (
+        data_object->colour.y *
+        audio *
+        data_frame->brightness
+      ),
       (
         data_object->colour.z *
-        data_frame->brightness *
-        (math_c_absolute_float(
-          vertices[
-            index_vertex
-          ].y /
-          0x64
-        ) * 0.75f +0.25f)
+        (
+          math_c_absolute_float(
+            vertices[
+              index_vertex
+            ].y /
+            0x64
+          ) *
+          0.75f +
+          0.25f
+        ) *
+        data_frame->brightness
       ),
       data_object->colour.w
     )
