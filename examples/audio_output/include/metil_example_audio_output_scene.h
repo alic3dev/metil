@@ -14,4 +14,9 @@ void metil_example_audio_output_scene_poll(
   struct metil_scene* _Nonnull
 );
 
+void metil_example_audio_output_scene_destroy(
+  struct metil* _Nonnull,
+  struct metil_scene* _Nonnull
+);
+
 #endif

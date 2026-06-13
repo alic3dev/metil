@@ -4,17 +4,15 @@
 
 #include <cer0_synthesizer.h>
 
+#include <math_c_absolute.h>
+#include <math_c_minimum.h>
+#include <math_c_maximum.h>
+
 #include <metil_audio/metil_audio_io_proc_data.h>
 
-OSStatus metil_example_audio_output_io_proc(
-  AudioObjectID id_audio_object,
-  const AudioTimeStamp* time_stamp_audio,
-  const AudioBufferList* list_buffer_audio_in,
-  const AudioTimeStamp* time_stamp_audio_in,
-  AudioBufferList* list_buffer_audio_out,
-  const AudioTimeStamp* time_stamp_audio_out,
-  void* data
-) {
+#include <pthread.h>
+
+metil_audio_io_proc_macro_definition(metil_example_audio_output_io_proc) {
   struct metil_audio_io_proc_data* metil_audio_io_proc_data = (
     data
   );
@@ -27,6 +25,20 @@ OSStatus metil_example_audio_output_io_proc(
     metil_audio_io_proc_data->data
   );
 
+if (
+metil_example_audio_output_io_proc_data->exiting ==
+0x01
+) {
+metil_audio_io_proc_remove(
+    &metil->audio,
+    metil_example_audio_output_io_proc
+  );
+
+  
+pthread_mutex_unlock(&metil_example_audio_output_io_proc_data->mutex);
+
+return 0x00;}
+
   struct cer0_synthesizer* synthesizer = &(
     metil_example_audio_output_io_proc_data->synthesizer
   );
@@ -35,9 +47,6 @@ OSStatus metil_example_audio_output_io_proc(
     metil_example_audio_output_io_proc_data->synthesizer_secondary
   );
 
-  float value_total = (
-    0.0f
-  );
 
   for (
     unsigned long int index_buffer = (
@@ -96,32 +105,52 @@ OSStatus metil_example_audio_output_io_proc(
           cer0_synthesizer_poll(
             synthesizer_secondary
           )
-        );
+         );
+         
+         float synthies = 0x00;
+         
+        for (
+         unsigned int index_synth = 0; index_synth < metil_example_audio_output_io_proc_data->length_synthesizers; ++index_synth
+        ) {
+          synthies = (
+            synthies +
+            cer0_synthesizer_poll(
+              &metil_example_audio_output_io_proc_data->synthesizers[index_synth]
+            )
+          );
+          }
 
-        value_total = (
-          value_total +
-          value_synthesizer
-        );
-
+          
         buffer_out[
           index_buffer_out
         ] = (
-          value_synthesizer /
-          0x02
+          (value_synthesizer /
+          (float) (0x02)
+          ) * 0.6f +
+          (synthies /
+          (float) math_c_maximum_float(0x01,metil_example_audio_output_io_proc_data->length_synthesizers)) * 0.4f 
+        );
+        
+        metil_example_audio_output_io_proc_data->buffer[
+          metil_example_audio_output_io_proc_data->index_buffer
+        ] = (
+          math_c_minimum_float(
+            math_c_absolute_float(
+              buffer_out[
+                index_buffer_out
+              ]
+            ),
+            0x01
+          ) *
+          0xff
         );
 
-        metil_example_audio_output_io_proc_data->vertices[
-          metil_example_audio_output_io_proc_data->index_vertex
-        ]. y = (
-          value_synthesizer
-        );
-
-        metil_example_audio_output_io_proc_data->index_vertex = (
+        metil_example_audio_output_io_proc_data->index_buffer = (
           (
-            metil_example_audio_output_io_proc_data->index_vertex +
+            metil_example_audio_output_io_proc_data->index_buffer +
             0x01
           ) %
-          metil_example_audio_output_io_proc_data_length_buffer
+          metil_example_audio_output_io_proc_data->length_buffer
         );
       } else {
         buffer_out[
@@ -134,30 +163,7 @@ OSStatus metil_example_audio_output_io_proc(
         );
       }
     }
-
-    value_total = (
-      value_total /
-      (float)
-      (
-        length_buffer_out /
-        length_channels
-      )
-    );
   }
-
-  metil_example_audio_output_io_proc_data->vertices_secondary[
-    metil_example_audio_output_io_proc_data->index_vertex_secondary
-  ].y = (
-    value_total
-  );
-
-  metil_example_audio_output_io_proc_data->index_vertex_secondary = (
-    (
-      metil_example_audio_output_io_proc_data->index_vertex_secondary +
-      0x01
-    ) %
-    metil_example_audio_output_io_proc_data_length_buffer
-  );
 
   return (
     0x00

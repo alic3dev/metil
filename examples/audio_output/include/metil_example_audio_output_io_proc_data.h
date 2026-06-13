@@ -5,16 +5,27 @@
 
 #include <math_c_vector.h>
 
-#define metil_example_audio_output_io_proc_data_length_buffer 0x1337
+#include <pthread.h>
 
 struct metil_example_audio_output_io_proc_data {
+  float* note_table;
+  unsigned int length_note_table;
+
   struct cer0_synthesizer synthesizer;
   struct cer0_synthesizer synthesizer_secondary;
-
-  struct math_c_vector4_float* vertices;
-  struct math_c_vector4_float* vertices_secondary;
-
-  unsigned short int index_vertex;  unsigned short int index_vertex_secondary;
-};
+  struct cer0_synthesizer* synthesizers;
+  
+  unsigned char length_synthesizers;
+  unsigned int index_synth;
+  
+  unsigned char* buffer;
+  
+  float frequency_last;
+  
+  unsigned int length_buffer;  unsigned short int index_buffer;
+  
+  unsigned char exiting;
+  
+pthread_mutex_t mutex;};
 
 #endif
