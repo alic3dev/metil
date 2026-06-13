@@ -1,7 +1,7 @@
 #ifndef __metil_example_audio_output_metal_h
 #define __metil_example_audio_output_metal_h
 
-#include <metil_metal/basic_3d_shaders.h>
+#include <metil_metal/metil_metal_data_vertex.h>
 #include <metil_rendering/metil_renderer_data_frame.h>
 #include <metil_rendering/metil_renderer_data_object.h>
 
@@ -9,6 +9,7 @@
   const device float4*,
   constant struct metil_renderer_data_frame*,
   constant struct metil_renderer_data_object*,
+  constant unsigned char*,
   unsigned int
 );
 

@@ -1,5 +1,5 @@
-#ifndef __metil_configuration_metil_configuration_defaults_h
-#define __metil_configuration_metil_configuration_defaults_h
+#ifndef __metil_configuration_metil_configuration_rendering_properties_defaults_h
+#define __metil_configuration_metil_configuration_rendering_properties_defaults_h
 
 #include <math_c_vector.h>
 

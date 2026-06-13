@@ -11,6 +11,7 @@
 #include <metil_object.h>
 #include <metil_positioning.h>
 #include <metil_rendering/metil_camera/metil_camera.h>
+#include <metil_rendering/metil_descriptors/metil_render_pass.h>
 #include <metil_rendering/metil_descriptors/metil_pipeline_render.h>
 #include <metil_rendering/metil_renderable.h>
 #include <metil_rendering/metil_renderable_type.h>
@@ -185,6 +186,11 @@
 
   [
     self
+    descriptor_render_pass_initialize
+  ];
+
+  [
+    self
     descriptor_pipeline_render_initialize
   ];
 
@@ -223,12 +229,20 @@
     &self->mutex_destroying
   );
 
+  (
+    (CAMetalLayer*)
+    metal_kit_view.layer
+  ).maximumDrawableCount = (
+    0x02
+  );
+
   return (
     self
   );
 }
 
-- (void) after_scene_change {}
+- (void) after_scene_change {
+}
 
 - (id<MTLLogState>) log_state_create {
   return (
@@ -395,6 +409,33 @@
 }
 
 - (void) descriptor_render_pass_initialize {
+  if (
+    self->descriptor_render_pass !=
+    0x00
+  ) {
+    [
+      self->descriptor_render_pass
+      release
+    ];
+  }
+
+  self->descriptor_render_pass = [
+    [
+      MTLRenderPassDescriptor
+      alloc
+    ]
+    init
+  ];
+
+  [
+    self->descriptor_render_pass
+    retain
+  ];
+
+  metil_descriptor_render_pass_initialize(
+    self->descriptor_render_pass,
+    self->metil->renderer_interface.metal_device
+  );
 }
 
 - (void) destroy {
@@ -481,6 +522,11 @@
 
   [
     self->command_queue
+    release
+  ];
+
+  [
+    self->descriptor_render_pass
     release
   ];
 
@@ -700,13 +746,13 @@
     descriptor_command_buffer
     release
   ];
-
-  self->descriptor_render_pass = (
-    metal_kit_view.currentRenderPassDescriptor
-  );
-      
   
-  #if target_os_ios
+  self->descriptor_render_pass.colorAttachments[
+    0x00
+  ].texture = (
+    metal_kit_view.currentDrawable.texture
+  );
+   #if target_os_ios
   metil_application* metil_ui_application = (
     (metil_application*)
     [
@@ -732,7 +778,27 @@
     ) ==
     0x00
   ) {
-    descriptor_render_pass.colorAttachments[
+    self->descriptor_render_pass.colorAttachments[
+      0x00
+    ].clearColor = (
+      MTLClearColorMake(
+        (
+          self->metil->rendering_properties.colour_clear.x *
+          self->metil->rendering_properties.brightness
+        ),
+        (
+          self->metil->rendering_properties.colour_clear.y *
+          self->metil->rendering_properties.brightness
+        ),
+        (
+          self->metil->rendering_properties.colour_clear.z *
+          self->metil->rendering_properties.brightness
+        ),
+        self->metil->rendering_properties.colour_clear.w
+      )
+    );
+
+    self->descriptor_render_pass.colorAttachments[
       0x00
     ].clearColor = (
       (MTLClearColor)
@@ -761,7 +827,7 @@
       MTLLoadActionClear
     );
   } else {
-    descriptor_render_pass.colorAttachments[
+    self->descriptor_render_pass.colorAttachments[
       0x00
     ].loadAction = (
       MTLLoadActionLoad
@@ -777,7 +843,7 @@
   }
   #endif
 
-  descriptor_render_pass.colorAttachments[
+  self->descriptor_render_pass.colorAttachments[
     0x00
   ].storeAction = (
     MTLStoreActionStore
@@ -786,7 +852,7 @@
   encoder_render = [
     command_buffer
     renderCommandEncoderWithDescriptor: (
-      descriptor_render_pass
+      self->descriptor_render_pass
     )
   ];
 
@@ -1083,6 +1149,10 @@
   );
 
   self->depth_state_writes_disabled = (
+    0x00
+  );
+
+  self->descriptor_render_pass = (
     0x00
   );
 

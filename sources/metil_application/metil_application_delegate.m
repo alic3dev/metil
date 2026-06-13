@@ -10,4 +10,15 @@
   );
 }
 
+- (void) applicationDidResignActive: (NSNotification*) notification {
+  if (
+    self->metil->configuration.application.clear_input_on_deactivation !=
+    0x00
+  ) {
+    metil_input_keydown_map_initialize(
+      self->metil->input.keydown_map
+    );
+  }
+}
+
 @end

@@ -16,6 +16,7 @@
 #include <Metal/MTLDevice.h>
 #include <Metal/MTLLibrary.h>
 #include <Metal/MTLRenderCommandEncoder.h>
+#include <Metal/MTLRenderPass.h>
 #include <Metal/MTLRenderPipeline.h>
 #include <MetalKit/MTKView.h>
 
