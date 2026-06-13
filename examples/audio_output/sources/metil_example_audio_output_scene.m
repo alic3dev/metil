@@ -237,16 +237,16 @@ void metil_example_audio_output_scene_initialize(
   
   metil_example_audio_output_io_proc_data->note_table = (
     cer0_note_table_create(
-      0x01,
-      0x06,
+      metil_example_audio_output_io_proc_data_octave_minimum,
+      metil_example_audio_output_io_proc_data_octave_maximum,
       cer0_frequency_root_scientific
     )
   );
   
   metil_example_audio_output_io_proc_data->length_note_table = (
     cer0_note_table_length(
-      0x01,
-      0x06
+      metil_example_audio_output_io_proc_data_octave_minimum,
+      metil_example_audio_output_io_proc_data_octave_maximum
     )
   );
 

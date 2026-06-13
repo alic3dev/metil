@@ -5,6 +5,9 @@
 
 #include <pthread.h>
 
+#define metil_example_audio_output_io_proc_data_octave_minimum 0x01
+#define metil_example_audio_output_io_proc_data_octave_maximum 0x06
+
 struct metil_example_audio_output_io_proc_data {
   float* note_table;
   unsigned int length_note_table;
