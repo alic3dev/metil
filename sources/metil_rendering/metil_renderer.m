@@ -763,7 +763,7 @@
     release
   ];
 
-  MTLRenderPassDescriptor* descriptor_render_pass = (
+  self->descriptor_render_pass = (
     metal_kit_view.currentRenderPassDescriptor
   );
 
