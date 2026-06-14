@@ -2,6 +2,7 @@
 
 #include <metil_editor_index_pipeline_render.h>
 #include <metil_editor_paths.h>
+#include <metil_editor_player.h>
 #include <metil_editor_scene_data.h>
 
 #include <clic3_bytes.h>
@@ -653,14 +654,14 @@ void metil_editor_scene_initialize(
   metil_scene->player.position.z = -(
     0x0a
   );
-
-  metil_scene->player.poll_input = (
-    metil_player_poll_input_free_flying_locked
-  );
-
+  
   metil_scene->player.rotation.y = (
     math_c_pi_half /
     0x02
+  );
+
+  metil_scene->player.poll_input = (
+    metil_editor_player_poll_input
   );
 
   metil_editor_scene_data->movement_free = (
@@ -1333,6 +1334,35 @@ void metil_editor_scene_poll(
     metil_editor_scene_data->position_player = (
       metil_scene->player.position
     );
+  }
+  
+  metil_object_cursor->position.x = (
+   metil_object_cursor->position.x +
+    metil->input.cursor.delta.x /
+    0x64
+  );
+  
+  metil_object_cursor->position.y = (
+    metil_object_cursor->position.y +
+    metil->input.cursor.delta.y /
+    0x64
+  );
+  
+  metil->input.cursor.delta.x = (
+    0x00
+  );
+  
+  metil->input.cursor.delta.y = (
+    0x00
+  );
+  
+  if (
+    metil->input.keydown_map[
+      metil_keycode_control
+    ] !=
+    0x00
+  ) {
+    printf("%f\n",metil->input.cursor.delta.y);
   }
 
   metil_object_cursor->mesh.size.x = (
