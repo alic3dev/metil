@@ -4,28 +4,38 @@
 
 #include <cer0_synthesizer.h>
 
+#include <math_c_absolute.h>
+#include <math_c_minimum.h>
+#include <math_c_maximum.h>
+
 #include <metil_audio/metil_audio_io_proc_data.h>
 
-OSStatus metil_example_audio_output_io_proc(
-  AudioObjectID id_audio_object,
-  const AudioTimeStamp* time_stamp_audio,
-  const AudioBufferList* list_buffer_audio_in,
-  const AudioTimeStamp* time_stamp_audio_in,
-  AudioBufferList* list_buffer_audio_out,
-  const AudioTimeStamp* time_stamp_audio_out,
-  void* data
-) {
-  struct metil_audio_io_proc_data* metil_audio_io_proc_data = (
-    data
-  );
+#include <pthread.h>
 
-  struct metil* metil = (
-    metil_audio_io_proc_data->metil
-  );
+metil_audio_io_proc_macro_definition(metil_example_audio_output_io_proc) {
+  metil_audio_io_proc_macro_definition_initializer;
 
   struct metil_example_audio_output_io_proc_data* metil_example_audio_output_io_proc_data = (
     metil_audio_io_proc_data->data
   );
+
+  if (
+    metil_example_audio_output_io_proc_data->exiting ==
+    0x01
+  ) {
+    metil_audio_io_proc_remove(
+      &metil->audio,
+      metil_example_audio_output_io_proc
+    );
+
+    pthread_mutex_unlock(
+      &metil_example_audio_output_io_proc_data->mutex
+    );
+
+    return (
+      0x00
+    );
+  }
 
   struct cer0_synthesizer* synthesizer = &(
     metil_example_audio_output_io_proc_data->synthesizer
@@ -35,131 +45,87 @@ OSStatus metil_example_audio_output_io_proc(
     metil_example_audio_output_io_proc_data->synthesizer_secondary
   );
 
-  float value_total = (
-    0.0f
+  float value_frame = (
+    0x00
   );
 
-  for (
-    unsigned long int index_buffer = (
+  metil_audio_io_proc_macro_definition_frame_loop {
+    metil_audio_io_proc_macro_definition_index_channel;
+
+    if (
+      index_channel ==
       0x00
-    );
-    (
-      index_buffer <
-      list_buffer_audio_out->mNumberBuffers
-    );
-    ++index_buffer
-  ) {
-    AudioBuffer audio_buffer_current = (
-      list_buffer_audio_out->mBuffers[
-        index_buffer
-      ]
-    );
-
-    float* buffer_out = (
-      audio_buffer_current.mData
-    );
-
-    unsigned long int length_buffer_out = (
-      audio_buffer_current.mDataByteSize /
-      sizeof(
-        float
-      )
-    );
-
-    unsigned long int length_channels = (
-      audio_buffer_current.mNumberChannels
-    );
-
-    for (
-      unsigned long int index_buffer_out = (
-        0x00
-      );
-      (
-        index_buffer_out <
-        length_buffer_out
-      );
-      ++index_buffer_out
     ) {
-      unsigned long int index_channel = (
-        index_buffer_out %
-        length_channels
+      float value_synthesizer = (
+        cer0_synthesizer_poll(
+          synthesizer
+        ) +
+        cer0_synthesizer_poll(
+          synthesizer_secondary
+        )
       );
 
-      if (
-        index_channel ==
+      float value_synthesizers = (
         0x00
+      );
+
+      for (
+       unsigned int index_synthesizer = (
+         0x00
+       );
+       (
+         index_synthesizer <
+         metil_example_audio_output_io_proc_data->length_synthesizers
+       );
+       ++index_synthesizer
       ) {
-        float value_synthesizer = (
+        value_synthesizers = (
+          value_synthesizers +
           cer0_synthesizer_poll(
-            synthesizer
-          ) +
-          cer0_synthesizer_poll(
-            synthesizer_secondary
+            &metil_example_audio_output_io_proc_data->synthesizers[
+              index_synthesizer
+            ]
           )
         );
-
-        value_total = (
-          value_total +
-          value_synthesizer
-        );
-
-        buffer_out[
-          index_buffer_out
-        ] = (
-          value_synthesizer /
-          0x02
-        );
-
-        metil_example_audio_output_io_proc_data->vertices[
-          metil_example_audio_output_io_proc_data->index_vertex
-        ]. y = (
-          value_synthesizer
-        );
-
-        metil_example_audio_output_io_proc_data->index_vertex = (
-          (
-            metil_example_audio_output_io_proc_data->index_vertex +
-            0x01
-          ) %
-          metil_example_audio_output_io_proc_data_length_buffer
-        );
-      } else {
-        buffer_out[
-          index_buffer_out
-        ] = (
-          buffer_out[
-            index_buffer_out -
-            index_channel
-          ]
-        );
       }
+
+      value_frame = (
+        value_synthesizer /
+        0x02 *
+        0.6f +
+        value_synthesizers /
+        math_c_maximum_float(
+          metil_example_audio_output_io_proc_data->length_synthesizers,
+          0x01
+        ) *
+        0.4f
+      );
+
+      metil_example_audio_output_io_proc_data->buffer[
+        metil_example_audio_output_io_proc_data->index_buffer
+      ] = (
+        math_c_minimum_float(
+          math_c_absolute_float(
+            value_frame
+          ),
+          0x01
+        ) *
+        0xff
+      );
+
+      metil_example_audio_output_io_proc_data->index_buffer = (
+        (
+          metil_example_audio_output_io_proc_data->index_buffer +
+          0x01
+        ) %
+        metil_example_audio_output_io_proc_data->length_buffer
+      );
     }
 
-    value_total = (
-      value_total /
-      (float)
-      (
-        length_buffer_out /
-        length_channels
-      )
+    metil_audio_io_proc_macro_definition_frame_set(
+      value_frame
     );
   }
 
-  metil_example_audio_output_io_proc_data->vertices_secondary[
-    metil_example_audio_output_io_proc_data->index_vertex_secondary
-  ].y = (
-    value_total
-  );
-
-  metil_example_audio_output_io_proc_data->index_vertex_secondary = (
-    (
-      metil_example_audio_output_io_proc_data->index_vertex_secondary +
-      0x01
-    ) %
-    metil_example_audio_output_io_proc_data_length_buffer
-  );
-
-  return (
-    0x00
-  );
+  metil_audio_io_proc_macro_definition_return;
 }

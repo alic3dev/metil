@@ -16,6 +16,7 @@
 #include <Metal/MTLDevice.h>
 #include <Metal/MTLLibrary.h>
 #include <Metal/MTLRenderCommandEncoder.h>
+#include <Metal/MTLRenderPass.h>
 #include <Metal/MTLRenderPipeline.h>
 #include <MetalKit/MTKView.h>
 
@@ -66,6 +67,11 @@
   matrix_float3x4 matrix_projection_static;
 
   @public metil_renderer_data_frame_poll_function poll_data_frame;
+
+  #if target_os_ios
+  unsigned char state_application_previous;
+  unsigned long int time_state_application_inactive;
+  #endif
 
   unsigned char destroying;
   pthread_mutex_t mutex_destroying;

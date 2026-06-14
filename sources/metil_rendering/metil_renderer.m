@@ -11,6 +11,7 @@
 #include <metil_object.h>
 #include <metil_positioning.h>
 #include <metil_rendering/metil_camera/metil_camera.h>
+#include <metil_rendering/metil_descriptors/metil_render_pass.h>
 #include <metil_rendering/metil_descriptors/metil_pipeline_render.h>
 #include <metil_rendering/metil_renderable.h>
 #include <metil_rendering/metil_renderable_type.h>
@@ -185,6 +186,11 @@
 
   [
     self
+    descriptor_render_pass_initialize
+  ];
+
+  [
+    self
     descriptor_pipeline_render_initialize
   ];
 
@@ -228,7 +234,8 @@
   );
 }
 
-- (void) after_scene_change {}
+- (void) after_scene_change {
+}
 
 - (id<MTLLogState>) log_state_create {
   return (
@@ -395,6 +402,33 @@
 }
 
 - (void) descriptor_render_pass_initialize {
+  if (
+    self->descriptor_render_pass !=
+    0x00
+  ) {
+    [
+      self->descriptor_render_pass
+      release
+    ];
+  }
+
+  self->descriptor_render_pass = [
+    [
+      MTLRenderPassDescriptor
+      alloc
+    ]
+    init
+  ];
+
+  [
+    self->descriptor_render_pass
+    retain
+  ];
+
+  metil_descriptor_render_pass_initialize(
+    self->descriptor_render_pass,
+    self->metil->renderer_interface.metal_device
+  );
 }
 
 - (void) destroy {
@@ -485,6 +519,11 @@
   ];
 
   [
+    self->descriptor_render_pass
+    release
+  ];
+
+  [
     self->descriptor_pipeline_render
     release
   ];
@@ -564,68 +603,6 @@
       self->metil->rendering_properties.frame
     )
   ];
-
-  #if target_os_ios
-  metil_application* metil_ui_application = (
-    (metil_application*)
-    [
-      UIApplication
-      sharedApplication
-    ]
-  );
-
-  unsigned char state_application = [
-    metil_ui_application
-    applicationState
-  ];
-
-  if (
-    state_application >
-    0x01
-  ) {
-    if (      self->destroying ==
-      0x00
-    ) {
-      struct timespec time_sleep = {
-        .tv_sec = (
-          0x00
-        ),
-        .tv_nsec = (
-          0x05f5e100
-        )
-      };
-
-      struct timespec time_remaining = {
-        .tv_sec = (
-          0x00
-        ),
-        .tv_nsec = (
-          0x00
-        )
-      };
-
-      nanosleep(
-        &time_sleep,
-        &time_remaining
-      );
-
-      pthread_t thread_draw;
-
-      pthread_create(
-        &thread_draw,
-        0x00,
-        metil_renderer_thread_draw,
-        metal_kit_view
-      );
-    } else {
-      pthread_mutex_unlock(
-        &self->mutex_destroying
-      );
-    }
-
-    return;
-  }
-  #endif
 
   [
     self
@@ -763,29 +740,69 @@
     release
   ];
 
-  MTLRenderPassDescriptor* descriptor_render_pass = (
-    metal_kit_view.currentRenderPassDescriptor
+  self->descriptor_render_pass.colorAttachments[
+    0x00
+  ].texture = (
+    metal_kit_view.currentDrawable.texture
   );
 
-  descriptor_render_pass.colorAttachments[
-    0x00
-  ].clearColor = (
-    MTLClearColorMake(
+  #if target_os_ios
+  metil_application* metil_ui_application = (
+    (metil_application*)
+    [
+      UIApplication
+      sharedApplication
+    ]
+  );
+
+  unsigned char state_application = [
+    metil_ui_application
+    applicationState
+  ];
+
+  if (
+    self->state_application_previous !=
+    state_application
+  ) {
+    self->state_application_previous = (
+      state_application
+    );
+
+    if (
+      state_application !=
+      0x00
+    ) {
+      self->time_state_application_inactive = (
+        self->metil->rendering_properties.time_frames[
+          metil_count_time_frames -
+          0x01
+        ]
+      );
+    }
+  }
+
+  unsigned char ios_render = (
+    (
+      state_application ==
+      0x00
+    )
+    ? 0x01
+    : (
       (
-        self->metil->rendering_properties.colour_clear.x *
-        self->metil->rendering_properties.brightness
-      ),
-      (
-        self->metil->rendering_properties.colour_clear.y *
-        self->metil->rendering_properties.brightness
-      ),
-      (
-        self->metil->rendering_properties.colour_clear.z *
-        self->metil->rendering_properties.brightness
-      ),
-      self->metil->rendering_properties.colour_clear.w
+        (
+          self->metil->rendering_properties.time_frames[
+            metil_count_time_frames -
+            0x01
+          ] -
+          self->time_state_application_inactive
+        ) <
+        0x2710
+      )
+      ? 0x01
+      : 0x00
     )
   );
+  #endif
 
   if (
     (
@@ -794,20 +811,43 @@
     ) ==
     0x00
   ) {
+    self->descriptor_render_pass.colorAttachments[
+      0x00
+    ].clearColor = (
+      (MTLClearColor)
+      {
+        .red = (
+          self->metil->rendering_properties.colour_clear.x *
+          self->metil->rendering_properties.brightness
+        ),
+        .green = (
+          self->metil->rendering_properties.colour_clear.y *
+          self->metil->rendering_properties.brightness
+        ),
+        .blue = (
+          self->metil->rendering_properties.colour_clear.z *
+          self->metil->rendering_properties.brightness
+        ),
+        .alpha = (
+          self->metil->rendering_properties.colour_clear.w
+        )
+      }
+    );
+
     descriptor_render_pass.colorAttachments[
       0x00
     ].loadAction = (
       MTLLoadActionClear
     );
   } else {
-    descriptor_render_pass.colorAttachments[
+    self->descriptor_render_pass.colorAttachments[
       0x00
     ].loadAction = (
       MTLLoadActionLoad
     );
   }
 
-  descriptor_render_pass.colorAttachments[
+  self->descriptor_render_pass.colorAttachments[
     0x00
   ].storeAction = (
     MTLStoreActionStore
@@ -816,7 +856,7 @@
   encoder_render = [
     command_buffer
     renderCommandEncoderWithDescriptor: (
-      descriptor_render_pass
+      self->descriptor_render_pass
     )
   ];
 
@@ -893,12 +933,18 @@
     ];
   }
 
-  if (
-    (
+  if (    (
       self->metil->rendering_properties.disables &
       metil_rendering_properties_disables_rendering
     ) ==
     0x00
+    #if target_os_ios
+    &&
+    (
+      ios_render ==
+      0x01
+    )
+    #endif
   ) {
     [
       self
@@ -921,6 +967,13 @@
       self->metil->rendering_properties.frame >
       0x0a
     )
+    #if target_os_ios
+    &&
+    (
+      ios_render ==
+      0x01
+    )
+    #endif
   ) {
     [
       self
@@ -1105,6 +1158,10 @@
     0x00
   );
 
+  self->descriptor_render_pass = (
+    0x00
+  );
+
   self->descriptor_pipeline_render = (
     0x00
   );
@@ -1140,6 +1197,16 @@
   self->length_threads = (
     0x00
   );
+
+  #if target_os_ios
+  self->state_application_previous = (
+    0xff
+  );
+
+  self->time_state_application_inactive = (
+    0x00
+  );
+  #endif
 
   self->poll_data_frame = (
     metil_renderer_data_frame_poll

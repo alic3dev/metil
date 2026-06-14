@@ -142,10 +142,6 @@
     data_vertex_basic_textured_coloured.colour
   );
 
-  constexpr metal::sampler sampler_texture_sky(
-    metal::mag_filter::linear
-  );
-
   return (
     colour_output
   );
