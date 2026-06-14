@@ -760,47 +760,13 @@
     applicationState
   ];
 
-  if (
-    self->state_application_previous !=
-    state_application
-  ) {
-    self->state_application_previous = (
-      state_application
-    );
-
-    if (
-      state_application !=
-      0x00
-    ) {
-      self->time_state_application_inactive = (
-        self->metil->rendering_properties.time_frames[
-          metil_count_time_frames -
-          0x01
-        ]
-      );
-    }
-  }
-
   unsigned char ios_render = (
     (
-      state_application ==
-      0x00
+      state_application <
+      0x02
     )
     ? 0x01
-    : (
-      (
-        (
-          self->metil->rendering_properties.time_frames[
-            metil_count_time_frames -
-            0x01
-          ] -
-          self->time_state_application_inactive
-        ) <
-        0x2710
-      )
-      ? 0x01
-      : 0x00
-    )
+    : 0x00
   );
   #endif
 
@@ -1197,16 +1163,6 @@
   self->length_threads = (
     0x00
   );
-
-  #if target_os_ios
-  self->state_application_previous = (
-    0xff
-  );
-
-  self->time_state_application_inactive = (
-    0x00
-  );
-  #endif
 
   self->poll_data_frame = (
     metil_renderer_data_frame_poll
