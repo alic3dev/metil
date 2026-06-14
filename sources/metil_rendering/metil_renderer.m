@@ -1198,6 +1198,16 @@
     0x00
   );
 
+  #if target_os_ios
+  self->state_application_previous = (
+    0xff
+  );
+
+  self->time_state_application_inactive = (
+    0x00
+  );
+  #endif
+
   self->poll_data_frame = (
     metil_renderer_data_frame_poll
   );
