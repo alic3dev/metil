@@ -15,7 +15,7 @@ void metil_editor_player_poll_input(
   struct metil_scene_controller* metil_scene_controller = (
     metil->scene_controller
   );
-  
+
   struct metil_editor_scene_data* metil_editor_scene_data = (
     metil_scene_controller->scene.data
   );
@@ -32,26 +32,26 @@ void metil_editor_player_poll_input(
         metil->input.cursor.delta.y
       )
     };
-    
+
     metil->input.cursor.delta.x = (
       0x00
     );
-    
+
     metil->input.cursor.delta.y = (
       0x00
     );
-    
+
     metil_player_poll_input_free_flying_locked(
       metil,
       metil_player,
       time,
       time_delta
     );
-    
+
     metil->input.cursor.delta.x = (
       delta_cursor.x
     );
-    
+
     metil->input.cursor.delta.y = (
       delta_cursor.y
     );
@@ -64,4 +64,3 @@ void metil_editor_player_poll_input(
     );
   }
 }
-

@@ -654,7 +654,7 @@ void metil_editor_scene_initialize(
   metil_scene->player.position.z = -(
     0x0a
   );
-  
+
   metil_scene->player.rotation.y = (
     math_c_pi_half /
     0x02
@@ -822,7 +822,7 @@ void metil_editor_scene_poll(
     metil,
     metil_scene
   );
-  
+
   struct metil_editor_scene_data* metil_editor_scene_data = (
     metil_scene->data
   );
@@ -856,7 +856,7 @@ void metil_editor_scene_poll(
       metil_editor_scene_index_renderable_cursor
     ].renderable
   );
-  
+
   if (
     (
       metil->input.keydown_map[
@@ -1330,11 +1330,11 @@ void metil_editor_scene_poll(
     metil_scene->player.position = (
       metil_editor_scene_data->position_player
     );
-    
+
     float multiplier = (
       0x01
     );
-    
+
     if (
       (
         metil->input.keydown_map[
@@ -1354,7 +1354,7 @@ void metil_editor_scene_poll(
         0x02
       );
     }
-    
+
     if (
       metil->input.keydown_map[
         metil_keycode_control
@@ -1366,14 +1366,14 @@ void metil_editor_scene_poll(
         0x04
       );
     }
-    
+
     metil_object_cursor->position.x = (
       metil_object_cursor->position.x +
       metil->input.cursor.delta.x /
       0x64 *
       multiplier
     );
-  
+
     if (
       metil->input.keydown_map[
         metil_keycode_option_left
@@ -1394,11 +1394,11 @@ void metil_editor_scene_poll(
         multiplier
       );
     }
-  
+
     metil->input.cursor.delta.x = (
       0x00
     );
-  
+
     metil->input.cursor.delta.y = (
       0x00
     );
