@@ -229,13 +229,6 @@
     &self->mutex_destroying
   );
 
-  (
-    (CAMetalLayer*)
-    metal_kit_view.layer
-  ).maximumDrawableCount = (
-    0x02
-  );
-
   return (
     self
   );
