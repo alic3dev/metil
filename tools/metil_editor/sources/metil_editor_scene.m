@@ -2,6 +2,7 @@
 
 #include <metil_editor_index_pipeline_render.h>
 #include <metil_editor_paths.h>
+#include <metil_editor_player.h>
 #include <metil_editor_scene_data.h>
 
 #include <clic3_bytes.h>
@@ -331,7 +332,7 @@ void metil_editor_scene_initialize(
     ].x = (
       (
         index_axis ==
-        0x00
+        0x02
       )
       ? (
         0x64 *
@@ -359,7 +360,7 @@ void metil_editor_scene_initialize(
     ].z = (
       (
         index_axis ==
-        0x02
+        0x00
       )
       ? (
         0x64 *
@@ -654,13 +655,13 @@ void metil_editor_scene_initialize(
     0x0a
   );
 
-  metil_scene->player.poll_input = (
-    metil_player_poll_input_free_flying_locked
-  );
-
   metil_scene->player.rotation.y = (
     math_c_pi_half /
     0x02
+  );
+
+  metil_scene->player.poll_input = (
+    metil_editor_player_poll_input
   );
 
   metil_editor_scene_data->movement_free = (
@@ -821,7 +822,8 @@ void metil_editor_scene_poll(
     metil,
     metil_scene
   );
-      struct metil_editor_scene_data* metil_editor_scene_data = (
+
+  struct metil_editor_scene_data* metil_editor_scene_data = (
     metil_scene->data
   );
 
@@ -854,7 +856,8 @@ void metil_editor_scene_poll(
       metil_editor_scene_index_renderable_cursor
     ].renderable
   );
-      if (
+
+  if (
     (
       metil->input.keydown_map[
         metil_keycode_command_left
@@ -967,13 +970,13 @@ void metil_editor_scene_poll(
     ) {
       struct metil_object* metil_object_grid_x = (
         metil_group_grids->renderables[
-          0x00
+          0x04
         ]->renderable
       );
 
       struct metil_object* metil_object_grid_sub_x = (
         metil_group_grids->renderables[
-          0x01
+          0x05
         ]->renderable
       );
 
@@ -1043,13 +1046,13 @@ void metil_editor_scene_poll(
     ) {
       struct metil_object* metil_object_grid_z = (
         metil_group_grids->renderables[
-          0x04
+          0x00
         ]->renderable
       );
 
       struct metil_object* metil_object_grid_sub_z = (
         metil_group_grids->renderables[
-          0x05
+          0x01
         ]->renderable
       );
 
@@ -1326,6 +1329,78 @@ void metil_editor_scene_poll(
 
     metil_scene->player.position = (
       metil_editor_scene_data->position_player
+    );
+
+    float multiplier = (
+      0x01
+    );
+
+    if (
+      (
+        metil->input.keydown_map[
+          metil_keycode_shift_left
+        ]
+      ) !=
+      0x00 ||
+      (
+        metil->input.keydown_map[
+          metil_keycode_shift_right
+        ] !=
+        0x00
+      )
+    ) {
+      multiplier = (
+        multiplier *
+        0x02
+      );
+    }
+
+    if (
+      metil->input.keydown_map[
+        metil_keycode_control
+      ] !=
+      0x00
+    ) {
+      multiplier = (
+        multiplier /
+        0x04
+      );
+    }
+
+    metil_object_cursor->position.x = (
+      metil_object_cursor->position.x +
+      metil->input.cursor.delta.x /
+      0x64 *
+      multiplier
+    );
+
+    if (
+      metil->input.keydown_map[
+        metil_keycode_option_left
+      ] !=
+      0x00
+    ) {
+      metil_object_cursor->position.y = (
+        metil_object_cursor->position.y -
+        metil->input.cursor.delta.y /
+        0x64 *
+        multiplier
+       );
+    } else {
+      metil_object_cursor->position.z = (
+        metil_object_cursor->position.z -
+        metil->input.cursor.delta.y /
+        0x64 *
+        multiplier
+      );
+    }
+
+    metil->input.cursor.delta.x = (
+      0x00
+    );
+
+    metil->input.cursor.delta.y = (
+      0x00
     );
   } else {
     metil_editor_scene_data->position_player = (
