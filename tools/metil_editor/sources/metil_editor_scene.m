@@ -1330,39 +1330,82 @@ void metil_editor_scene_poll(
     metil_scene->player.position = (
       metil_editor_scene_data->position_player
     );
+    
+    float multiplier = (
+      0x01
+    );
+    
+    if (
+      (
+        metil->input.keydown_map[
+          metil_keycode_shift_left
+        ]
+      ) !=
+      0x00 ||
+      (
+        metil->input.keydown_map[
+          metil_keycode_shift_right
+        ] !=
+        0x00
+      )
+    ) {
+      multiplier = (
+        multiplier *
+        0x02
+      );
+    }
+    
+    if (
+      metil->input.keydown_map[
+        metil_keycode_control
+      ] !=
+      0x00
+    ) {
+      multiplier = (
+        multiplier /
+        0x04
+      );
+    }
+    
+    metil_object_cursor->position.x = (
+      metil_object_cursor->position.x +
+      metil->input.cursor.delta.x /
+      0x64 *
+      multiplier
+    );
+  
+    if (
+      metil->input.keydown_map[
+        metil_keycode_option_left
+      ] !=
+      0x00
+    ) {
+      metil_object_cursor->position.y = (
+        metil_object_cursor->position.y -
+        metil->input.cursor.delta.y /
+        0x64 *
+        multiplier
+       );
+    } else {
+      metil_object_cursor->position.z = (
+        metil_object_cursor->position.z -
+        metil->input.cursor.delta.y /
+        0x64 *
+        multiplier
+      );
+    }
+  
+    metil->input.cursor.delta.x = (
+      0x00
+    );
+  
+    metil->input.cursor.delta.y = (
+      0x00
+    );
   } else {
     metil_editor_scene_data->position_player = (
       metil_scene->player.position
     );
-  }
-  
-  metil_object_cursor->position.x = (
-   metil_object_cursor->position.x +
-    metil->input.cursor.delta.x /
-    0x64
-  );
-  
-  metil_object_cursor->position.y = (
-    metil_object_cursor->position.y +
-    metil->input.cursor.delta.y /
-    0x64
-  );
-  
-  metil->input.cursor.delta.x = (
-    0x00
-  );
-  
-  metil->input.cursor.delta.y = (
-    0x00
-  );
-  
-  if (
-    metil->input.keydown_map[
-      metil_keycode_control
-    ] !=
-    0x00
-  ) {
-    printf("%f\n",metil->input.cursor.delta.y);
   }
 
   metil_object_cursor->mesh.size.x = (
