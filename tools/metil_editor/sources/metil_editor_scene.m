@@ -331,7 +331,7 @@ void metil_editor_scene_initialize(
     ].x = (
       (
         index_axis ==
-        0x00
+        0x02
       )
       ? (
         0x64 *
@@ -359,7 +359,7 @@ void metil_editor_scene_initialize(
     ].z = (
       (
         index_axis ==
-        0x02
+        0x00
       )
       ? (
         0x64 *
@@ -821,7 +821,8 @@ void metil_editor_scene_poll(
     metil,
     metil_scene
   );
-      struct metil_editor_scene_data* metil_editor_scene_data = (
+  
+  struct metil_editor_scene_data* metil_editor_scene_data = (
     metil_scene->data
   );
 
@@ -854,7 +855,8 @@ void metil_editor_scene_poll(
       metil_editor_scene_index_renderable_cursor
     ].renderable
   );
-      if (
+  
+  if (
     (
       metil->input.keydown_map[
         metil_keycode_command_left
@@ -967,13 +969,13 @@ void metil_editor_scene_poll(
     ) {
       struct metil_object* metil_object_grid_x = (
         metil_group_grids->renderables[
-          0x00
+          0x04
         ]->renderable
       );
 
       struct metil_object* metil_object_grid_sub_x = (
         metil_group_grids->renderables[
-          0x01
+          0x05
         ]->renderable
       );
 
@@ -1043,13 +1045,13 @@ void metil_editor_scene_poll(
     ) {
       struct metil_object* metil_object_grid_z = (
         metil_group_grids->renderables[
-          0x04
+          0x00
         ]->renderable
       );
 
       struct metil_object* metil_object_grid_sub_z = (
         metil_group_grids->renderables[
-          0x05
+          0x01
         ]->renderable
       );
 
