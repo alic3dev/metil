@@ -68,6 +68,11 @@
 
   @public metil_renderer_data_frame_poll_function poll_data_frame;
 
+  #if target_os_ios
+  unsigned char state_application_previous;
+  unsigned long int time_state_application_inactive;
+  #endif
+
   unsigned char destroying;
   pthread_mutex_t mutex_destroying;
 }

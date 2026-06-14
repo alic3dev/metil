@@ -739,13 +739,14 @@
     descriptor_command_buffer
     release
   ];
-  
+
   self->descriptor_render_pass.colorAttachments[
     0x00
   ].texture = (
     metal_kit_view.currentDrawable.texture
   );
-   #if target_os_ios
+
+  #if target_os_ios
   metil_application* metil_ui_application = (
     (metil_application*)
     [
@@ -758,12 +759,51 @@
     metil_ui_application
     applicationState
   ];
-  
+
   if (
-    state_application ==
-    0x00
+    self->state_application_previous !=
+    state_application
   ) {
+    self->state_application_previous = (
+      state_application
+    );
+
+    if (
+      state_application !=
+      0x00
+    ) {
+      self->time_state_application_inactive = (
+        self->metil->rendering_properties.time_frames[
+          metil_count_time_frames -
+          0x01
+        ]
+      );
+    }
+  }
+
+  unsigned char ios_render = (
+    (
+      state_application ==
+      0x00
+    )
+    ? 0x01
+    : (
+      (
+        (
+          self->metil->rendering_properties.time_frames[
+            metil_count_time_frames -
+            0x01
+          ] -
+          self->time_state_application_inactive
+        ) <
+        0x2710
+      )
+      ? 0x01
+      : 0x00
+    )
+  );
   #endif
+
   if (
     (
       self->metil->rendering_properties.disables &
@@ -771,26 +811,6 @@
     ) ==
     0x00
   ) {
-    self->descriptor_render_pass.colorAttachments[
-      0x00
-    ].clearColor = (
-      MTLClearColorMake(
-        (
-          self->metil->rendering_properties.colour_clear.x *
-          self->metil->rendering_properties.brightness
-        ),
-        (
-          self->metil->rendering_properties.colour_clear.y *
-          self->metil->rendering_properties.brightness
-        ),
-        (
-          self->metil->rendering_properties.colour_clear.z *
-          self->metil->rendering_properties.brightness
-        ),
-        self->metil->rendering_properties.colour_clear.w
-      )
-    );
-
     self->descriptor_render_pass.colorAttachments[
       0x00
     ].clearColor = (
@@ -813,7 +833,7 @@
         )
       }
     );
-  
+
     descriptor_render_pass.colorAttachments[
       0x00
     ].loadAction = (
@@ -826,15 +846,6 @@
       MTLLoadActionLoad
     );
   }
-  #if target_os_ios
-  } else {
-    descriptor_render_pass.colorAttachments[
-      0x00
-    ].loadAction = (
-      MTLLoadActionLoad
-    );
-  }
-  #endif
 
   self->descriptor_render_pass.colorAttachments[
     0x00
@@ -921,20 +932,19 @@
       )
     ];
   }
-  
-  #if target_os_ios
-  if (
-    state_application ==
-    0x00
-  ) {  
-  #endif
 
-  if (
-    (
+  if (    (
       self->metil->rendering_properties.disables &
       metil_rendering_properties_disables_rendering
     ) ==
     0x00
+    #if target_os_ios
+    &&
+    (
+      ios_render ==
+      0x01
+    )
+    #endif
   ) {
     [
       self
@@ -957,16 +967,19 @@
       self->metil->rendering_properties.frame >
       0x0a
     )
+    #if target_os_ios
+    &&
+    (
+      ios_render ==
+      0x01
+    )
+    #endif
   ) {
     [
       self
       render_fps_display
     ];
   }
-  
-  #if target_os_ios
-  }
-  #endif
 
   [
     encoder_render
