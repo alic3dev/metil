@@ -1,5 +1,7 @@
 #include <metil_editor_player.h>
 
+#include <metil_editor_scene_data.h>
+
 #include <metil.h>
 #include <metil_player/metil_player.h>
 #include <metil_scenes/metil_scene_controller.h>
@@ -10,10 +12,16 @@ void metil_editor_player_poll_input(
   unsigned long int time,
   unsigned long int time_delta
 ) {
+  struct metil_scene_controller* metil_scene_controller = (
+    metil->scene_controller
+  );
+  
+  struct metil_editor_scene_data* metil_editor_scene_data = (
+    metil_scene_controller->scene.data
+  );
+
   if (
-    metil->input.keydown_map[
-      metil_keycode_option_left
-    ] !=
+    metil_editor_scene_data->movement_free ==
     0x00
   ) {
     struct math_c_vector2_float delta_cursor = {
