@@ -86,7 +86,8 @@ void example_meshes_scene_initialize(
   descriptor_texture_lighting.arrayLength = (
     0x01
   );
-      descriptor_texture_lighting.storageMode = (
+  
+  descriptor_texture_lighting.storageMode = (
     MTLStorageModeShared
   );
 
