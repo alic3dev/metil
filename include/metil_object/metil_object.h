@@ -67,6 +67,10 @@ void metil_object_initialize(
   struct metil_object* _Nonnull
 );
 
+void metil_object_initialize_deallocated(
+  struct metil_object* _Nonnull
+);
+
 void metil_object_indices_initialize(
   struct metil_object* _Nonnull,
   _Nonnull id<MTLDevice>

@@ -18,12 +18,8 @@
 void metil_object_initialize(
   struct metil_object* metil_object
 ) {
-  metil_object->length_buffers_fragment = (
-    0x00
-  );
-
-  metil_object->length_buffers_vertex = (
-    0x00
+  metil_object_initialize_deallocated(
+    metil_object
   );
 
   metil_object->buffers_fragment = (
@@ -36,6 +32,32 @@ void metil_object_initialize(
     clic3_memory_allocate_raw(
       0x00
     )
+  );
+
+  metil_object->textures = (
+    clic3_memory_allocate_raw(
+      0x00
+    )
+  );
+}
+
+void metil_object_initialize_deallocated(
+  struct metil_object* metil_object
+) {
+  metil_object->length_buffers_fragment = (
+    0x00
+  );
+
+  metil_object->length_buffers_vertex = (
+    0x00
+  );
+
+  metil_object->buffers_fragment = (
+    0x00
+  );
+
+  metil_object->buffers_vertex = (
+    0x00
   );
 
   metil_object->indices = (
@@ -55,9 +77,7 @@ void metil_object_initialize(
   );
 
   metil_object->textures = (
-    clic3_memory_allocate_raw(
-      0x00
-    )
+    0x00
   );
 
   metil_object->position.x = (
