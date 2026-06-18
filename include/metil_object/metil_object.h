@@ -157,4 +157,39 @@ void metil_object_destroy_without_fragment_buffers(
   struct metil_object* _Nonnull
 );
 
+void metil_object_destroy_without_deallocating(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_deallocating_buffers(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_deallocating_buffers_fragment(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_deallocating_buffers_vertex(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_deallocating_textures(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_deallocating_buffers_fragment_textures(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_deallocating_buffers_vertex_textures(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
 #endif

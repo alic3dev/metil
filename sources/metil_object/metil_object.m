@@ -627,3 +627,169 @@ void metil_object_destroy_without_fragment_buffers(
     metil_object
   );
 }
+
+void metil_object_destroy_without_deallocating(
+  struct metil* metil,
+  struct metil_object* metil_object
+) {
+  metil_object->buffers_fragment = (
+    0x00
+  );
+
+  metil_object->buffers_vertex = (
+    0x00
+  );
+
+  metil_object->length_buffers_fragment = (
+    0x00
+  );
+
+  metil_object->length_buffers_vertex = (
+    0x00
+  );
+
+  metil_object->textures = (
+    0x00
+  );
+
+  metil_object->length_textures = (
+    0x00
+  );
+
+  metil_object_destroy(
+    metil,
+    metil_object
+  );
+}
+
+void metil_object_destroy_without_deallocating_buffers(
+  struct metil* metil,
+  struct metil_object* metil_object
+) {
+  metil_object->buffers_fragment = (
+    0x00
+  );
+
+  metil_object->buffers_vertex = (
+    0x00
+  );
+
+  metil_object->length_buffers_fragment = (
+    0x00
+  );
+
+  metil_object->length_buffers_vertex = (
+    0x00
+  );
+
+  metil_object_destroy(
+    metil,
+    metil_object
+  );
+}
+
+void metil_object_destroy_without_deallocating_buffers_fragment(
+  struct metil* metil,
+  struct metil_object* metil_object
+) {
+  metil_object->buffers_fragment = (
+    0x00
+  );
+
+  metil_object->length_buffers_fragment = (
+    0x00
+  );
+
+  metil_object_destroy(
+    metil,
+    metil_object
+  );
+}
+
+void metil_object_destroy_without_deallocating_buffers_vertex(
+  struct metil* metil,
+  struct metil_object* metil_object
+) {
+  metil_object->buffers_vertex = (
+    0x00
+  );
+
+  metil_object->length_buffers_vertex = (
+    0x00
+  );
+
+  metil_object_destroy(
+    metil,
+    metil_object
+  );
+}
+
+void metil_object_destroy_without_deallocating_textures(
+  struct metil* metil,
+  struct metil_object* metil_object
+) {
+  metil_object->textures = (
+    0x00
+  );
+
+  metil_object->length_textures = (
+    0x00
+  );
+
+  metil_object_destroy(
+    metil,
+    metil_object
+  );
+}
+
+void metil_object_destroy_without_deallocating_buffers_fragment_textures(
+  struct metil* metil,
+  struct metil_object* metil_object
+) {
+  metil_object->buffers_fragment = (
+    0x00
+  );
+
+  metil_object->length_buffers_fragment = (
+    0x00
+  );
+
+  metil_object->textures = (
+    0x00
+  );
+
+  metil_object->length_textures = (
+    0x00
+  );
+
+  metil_object_destroy(
+    metil,
+    metil_object
+  );
+}
+
+void metil_object_destroy_without_deallocating_buffers_vertex_textures(
+  struct metil* metil,
+  struct metil_object* metil_object
+) {
+  metil_object->buffers_vertex = (
+    0x00
+  );
+
+  metil_object->length_buffers_vertex = (
+    0x00
+  );
+
+  metil_object->textures = (
+    0x00
+  );
+
+  metil_object->length_textures = (
+    0x00
+  );
+
+  metil_object_destroy(
+    metil,
+    metil_object
+  );
+}
