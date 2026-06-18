@@ -1,5 +1,5 @@
-#ifndef __metil_object_metil_object_buffer_h
-#define __metil_object_metil_object_buffer_h
+#ifndef __metil_metil_object_metil_object_buffer_h
+#define __metil_metil_object_metil_object_buffer_h
 
 #include <Metal/MTLDevice.h>
 
