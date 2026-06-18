@@ -118,4 +118,39 @@ void metil_object_destroy_with_textures(
   struct metil_object* _Nonnull
 );
 
+void metil_object_destroy_without_buffers(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_vertices_buffer(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_indices_vertices_buffers(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_data_buffer(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_data_vertices_buffers(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_vertex_buffers(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_fragment_buffers(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
 #endif
