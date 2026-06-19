@@ -19,6 +19,46 @@ void metil_mesh_initialize_with_lengths(
   unsigned int length_vertices,
   unsigned int length_indices
 ) {
+  metil_mesh_initialize_without_allocating_with_lengths(
+    metil_mesh,
+    length_vertices,
+    length_indices
+  );
+
+  metil_mesh->indices = (
+    clic3_memory_allocate_raw(
+      sizeof(
+        unsigned int
+      ) *
+      metil_mesh->length_indices
+    )
+  );
+
+  metil_mesh->vertices = (
+    clic3_memory_allocate_raw(
+      sizeof(
+        struct math_c_vector4_float
+      ) *
+      metil_mesh->length_vertices
+    )
+  );
+}
+
+void metil_mesh_initialize_without_allocating(
+  struct metil_mesh* metil_mesh
+) {
+  metil_mesh_initialize_without_allocating_with_lengths(
+    metil_mesh,
+    0x00,
+    0x00
+  );
+}
+
+void metil_mesh_initialize_without_allocating_with_lengths(
+  struct metil_mesh* metil_mesh,
+  unsigned int length_vertices,
+  unsigned int length_indices
+) {
   metil_mesh->length_indices = (
     length_indices
   );
@@ -40,21 +80,11 @@ void metil_mesh_initialize_with_lengths(
   );
 
   metil_mesh->indices = (
-    clic3_memory_allocate_raw(
-      sizeof(
-        unsigned int
-      ) *
-      metil_mesh->length_indices
-    )
+    0x00
   );
 
   metil_mesh->vertices = (
-    clic3_memory_allocate_raw(
-      sizeof(
-        struct math_c_vector4_float
-      ) *
-      metil_mesh->length_vertices
-    )
+    0x00
   );
 
   metil_mesh->data = (

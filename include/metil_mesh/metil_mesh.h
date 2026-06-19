@@ -25,6 +25,16 @@ void metil_mesh_initialize_with_lengths(
   unsigned int
 );
 
+void metil_mesh_initialize_without_allocating(
+  struct metil_mesh*
+);
+
+void metil_mesh_initialize_without_allocating_with_lengths(
+  struct metil_mesh*,
+  unsigned int,
+  unsigned int
+);
+
 void metil_mesh_clone(
   struct metil_mesh*,
   struct metil_mesh*
