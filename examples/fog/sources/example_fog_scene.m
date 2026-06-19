@@ -27,18 +27,23 @@ void example_fog_scene_initialize(
   metil_scene_initialize_with_renderables(
     metil,
     scene,
-    2000
+    0x07d0
   );
 
   scene->poll = example_fog_scene_poll;
 
   struct metil_object* object = (
-    0
+    0x00
   );
 
   for (
-    unsigned int index_renderable = 1;
-    index_renderable < scene->length_renderables;
+    unsigned int index_renderable = (
+      0x01
+    );
+    (
+      index_renderable <
+      scene->length_renderables
+    );
     ++index_renderable
   ) {
     metil_renderable_initialize_at_index(
@@ -54,92 +59,178 @@ void example_fog_scene_initialize(
     );
 
     switch (
-      index_renderable % 6
+      index_renderable %
+      0x06
     ) {
-      case 0: {
+      case 0x00: {
         metil_mesh_dollop_initialize(
           &object->mesh,
           (struct math_c_vector3_float) {
-            .x = 10.0f,
-            .y = 10.0f,
-            .z = 10.0f
-          }, (struct math_c_vector2_unsigned_short_int) {
-            .x = 10,
-            .y = 10
-          }
-        );
-        break;
-      }
-      case 1: {
-        metil_mesh_gem_initialize(
-          &object->mesh,
-          (struct math_c_vector3_float) {
-            .x = 10.0f,
-            .y = 10.0f,
-            .z = 10.0f
-          }, (struct math_c_vector2_unsigned_short_int) {
-            .x = 10,
-            .y = 10
-          }
-        );
-        break;
-      }
-      case 2: {
-        metil_mesh_mushroom_initialize(
-          &object->mesh,
-          (struct math_c_vector3_float) {
-            .x = 10.0f,
-            .y = 10.0f,
-            .z = 10.0f
-          }, (struct math_c_vector2_unsigned_short_int) {
-            .x = 10,
-            .y = 10
-          }
-        );
-        break;
-      }
-      case 3: {
-        metil_mesh_shuttle_initialize(
-          &object->mesh,
-          (struct math_c_vector3_float) {
-            .x = 10.0f,
-            .y = 10.0f,
-            .z = 10.0f
-          }, (struct math_c_vector2_unsigned_short_int) {
-            .x = 10,
-            .y = 10
-          }
-        );
-        break;
-      }
-      case 4: {
-        metil_mesh_tube_initialize(
-          &object->mesh,
-          (struct math_c_vector3_float) {
-            .x = 10.0f,
-            .y = 10.0f,
-            .z = 10.0f
-          }, (struct math_c_vector2_unsigned_short_int) {
-            .x = 10,
-            .y = 10
-          },
-          0
-        );
-        break;
-      }
-      case 5: {
-        metil_mesh_ball_initialize(
-          &object->mesh,
-          2.0f * ((index_renderable * 3) % 10),
-          (struct math_c_vector2_unsigned_short_int) {
-            .x = 10 + (
-              index_renderable % 2
+            .x = (
+              0x0a
             ),
-            .y = 10 + (
-              index_renderable % 3 == 0 ? 1 : 0
+            .y = (
+              0x0a
+            ),
+            .z = (
+              0x0a
+            )
+          },
+          (struct math_c_vector2_unsigned_short_int) {
+            .x = (
+              0x0a
+            ),
+            .y = (
+              0x0a
             )
           }
         );
+
+        break;
+      }
+      case 0x01: {
+        metil_mesh_gem_initialize(
+          &object->mesh,
+          (struct math_c_vector3_float) {
+            .x = (
+              0x0a
+            ),
+            .y = (
+              0x0a
+            ),
+            .z = (
+              0x0a
+            )
+          },
+          (struct math_c_vector2_unsigned_short_int) {
+            .x = (
+              0x0a
+            ),
+            .y = (
+              0x0a
+            )
+          }
+        );
+
+        break;
+      }
+      case 0x02: {
+        metil_mesh_mushroom_initialize(
+          &object->mesh,
+          (struct math_c_vector3_float) {
+            .x = (
+              0x0a
+            ),
+            .y = (
+              0x0a
+            ),
+            .z = (
+              0x0a
+            )
+          },
+          (struct math_c_vector2_unsigned_short_int) {
+            .x = (
+              0x0a
+            ),
+            .y = (
+              0x0a
+            )
+          }
+        );
+
+        break;
+      }
+      case 0x03: {
+        metil_mesh_shuttle_initialize(
+          &object->mesh,
+          (struct math_c_vector3_float) {
+            .x = (
+              0x0a
+            ),
+            .y = (
+              0x0a
+            ),
+            .z = (
+              0x0a
+            )
+          },
+          (struct math_c_vector2_unsigned_short_int) {
+            .x = (
+              0x0a
+            ),
+            .y = (
+              0x0a
+            )
+          }
+        );
+
+        break;
+      }
+      case 0x04: {
+        metil_mesh_tube_initialize(
+          &object->mesh,
+          (struct math_c_vector3_float) {
+            .x = (
+              0x0a
+            ),
+            .y = (
+              0x0a
+            ),
+            .z = (
+              0x0a
+            )
+          },
+          (struct math_c_vector2_unsigned_short_int) {
+            .x = (
+              0x0a
+            ),
+            .y = (
+              0x0a
+            )
+          },
+          0x00
+        );
+
+        break;
+      }
+      case 0x05: {
+        metil_mesh_ball_initialize(
+          &object->mesh,
+          (
+            0x02 *
+            (
+              (
+                index_renderable *
+                0x03
+              ) %
+              0x0a
+            )
+          ),
+          (struct math_c_vector2_unsigned_short_int) {
+            .x = (
+              0x0a +
+              (
+                index_renderable %
+                0x02
+              )
+            ),
+            .y = (
+              0x0a +
+              (
+                (
+                  (
+                    index_renderable %
+                    0x03
+                  ) ==
+                  0x00
+                )
+                ? 0x01
+                : 0x00
+              )
+            )
+          }
+        );
+
         break;
       }
     }
@@ -149,31 +240,57 @@ void example_fog_scene_initialize(
       metil->renderer_interface.metal_device
     );
 
-    object->position.x = ((float) (
-      index_renderable % 21 + index_renderable % 32
-    ) / 53.0f - 0.5f) * 1000.0f;
+    object->position.x = (
+      (
+        (float)
+        (
+          index_renderable %
+          0x15 +
+          index_renderable %
+          0x20
+        ) /
+        0x35 -
+        0.5f
+      ) *
+      0x03e8
+    );
 
     object->position.y = (
       object->mesh.size.y +
-      index_renderable % 30
+      index_renderable %
+      0x1e
     );
 
-    object->position.z = ((float) (
-      index_renderable % 34 + index_renderable % 23
-    ) / 57.0f - 0.5f) * 1000.0f;
+    object->position.z = (
+      (
+        (float)
+        (
+          index_renderable %
+          0x22 +
+          index_renderable %
+          0x17
+        ) /
+        0x39 -
+        0.5f
+      ) *
+      0x03e8
+    );
 
     object->rotation.x = (
-      (float) index_renderable *
+      (float)
+      index_renderable *
       34.34f
     );
 
     object->rotation.y = (
-      (float) index_renderable *
+      (float)
+      index_renderable *
       25.34f
     );
 
     object->rotation.z = (
-      (float) index_renderable *
+      (float)
+      index_renderable *
       98.11f
     );
 
@@ -184,29 +301,48 @@ void example_fog_scene_initialize(
     );
 
     data_object->colour.x = (
-      (float) (index_renderable % 10) / 10.0f
+      (float)
+      (
+        index_renderable %
+        0x0a
+       ) /
+       0x0a
     );
 
     data_object->colour.y = (
-      (float) ((index_renderable + 3) % 10) / 10.0f
+      (float)
+      (
+        (
+          index_renderable +
+          0x03
+        ) %
+        0x0a
+      ) /
+      0x0a
     );
 
     data_object->colour.z = (
-      (float) ((index_renderable + 5) % 10) / 10.0f
+      (float)
+      (
+        (
+          index_renderable +
+          0x05
+        ) %
+        0x0a
+      ) /
+      0x0a
     );
-
-    data_object->colour.w = 1.0f;
   }
 
   metil_renderable_initialize_at_index(
     scene->renderables,
-    0,
+    0x00,
     metil_renderable_type_object
   );
 
   object = (
     scene->renderables[
-      0
+      0x00
     ].renderable
   );
 
@@ -214,8 +350,12 @@ void example_fog_scene_initialize(
     &object->mesh,
     fog_distance_maximum,
     (struct math_c_vector2_unsigned_short_int) {
-      .x = 100,
-      .y = 100
+      .x = (
+        0x64
+      ),
+      .y = (
+        0x64
+      )
     }
   );
 
@@ -230,18 +370,6 @@ void example_fog_scene_initialize(
     ].buffer.contents
   );
 
-  data_object->colour.x = (
-    1.0f
-  );
-
-  data_object->colour.y = (
-    1.0f
-  );
-
-  data_object->colour.z = (
-    1.0f
-  );
-
   data_object->colour.w = (
     fog_thickness_maximum
   );
@@ -250,7 +378,9 @@ void example_fog_scene_initialize(
     example_face_pipeline_index_fog
   );
 
-  object->depth_disabled = 1;
+  object->depth_disabled = (
+    0x01
+  );
 
   object->rotation.x = (
     math_c_pi_half
@@ -262,7 +392,7 @@ void example_fog_scene_initialize(
 
   scene->player.speed_movement = (
     scene->player.speed_movement *
-    10.0f
+    0x0a
   );
 }
 
@@ -277,11 +407,19 @@ void example_fog_scene_poll(
 
   struct metil_object* object = (
     scene->renderables[
-      0
+      0x00
     ].renderable
   );
 
-  object->position.x = scene->player.position.x;
-  object->position.y = scene->player.position.y;
-  object->position.z = scene->player.position.z;
+  object->position.x = (
+    scene->player.position.x
+  );
+
+  object->position.y = (
+    scene->player.position.y
+  );
+
+  object->position.z = (
+    scene->player.position.z
+  );
 }
