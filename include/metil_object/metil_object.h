@@ -67,6 +67,10 @@ void metil_object_initialize(
   struct metil_object* _Nonnull
 );
 
+void metil_object_initialize_deallocated(
+  struct metil_object* _Nonnull
+);
+
 void metil_object_indices_initialize(
   struct metil_object* _Nonnull,
   _Nonnull id<MTLDevice>
@@ -114,6 +118,76 @@ void metil_object_destroy(
 );
 
 void metil_object_destroy_with_textures(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_buffers(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_vertices_buffer(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_indices_vertices_buffers(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_data_buffer(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_data_vertices_buffers(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_vertex_buffers(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_fragment_buffers(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_deallocating(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_deallocating_buffers(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_deallocating_buffers_fragment(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_deallocating_buffers_vertex(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_deallocating_textures(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_deallocating_buffers_fragment_textures(
+  struct metil* _Nonnull,
+  struct metil_object* _Nonnull
+);
+
+void metil_object_destroy_without_deallocating_buffers_vertex_textures(
   struct metil* _Nonnull,
   struct metil_object* _Nonnull
 );
