@@ -9,7 +9,7 @@ env:
   target_metal_standard: metal3.2
 jobs:
   continuous_integration_build:
-    runs-on: macos-latest
+    runs-on: macos-15
     steps:
       - name: git_initialization
         run: git config --global init.defaultBranch core
@@ -20,25 +20,25 @@ jobs:
           path: metil
       - name: cache_restore_cer0
         id: cache_restore_cer0
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: cer0
           key: cache_cer0_0_0_0
       - name: cache_restore_clic3
         id: cache_restore_clic3
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: clic3
           key: cache_clic3_0_0_0
       - name: cache_restore_interrupt_handler
         id: cache_restore_interrupt_handler
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: interrupt_handler
           key: cache_interrupt_handler_0_0_0
       - name: cache_restore_math_c
         id: cache_restore_math_c
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: math_c
           key: cache_math_c_0_0_0
@@ -87,7 +87,7 @@ jobs:
       - name: cache_save_cer0
         id: cache_save_cer0
         if: steps.cache_restore_cer0.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: |
             cer0
@@ -95,7 +95,7 @@ jobs:
       - name: cache_save_clic3
         id: cache_save_clic3
         if: steps.cache_restore_clic3.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: |
             clic3
@@ -103,7 +103,7 @@ jobs:
       - name: cache_save_interrupt_handler
         id: cache_save_interrupt_handler
         if: steps.cache_restore_interrupt_handler.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: |
             interrupt_handler
@@ -111,7 +111,7 @@ jobs:
       - name: cache_save_math_c
         id: cache_save_math_c
         if: steps.cache_restore_math_c.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: |
             math_c
