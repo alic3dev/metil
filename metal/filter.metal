@@ -21,21 +21,52 @@ kernel void filter_compute(
   
     float4 j = texture.read(
       ushort2(
-        (l.y + 100) % texture.get_width(),
-        (l.y + 100) % texture.get_height()
+        (l.x * 0x2) % texture.get_width(),
+        (l.y * 0x2) % texture.get_height()
       )
     );
     
-    float4 q = texture.read(
-      l
+    float4 r = texture.read(
+      ushort2(
+        (l.x * 0x8) % texture.get_width(),
+        (l.y * 0x8) % texture.get_height()
+      )
     );
+    
+    float4 q = ( j * r* texture.read(
+      l
+    ));
+    
+    q.w = 1;
+    
+    if (
+      q.x > 0x01
+    ) {
+      q.x = (
+        q.x - 1
+      );
+      }
+      
+      if (
+      q.y > 0x01
+    ) {
+      q.y = (
+        q.y - 1
+      );
+      }
+      
+      if (
+      q.z > 0x01
+    ) {
+      q.z = (
+        q.z - 1
+      );
+      }
 
     texture.write(
       (
-        texture.read(
-          l
-        ) *
-        float4(0,1,1,1)
+        q*
+        float4(0.3,1,1,1)
       ),
      l,
     0
