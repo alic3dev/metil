@@ -18,6 +18,7 @@
 #include <Metal/MTLRenderCommandEncoder.h>
 #include <Metal/MTLRenderPass.h>
 #include <Metal/MTLRenderPipeline.h>
+#include <Metal/MTLTexture.h>
 #include <MetalKit/MTKView.h>
 
 #include <simd/simd.h>
@@ -51,6 +52,12 @@
   id<MTLRenderCommandEncoder> encoder_render;
 
   id<MTLBuffer> index_buffer_mesh_current;
+  
+  id<MTLComputePipelineState> pipeline_state_compute;
+  id<MTLTexture> texture_render;
+  MTLTextureDescriptor* descriptor_texture_render;
+  unsigned short int index_pipeline_render_texture;
+  id<MTLBuffer> indices_render;
 
   struct metil_object objects_fps_display[
     metil_renderer_length_objects_fps_display
