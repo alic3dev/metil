@@ -815,6 +815,13 @@
       )
     ];
     
+    self->texture_render_filtered = [
+      self->metil->renderer_interface.metal_device
+      newTextureWithDescriptor: (
+        self->descriptor_texture_render
+      )
+    ];
+    
     self->index_pipeline_render_texture = [
       metil->renderer_interface.renderer
       pipeline_add: [
@@ -849,7 +856,6 @@
     0x00
   ].texture = (
     self->texture_render
-    //metal_kit_view.currentDrawable.texture
   );
 
   #if target_os_ios
@@ -1120,6 +1126,14 @@
         
         [
           j
+          setTexture: (
+            self->texture_render_filtered
+          )
+          atIndex: 0x01
+        ];
+        
+        [
+          j
           dispatchThreads: (
             MTLSizeMake(self->texture_render.height * self->texture_render.width, 1, 1)
           )
@@ -1183,7 +1197,7 @@
           [
             encoder_render
             setFragmentTexture: (
-              self->texture_render
+              self->texture_render_filtered
             )
             atIndex: 0x00
           ];

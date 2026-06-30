@@ -55,6 +55,7 @@
   
   id<MTLComputePipelineState> pipeline_state_compute;
   id<MTLTexture> texture_render;
+  id<MTLTexture> texture_render_filtered;
   MTLTextureDescriptor* descriptor_texture_render;
   unsigned short int index_pipeline_render_texture;
   id<MTLBuffer> indices_render;

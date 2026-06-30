@@ -8,6 +8,11 @@ kernel void filter_compute(
       0x00
     )
   ]],
+  metal::texture2d<float, metal::access::read_write> texture_output [[
+    texture(
+      0x01
+    )
+  ]],
   unsigned int index[[
     thread_position_in_grid
   ]]
@@ -63,7 +68,7 @@ kernel void filter_compute(
       );
       }
 
-    texture.write(
+    texture_output.write(
       (
         q*
         float4(0.3,1,1,1)
