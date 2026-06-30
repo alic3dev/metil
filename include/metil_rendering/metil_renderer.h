@@ -76,8 +76,6 @@
   (nonnull MTKView*) metal_kit_view
   metil: (nonnull struct metil*) parameter_metil;
 
-- (void) after_scene_change;
-
 - (id<MTLLogState> _Nullable) log_state_create;
 
 - (void) command_queue_initialize;
@@ -154,12 +152,6 @@ void* _Nullable metil_renderer_thread_draw(
 #endif
 
 void* _Nullable metil_renderer_thread_poll_object(
-  void* _Nonnull
-);
-
-void metil_renderer_after_scene_change(
-  struct metil* _Nonnull,
-  int,
   void* _Nonnull
 );
 

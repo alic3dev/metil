@@ -158,12 +158,6 @@
     &self->metil->text_defaults.render_parameters
   );
 
-  metil_scene_controller_after_scene_change_add(
-    self->metil->scene_controller,
-    metil_renderer_after_scene_change,
-    self
-  );
-
   [
     self
     command_queue_initialize
@@ -232,9 +226,6 @@
   return (
     self
   );
-}
-
-- (void) after_scene_change {
 }
 
 - (id<MTLLogState>) log_state_create {
@@ -2438,21 +2429,6 @@ void* metil_renderer_thread_poll_object(
   return (
     0x00
   );
-}
-
-void metil_renderer_after_scene_change(
-  struct metil* metil,
-  int id_scene,
-  void* reference
-) {
-  metil_renderer* renderer = (
-    reference
-  );
-
-  [
-    renderer
-    after_scene_change
-  ];
 }
 
 void metil_renderer_on_termination(
