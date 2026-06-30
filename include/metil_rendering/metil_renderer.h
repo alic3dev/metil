@@ -61,7 +61,7 @@
   unsigned short int index_pipelines_render_current;
 
   id<MTLTexture> texture_render_target;
-  id<MTLTexture> texture_render_processed;
+  id<MTLTexture> texture_render_target_processed;
 
   pthread_t* threads;
   struct metil_renderer_thread_poll_object_data* threads_data;

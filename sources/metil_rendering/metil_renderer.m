@@ -475,11 +475,6 @@
     self->threads_data
   );
 
-  [
-    self->metil->renderer_interface.metal_device
-    release
-  ];
-
   for (
     unsigned char index_data_buffer_frame_release = (
       0x00
@@ -584,6 +579,31 @@
   metil_rendering_properties_destory(
     &self->metil->rendering_properties
   );
+  
+  if (
+    self->texture_render_target !=
+    0x00
+  ) {
+    [
+      self->texture_render_target
+      release
+    ];
+  }
+  
+  if (
+    self->texture_render_target_processed !=
+    0x00
+  ) {
+    [
+      self->texture_render_target_processed
+      release
+    ];
+  }
+  
+  [
+    self->metil->renderer_interface.metal_device
+    release
+  ];
 }
 
 - (void) drawInMTKView: (nonnull MTKView*) metal_kit_view {
@@ -1227,6 +1247,14 @@
       0x00
     );
   }
+  
+  self->texture_render_target = (
+    0x00
+  );
+  
+  self->texture_render_target_processed = (
+    0x00
+  );
 }
 
 - (void) mtkView:
@@ -1352,7 +1380,7 @@
     self->descriptor_pipeline_render.fragmentFunction = (
       function_fragment
     );
-
+    
     self->descriptor_pipeline_render.vertexFunction = (
       function_vertex
     );
@@ -1428,7 +1456,7 @@
   struct metil_player* metil_player = &(
     metil_scene->player
   );
-
+  
   unsigned char disabled_polling = (
     self->metil->rendering_properties.disables &
     metil_rendering_properties_disables_polling
@@ -1523,7 +1551,7 @@
         rotation_cosine.y,
         0x00,
         rotation_sine.y,
-        0x00
+        0x00  
       },
       {
         0x00,
@@ -1999,7 +2027,7 @@
           )
         ];
       }
-
+      
       break;
     }
     case metil_renderable_type_menu: {
@@ -2060,7 +2088,7 @@
           ];
         }
       }
-
+      
       break;
     }
     default: {
