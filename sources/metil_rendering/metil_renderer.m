@@ -44,7 +44,6 @@
 #include <Metal/MTLResource.h>
 #include <MetalKit/MTKView.h>
 
-#include <limits.h>
 #include <simd/simd.h>
 
 @implementation metil_renderer
@@ -674,7 +673,8 @@
   ) {
     time_difference_average = (
       time_difference_average + (
-        (float) (
+        (float)
+        (
           self->metil->rendering_properties.time_frames[
             index_time_frame +
             0x01
@@ -683,7 +683,8 @@
             index_time_frame
           ]
         ) /
-        (float) (
+        (float)
+        (
           metil_count_time_frames -
           0x01
         )
@@ -890,7 +891,8 @@
     ];
   }
 
-  if (    (
+  if (
+    (
       self->metil->rendering_properties.disables &
       metil_rendering_properties_disables_rendering
     ) ==
@@ -1159,11 +1161,29 @@
     metil_renderer_data_frame_poll
   );
 
-  self->matrix_projection_static = (matrix_float3x4) {{
-    { 0x01, 0x00, 0x00, 0x00 },
-    { 0x00, 0x01, 0x00, 0x00 },
-    { 0x00, 0x00, 0x01, 0x00 },
-  }};
+  self->matrix_projection_static = (
+    (matrix_float3x4)
+    {{
+      {
+        0x01,
+        0x00,
+        0x00,
+        0x00
+      },
+      {
+        0x00,
+        0x01,
+        0x00,
+        0x00
+      },
+      {
+        0x00,
+        0x00,
+        0x01,
+        0x00
+      },
+    }}
+  );
 
   for (
     unsigned char index_data_buffer_frame_initializer = (
@@ -1329,8 +1349,13 @@
       0x00
     )
   ) {
-    self->descriptor_pipeline_render.fragmentFunction = function_fragment;
-    self->descriptor_pipeline_render.vertexFunction = function_vertex;
+    self->descriptor_pipeline_render.fragmentFunction = (
+      function_fragment
+    );
+
+    self->descriptor_pipeline_render.vertexFunction = (
+      function_vertex
+    );
 
     self->pipelines_render[
       index_pipeline_render
@@ -1403,6 +1428,7 @@
   struct metil_player* metil_player = &(
     metil_scene->player
   );
+
   unsigned char disabled_polling = (
     self->metil->rendering_properties.disables &
     metil_rendering_properties_disables_polling
@@ -1460,19 +1486,65 @@
     )
   };
 
-  matrix_float4x4 matrix_player_rotation_x = (matrix_float4x4) {{
-    { 0x01, 0x00, 0x00, 0x00 },
-    { 0x00, rotation_cosine.x, -rotation_sine.x, 0x00 },
-    { 0x00, rotation_sine.x, rotation_cosine.x, 0x00 },
-    { 0x00, 0x00, 0x00, 0x01 }
-  }};
+  matrix_float4x4 matrix_player_rotation_x = (
+    (matrix_float4x4)
+    {{
+      {
+        0x01,
+        0x00,
+        0x00,
+        0x00
+      },
+      {
+        0x00,
+        rotation_cosine.x,
+        -rotation_sine.x,
+        0x00
+      },
+      {
+        0x00,
+        rotation_sine.x,
+        rotation_cosine.x,
+        0x00
+      },
+      {
+        0x00,
+        0x00,
+        0x00,
+        0x01
+      }
+    }}
+  );
 
-  matrix_float4x4 matrix_player_rotation_y = (matrix_float4x4) {{
-    { rotation_cosine.y, 0x00, rotation_sine.y, 0x00 },
-    { 0x00, 0x01, 0x00, 0x00 },
-    { rotation_sine.y, 0x00, -rotation_cosine.y, 0x00 },
-    { 0x00, 0x00, 0x00, 0x01 }
-  }};
+  matrix_float4x4 matrix_player_rotation_y = (
+    (matrix_float4x4)
+    {{
+      {
+        rotation_cosine.y,
+        0x00,
+        rotation_sine.y,
+        0x00
+      },
+      {
+        0x00,
+        0x01,
+        0x00,
+        0x00
+      },
+      {
+        rotation_sine.y,
+        0x00,
+        -rotation_cosine.y,
+        0x00
+      },
+      {
+        0x00,
+        0x00,
+        0x00,
+        0x01
+      }
+    }}
+  );
 
   if (
     self->metil->rendering_properties.camera.mode ==
@@ -1483,7 +1555,7 @@
     ].y = (
       self->metil->rendering_properties.camera.height *
       (
-        1.0f -
+        0x01 -
         -metil_player->rotation.x /
         math_c_pi_half
       )
@@ -1518,7 +1590,7 @@
     )
   );
 
-  unsigned char _index_data_buffer_frame = (
+  unsigned char index_data_buffer_frame_current = (
     self->index_data_buffer_frame
   );
 
@@ -1543,7 +1615,7 @@
     ) {
       unsigned int index_thread = (
         self->metil->system_information.cores_cpu *
-        _index_data_buffer_frame +
+        index_data_buffer_frame_current +
         index_core_cpu
       );
 
@@ -1588,7 +1660,8 @@
         self->threads_data[
           index_thread
         ].length_renderables = (
-          metil_scene->length_renderables - (
+          metil_scene->length_renderables -
+          (
             length_segment_objects *
             index_core_cpu
           )
@@ -1651,7 +1724,7 @@
     ) {
       unsigned int index_thread = (
         self->metil->system_information.cores_cpu *
-        _index_data_buffer_frame +
+        index_data_buffer_frame_current +
         index_core_cpu
       );
 
@@ -1869,9 +1942,11 @@
         ) {
           [
             self
-            render_renderable: metil_group->renderables[
-              index_group_renderable
-            ]
+            render_renderable: (
+              metil_group->renderables[
+                index_group_renderable
+              ]
+            )
           ];
         }
       }
@@ -1887,8 +1962,7 @@
         (
           self->metil->rendering_properties.mode &
           (
-            metil_rendering_properties_mode_default
-|
+            metil_rendering_properties_mode_default |
             metil_rendering_properties_mode_wireframe_full
           )
         ) !=
@@ -1904,8 +1978,11 @@
 
       if (
         (
-          self->metil->rendering_properties.mode &
-          metil_rendering_properties_mode_wireframe
+          (
+            self->metil->rendering_properties.mode &
+            metil_rendering_properties_mode_wireframe
+          ) !=
+          0x00
         ) &&
         (
           (
@@ -1922,6 +1999,7 @@
           )
         ];
       }
+
       break;
     }
     case metil_renderable_type_menu: {
@@ -1956,12 +2034,17 @@
         );
 
         if (
-          self->metil->rendering_properties.mode &
-          metil_rendering_properties_mode_default
+          (
+            self->metil->rendering_properties.mode &
+            metil_rendering_properties_mode_default
+          ) !=
+          0x00
         ) {
           [
             self
-            render_object: metil_object
+            render_object: (
+              metil_object
+            )
           ];
         }
 
@@ -1971,10 +2054,13 @@
         ) {
           [
             self
-            render_object_wireframe: metil_object
+            render_object_wireframe: (
+              metil_object
+            )
           ];
         }
       }
+
       break;
     }
     default: {
@@ -2054,9 +2140,11 @@
 
     [
       self
-      render_object: &self->objects_fps_display[
-        index_object_fps_display
-      ]
+      render_object: &(
+        self->objects_fps_display[
+          index_object_fps_display
+        ]
+      )
     ];
   }
 }
@@ -2144,9 +2232,15 @@
 
     [
       encoder_render
-      setVertexBuffer: buffer_vertex->buffer
-      offset: buffer_vertex->offset
-      atIndex: buffer_vertex->index
+      setVertexBuffer: (
+        buffer_vertex->buffer
+      )
+      offset: (
+        buffer_vertex->offset
+      )
+      atIndex: (
+        buffer_vertex->index
+      )
     ];
   }
 
@@ -2157,8 +2251,12 @@
         self->index_data_buffer_frame
       ]
     )
-    offset: 0x00
-    atIndex: metil_renderer_fragment_index_parameter_data_frame
+    offset: (
+      0x00
+    )
+    atIndex: (
+      metil_renderer_fragment_index_parameter_data_frame
+    )
   ];
 
   for (
@@ -2179,9 +2277,15 @@
 
     [
       encoder_render
-      setFragmentBuffer: buffer_fragment->buffer
-      offset: buffer_fragment->offset
-      atIndex: buffer_fragment->index
+      setFragmentBuffer: (
+        buffer_fragment->buffer
+      )
+      offset: (
+        buffer_fragment->offset
+      )
+      atIndex: (
+        buffer_fragment->index
+      )
     ];
   }
 
@@ -2202,17 +2306,29 @@
           index_texture
         ]
       )
-      atIndex: index_texture
+      atIndex: (
+        index_texture
+      )
     ];
   }
 
   [
     encoder_render
-    drawIndexedPrimitives: type_primitive
-    indexCount: length_indices
-    indexType: type_index
-    indexBuffer: indices
-    indexBufferOffset: 0x00
+    drawIndexedPrimitives: (
+      type_primitive
+    )
+    indexCount: (
+      length_indices
+    )
+    indexType: (
+      type_index
+    )
+    indexBuffer: (
+      indices
+    )
+    indexBufferOffset: (
+      0x00
+    )
   ];
 }
 
@@ -2223,18 +2339,42 @@
   ) {
     [
       self
-      render_encode_draw: metil_object->buffers_vertex
-      length_buffers_vertex: metil_object->length_buffers_vertex
-      buffers_fragment: metil_object->buffers_fragment
-      length_buffers_fragment: metil_object->length_buffers_fragment
-      indices: metil_object->indices
-      length_indices: metil_object->mesh.length_indices
-      textures: metil_object->textures
-      length_textures: metil_object->length_textures
-      index_pipeline_render: metil_object->index_pipeline_render
-      depth_disabled: metil_object->depth_disabled
-      type_primitive: metil_object->type_primitive
-      type_index: metil_object->type_index
+      render_encode_draw: (
+        metil_object->buffers_vertex
+      )
+      length_buffers_vertex: (
+        metil_object->length_buffers_vertex
+      )
+      buffers_fragment: (
+        metil_object->buffers_fragment
+      )
+      length_buffers_fragment: (
+        metil_object->length_buffers_fragment
+      )
+      indices: (
+        metil_object->indices
+      )
+      length_indices: (
+        metil_object->mesh.length_indices
+      )
+      textures: (
+        metil_object->textures
+      )
+      length_textures: (
+        metil_object->length_textures
+      )
+      index_pipeline_render: (
+        metil_object->index_pipeline_render
+      )
+      depth_disabled: (
+        metil_object->depth_disabled
+      )
+      type_primitive: (
+        metil_object->type_primitive
+      )
+      type_index: (
+        metil_object->type_index
+      )
     ];
   }
 }
@@ -2246,18 +2386,42 @@
   ) {
     [
       self
-      render_encode_draw: metil_object->buffers_vertex
-      length_buffers_vertex: metil_object->length_buffers_vertex
-      buffers_fragment: metil_object->buffers_fragment
-      length_buffers_fragment: metil_object->length_buffers_fragment
-      indices: metil_object->indices
-      length_indices: metil_object->mesh.length_indices
-      textures: 0x00
-      length_textures: 0x00
-      index_pipeline_render: metil_renderer_pipelines_render_index_wireframe
-      depth_disabled: metil_object->depth_disabled
-      type_primitive: MTLPrimitiveTypeLineStrip
-      type_index: metil_object->type_index
+      render_encode_draw: (
+        metil_object->buffers_vertex
+      )
+      length_buffers_vertex: (
+        metil_object->length_buffers_vertex
+      )
+      buffers_fragment: (
+        metil_object->buffers_fragment
+      )
+      length_buffers_fragment: (
+        metil_object->length_buffers_fragment
+      )
+      indices: (
+        metil_object->indices
+      )
+      length_indices: (
+        metil_object->mesh.length_indices
+      )
+      textures: (
+        0x00
+      )
+      length_textures: (
+        0x00
+      )
+      index_pipeline_render: (
+        metil_renderer_pipelines_render_index_wireframe
+      )
+      depth_disabled: (
+        metil_object->depth_disabled
+      )
+      type_primitive: (
+        MTLPrimitiveTypeLineStrip
+      )
+      type_index: (
+        metil_object->type_index
+      )
     ];
   }
 }
@@ -2385,7 +2549,8 @@ void metil_renderer_poll_object(
 void* _Nullable metil_renderer_thread_draw(
   void* reference
 ) {
-  MTKView* metal_kit_view = (    reference
+  MTKView* metal_kit_view = (
+    reference
   );
 
   [
