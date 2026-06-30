@@ -321,7 +321,8 @@ void metil_example_audio_output_scene_initialize(
       );
 
       cer0_effect_delay_initialize(
-        cer0_effect
+        cer0_effect,
+        0x01
       );
 
       cer0_effect_delay_length_frames_buffer_set(
@@ -457,7 +458,8 @@ void metil_example_audio_output_scene_poll(
       );
 
       cer0_effect_delay_initialize(
-        cer0_effect
+        cer0_effect,
+        0x01
       );
 
       cer0_effect_delay_length_frames_buffer_set(
@@ -671,7 +673,8 @@ void metil_example_audio_output_scene_poll(
         );
 
         cer0_effect_delay_initialize(
-          cer0_effect
+          cer0_effect,
+          0x01
         );
 
         cer0_effect_delay_length_frames_buffer_set(
