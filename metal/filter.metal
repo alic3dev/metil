@@ -16,8 +16,19 @@ kernel void filter_compute(
     ushort2(
       index %
       texture.get_width()
-    , index / texture.get_height())
+    , index / texture.get_width())
   );
+  
+    float4 j = texture.read(
+      ushort2(
+        (l.y + 100) % texture.get_width(),
+        (l.y + 100) % texture.get_height()
+      )
+    );
+    
+    float4 q = texture.read(
+      l
+    );
 
     texture.write(
       (
