@@ -1,5 +1,5 @@
-#ifndef __example_fog_values_h
-#define __example_fog_values_h
+#ifndef  __metil_examples_example_filter_example_filter_values_h
+#define  __metil_examples_example_filter_example_filter_values_h
 
 #define fog_thickness_minimum 0.0f
 #define fog_thickness_maximum 1.0f

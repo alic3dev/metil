@@ -1,7 +1,7 @@
-#include <example_fog_scene.h>
+#include <metil_example_filter_scene.h>
 
-#include <example_fog_pipeline_index.h>
-#include <example_fog_values.h>
+#include <metil_example_filter_pipeline_index.h>
+#include <metil_example_filter_values.h>
 
 #include <metil.h>
 #include <metil_mesh/metil_mesh_ball.h>
@@ -20,19 +20,25 @@
 #include <math_c_pi.h>
 #include <math_c_vector.h>
 
-void example_fog_scene_initialize(
+void metil_example_filter_scene_initialize(
   struct metil* metil,
-  struct metil_scene* scene
+  struct metil_scene* metil_scene
 ) {
   metil_scene_initialize_with_renderables(
     metil,
-    scene,
+    metil_scene,
     0x07d0
   );
+  
+  struct metil_example_filter_pipeline_index* metil_example_filter_pipeline_index = (
+    metil->data
+  );
 
-  scene->poll = example_fog_scene_poll;
+  metil_scene->poll = (
+    metil_example_filter_scene_poll
+  );
 
-  struct metil_object* object = (
+  struct metil_object* metil_object = (
     0x00
   );
 
@@ -42,18 +48,18 @@ void example_fog_scene_initialize(
     );
     (
       index_renderable <
-      scene->length_renderables
+      metil_scene->length_renderables
     );
     ++index_renderable
   ) {
     metil_renderable_initialize_at_index(
-      scene->renderables,
+      metil_scene->renderables,
       index_renderable,
       metil_renderable_type_object
     );
 
-    object = (
-      scene->renderables[
+    metil_object = (
+      metil_scene->renderables[
         index_renderable
       ].renderable
     );
@@ -64,7 +70,7 @@ void example_fog_scene_initialize(
     ) {
       case 0x00: {
         metil_mesh_dollop_initialize(
-          &object->mesh,
+          &metil_object->mesh,
           (struct math_c_vector3_float) {
             .x = (
               0x0a
@@ -90,7 +96,7 @@ void example_fog_scene_initialize(
       }
       case 0x01: {
         metil_mesh_gem_initialize(
-          &object->mesh,
+          &metil_object->mesh,
           (struct math_c_vector3_float) {
             .x = (
               0x0a
@@ -116,7 +122,7 @@ void example_fog_scene_initialize(
       }
       case 0x02: {
         metil_mesh_mushroom_initialize(
-          &object->mesh,
+          &metil_object->mesh,
           (struct math_c_vector3_float) {
             .x = (
               0x0a
@@ -142,7 +148,7 @@ void example_fog_scene_initialize(
       }
       case 0x03: {
         metil_mesh_shuttle_initialize(
-          &object->mesh,
+          &metil_object->mesh,
           (struct math_c_vector3_float) {
             .x = (
               0x0a
@@ -168,7 +174,7 @@ void example_fog_scene_initialize(
       }
       case 0x04: {
         metil_mesh_tube_initialize(
-          &object->mesh,
+          &metil_object->mesh,
           (struct math_c_vector3_float) {
             .x = (
               0x0a
@@ -195,7 +201,7 @@ void example_fog_scene_initialize(
       }
       case 0x05: {
         metil_mesh_ball_initialize(
-          &object->mesh,
+          &metil_object->mesh,
           (
             0x02 *
             (
@@ -236,11 +242,11 @@ void example_fog_scene_initialize(
     }
 
     metil_object_buffers_initialize(
-      object,
+      metil_object,
       metil->renderer_interface.metal_device
     );
 
-    object->position.x = (
+    metil_object->position.x = (
       (
         (float)
         (
@@ -255,13 +261,13 @@ void example_fog_scene_initialize(
       0x03e8
     );
 
-    object->position.y = (
-      object->mesh.size.y +
+    metil_object->position.y = (
+      metil_object->mesh.size.y +
       index_renderable %
       0x1e
     );
 
-    object->position.z = (
+    metil_object->position.z = (
       (
         (float)
         (
@@ -276,31 +282,31 @@ void example_fog_scene_initialize(
       0x03e8
     );
 
-    object->rotation.x = (
+    metil_object->rotation.x = (
       (float)
       index_renderable *
       34.34f
     );
 
-    object->rotation.y = (
+    metil_object->rotation.y = (
       (float)
       index_renderable *
       25.34f
     );
 
-    object->rotation.z = (
+    metil_object->rotation.z = (
       (float)
       index_renderable *
       98.11f
     );
 
-    struct metil_renderer_data_object* data_object = (
-      object->buffers_vertex[
+    struct metil_renderer_data_object* metil_renderer_data_object = (
+      metil_object->buffers_vertex[
         metil_object_buffer_default_index_data
       ].buffer.contents
     );
 
-    data_object->colour.x = (
+    metil_renderer_data_object->colour.x = (
       (float)
       (
         index_renderable %
@@ -309,7 +315,7 @@ void example_fog_scene_initialize(
        0x0a
     );
 
-    data_object->colour.y = (
+    metil_renderer_data_object->colour.y = (
       (float)
       (
         (
@@ -321,7 +327,7 @@ void example_fog_scene_initialize(
       0x0a
     );
 
-    data_object->colour.z = (
+    metil_renderer_data_object->colour.z = (
       (float)
       (
         (
@@ -335,19 +341,19 @@ void example_fog_scene_initialize(
   }
 
   metil_renderable_initialize_at_index(
-    scene->renderables,
+    metil_scene->renderables,
     0x00,
     metil_renderable_type_object
   );
 
-  object = (
-    scene->renderables[
+  metil_object = (
+    metil_scene->renderables[
       0x00
     ].renderable
   );
 
   metil_mesh_ball_initialize(
-    &object->mesh,
+    &metil_object->mesh,
     fog_distance_maximum,
     (struct math_c_vector2_unsigned_short_int) {
       .x = (
@@ -360,66 +366,66 @@ void example_fog_scene_initialize(
   );
 
   metil_object_buffers_initialize(
-    object,
+    metil_object,
     metil->renderer_interface.metal_device
   );
 
-  struct metil_renderer_data_object* data_object = (
-    object->buffers_vertex[
+  struct metil_renderer_data_object* metil_renderer_data_object = (
+    metil_object->buffers_vertex[
       metil_object_buffer_default_index_data
     ].buffer.contents
   );
 
-  data_object->colour.w = (
+  metil_renderer_data_object->colour.w = (
     fog_thickness_maximum
   );
 
-  object->index_pipeline_render = (
-    example_face_pipeline_index_fog
+  metil_object->index_pipeline_render = (
+    metil_example_filter_pipeline_index->fog
   );
 
-  object->depth_disabled = (
+  metil_object->depth_disabled = (
     0x01
   );
 
-  object->rotation.x = (
+  metil_object->rotation.x = (
     math_c_pi_half
   );
 
-  object->rotation.z = (
+  metil_object->rotation.z = (
     math_c_pi_half
   );
 
-  scene->player.speed_movement = (
-    scene->player.speed_movement *
+  metil_scene->player.speed_movement = (
+    metil_scene->player.speed_movement *
     0x0a
   );
 }
 
-void example_fog_scene_poll(
+void metil_example_filter_scene_poll(
   struct metil* metil,
-  struct metil_scene* scene
+  struct metil_scene* metil_scene
 ) {
   metil_scene_poll_default(
     metil,
-    scene
+    metil_scene
   );
 
-  struct metil_object* object = (
-    scene->renderables[
+  struct metil_object* metil_object = (
+    metil_scene->renderables[
       0x00
     ].renderable
   );
 
-  object->position.x = (
-    scene->player.position.x
+  metil_object->position.x = (
+    metil_scene->player.position.x
   );
 
-  object->position.y = (
-    scene->player.position.y
+  metil_object->position.y = (
+    metil_scene->player.position.y
   );
 
-  object->position.z = (
-    scene->player.position.z
+  metil_object->position.z = (
+    metil_scene->player.position.z
   );
 }
