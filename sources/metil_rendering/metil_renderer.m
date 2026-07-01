@@ -986,15 +986,36 @@
         self->metil->rendering_properties.count_completed_frames +
         0x01
       );
+      
+      unsigned char continue_rendering = (
+        0x01
+      );
+      
+      if (
+        self->after_render !=
+        0x00
+      ) {
+        continue_rendering = (
+          self->after_render(
+            self->metil,
+            index_frame
+          )
+        );  
+      }
 
       if (
         self->destroying ==
         0x00
       ) {
-        [
-          metal_kit_view
-          draw
-        ];
+        if (
+          continue_rendering !=
+          0x00
+        ) {
+          [
+            metal_kit_view
+            draw
+          ];
+        }
       } else {
         pthread_mutex_unlock(
           &self->mutex_destroying
@@ -1275,6 +1296,10 @@
   );
   
   self->texture_render_target_processed = (
+    0x00
+  );
+  
+  self->after_render = (
     0x00
   );
 }

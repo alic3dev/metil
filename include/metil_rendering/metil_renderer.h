@@ -29,6 +29,11 @@
 #define metil_renderer_pipelines_render_index_fps_display 0x01
 #define metil_renderer_pipelines_render_index_wireframe 0x02
 
+typedef unsigned char (*metil_renderer_after_render_function)(
+  struct metil* _Nonnull,
+  unsigned int
+);
+
 @interface metil_renderer : NSObject<MTKViewDelegate> {
   struct metil* metil;
 
@@ -70,6 +75,7 @@
   matrix_float3x4 matrix_projection_static;
 
   @public metil_renderer_data_frame_poll_function poll_data_frame;
+  @public metil_renderer_after_render_function after_render;
 
   unsigned char destroying;
   pthread_mutex_t mutex_destroying;
