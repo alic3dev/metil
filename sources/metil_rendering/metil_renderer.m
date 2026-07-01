@@ -1217,10 +1217,47 @@
         index_frame
       )
     ];
+  } else if (
+    (
+      self->metil->rendering_properties.mode &
+      metil_rendering_properties_mode_filters
+    ) ==
+    0x00
+  ) {
+    if (
+      self->length_filters >
+      0x00
+    ) {
+      [
+        self
+        command_buffer_completion_handler_filter_compute_add: (
+          metal_kit_view
+        )
+        command_buffer: (
+          command_buffer
+        )
+        index_frame: (
+          index_frame
+        )
+      ];
+    } else {
+      [
+        self
+        command_buffer_completion_handler_filter_render_add: (
+          metal_kit_view
+        )
+        command_buffer: (
+          command_buffer
+        )
+        index_frame: (
+          index_frame
+        )
+      ];
+    }
   } else {
     [
       self
-      command_buffer_completion_handler_indirect_rendering_compute_add: (
+      command_buffer_completion_handler_add: (
         metal_kit_view
       )
       command_buffer: (
@@ -1289,7 +1326,7 @@
   ];
 }
 
-- (void) command_buffer_completion_handler_indirect_rendering_compute_add:
+- (void) command_buffer_completion_handler_filter_compute_add:
   (MTKView*) metal_kit_view
   command_buffer: (id<MTLCommandBuffer>) command_buffer
   index_frame: (unsigned int) index_frame
@@ -1324,111 +1361,106 @@
         release
       ];
       
-      if (
-        self->length_filters >
-        0x00
+      id<MTLComputeCommandEncoder> encoder_command_compute = [
+        command_buffer
+        computeCommandEncoder
+      ];   
+      
+      for (
+        unsigned short int index_filter = (
+          0x00
+        );
+        (
+          index_filter <
+          self->length_filters
+        );
+        ++index_filter
       ) {
-        id<MTLComputeCommandEncoder> encoder_command_compute = [
-          command_buffer
-          computeCommandEncoder
-        ];   
+        struct metil_filter* metil_filter = &(
+          self->filters[
+            index_filter
+          ]
+        );
         
-        for (
-          unsigned short int index_filter = (
-            0x00
-          );
-          (
-            index_filter <
-            self->length_filters
-          );
-          ++index_filter
-        ) {
-          struct metil_filter* metil_filter = &(
-            self->filters[
-              index_filter
+        [
+        encoder_command_compute
+          setComputePipelineState: (
+            self->pipelines_compute[
+              metil_filter->index_pipeline_compute
             ]
-          );
-          
-          [
+          )
+        ];
+        
+        [
           encoder_command_compute
-            setComputePipelineState: (
-              self->pipelines_compute[
-                metil_filter->index_pipeline_compute
-              ]
+          setTexture: (
+            self->texture_render_target
+          )
+          atIndex: (
+            0x00
+          )
+        ];
+        
+        if (
+          (
+            metil_filter->mode &
+            metil_filter_mode_dual_target
+          ) !=
+          0x00
+        ) {
+          [
+            encoder_command_compute
+            setTexture: (
+              self->texture_render_target_processed
+            )
+            atIndex: (
+              0x01
             )
           ];
-          
+        } else {
           [
             encoder_command_compute
             setTexture: (
               self->texture_render_target
             )
             atIndex: (
-              0x00
+              0x01
             )
           ];
-          
-          if (
-            (
-              metil_filter->mode &
-              metil_filter_mode_dual_target
-            ) !=
-            0x00
-          ) {
-            [
-              encoder_command_compute
-              setTexture: (
-                self->texture_render_target_processed
-              )
-              atIndex: (
-                0x01
-              )
-            ];
-          } else {
-            [
-              encoder_command_compute
-              setTexture: (
-                self->texture_render_target
-              )
-              atIndex: (
-                0x01
-              )
-            ];
-          }
-          
-          [
-            encoder_command_compute
-            dispatchThreads: (
-              MTLSizeMake(
-                (
-                  self->texture_render_target.height *
-                  self->texture_render_target.width
-                ),
-                0x01,
-                0x01
-              )
-            )
-            threadsPerThreadgroup: (
-              MTLSizeMake(
-                self->pipelines_compute[
-                  metil_filter->index_pipeline_compute
-                ].maxTotalThreadsPerThreadgroup,
-                0x01,
-                0x01
-              )
-            )
-          ];
-        }  
+        }
         
         [
           encoder_command_compute
-          endEncoding 
+          dispatchThreads: (
+            MTLSizeMake(
+              (
+                self->texture_render_target.height *
+                self->texture_render_target.width
+              ),
+              0x01,
+              0x01
+            )
+          )
+          threadsPerThreadgroup: (
+            MTLSizeMake(
+              self->pipelines_compute[
+                metil_filter->index_pipeline_compute
+              ].maxTotalThreadsPerThreadgroup,
+              0x01,
+              0x01
+            )
+          )
         ];
-      } 
+      }  
+      
+      [
+        encoder_command_compute
+        endEncoding 
+      ]; 
       
       [
         self
-        command_buffer_completion_handler_indirect_rendering_render_add: (
+        command_buffer_completion_handler_filter_render_add: (
           metal_kit_view
         )
         command_buffer: (
@@ -1447,7 +1479,7 @@
   ];
 }
 
-- (void) command_buffer_completion_handler_indirect_rendering_render_add: (nonnull MTKView*) metal_kit_view
+- (void) command_buffer_completion_handler_filter_render_add: (nonnull MTKView*) metal_kit_view
   command_buffer: (nonnull id<MTLCommandBuffer>) command_buffer
   index_frame: (unsigned int) index_frame
 {

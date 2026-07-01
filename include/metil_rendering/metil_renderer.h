@@ -116,11 +116,11 @@ typedef unsigned char (*metil_renderer_after_render_function)(
   command_buffer: (nonnull id<MTLCommandBuffer>) command_buffer
   index_frame: (unsigned int) index_frame;
   
-- (void) command_buffer_completion_handler_indirect_rendering_compute_add: (nonnull MTKView*) metal_kit_view
+- (void) command_buffer_completion_handler_filter_compute_add: (nonnull MTKView*) metal_kit_view
   command_buffer: (nonnull id<MTLCommandBuffer>) command_buffer
   index_frame: (unsigned int) index_frame;
   
-- (void) command_buffer_completion_handler_indirect_rendering_render_add: (nonnull MTKView*) metal_kit_view
+- (void) command_buffer_completion_handler_filter_render_add: (nonnull MTKView*) metal_kit_view
   command_buffer: (nonnull id<MTLCommandBuffer>) command_buffer
   index_frame: (unsigned int) index_frame;
 
