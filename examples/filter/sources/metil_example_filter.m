@@ -61,6 +61,41 @@ void metil_example_filter_renderer_on_initialize(
     ]
   ];
   
+  metil->rendering_properties.index_pipeline_render_texture = [
+    metil->renderer_interface.renderer
+    pipeline_add: [
+      metil->library.library
+      newFunctionWithName: @"metil_indirect_rendering_fragment"
+    ]
+    function_vertex: [
+      metil->library.library
+      newFunctionWithName: @"metil_indirect_rendering_vertex"
+    ]
+  ];
+  
+  metil->rendering_properties.mode = (
+    metil_rendering_properties_mode_filters_automatic
+  );
+  
+  struct metil_filter* metil_filter = [
+    metil->renderer_interface.renderer
+    filter_add
+  ];
+  
+  metil_filter_initialize(
+    metil_filter,
+    [
+      metil->renderer_interface.renderer
+      pipeline_compute_add: (
+        [
+          metil->library.library
+          newFunctionWithName: @"metil_example_filter_compute"
+        ]
+      )
+    ],
+    0x00
+  );
+  
   struct metil_scene_controller* metil_scene_controller = (
     metil->scene_controller
   );
