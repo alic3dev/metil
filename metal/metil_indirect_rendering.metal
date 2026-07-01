@@ -21,14 +21,14 @@
           0x01
         )
       );
-      
+
       data_vertex_basic_textured_coloured.position_texture = (
         float2(
           0x00,
           0x01
         )
       );
-      
+
       break;
     }
     case 0x01: {
@@ -40,14 +40,14 @@
           0x01
         )
       );
-      
+
       data_vertex_basic_textured_coloured.position_texture = (
         float2(
           0x01,
           0x01
         )
       );
-      
+
       break;
     }
     case 0x02: {
@@ -59,14 +59,14 @@
           0x01
         )
       );
-      
+
       data_vertex_basic_textured_coloured.position_texture = (
         float2(
           0x00,
           0x00
         )
       );
-      
+
       break;
     }
     case 0x03: {
@@ -78,23 +78,22 @@
           0x01
         )
       );
-      
+
       data_vertex_basic_textured_coloured.position_texture = (
         float2(
           0x01,
           0x00
         )
       );
-      
+
       break;
     }
   }
-  
+
   return (
     data_vertex_basic_textured_coloured
-  );  
+  );
 }
-
 
 [[fragment]] float4 metil_indirect_rendering_fragment(
   data_vertex_basic_textured_coloured data_vertex_basic_textured_coloured [[
@@ -115,7 +114,7 @@
     texture.sample(
       sampler_texture,
       data_vertex_basic_textured_coloured.position_texture
-    )  
+    )
   );
 }
 

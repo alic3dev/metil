@@ -74,7 +74,7 @@ struct data_vertex {
       data_object->colour.w
     )
   );
-  
+
   data_vertex.brightness = (
     (
       vertices[

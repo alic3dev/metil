@@ -1375,6 +1375,9 @@
         computeCommandEncoder
       ];
 
+      id<MTLTexture> texture_input;
+      id<MTLTexture> texture_output;
+
       for (
         unsigned short int index_filter = (
           0x00
@@ -1385,6 +1388,30 @@
         );
         ++index_filter
       ) {
+        if (
+          (
+            index_filter %
+            0x02
+          ) ==
+          0x00
+        ) {
+          texture_input = (
+            self->texture_render_target
+          );
+
+          texture_output = (
+            self->texture_render_target_processed
+          );
+        } else {
+          texture_input = (
+            self->texture_render_target_processed
+          );
+
+          texture_output = (
+            self->texture_render_target
+          );
+        }
+
         struct metil_filter* metil_filter = &(
           self->filters[
             index_filter
@@ -1403,7 +1430,7 @@
         [
           encoder_command_compute
           setTexture: (
-            self->texture_render_target
+            texture_input
           )
           atIndex: (
             0x00
@@ -1420,7 +1447,7 @@
           [
             encoder_command_compute
             setTexture: (
-              self->texture_render_target_processed
+              texture_output
             )
             atIndex: (
               0x01
@@ -1430,7 +1457,7 @@
           [
             encoder_command_compute
             setTexture: (
-              self->texture_render_target
+              texture_input
             )
             atIndex: (
               0x01
@@ -1558,15 +1585,33 @@
         )
       ];
 
-      [
-        encoder_render
-        setFragmentTexture: (
-          self->texture_render_target_processed
-        )
-        atIndex: (
-          0x00
-        )
-      ];
+      if (
+        (
+          self->length_filters %
+          0x02
+        ) ==
+        0x00
+      ) {
+        [
+          encoder_render
+          setFragmentTexture: (
+            self->texture_render_target
+          )
+          atIndex: (
+            0x00
+          )
+        ];
+      } else {
+        [
+          encoder_render
+          setFragmentTexture: (
+            self->texture_render_target_processed
+          )
+          atIndex: (
+            0x00
+          )
+        ];
+      }
 
       [
         encoder_render
