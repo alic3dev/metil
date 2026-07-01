@@ -58,25 +58,25 @@ typedef unsigned char (*metil_renderer_after_render_function)(
   id<MTLRenderCommandEncoder> encoder_render;
 
   id<MTLBuffer> index_buffer_mesh_current;
-  
+
   MTLTextureDescriptor* descriptor_texture_render_target;
   @public id<MTLTexture> texture_render_target;
   @public id<MTLTexture> texture_render_target_processed;
-  
+
   @public unsigned short int index_pipeline_render_texture;
   id<MTLBuffer> buffer_indices_render;
 
   struct metil_object objects_fps_display[
     metil_renderer_length_objects_fps_display
   ];
-  
+
   id<MTLComputePipelineState>* pipelines_compute;
   unsigned short int length_pipelines_compute;
 
   id<MTLRenderPipelineState>* pipelines_render;
   unsigned short int length_pipelines_render;
   unsigned short int index_pipelines_render_current;
-  
+
   @public struct metil_filter* filters;
   @public unsigned short int length_filters;
 
@@ -115,11 +115,11 @@ typedef unsigned char (*metil_renderer_after_render_function)(
 - (void) command_buffer_completion_handler_add: (nonnull MTKView*) metal_kit_view
   command_buffer: (nonnull id<MTLCommandBuffer>) command_buffer
   index_frame: (unsigned int) index_frame;
-  
+
 - (void) command_buffer_completion_handler_indirect_rendering_compute_add: (nonnull MTKView*) metal_kit_view
   command_buffer: (nonnull id<MTLCommandBuffer>) command_buffer
   index_frame: (unsigned int) index_frame;
-  
+
 - (void) command_buffer_completion_handler_indirect_rendering_render_add: (nonnull MTKView*) metal_kit_view
   command_buffer: (nonnull id<MTLCommandBuffer>) command_buffer
   index_frame: (unsigned int) index_frame;
@@ -134,7 +134,7 @@ typedef unsigned char (*metil_renderer_after_render_function)(
   function_vertex: (nonnull id<MTLFunction>) function_vertex;
 
 - (unsigned short int) pipeline_compute_add: (nonnull id<MTLFunction>) function_compute;
-  
+
 - (void) pipelines_clear;
 - (void) pipelines_initialize;
 - (void) pipeline_render_initialize:

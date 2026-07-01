@@ -540,11 +540,11 @@
       ];
     }
   }
-  
+
   clic3_memory_free_raw(
     self->filters
   );
-  
+
   clic3_memory_free_raw(
     self->pipelines_compute
   );
@@ -610,7 +610,7 @@
       release
     ];
   }
-  
+
   if (
     self->buffer_indices_render !=
     0x00
@@ -620,7 +620,7 @@
       release
     ];
   }
-  
+
   if (
     self->descriptor_texture_render_target !=
     0x00
@@ -782,7 +782,7 @@
     descriptor_command_buffer
     release
   ];
-  
+
   if (
     (
       self->metil->rendering_properties.mode &
@@ -809,18 +809,18 @@
           0x00
         )
       ];
-      
+
       self->descriptor_texture_render_target.usage = (
         MTLTextureUsageShaderRead |
         MTLTextureUsageShaderWrite |
         MTLTextureUsageRenderTarget
       );
-      
+
       self->descriptor_texture_render_target.storageMode = (
         MTLStorageModeShared
       );
     }
-    
+
     if (
       (
         self->descriptor_texture_render_target.height !=
@@ -834,11 +834,11 @@
       self->descriptor_texture_render_target.height = (
         metal_kit_view.currentDrawable.texture.height
       );
-      
+
       self->descriptor_texture_render_target.width = (
         metal_kit_view.currentDrawable.texture.width
       );
-    
+
       if (
         (
           self->metil->rendering_properties.mode &
@@ -855,7 +855,7 @@
             release
           ];
         }
-                  
+
         self->texture_render_target = [
           self->metil->renderer_interface.metal_device
           newTextureWithDescriptor: (
@@ -863,7 +863,7 @@
           )
         ];
       }
-      
+
       if (
         (
           self->metil->rendering_properties.mode &
@@ -875,13 +875,13 @@
           self->texture_render_target_processed
           release
         ];
-                  
+
         self->texture_render_target_processed = (
           0x00
         );
       }
     }
-  
+
     if (
       (
         self->texture_render_target ==
@@ -894,7 +894,7 @@
         ) !=
         0x00
       )
-    ) {      
+    ) {
       self->texture_render_target = [
         self->metil->renderer_interface.metal_device
         newTextureWithDescriptor: (
@@ -902,7 +902,7 @@
         )
       ];
     }
-    
+
     if (
       (
         self->texture_render_target_processed ==
@@ -915,7 +915,7 @@
         ) !=
         0x00
       )
-    ) {  
+    ) {
       self->texture_render_target_processed = [
         self->metil->renderer_interface.metal_device
         newTextureWithDescriptor: (
@@ -923,7 +923,7 @@
         )
       ];
     }
-    
+
     if (
       self->buffer_indices_render ==
       0x00
@@ -938,7 +938,7 @@
         0x02,
         0x03
       };
-    
+
       self->buffer_indices_render = [
         metil->renderer_interface.metal_device
         newBufferWithBytes: (
@@ -1203,7 +1203,7 @@
         metal_kit_view.currentDrawable
       )
     ];
-    
+
     [
       self
       command_buffer_completion_handler_add: (
@@ -1249,11 +1249,11 @@
         self->metil->rendering_properties.count_completed_frames +
         0x01
       );
-      
+
       unsigned char continue_rendering = (
         0x01
       );
-      
+
       if (
         self->after_render !=
         0x00
@@ -1303,26 +1303,26 @@
         ]
         init
       ];
-    
+
       descriptor_command_buffer.logState = (
         [
           self
           log_state_create
         ]
       );
-    
+
       id<MTLCommandBuffer> command_buffer = [
         self->command_queue
         commandBufferWithDescriptor: (
           descriptor_command_buffer
         )
       ];
-    
+
       [
         descriptor_command_buffer
         release
       ];
-      
+
       if (
         self->length_filters >
         0x00
@@ -1330,8 +1330,8 @@
         id<MTLComputeCommandEncoder> encoder_command_compute = [
           command_buffer
           computeCommandEncoder
-        ];   
-        
+        ];
+
         for (
           unsigned short int index_filter = (
             0x00
@@ -1347,7 +1347,7 @@
               index_filter
             ]
           );
-          
+
           [
           encoder_command_compute
             setComputePipelineState: (
@@ -1356,7 +1356,7 @@
               ]
             )
           ];
-          
+
           [
             encoder_command_compute
             setTexture: (
@@ -1366,7 +1366,7 @@
               0x00
             )
           ];
-          
+
           if (
             (
               metil_filter->mode &
@@ -1394,7 +1394,7 @@
               )
             ];
           }
-          
+
           [
             encoder_command_compute
             dispatchThreads: (
@@ -1417,14 +1417,14 @@
               )
             )
           ];
-        }  
-        
+        }
+
         [
           encoder_command_compute
-          endEncoding 
+          endEncoding
         ];
-      } 
-      
+      }
+
       [
         self
         command_buffer_completion_handler_indirect_rendering_render_add: (
@@ -1437,7 +1437,7 @@
           index_frame
         )
       ];
-      
+
       [
         command_buffer
         commit
@@ -1460,26 +1460,26 @@
         ]
         init
       ];
-    
+
       descriptor_command_buffer.logState = (
         [
           self
           log_state_create
         ]
       );
-    
+
       id<MTLCommandBuffer> command_buffer = [
         self->command_queue
         commandBufferWithDescriptor: (
           descriptor_command_buffer
         )
       ];
-         
+
       [
         descriptor_command_buffer
         release
       ];
-      
+
       if (
         (
           self->metil->rendering_properties.mode &
@@ -1502,14 +1502,14 @@
           self->texture_render_target
         );
       }
-      
+
       encoder_render = [
         command_buffer
         renderCommandEncoderWithDescriptor: (
           self->descriptor_render_pass
         )
       ];
-      
+
       [
         encoder_render
         setRenderPipelineState: (
@@ -1518,7 +1518,7 @@
           ]
         )
       ];
-   
+
       [
         encoder_render
         setFragmentTexture: (
@@ -1528,7 +1528,7 @@
           0x00
         )
       ];
-    
+
       [
         encoder_render
         drawIndexedPrimitives: (
@@ -1547,12 +1547,12 @@
           0x00
         )
       ];
-      
+
       [
         encoder_render
         endEncoding
       ];
-      
+
       if (
         (
           self->metil->rendering_properties.mode &
@@ -1567,7 +1567,7 @@
           )
         ];
       }
-      
+
       [
         self
         command_buffer_completion_handler_add: (
@@ -1580,7 +1580,7 @@
           index_frame
         )
       ];
-      
+
       [
         command_buffer
         commit
@@ -1743,7 +1743,7 @@
   self->index_pipelines_render_current = (
     metil_renderer_pipelines_render_index_library
   );
-  
+
   self->length_pipelines_compute = (
     0x00
   );
@@ -1808,7 +1808,7 @@
       0x00
     );
   }
-  
+
   self->pipelines_compute = (
     clic3_memory_allocate_raw(
       sizeof(
@@ -1826,11 +1826,11 @@
       self->length_pipelines_render
     )
   );
-  
+
   self->length_filters = (
     0x00
   );
-  
+
   self->filters = (
     clic3_memory_allocate_raw(
       0x00
@@ -1927,7 +1927,7 @@
     self->length_pipelines_compute +
     0x01
   );
-  
+
   clic3_memory_reallocate_raw(
     &self->pipelines_compute,
     (
@@ -1949,10 +1949,10 @@
     )
     error: 0x00
   ];
-  
+
   return (
     index_pipelines_compute
-  ); 
+  );
 }
 
 - (void) pipelines_clear {

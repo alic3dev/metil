@@ -17,7 +17,7 @@ void metil_filter_initialize(
       mode
     );
   }
-  
+
   metil_filter->index_pipeline_compute = (
     index_pipeline_compute
   );

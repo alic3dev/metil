@@ -18,6 +18,6 @@ void metil_filter_initialize(
   struct metil_filter*,
   unsigned short int,
   unsigned char
-);  
-      
+);
+
 #endif
