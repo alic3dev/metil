@@ -13,11 +13,15 @@
 #define metil_count_time_frames 0x3c
 
 enum metil_rendering_properties_mode {
-  metil_rendering_properties_mode_default            = 0b00000001,
-  metil_rendering_properties_mode_wireframe          = 0b00000010,
-  metil_rendering_properties_mode_wireframe_full     = 0b00000100,
-  metil_rendering_properties_mode_indirect_rendering = 0b00001000,
-  metil_rendering_properties_mode_filters            = 0b00010000
+  metil_rendering_properties_mode_default                             = 0b00000001,
+  metil_rendering_properties_mode_wireframe                           = 0b00000010,
+  metil_rendering_properties_mode_wireframe_full                      = 0b00000100,
+  metil_rendering_properties_mode_indirect_rendering                  = 0b00001000,
+  metil_rendering_properties_mode_indirect_rendering_automatic        = 0b00101000,
+  metil_rendering_properties_mode_filters                             = 0b00010000,
+  metil_rendering_properties_mode_filters_automatic                   = 0b01110000,
+  metil_rendering_properties_mode_render_texture_automatic            = 0b00100000,
+  metil_rendering_properties_mode_render_texture_proccessed_automatic = 0b01000000
 };
 
 enum metil_rendering_properties_disables {
