@@ -752,11 +752,25 @@
     release
   ];
 
-  self->descriptor_render_pass.colorAttachments[
+  if (
+    (
+      self->metil->rendering_properties.mode &
+      metil_rendering_properties_mode_indirect_rendering
+    ) ==
     0x00
-  ].texture = (
-    metal_kit_view.currentDrawable.texture
-  );
+  ) {
+    self->descriptor_render_pass.colorAttachments[
+      0x00
+    ].texture = (
+      metal_kit_view.currentDrawable.texture
+    );
+  } else {
+    self->descriptor_render_pass.colorAttachments[
+      0x00
+    ].texture = (
+      self->texture_render_target
+    );
+  }
 
   #if target_os_ios
   metil_application* metil_ui_application = (
@@ -989,12 +1003,20 @@
     }
   ];
 
-  [
-    command_buffer
-    presentDrawable: (
-      metal_kit_view.currentDrawable
-    )
-  ];
+  if (
+    (
+      self->metil->rendering_properties.mode &
+      metil_rendering_properties_mode_indirect_rendering
+    ) ==
+    0x00
+  ) {
+    [
+      command_buffer
+      presentDrawable: (
+        metal_kit_view.currentDrawable
+      )
+    ];
+  }
 
   [
     command_buffer
