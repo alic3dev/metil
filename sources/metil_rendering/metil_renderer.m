@@ -540,6 +540,14 @@
       ];
     }
   }
+  
+  clic3_memory_free_raw(
+    self->filters
+  );
+  
+  clic3_memory_free_raw(
+    self->pipelines_compute
+  );
 
   clic3_memory_free_raw(
     self->pipelines_render
@@ -1816,6 +1824,16 @@
         id<MTLRenderPipelineState>
       ) *
       self->length_pipelines_render
+    )
+  );
+  
+  self->length_filters = (
+    0x00
+  );
+  
+  self->filters = (
+    clic3_memory_allocate_raw(
+      0x00
     )
   );
 
