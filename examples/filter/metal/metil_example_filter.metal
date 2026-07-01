@@ -98,15 +98,13 @@ kernel void metil_example_filter_compute(
 
   texture_output.write(
     (
-      /*q *
+      q *
       float4(
         0.3,
         0x01,
         0x01,
         0x01
-      )*/texture.read(
-      l
-    )
+      )
     ),
     l,
     0x00
