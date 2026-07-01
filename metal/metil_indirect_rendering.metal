@@ -2,7 +2,7 @@
 
 #include <metal_texture>
 
-[[vertex]] struct data_vertex_basic_textured_coloured indirect_rendering_vertex(
+[[vertex]] struct data_vertex_basic_textured_coloured metil_indirect_rendering_vertex(
   unsigned int index_vertex [[
     vertex_id
   ]]
@@ -99,7 +99,7 @@
 }
 
 
-[[fragment]] float4 indirect_rendering_fragment(
+[[fragment]] float4 metil_indirect_rendering_fragment(
   data_vertex_basic_textured_coloured data_vertex_basic_textured_coloured [[
     stage_in
   ]],
