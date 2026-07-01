@@ -13,16 +13,17 @@
 #define metil_count_time_frames 0x3c
 
 enum metil_rendering_properties_mode {
-  metil_rendering_properties_mode_default            = 0b0001,
-  metil_rendering_properties_mode_wireframe          = 0b0010,
-  metil_rendering_properties_mode_wireframe_full     = 0b0100,
-  metil_rendering_properties_mode_indirect_rendering = 0b1000
+  metil_rendering_properties_mode_default            = 0b00000001,
+  metil_rendering_properties_mode_wireframe          = 0b00000010,
+  metil_rendering_properties_mode_wireframe_full     = 0b00000100,
+  metil_rendering_properties_mode_indirect_rendering = 0b00001000,
+  metil_rendering_properties_mode_filters            = 0b00010000
 };
 
 enum metil_rendering_properties_disables {
-  metil_rendering_properties_disables_none      = 0b0000,
-  metil_rendering_properties_disables_polling   = 0b0001,
-  metil_rendering_properties_disables_rendering = 0b0010
+  metil_rendering_properties_disables_none      = 0b00000000,
+  metil_rendering_properties_disables_polling   = 0b00000001,
+  metil_rendering_properties_disables_rendering = 0b00000010
 };
 
 struct metil_rendering_properties {
