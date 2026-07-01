@@ -31,7 +31,6 @@
       
       break;
     }
-    
     case 0x01: {
       data_vertex_basic_textured_coloured.position = (
         float4(
@@ -51,7 +50,6 @@
       
       break;
     }
-    
     case 0x02: {
       data_vertex_basic_textured_coloured.position = (
         float4(
@@ -71,7 +69,6 @@
       
       break;
     }
-    
     case 0x03: {
       data_vertex_basic_textured_coloured.position = (
         float4(
