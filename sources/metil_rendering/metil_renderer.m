@@ -812,6 +812,67 @@
         MTLStorageModeShared
       );
     }
+    
+    if (
+      (
+        self->descriptor_texture_render_target.height !=
+        metal_kit_view.currentDrawable.texture.height
+      ) ||
+      (
+        self->descriptor_texture_render_target.width !=
+        metal_kit_view.currentDrawable.texture.width
+      )
+    ) {
+      self->descriptor_texture_render_target.height = (
+        metal_kit_view.currentDrawable.texture.height
+      );
+      
+      self->descriptor_texture_render_target.width = (
+        metal_kit_view.currentDrawable.texture.width
+      );
+    
+      if (
+        (
+          self->metil->rendering_properties.mode &
+          metil_rendering_properties_mode_render_texture_automatic
+        ) !=
+        0x00
+      ) {
+        if (
+          self->texture_render_target !=
+          0x00
+        ) {
+          [
+            self->texture_render_target
+            release
+          ];
+        }
+                  
+        self->texture_render_target = [
+          self->metil->renderer_interface.metal_device
+          newTextureWithDescriptor: (
+            self->descriptor_texture_render_target
+          )
+        ];
+      }
+      
+      if (
+        (
+          self->metil->rendering_properties.mode &
+          metil_rendering_properties_mode_render_texture_processed_automatic
+        ) !=
+        0x00
+      ) {
+        [
+          self->texture_render_target_processed
+          release
+        ];
+                  
+        self->texture_render_target_processed = (
+          0x00
+        );
+      }
+    }
   
     if (
       (
