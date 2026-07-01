@@ -224,41 +224,6 @@
   pthread_mutex_lock(
     &self->mutex_destroying
   );
-  
-  id<MTLFunction> function_compute = [
-    (id<MTLLibrary>)
-    self->metil->library.library
-    newFunctionWithName: (
-      @"filter_compute"
-    )
-  ];
-  
-  if (
-    function_compute !=
-    0x00
-  ) {
-    self->pipeline_state_compute = [
-      (id<MTLDevice>)
-      self->metil->renderer_interface.metal_device
-      newComputePipelineStateWithFunction: (
-        (id<MTLFunction>)
-        function_compute
-      )
-      error: 0x00
-    ];
-  } else {
-    self->pipeline_state_compute = (
-      0x00
-    );
-  }
-  
-  self->texture_render = (
-    0x00
-  );
-  
-  self->descriptor_texture_render = (
-    0x00
-  );
 
   return (
     self
@@ -637,6 +602,26 @@
       release
     ];
   }
+  
+  if (
+    self->buffer_indices_render !=
+    0x00
+  ) {
+    [
+      self->buffer_indices_render
+      release
+    ];
+  }
+  
+  if (
+    self->descriptor_texture_render_target !=
+    0x00
+  ) {
+    [
+      self->descriptor_texture_render_target
+      release
+    ];
+  }
 
   [
     self->metil->renderer_interface.metal_device
@@ -791,83 +776,125 @@
   ];
   
   if (
-    self->texture_render ==
+    (
+      self->metil->rendering_properties.mode &
+      metil_rendering_properties_mode_render_textures_automatic
+    ) !=
     0x00
   ) {
-    self->descriptor_texture_render = [
-      MTLTextureDescriptor
-      texture2DDescriptorWithPixelFormat: (
-        metal_kit_view.currentDrawable.texture.pixelFormat
-      )
-      width: (
-        metal_kit_view.currentDrawable.texture.width
-      )
-      height: (
-        metal_kit_view.currentDrawable.texture.height
-      )
-      mipmapped: (
+    if (
+      self->descriptor_texture_render_target ==
+      0x00
+    ) {
+      self->descriptor_texture_render_target = [
+        MTLTextureDescriptor
+        texture2DDescriptorWithPixelFormat: (
+          metal_kit_view.currentDrawable.texture.pixelFormat
+        )
+        width: (
+          metal_kit_view.currentDrawable.texture.width
+        )
+        height: (
+          metal_kit_view.currentDrawable.texture.height
+        )
+        mipmapped: (
+          0x00
+        )
+      ];
+      
+      self->descriptor_texture_render_target.usage = (
+        MTLTextureUsageShaderRead |
+        MTLTextureUsageShaderWrite |
+        MTLTextureUsageRenderTarget
+      );
+      
+      self->descriptor_texture_render_target.storageMode = (
+        MTLStorageModeShared
+      );
+    }
+  
+    if (
+      (
+        self->texture_render_target ==
+        0x00
+      ) &&
+      (
+        (
+          self->metil->rendering_properties.mode &
+          metil_rendering_properties_mode_render_texture_automatic
+        ) !=
         0x00
       )
-    ];
+    ) {      
+      self->texture_render_target = [
+        self->metil->renderer_interface.metal_device
+        newTextureWithDescriptor: (
+          self->descriptor_texture_render_target
+        )
+      ];
+    }
     
-    self->descriptor_texture_render.usage = (
-      MTLTextureUsageShaderRead |
-      MTLTextureUsageShaderWrite |
-      MTLTextureUsageRenderTarget
-    );
-    
-    self->descriptor_texture_render.storageMode = (
-      MTLStorageModeShared
-    );
-    
-    self->texture_render = [
-      self->metil->renderer_interface.metal_device
-      newTextureWithDescriptor: (
-        self->descriptor_texture_render
+    if (
+      (
+        self->texture_render_target_processed ==
+        0x00
+      ) &&
+      (
+        (
+          self->metil->rendering_properties.mode &
+          metil_rendering_properties_mode_render_texture_processed_automatic
+        ) !=
+        0x00
       )
-    ];
+    ) {  
+      self->texture_render_target_processed = [
+        self->metil->renderer_interface.metal_device
+        newTextureWithDescriptor: (
+          self->descriptor_texture_render_target
+        )
+      ];
+    }
     
-    self->texture_render_filtered = [
-      self->metil->renderer_interface.metal_device
-      newTextureWithDescriptor: (
-        self->descriptor_texture_render
-      )
-    ];
-    
-    self->index_pipeline_render_texture = [
-      metil->renderer_interface.renderer
-      pipeline_add: [
-        metil->library.library
-        newFunctionWithName: @"filter_fragment"
-      ]
-      function_vertex: [
-        metil->library.library
-        newFunctionWithName: @"filter_vertex"
-      ]
-    ];
-    
-    self->indices_render = [
-      metil->renderer_interface.metal_device
-      newBufferWithLength: (
-        sizeof(
-          unsigned int
-        ) *
+    if (
+      self->buffer_indices_render ==
+      0x00
+    ) {
+      unsigned int indices_render[
         0x06
-      )
-      options: (
-        MTLResourceStorageModeShared
-      )
-    ];
+      ] = {
+        0x00,
+        0x01,
+        0x02,
+        0x01,
+        0x02,
+        0x03
+      };
     
-    unsigned int* b = self->indices_render.contents;
-    
-    b[0]=0;b[1]=1;b[2]=2;b[3]=1;b[4]=2;b[5]=3;
+      self->buffer_indices_render = [
+        metil->renderer_interface.metal_device
+        newBufferWithBytes: (
+          indices_render
+        )
+        length: (
+          sizeof(
+            unsigned int
+          ) *
+          0x06
+        )
+        options: (
+          MTLResourceStorageModePrivate
+        )
+      ];
+    }
   }
 
   if (
     (
       self->metil->rendering_properties.mode &
-      metil_rendering_properties_mode_indirect_rendering
+      (
+        metil_rendering_properties_mode_indirect_rendering |
+        metil_rendering_properties_mode_filters
+      )
     ) ==
     0x00
   ) {
@@ -1091,6 +1118,112 @@
     endEncoding
   ];
 
+  if (
+    (
+      self->metil->rendering_properties.mode &
+      (
+        metil_rendering_properties_mode_indirect_rendering |
+        metil_rendering_properties_mode_filters
+      )
+    ) ==
+    0x00
+  ) {
+    [
+      command_buffer
+      presentDrawable: (
+        metal_kit_view.currentDrawable
+      )
+    ];
+    
+    [
+      self
+      command_buffer_completion_handler_add: (
+        metal_kit_view
+      )
+      command_buffer: (
+        command_buffer
+      )
+      index_frame: (
+        index_frame
+      )
+    ];
+  } else {
+    [
+      self
+      command_buffer_completion_handler_indirect_rendering_compute_add: (
+        metal_kit_view
+      )
+      command_buffer: (
+        command_buffer
+      )
+      index_frame: (
+        index_frame
+      )
+    ];
+  }
+
+  [
+    command_buffer
+    commit
+  ];
+}
+
+- (void) command_buffer_completion_handler_add:
+  (MTKView*) metal_kit_view
+  command_buffer: (id<MTLCommandBuffer>) command_buffer
+  index_frame: (unsigned int) index_frame
+{
+  [
+    command_buffer
+    addCompletedHandler: ^(id<MTLCommandBuffer> buffer) {
+      self->metil->rendering_properties.count_completed_frames = (
+        self->metil->rendering_properties.count_completed_frames +
+        0x01
+      );
+      
+      unsigned char continue_rendering = (
+        0x01
+      );
+      
+      if (
+        self->after_render !=
+        0x00
+      ) {
+        continue_rendering = (
+          self->after_render(
+            self->metil,
+            index_frame
+          )
+        );
+      }
+
+      if (
+        self->destroying ==
+        0x00
+      ) {
+        if (
+          continue_rendering !=
+          0x00
+        ) {
+          [
+            metal_kit_view
+            draw
+          ];
+        }
+      } else {
+        pthread_mutex_unlock(
+          &self->mutex_destroying
+        );
+      }
+    }
+  ];
+}
+
+- (void) command_buffer_completion_handler_indirect_rendering_compute_add:
+  (MTKView*) metal_kit_view
+  command_buffer: (id<MTLCommandBuffer>) command_buffer
+  index_frame: (unsigned int) index_frame
+{
   [
     command_buffer
     addCompletedHandler: ^(id<MTLCommandBuffer> buffer) {
@@ -1120,183 +1253,120 @@
         descriptor_command_buffer
         release
       ];
-    
-      self->descriptor_render_pass.colorAttachments[
-        0x00
-      ].texture = (
-        metal_kit_view.currentDrawable.texture
-      );
-
-      unsigned char continue_rendering = (
-        0x01
-      );
-
+      
       if (
-        self->after_render !=
+        self->length_filters >
         0x00
       ) {
-        continue_rendering = (
-          self->after_render(
-            self->metil,
-            index_frame
-          )
-        );
-      }
-
-      if (
-        self->pipeline_state_compute !=
-        0x00
-      ) {
-        id<MTLComputeCommandEncoder> j =[
+        id<MTLComputeCommandEncoder> encoder_command_compute = [
           command_buffer
           computeCommandEncoder
-        ];
-        
-        [
-          j
-          setComputePipelineState: (
-            self->pipeline_state_compute
-          )
         ];   
         
-        [
-          j
-          setTexture: (
-            self->texture_render
-          )
-          atIndex: 0x00
-        ];
+        for (
+          unsigned short int index_filter = (
+            0x00
+          );
+          (
+            index_filter <
+            self->length_filters
+          );
+          ++index_filter
+        ) {
+          struct metil_filter* metil_filter = &(
+            self->filters[
+              index_filter
+            ]
+          );
+          
+          [
+          encoder_command_compute
+            setComputePipelineState: (
+              self->pipelines_compute[
+                metil_filter->index_pipeline_compute
+              ]
+            )
+          ];
+          
+          [
+            encoder_command_compute
+            setTexture: (
+              self->texture_render_target
+            )
+            atIndex: (
+              0x00
+            )
+          ];
+          
+          if (
+            (
+              metil_filter->mode &
+              metil_filter_mode_dual_target
+            ) !=
+            0x00
+          ) {
+            [
+              encoder_command_compute
+              setTexture: (
+                self->texture_render_target_processed
+              )
+              atIndex: (
+                0x01
+              )
+            ];
+          } else {
+            [
+              encoder_command_compute
+              setTexture: (
+                self->texture_render_target
+              )
+              atIndex: (
+                0x01
+              )
+            ];
+          }
+          
+          [
+            encoder_command_compute
+            dispatchThreads: (
+              MTLSizeMake(
+                (
+                  self->texture_render_target.height *
+                  self->texture_render_target.width
+                ),
+                0x01,
+                0x01
+              )
+            )
+            threadsPerThreadgroup: (
+              MTLSizeMake(
+                self->pipelines_compute[
+                  metil_filter->index_pipeline_compute
+                ].maxTotalThreadsPerThreadgroup,
+                0x01,
+                0x01
+              )
+            )
+          ];
+        }  
         
         [
-          j
-          setTexture: (
-            self->texture_render_filtered
-          )
-          atIndex: 0x01
-        ];
-        
-        [
-          j
-          dispatchThreads: (
-            MTLSizeMake(self->texture_render.height * self->texture_render.width, 1, 1)
-          )
-          threadsPerThreadgroup: (
-            MTLSizeMake(self->pipeline_state_compute.maxTotalThreadsPerThreadgroup, 1, 1)
-          )
-        ];  
-        
-        [
-          j
+          encoder_command_compute
           endEncoding 
         ];
       } 
       
       [
-        command_buffer
-        addCompletedHandler: ^(id<MTLCommandBuffer> buffer) {
-          MTLCommandBufferDescriptor* descriptor_command_buffer = [
-            [
-              MTLCommandBufferDescriptor
-              alloc
-            ]
-            init
-          ];
-        
-          descriptor_command_buffer.logState = (
-            [
-              self
-              log_state_create
-            ]
-          );
-        
-          id<MTLCommandBuffer> command_buffer = [
-            self->command_queue
-            commandBufferWithDescriptor: (
-              descriptor_command_buffer
-            )
-          ];
-        
-          [
-            descriptor_command_buffer
-            release
-          ];
-          
-          encoder_render = [
-            command_buffer
-            renderCommandEncoderWithDescriptor: (
-              self->descriptor_render_pass
-            )
-          ];
-          
-          [
-            encoder_render
-            setRenderPipelineState: (
-              self->pipelines_render[
-                self->index_pipeline_render_texture
-              ]
-            )
-          ];
-       
-          [
-            encoder_render
-            setFragmentTexture: (
-              self->texture_render_filtered
-            )
-            atIndex: 0x00
-          ];
-        
-          [
-            encoder_render
-            drawIndexedPrimitives: MTLPrimitiveTypeTriangle
-            indexCount: 0x06
-            indexType: MTLIndexTypeUInt32
-            indexBuffer: self->indices_render
-            indexBufferOffset: 0x00
-          ];
-          
-          [encoder_render endEncoding];
-          
-          [
-            command_buffer
-            presentDrawable: (
-              metal_kit_view.currentDrawable
-            )
-          ];
-          
-          [
-            command_buffer
-            addCompletedHandler: ^(id<MTLCommandBuffer> buffer) {
-              self->metil->rendering_properties.count_completed_frames = (
-                self->metil->rendering_properties.count_completed_frames +
-                0x01
-              );
-        
-              if (
-                self->destroying ==
-                0x00
-              ) {
-                if (
-                  continue_rendering !=
-                  0x00
-                ) {
-                  [
-                    metal_kit_view
-                    draw
-                  ];
-                }
-              } else {
-                pthread_mutex_unlock(
-                  &self->mutex_destroying
-                );
-              }
-            }
-          ];
-          
-          [
-            command_buffer
-            commit
-          ];
-        }
+        self
+        command_buffer_completion_handler_indirect_rendering_render_add: (
+          metal_kit_view
+        )
+        command_buffer: (
+          command_buffer
+        )
+        index_frame: (
+          index_frame
+        )
       ];
       
       [
@@ -1305,27 +1375,148 @@
       ];
     }
   ];
+}
 
-  if (
-    (
-      (
-        self->metil->rendering_properties.mode &
-        metil_rendering_properties_mode_indirect_rendering
-      ) ==
-      0x00
-    )
-  ) {
-    [
-      command_buffer
-      presentDrawable: (
-        metal_kit_view.currentDrawable
-      )
-    ];
-  }
-
+- (void) command_buffer_completion_handler_indirect_rendering_render_add: (nonnull MTKView*) metal_kit_view
+  command_buffer: (nonnull id<MTLCommandBuffer>) command_buffer
+  index_frame: (unsigned int) index_frame
+{
   [
     command_buffer
-    commit
+    addCompletedHandler: ^(id<MTLCommandBuffer> buffer) {
+      MTLCommandBufferDescriptor* descriptor_command_buffer = [
+        [
+          MTLCommandBufferDescriptor
+          alloc
+        ]
+        init
+      ];
+    
+      descriptor_command_buffer.logState = (
+        [
+          self
+          log_state_create
+        ]
+      );
+    
+      id<MTLCommandBuffer> command_buffer = [
+        self->command_queue
+        commandBufferWithDescriptor: (
+          descriptor_command_buffer
+        )
+      ];
+         
+      [
+        descriptor_command_buffer
+        release
+      ];
+      
+      if (
+        (
+          self->metil->rendering_properties.mode &
+          (
+            metil_rendering_properties_mode_indirect_rendering |
+            metil_rendering_properties_mode_filters
+          )
+        ) ==
+        0x00
+      ) {
+        self->descriptor_render_pass.colorAttachments[
+          0x00
+        ].texture = (
+          metal_kit_view.currentDrawable.texture
+        );
+      } else {
+        self->descriptor_render_pass.colorAttachments[
+          0x00
+        ].texture = (
+          self->texture_render_target
+        );
+      }
+      
+      encoder_render = [
+        command_buffer
+        renderCommandEncoderWithDescriptor: (
+          self->descriptor_render_pass
+        )
+      ];
+      
+      [
+        encoder_render
+        setRenderPipelineState: (
+          self->pipelines_render[
+            self->index_pipeline_render_texture
+          ]
+        )
+      ];
+   
+      [
+        encoder_render
+        setFragmentTexture: (
+          self->texture_render_target_processed
+        )
+        atIndex: (
+          0x00
+        )
+      ];
+    
+      [
+        encoder_render
+        drawIndexedPrimitives: (
+          MTLPrimitiveTypeTriangle
+        )
+        indexCount: (
+          0x06
+        )
+        indexType: (
+          MTLIndexTypeUInt32
+        )
+        indexBuffer: (
+          self->buffer_indices_render
+        )
+        indexBufferOffset: (
+          0x00
+        )
+      ];
+      
+      [
+        encoder_render
+        endEncoding
+      ];
+      
+      if (
+        (
+          self->metil->rendering_properties.mode &
+          metil_rendering_properties_mode_indirect_rendering
+        ) ==
+        0x00
+      ) {
+        [
+          command_buffer
+          presentDrawable: (
+            metal_kit_view.currentDrawable
+          )
+        ];
+      }
+      
+      [
+        self
+        command_buffer_completion_handler_add: (
+          metal_kit_view
+        )
+        command_buffer: (
+          command_buffer
+        )
+        index_frame: (
+          index_frame
+        )
+      ];
+      
+      [
+        command_buffer
+        commit
+      ];
+    }
   ];
 }
 
@@ -1483,8 +1674,8 @@
   self->index_pipelines_render_current = (
     metil_renderer_pipelines_render_index_library
   );
-
-  self->pipelines_render = (
+  
+  self->length_pipelines_compute = (
     0x00
   );
 
@@ -1548,6 +1739,15 @@
       0x00
     );
   }
+  
+  self->pipelines_compute = (
+    clic3_memory_allocate_raw(
+      sizeof(
+        id<MTLComputePipelineState>
+      ) *
+      self->length_pipelines_compute
+    )
+  );
 
   self->pipelines_render = (
     clic3_memory_allocate_raw(
@@ -1637,6 +1837,45 @@
   );
 }
 
+- (unsigned short int) pipeline_compute_add:
+  (id<MTLFunction>) function_compute
+{
+  unsigned short int index_pipelines_compute = (
+    self->length_pipelines_compute
+  );
+
+  self->length_pipelines_compute = (
+    self->length_pipelines_compute +
+    0x01
+  );
+  
+  clic3_memory_reallocate_raw(
+    &self->pipelines_compute,
+    (
+      sizeof(
+        id<MTLComputePipelineState>
+      ) *
+      self->length_pipelines_compute
+    )
+  );
+
+  self->pipelines_compute[
+    index_pipelines_compute
+  ] = [
+    (id<MTLDevice>)
+    self->metil->renderer_interface.metal_device
+    newComputePipelineStateWithFunction: (
+      (id<MTLFunction>)
+      function_compute
+    )
+    error: 0x00
+  ];
+  
+  return (
+    index_pipelines_compute
+  ); 
+}
+
 - (void) pipelines_clear {
   for (
     unsigned short int index_pipeline_render = (
@@ -1691,7 +1930,8 @@
 - (void) pipeline_render_initialize:
   (unsigned short int) index_pipeline_render
   function_fragment: (id<MTLFunction>) function_fragment
-  function_vertex: (id<MTLFunction>) function_vertex {
+  function_vertex: (id<MTLFunction>) function_vertex
+{
   if (
     (
       self->pipelines_render[
