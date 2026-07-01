@@ -29,7 +29,7 @@ void metil_example_filter_scene_initialize(
     metil_scene,
     0x07d0
   );
-  
+
   struct metil_example_filter_pipeline_index* metil_example_filter_pipeline_index = (
     metil->data
   );

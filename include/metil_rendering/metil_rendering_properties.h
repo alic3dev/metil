@@ -48,7 +48,7 @@ struct metil_rendering_properties {
   float fps;
 
   enum metil_rendering_properties_mode mode;
-  
+
   unsigned short int index_pipeline_render_texture;
 
   unsigned long int time_frames[
