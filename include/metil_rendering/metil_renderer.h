@@ -30,6 +30,11 @@
 #define metil_renderer_pipelines_render_index_fps_display 0x01
 #define metil_renderer_pipelines_render_index_wireframe 0x02
 
+typedef unsigned char (*metil_renderer_after_render_function)(
+  struct metil* _Nonnull,
+  unsigned int
+);
+
 @interface metil_renderer : NSObject<MTKViewDelegate> {
   struct metil* metil;
 
@@ -68,6 +73,9 @@
   unsigned short int length_pipelines_render;
   unsigned short int index_pipelines_render_current;
 
+  @public id<MTLTexture> texture_render_target;
+  @public id<MTLTexture> texture_render_target_processed;
+
   pthread_t* threads;
   struct metil_renderer_thread_poll_object_data* threads_data;
   unsigned int length_threads;
@@ -75,6 +83,7 @@
   matrix_float3x4 matrix_projection_static;
 
   @public metil_renderer_data_frame_poll_function poll_data_frame;
+  @public metil_renderer_after_render_function after_render;
 
   unsigned char destroying;
   pthread_mutex_t mutex_destroying;
@@ -83,8 +92,6 @@
 - (nonnull instancetype) metil_renderer_initialize:
   (nonnull MTKView*) metal_kit_view
   metil: (nonnull struct metil*) parameter_metil;
-
-- (void) after_scene_change;
 
 - (id<MTLLogState> _Nullable) log_state_create;
 
@@ -162,12 +169,6 @@ void* _Nullable metil_renderer_thread_draw(
 #endif
 
 void* _Nullable metil_renderer_thread_poll_object(
-  void* _Nonnull
-);
-
-void metil_renderer_after_scene_change(
-  struct metil* _Nonnull,
-  int,
   void* _Nonnull
 );
 

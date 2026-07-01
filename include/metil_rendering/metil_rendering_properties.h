@@ -13,9 +13,10 @@
 #define metil_count_time_frames 0x3c
 
 enum metil_rendering_properties_mode {
-  metil_rendering_properties_mode_default        = 0b0001,
-  metil_rendering_properties_mode_wireframe      = 0b0010,
-  metil_rendering_properties_mode_wireframe_full = 0b0100
+  metil_rendering_properties_mode_default            = 0b0001,
+  metil_rendering_properties_mode_wireframe          = 0b0010,
+  metil_rendering_properties_mode_wireframe_full     = 0b0100,
+  metil_rendering_properties_mode_indirect_rendering = 0b1000
 };
 
 enum metil_rendering_properties_disables {
