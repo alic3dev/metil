@@ -1547,7 +1547,7 @@
         encoder_render
         setRenderPipelineState: (
           self->pipelines_render[
-            self->index_pipeline_render_texture
+            self->metil->rendering_properties.index_pipeline_render_texture
           ]
         )
       ];

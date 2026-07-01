@@ -63,7 +63,6 @@ typedef unsigned char (*metil_renderer_after_render_function)(
   @public id<MTLTexture> texture_render_target;
   @public id<MTLTexture> texture_render_target_processed;
   
-  @public unsigned short int index_pipeline_render_texture;
   id<MTLBuffer> buffer_indices_render;
 
   struct metil_object objects_fps_display[
